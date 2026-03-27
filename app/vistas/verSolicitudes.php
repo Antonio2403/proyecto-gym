@@ -20,7 +20,7 @@
             <p>
                 Solicitante: <?= $s['nombre'] ?> |
                 Tipo: <?= $s['tipo'] ?> |
-                Fecha: <?= $s['fecha'] ?>
+                Fecha: <?= $s['fecha_creacion'] ?>
             </p>
 
             <form method="POST" action="/proyecto-gym/admin/aprobar">

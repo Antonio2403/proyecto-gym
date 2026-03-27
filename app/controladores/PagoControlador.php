@@ -48,8 +48,7 @@ class PagoControlador extends Controller
 
     public function exito()
     {
-        $config = require "config/stripe.php";
-        \Stripe\Stripe::setApiKey($config['secret_key']);
+        \Stripe\Stripe::setApiKey($_ENV['STRIPE_SECRET_KEY']);
 
         $session_id = $_GET['session_id'];
 

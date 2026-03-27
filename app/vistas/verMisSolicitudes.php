@@ -16,7 +16,7 @@
 
             <p>
                 Tipo: <?= $s['tipo'] ?> |
-                Fecha: <?= $s['fecha'] ?>
+                Fecha: <?= $s['fecha_creacion'] ?>
                 Estado: <?= $s['estado'] ?> |
                 <?php if ($s['estado']=='P') {
                     echo "Boton borrar";
