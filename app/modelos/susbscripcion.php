@@ -39,6 +39,3 @@ class Subscripcion
         return $stmt->execute();
     }
 }
-
-
-?>

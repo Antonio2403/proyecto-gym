@@ -53,3 +53,5 @@ controller($router, 'get', '/pago', 'PagoControlador@index');
 controller($router, 'post', '/pago/crear-sesion', 'PagoControlador@crearSesion');
 controller($router, 'get', '/pago/exito', 'PagoControlador@exito');
 controller($router, 'get', '/pago/cancelado', 'PagoControlador@cancelado');
+
+controller($router, 'post', '/pago/crear-intento', 'PagoControlador@crearIntentoPago');

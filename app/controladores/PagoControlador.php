@@ -1,48 +1,62 @@
 <?php
 require_once "core/Controller.php";
 require_once "vendor/autoload.php";
+require_once "app/modelos/susbscripcion.php";
 
 class PagoControlador extends Controller
 {
     public function index()
     {
-        $this->view("pago/pagar");
+        $subscripciones = Subscripcion::obtenerTodas();
+        $this->view("pago/pagar", ['subscripciones' => $subscripciones]);
     }
 
-    public function crearSesion()
+    public function crearIntentoPago()
     {
+        header('Content-Type: application/json');
 
         \Stripe\Stripe::setApiKey($_ENV['STRIPE_SECRET_KEY']);
 
-        $precio = $_POST['precio'];
-        $nombre = $_POST['nombre'];
+        $data = json_decode(file_get_contents("php://input"), true);
+        $subscripcion_id = $data['subscripcion_id'] ?? null;
+
+        if (!$subscripcion_id) {
+            echo json_encode(['error' => 'Falta subscripcion_id']);
+            return;
+        }
 
         try {
 
-            $session = \Stripe\Checkout\Session::create([
-                'payment_method_types' => ['card'],
-                'mode' => 'payment',
+            $conexion = BasedeDatos::Conectar();
 
-                'line_items' => [[
-                    'price_data' => [
-                        'currency' => 'eur',
-                        'product_data' => [
-                            'name' => $nombre,
-                        ],
-                        'unit_amount' => $precio * 100,
-                    ],
-                    'quantity' => 1,
-                ]],
+            $stmt = $conexion->prepare("SELECT * FROM subscripciones WHERE id = ?");
+            $stmt->execute([$subscripcion_id]);
 
-                'success_url' => 'http://localhost/proyecto-gym/pago/exito?session_id={CHECKOUT_SESSION_ID}',
-                'cancel_url' => 'http://localhost/proyecto-gym/pago/cancelado',
+            $subscripcion = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            if (!$subscripcion) {
+                echo json_encode(['error' => 'Suscripción no válida']);
+                return;
+            }
+
+            $precio = $subscripcion['precio'] * 100;
+
+            $intent = \Stripe\PaymentIntent::create([
+                'amount' => $precio,
+                'currency' => 'eur',
+                'automatic_payment_methods' => [
+                    'enabled' => true,
+                ],
             ]);
 
-            header("Location: " . $session->url);
-            exit;
+            echo json_encode([
+                'clientSecret' => $intent->client_secret
+            ]);
 
         } catch (Exception $e) {
-            echo "Error Stripe: " . $e->getMessage();
+            echo json_encode([
+                'error' => $e->getMessage()
+            ]);
         }
     }
 
@@ -50,28 +64,38 @@ class PagoControlador extends Controller
     {
         \Stripe\Stripe::setApiKey($_ENV['STRIPE_SECRET_KEY']);
 
-        $session_id = $_GET['session_id'];
+        $payment_intent_id = $_GET['payment_intent'] ?? null;
+        $subscripcion_id = $_GET['subscripcion_id'] ?? null;
+
+        if (!$payment_intent_id || !$subscripcion_id) {
+            echo "Error: datos incompletos";
+            return;
+        }
 
         try {
 
-            $session = \Stripe\Checkout\Session::retrieve($session_id);
+            $intent = \Stripe\PaymentIntent::retrieve($payment_intent_id);
 
-            if ($session->payment_status == 'paid') {
+            if ($intent->status === 'succeeded') {
 
                 $conexion = BasedeDatos::Conectar();
 
                 $stmt = $conexion->prepare("
-                    INSERT INTO cliente_suscripcion (cliente_id, suscripcion_id, fecha_inicio)
+                    INSERT INTO cliente_subscripcion (cliente_id, subscripcion_id, fecha_inicio)
                     VALUES (?, ?, NOW())
                 ");
 
-                $cliente_id = $_SESSION['usuario_id'];
-                $suscripcion_id = 1;
-                $stmt->execute([$cliente_id, $suscripcion_id]);
+                $cliente_id = $_SESSION['usuario_id'] ?? null;
+
+                if (!$cliente_id) {
+                    throw new Exception("Usuario no logueado");
+                }
+
+                $stmt->execute([$cliente_id, $subscripcion_id]);
             }
 
         } catch (Exception $e) {
-            echo $e->getMessage();
+            echo "Error: " . $e->getMessage();
         }
 
         $this->view("pago/exito");
