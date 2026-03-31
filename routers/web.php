@@ -50,8 +50,14 @@ controller($router, 'post', '/admin/crearSubscripcion', 'SubscripcionControlador
 
 //Pago
 controller($router, 'get', '/pago', 'PagoControlador@index');
-controller($router, 'post', '/pago/crear-sesion', 'PagoControlador@crearSesion');
 controller($router, 'get', '/pago/exito', 'PagoControlador@exito');
 controller($router, 'get', '/pago/cancelado', 'PagoControlador@cancelado');
-
 controller($router, 'post', '/pago/crear-intento', 'PagoControlador@crearIntentoPago');
+
+//Salas
+controller($router, 'get', '/monitor/verSalas', 'SalaControlador@index');
+controller($router, 'get', '/monitor/salas/crear', 'SalaControlador@formCrearSala');
+controller($router, 'post', '/monitor/salas/crear', 'SalaControlador@crear');
+controller($router, 'get', '/monitor/salas/eliminar/(\d+)', 'SalaControlador@eliminar');
+controller($router, 'get', '/monitor/salas/editar/(\d+)', 'SalaControlador@actualizar');
+controller($router, 'post', '/monitor/salas/editar/(\d+)', 'SalaControlador@actualizar');

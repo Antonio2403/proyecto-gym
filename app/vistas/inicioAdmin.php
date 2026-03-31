@@ -10,6 +10,7 @@
     <a href="admin/registrarMonitor">Alta Monitor</a>
     <a href="admin/verSolicitudes">Ver Solicitudes</a>
     <a href="admin/gestionSubscripciones">Gestión de Subscripciones</a>
+    <a href="monitor/verSalas">Ver salas</a>
     <a href="logout">Logout</a>
 </body>
 </html>
