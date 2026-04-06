@@ -8,7 +8,7 @@ class LoginControlador extends Controller
 {
     public function mostrarLogin()
     {
-        $this->view("login");
+        $this->renderFrontend("frontend/login");
     }
 public function login()
 {

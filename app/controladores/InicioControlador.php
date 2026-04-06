@@ -6,19 +6,19 @@ class InicioControlador extends Controller {
 
     public function index()
     {
-        $this->view("inicio");
+        $this->renderFrontend("frontend/inicio");
     }
 
     public function inicioAdmin(){
-        $this->view("inicioAdmin");
+        $this->renderAdmin("admin/inicioAdmin");
     }
 
     public function inicioUsuario(){
-        $this->view("inicioUsuario");
+        $this->renderFrontend("frontend/inicioUsuario");
     }
 
     public function inicioMonitor(){
-        $this->view("inicioMonitor");
+        $this->renderFrontend("frontend/inicioMonitor");
     }
 
 }

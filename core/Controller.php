@@ -1,12 +1,20 @@
 <?php
 
-class Controller {
+class Controller
+{
 
-    public function view($vista, $data = [])
+    protected function renderFrontend($vista)
     {
-        extract($data);
-
-        require_once "app/vistas/" . $vista . ".php";
+        require "app/vistas/plantillas/frontend/header.php";
+        require "app/vistas/$vista.php";
+        require "app/vistas/plantillas/frontend/footer.php";
     }
 
+    protected function renderAdmin($vista)
+    {
+        require "app/vistas/layouts/admin/header.php";
+        require "app/vistas/layouts/admin/sidebar.php";
+        require "app/vistas/$vista.php";
+        require "app/vistas/layouts/admin/footer.php";
+    }
 }
