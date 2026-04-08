@@ -1,72 +1,69 @@
-<!DOCTYPE html>
-<html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registrar Monitor</title>
-    <style>
-        form {
-            width: 400px;
-            margin: auto;
-            font-family: Arial;
-        }
+        <div class="row mb-3">
+            <div class="col-12">
+                <a href="/proyecto-gym/inicioAdmin" class="btn btn-secondary">Volver</a>
+            </div>
+        </div>
 
-        input {
-            width: 100%;
-            padding: 8px;
-            margin: 5px 0;
-        }
+        <div class="row">
+            <div class="col-md-6 offset-md-3">
+                <div class="card">
+                    <div class="card-body">
+                        <h2 class="card-title mb-4">Crear Monitor</h2>
 
-        button {
-            width: 100%;
-            padding: 10px;
-            background: black;
-            color: white;
-        }
-    </style>
-</head>
+                        <form action="/proyecto-gym/admin/crearMonitor" method="POST">
 
-<body>
-    <a href="/proyecto-gym/inicioAdmin">Volver</a><br>
-    <form action="/proyecto-gym/admin/crearMonitor" method="POST">
+                            <div class="mb-3">
+                                <label for="DNI" class="form-label">DNI:</label>
+                                <input type="text" class="form-control" id="DNI" name="DNI" required>
+                            </div>
 
-        <h2>Crear Monitor</h2>
+                            <div class="mb-3">
+                                <label for="nombre" class="form-label">Nombre:</label>
+                                <input type="text" class="form-control" id="nombre" name="nombre" required>
+                            </div>
 
-        <label>DNI:</label>
-        <input type="text" name="DNI" required>
+                            <div class="mb-3">
+                                <label for="apellido1" class="form-label">Apellido 1:</label>
+                                <input type="text" class="form-control" id="apellido1" name="apellido1" required>
+                            </div>
 
-        <label>Nombre:</label>
-        <input type="text" name="nombre" required>
+                            <div class="mb-3">
+                                <label for="apellido2" class="form-label">Apellido 2:</label>
+                                <input type="text" class="form-control" id="apellido2" name="apellido2">
+                            </div>
 
-        <label>Apellido 1:</label>
-        <input type="text" name="apellido1" required>
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email:</label>
+                                <input type="email" class="form-control" id="email" name="email" required>
+                            </div>
 
-        <label>Apellido 2:</label>
-        <input type="text" name="apellido2">
+                            <div class="mb-3">
+                                <label for="clave" class="form-label">Contraseña:</label>
+                                <input type="password" class="form-control" id="clave" name="clave" required>
+                            </div>
 
-        <label>Email:</label>
-        <input type="email" name="email" required>
+                            <div class="mb-3">
+                                <label for="telefono" class="form-label">Teléfono:</label>
+                                <input type="text" class="form-control" id="telefono" name="telefono" required>
+                            </div>
 
-        <label>Contraseña:</label>
-        <input type="password" name="clave" required>
+                            <hr>
 
-        <label>Teléfono:</label>
-        <input type="text" name="telefono" required>
+                            <div class="mb-3">
+                                <label for="especialidad" class="form-label">Especialidad:</label>
+                                <input type="text" class="form-control" id="especialidad" name="especialidad" required>
+                            </div>
 
-        <hr>
+                            <div class="mb-3">
+                                <label for="disponibilidad" class="form-label">Disponibilidad:</label>
+                                <input type="text" class="form-control" id="disponibilidad" name="disponibilidad" placeholder="Ej: mañanas, tardes..." required>
+                            </div>
 
-        <label>Especialidad:</label>
-        <input type="text" name="especialidad" required>
+                            <button type="submit" class="btn btn-dark w-100">Crear Monitor</button>
 
-        <label>Disponibilidad:</label>
-        <input type="text" name="disponibilidad" placeholder="Ej: mañanas, tardes..." required>
-
-        <br><br>
-
-        <button type="submit">Crear Monitor</button>
-
-    </form>
-</body>
-
-</html>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>

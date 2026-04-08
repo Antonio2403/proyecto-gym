@@ -18,7 +18,7 @@ class InicioControlador extends Controller {
     }
 
     public function inicioMonitor(){
-        $this->renderFrontend("frontend/inicioMonitor");
+        $this->renderFrontend("monitor/inicioMonitor");
     }
 
 }

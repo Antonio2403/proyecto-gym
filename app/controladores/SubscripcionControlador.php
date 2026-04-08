@@ -8,11 +8,11 @@ class SubscripcionControlador extends Controller
     public function mostrarSubscripciones()
     {
         $subscripciones = Subscripcion::obtenerTodas();
-        $this->view('gestionSubscripciones', $subscripciones);
+        $this->renderAdmin('admin/gestionSubscripciones', $subscripciones);
     }
     public function formSubscripcion()
     {
-        $this->view('formSubscripcion');
+        $this->renderAdmin('admin/formSubscripcion');
     }
     public function crearSubscripcion()
     {

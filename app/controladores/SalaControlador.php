@@ -8,7 +8,7 @@ Class SalaControlador extends Controller
     public function index()
     {
         $salas = Sala::obtenerTodas();
-        $this->view("salas/verSalas", ["salas" => $salas]);
+        $this->renderAdmin("salas/verSalas", ["salas" => $salas]);
     }
 
     public function crear()
@@ -28,13 +28,13 @@ Class SalaControlador extends Controller
     }
     public function formCrearSala()
     {
-        $this->view("salas/formSala");
+        $this->renderAdmin("salas/formSala");
     }
 
     public function eliminar($id)
     {
         if (Sala::eliminar($id)) {
-            header("Location: /salas");
+            header("Location: /proyecto-gym/monitor/verSalas");
             exit();
         } else {
             echo "Error al eliminar la sala.";

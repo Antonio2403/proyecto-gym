@@ -1,23 +1,20 @@
-<!DOCTYPE html>
-<html lang="en">
+<a href="verMonitorSolicitudes" class="btn btn-secondary btn-sm mb-3">Volver</a>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crear Solicitud</title>
-</head>
-
-<body>
-    <a href="verMonitorSolicitudes">Volver</a>
-    <br>
-    <form action="/proyecto-gym/monitor/crearSolicitud" method="POST">
-
-        <label>Tipo de solicitud:</label>
-        <input type="text" name="tipo" required>
-
-        <button type="submit">Enviar solicitud</button>
-
-    </form>
-</body>
-
-</html>
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title mb-4">Crear Solicitud</h5>
+                    <form action="/proyecto-gym/monitor/crearSolicitud" method="POST">
+                        <div class="mb-3">
+                            <label for="tipo" class="form-label">Tipo de solicitud:</label>
+                            <input type="text" class="form-control" id="tipo" name="tipo" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">Enviar solicitud</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

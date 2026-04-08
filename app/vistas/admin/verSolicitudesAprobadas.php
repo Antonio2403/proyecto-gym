@@ -1,26 +1,27 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Solicitudes Aprobadas</title>
-</head>
-<body>
-    <a href="verSolicitudes">Volver</a> <br>
-    <?php
-    if (!empty($data)) {
-        foreach ($data as $s):
-    ?>
 
-            <p>
-                Solicitante: <?= $s['nombre'] ?> |
-                Tipo: <?= $s['tipo'] ?> |
-                Fecha: <?= $s['fecha_creacion'] ?>
-            </p>
+        <a href="verSolicitudes" class="btn btn-secondary mb-3">Volver</a>
+        
+        <?php
+        if (!empty($data)) {
+        ?>
+            <div class="row">
+                <?php foreach ($data as $s): ?>
+                    <div class="col-md-6 mb-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <p class="card-text">
+                                    <strong>Solicitante:</strong> <?= htmlspecialchars($s['nombre']) ?> <br>
+                                    <strong>Tipo:</strong> <?= htmlspecialchars($s['tipo']) ?> <br>
+                                    <strong>Fecha:</strong> <?= htmlspecialchars($s['fecha_creacion']) ?>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+        <?php
+        } else {
+            echo "<div class='alert alert-info'>No hay solicitudes aprobadas.</div>";
+        }
+        ?>
 
-    <?php endforeach;
-    } else {
-        echo "<p>No hay solicitudes aprobadas.</p>";
-    } ?>
-</body>
-</html>

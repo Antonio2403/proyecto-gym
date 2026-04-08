@@ -9,19 +9,19 @@ class MonitorControlador extends Controller
 
     public function verMonitorSolicitudes()
     {
-        $this->view("verMonitorSolicitudes");
+        $this->renderAdmin("monitor/verMonitorSolicitudes");
     }
 
     public function verMisSolicitudes()
     {
         $monitor_id = $_SESSION['usuario_id'];
         $solicitudes = Solicitud::obtenerPorMonitor($monitor_id);
-        $this->view("verMisSolicitudes", $solicitudes);
+        $this->renderAdmin("monitor/verMisSolicitudes", $solicitudes);
     }
 
     public function formSolicitud()
     {
-        $this->view("formSolicitud");
+        $this->renderAdmin("monitor/formSolicitud");
     }
 
     public function crearSolicitud()

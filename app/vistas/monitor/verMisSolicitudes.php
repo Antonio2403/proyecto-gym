@@ -1,33 +1,29 @@
-<!DOCTYPE html>
-<html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mis solicitudes</title>
-</head>
-
-<body>
-    <a href="verMonitorSolicitudes">Volver</a>
-    <?php
-    if (!empty($data)) {
-        foreach ($data as $s):
-    ?>
-
-            <p>
-                Tipo: <?= $s['tipo'] ?> |
-                Fecha: <?= $s['fecha_creacion'] ?>
-                Estado: <?= $s['estado'] ?> |
-                <?php if ($s['estado']=='P') {
-                    echo "Boton borrar";
-                }?>
-            </p>
-
-
-    <?php endforeach;
-    } else {
-        echo "<p>No hay solicitudes hechas por ti.</p>";
-    } ?>
-</body>
-
-</html>
+        <a href="verMonitorSolicitudes" class="btn btn-secondary mb-4">Volver</a>
+        
+        <?php
+        if (!empty($data)) {
+            foreach ($data as $s):
+        ?>
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <p class="mb-2"><strong>Tipo:</strong> <?= $s['tipo'] ?></p>
+                                <p class="mb-2"><strong>Fecha:</strong> <?= $s['fecha_creacion'] ?></p>
+                                <p class="mb-2"><strong>Estado:</strong> <span class="badge bg-info"><?= $s['estado'] ?></span></p>
+                            </div>
+                            <div class="col-md-4 text-end">
+                                <?php if ($s['estado']=='P') { ?>
+                                    <button class="btn btn-danger btn-sm">Borrar</button>
+                                <?php } ?>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        <?php 
+            endforeach;
+        } else {
+            echo "<p class='alert alert-info'>No hay solicitudes hechas por ti.</p>";
+        } 
+        ?>

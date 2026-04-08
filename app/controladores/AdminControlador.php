@@ -8,7 +8,7 @@ class AdminControlador extends Controller
 {
     public function registrarMonitor()
     {
-        $this->view("registrarMonitor");
+        $this->renderAdmin("admin/registrarMonitor");
     }
     public function crearMonitor()
     {
@@ -27,19 +27,19 @@ class AdminControlador extends Controller
     public function verSolicitudes()
     {
         $solicitudes = Solicitud::obtenerPendientes();
-        $this->view("verSolicitudes", $solicitudes);
+        $this->renderAdmin("admin/verSolicitudes", $solicitudes);
     }
 
     public function verSolicitudesAprobadas()
     {
         $solicitudes = Solicitud::obtenerAprobadas();
-        $this->view("verSolicitudesAprobadas", $solicitudes);
+        $this->renderAdmin("admin/verSolicitudesAprobadas", $solicitudes);
     }
 
     public function verSolicitudesRechazadas()
     {
         $solicitudes = Solicitud::obtenerRechazadas();
-        $this->view("verSolicitudesRechazadas", $solicitudes);
+        $this->renderAdmin("admin/verSolicitudesRechazadas", $solicitudes);
     }
 
     public function aprobarSolicitud()

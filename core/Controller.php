@@ -5,9 +5,9 @@ class Controller
 
     protected function renderFrontend($vista)
     {
-        require "app/vistas/plantillas/frontend/header.php";
+        require "app/vistas/layouts/frontend/header.php";
         require "app/vistas/$vista.php";
-        require "app/vistas/plantillas/frontend/footer.php";
+        require "app/vistas/layouts/frontend/footer.php";
     }
 
     protected function renderAdmin($vista)

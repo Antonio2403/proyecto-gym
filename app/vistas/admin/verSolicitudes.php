@@ -1,38 +1,29 @@
-<!DOCTYPE html>
-<html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Solicitudes</title>
-</head>
+        <div class="mb-4">
+            <a href="verSolicitudesAprobadas" class="btn btn-success">Ver Solicitudes Aprobadas</a>
+            <a href="verSolicitudesRechazadas" class="btn btn-danger">Ver Solicitudes Rechazadas</a>
+            <a href="/proyecto-gym/inicioAdmin" class="btn btn-secondary">Volver</a>
+        </div>
 
-<body>
-    <a href="verSolicitudesAprobadas">Ver Solicitudes Aprobadas</a> <br>
-    <a href="verSolicitudesRechazadas">Ver Solicitudes Rechazas</a> <br>
-    <a href="/proyecto-gym/inicioAdmin">Volver</a><br>
-
-    <?php
-    if (!empty($data)) {
-        foreach ($data as $s):
-    ?>
-
-            <p>
-                Solicitante: <?= $s['nombre'] ?> |
-                Tipo: <?= $s['tipo'] ?> |
-                Fecha: <?= $s['fecha_creacion'] ?>
-            </p>
-
-            <form method="POST" action="/proyecto-gym/admin/aprobar">
-                <input type="hidden" name="id" value="<?= $s['id'] ?>">
-                <button name="estado" value="A">Aprobar</button>
-                <button name="estado" value="R">Rechazar</button>
-            </form>
-
-    <?php endforeach;
-    } else {
-        echo "<p>No hay solicitudes pendientes.</p>";
-    } ?>
-</body>
-
-</html>
+        <?php
+        if (!empty($data)) {
+            foreach ($data as $s):
+        ?>
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <p class="card-text">
+                            <strong>Solicitante:</strong> <?= $s['nombre'] ?> <br>
+                            <strong>Tipo:</strong> <?= $s['tipo'] ?> <br>
+                            <strong>Fecha:</strong> <?= $s['fecha_creacion'] ?>
+                        </p>
+                        <form method="POST" action="/proyecto-gym/admin/aprobar">
+                            <input type="hidden" name="id" value="<?= $s['id'] ?>">
+                            <button type="submit" name="estado" value="A" class="btn btn-sm btn-success">Aprobar</button>
+                            <button type="submit" name="estado" value="R" class="btn btn-sm btn-danger">Rechazar</button>
+                        </form>
+                    </div>
+                </div>
+        <?php endforeach;
+        } else {
+            echo "<p class='alert alert-info'>No hay solicitudes pendientes.</p>";
+        } ?>

@@ -1,16 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Administrador</title>
-</head>
-<body>
-    <h1>Esta es la vista administrador</h1>
-    <a href="admin/registrarMonitor">Alta Monitor</a>
-    <a href="admin/verSolicitudes">Ver Solicitudes</a>
-    <a href="admin/gestionSubscripciones">Gestión de Subscripciones</a>
-    <a href="monitor/verSalas">Ver salas</a>
-    <a href="logout">Logout</a>
-</body>
-</html>
+<div class="container mt-5">
+    <h1 class="mb-4">Esta es la vista administrador</h1>
+    <div class="d-flex flex-column gap-2">
+        <a href="admin/registrarMonitor" class="btn btn-primary">Alta Monitor</a>
+        <a href="admin/verSolicitudes" class="btn btn-primary">Ver Solicitudes</a>
+        <a href="admin/gestionSubscripciones" class="btn btn-primary">Gestión de Subscripciones</a>
+        <a href="monitor/verSalas" class="btn btn-primary">Ver salas</a>
+        <a href="logout" class="btn btn-danger">Logout</a>
+    </div>
+</div>

@@ -1,25 +1,25 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ver salas</title>
-</head>
-<body>
-    <h1>Salas disponibles</h1>
-    <a href="salas/crear">Crear nueva sala</a>
-    <ul>
+
+        <h1 class="mb-4">Salas disponibles</h1>
+        <a href="salas/crear" class="btn btn-primary mb-3">Crear nueva sala</a>
+        
         <?php if (!empty($salas)): ?>
-            <?php foreach ($salas as $sala): ?>
-                <li>
-                    <?= htmlspecialchars($sala['nombre']) ?> - Capacidad: <?= htmlspecialchars($sala['capacidad']) ?> - Disponibilidad: <?= htmlspecialchars($sala['disponibilidad']) ?>
-                    <a href="/salas/editar/<?= $sala['id'] ?>">Editar</a>
-                    <a href="/salas/eliminar/<?= $sala['id'] ?>" onclick="return confirm('¿Estás seguro de que deseas eliminar esta sala?')">Eliminar</a>
-                </li>
-            <?php endforeach; ?>
+            <div class="row">
+                <?php foreach ($salas as $sala): ?>
+                    <div class="col-md-6 col-lg-4 mb-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title"><?= htmlspecialchars($sala['nombre']) ?></h5>
+                                <p class="card-text">
+                                    <strong>Capacidad:</strong> <?= htmlspecialchars($sala['capacidad']) ?><br>
+                                    <strong>Disponibilidad:</strong> <?= htmlspecialchars($sala['disponibilidad']) ?>
+                                </p>
+                                <a href="/salas/editar/<?= $sala['id'] ?>" class="btn btn-warning btn-sm">Editar</a>
+                                <a href="/salas/eliminar/<?= $sala['id'] ?>" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro de que deseas eliminar esta sala?')">Eliminar</a>
+                            </div>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            </div>
         <?php else: ?>
-            <li>No hay salas disponibles</li>
+            <div class="alert alert-info">No hay salas disponibles</div>
         <?php endif; ?>
-    </ul>
-</body>
-</html>
