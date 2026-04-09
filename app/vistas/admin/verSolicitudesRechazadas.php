@@ -1,3 +1,4 @@
+<div class="content-wrapper">
 
         <a href="verSolicitudes" class="btn btn-secondary mb-3">Volver</a>
         
@@ -20,3 +21,4 @@
             echo "<div class='alert alert-info'>No hay solicitudes Rechazadas.</div>";
         }
         ?>
+    </div>

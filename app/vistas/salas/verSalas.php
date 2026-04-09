@@ -1,3 +1,4 @@
+<div class="content-wrapper">
 
         <h1 class="mb-4">Salas disponibles</h1>
         <a href="salas/crear" class="btn btn-primary mb-3">Crear nueva sala</a>
@@ -23,3 +24,4 @@
         <?php else: ?>
             <div class="alert alert-info">No hay salas disponibles</div>
         <?php endif; ?>
+    </div>

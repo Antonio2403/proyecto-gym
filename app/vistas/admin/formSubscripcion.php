@@ -1,3 +1,5 @@
+    <div class="content-wrapper">
+
     <a href="gestionSubscripciones" class="btn btn-secondary mb-3">Volver</a>
     <h2 class="mb-4">Crear Nueva Subscripción</h2>
     
@@ -20,3 +22,4 @@
         <button type="submit" class="btn btn-primary">Crear Subscripción</button>
     </form>
 
+</div>

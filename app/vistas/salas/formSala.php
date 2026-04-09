@@ -1,3 +1,4 @@
+<div class="content-wrapper">
 
         <div class="row justify-content-center">
             <div class="col-md-6">
@@ -19,3 +20,4 @@
                 </form>
             </div>
         </div>
+    </div>

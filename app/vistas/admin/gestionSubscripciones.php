@@ -1,3 +1,4 @@
+<div class="content-wrapper">
 
         <div class="mb-4">
             <a href="../inicioAdmin" class="btn btn-secondary">Volver</a>
@@ -30,3 +31,4 @@
         <?php else: ?>
             <div class="alert alert-info">No hay subscripciones disponibles</div>
         <?php endif; ?>
+    </div>

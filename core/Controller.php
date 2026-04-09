@@ -11,10 +11,11 @@ class Controller
     }
 
     protected function renderAdmin($vista)
-    {
-        require "app/vistas/layouts/admin/header.php";
-        require "app/vistas/layouts/admin/sidebar.php";
-        require "app/vistas/$vista.php";
-        require "app/vistas/layouts/admin/footer.php";
-    }
+{
+    require "app/vistas/layouts/admin/header.php";
+    require "app/vistas/layouts/admin/navbar.php";
+    require "app/vistas/layouts/admin/sidebar.php";
+    require "app/vistas/$vista.php";
+    require "app/vistas/layouts/admin/footer.php";
+}
 }

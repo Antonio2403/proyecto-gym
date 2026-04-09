@@ -1,3 +1,4 @@
+<div class="content-wrapper">
 
         <div class="mb-4">
             <a href="verSolicitudesAprobadas" class="btn btn-success">Ver Solicitudes Aprobadas</a>
@@ -27,3 +28,4 @@
         } else {
             echo "<p class='alert alert-info'>No hay solicitudes pendientes.</p>";
         } ?>
+    </div>
