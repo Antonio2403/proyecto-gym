@@ -19,6 +19,15 @@ class Subscripcion
         $stmt = $db->query($query);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+    public static function obtenerPorId($id)
+    {
+        $db = BasedeDatos::Conectar();
+        $query = "SELECT * FROM subscripciones WHERE id = :id";
+        $stmt = $db->prepare($query);
+        $stmt->bindParam(':id', $id);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
     public static function eliminar($id)
     {
         $db = BasedeDatos::Conectar();

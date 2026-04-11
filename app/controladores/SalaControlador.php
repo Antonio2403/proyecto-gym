@@ -31,6 +31,16 @@ Class SalaControlador extends Controller
         $this->renderAdmin("salas/formSala");
     }
 
+    public function formEditarSala($id)
+    {
+        $sala = Sala::obtenerPorId($id);
+        if ($sala) {
+            $this->renderAdmin("salas/formEditarSala", ["sala" => $sala]);
+        } else {
+            echo "Sala no encontrada.";
+        }
+    }
+
     public function eliminar($id)
     {
         if (Sala::eliminar($id)) {
@@ -49,7 +59,7 @@ Class SalaControlador extends Controller
             $disponibilidad = $_POST['disponibilidad'];
 
             if (Sala::actualizar($id, $nombre, $capacidad, $disponibilidad)) {
-                header("Location: /salas");
+                header("Location: /proyecto-gym/monitor/verSalas");
                 exit();
             } else {
                 echo "Error al actualizar la sala.";

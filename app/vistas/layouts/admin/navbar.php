@@ -19,7 +19,7 @@
                     <a href="/proyecto-gym/monitor/verSalas" class="nav-link">Ver salas</a>
                 </li>
                 <li class="nav-item">
-                    <a href="proyecto-gym/logout" class="nav-link btn btn-danger text-white ms-2">Logout</a>
+                    <a href="/proyecto-gym/logout" class="nav-link btn btn-danger text-white ms-2">Logout</a>
                 </li>
             </ul>
         </div>

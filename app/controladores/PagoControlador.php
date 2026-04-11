@@ -8,7 +8,7 @@ class PagoControlador extends Controller
     public function index()
     {
         $subscripciones = Subscripcion::obtenerTodas();
-        $this->view("pago/pagar", ['subscripciones' => $subscripciones]);
+        $this->renderFrontend("pago/pagar", ['subscripciones' => $subscripciones]);
     }
 
     public function crearIntentoPago()
@@ -98,11 +98,11 @@ class PagoControlador extends Controller
             echo "Error: " . $e->getMessage();
         }
 
-        $this->view("pago/exito");
+        $this->renderFrontend("pago/exito");
     }
 
     public function cancelado()
     {
-        $this->view("pago/cancelado");
+        $this->renderFrontend("pago/cancelado");
     }
 }

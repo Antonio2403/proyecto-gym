@@ -5,7 +5,7 @@
             <a href="formSubscripcion" class="btn btn-primary">Crear Subscripción</a>
         </div>
 
-        <?php if (!empty($data)): ?>
+        <?php if (!empty($subscripciones)): ?>
             <div class="table-responsive">
                 <table class="table table-striped table-hover">
                     <thead class="table-dark">
@@ -14,15 +14,19 @@
                             <th>Nombre</th>
                             <th>Precio</th>
                             <th>Duración</th>
+                            <th>Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <?php foreach ($data as $subscripcion): ?>
+                        <?php foreach ($subscripciones as $subscripcion): ?>
                             <tr>
                                 <td><?php echo $subscripcion['id']; ?></td>
                                 <td><?php echo $subscripcion['nombre']; ?></td>
                                 <td><?php echo $subscripcion['precio']. " €"; ?></td>
                                 <td><?php echo $subscripcion['duracion']." meses"; ?></td>
+                                <td>
+                                    <a href="formEditarSubscripcion?id=<?php echo $subscripcion['id']; ?>" class="btn btn-sm btn-warning">Editar</a>
+                                </td>
                             </tr>
                         <?php endforeach; ?>
                     </tbody>

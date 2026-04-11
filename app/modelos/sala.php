@@ -11,6 +11,17 @@ class Sala
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public static function obtenerPorId($id)
+    {
+        $conexion = BasedeDatos::Conectar();
+
+        $stmt = $conexion->prepare("SELECT * FROM salas WHERE id = :id");
+        $stmt->bindValue(':id', $id);
+        $stmt->execute();
+
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
     public static function crear($nombre, $capacidad , $disponibilidad)
     {
         $conexion = BasedeDatos::Conectar();

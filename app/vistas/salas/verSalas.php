@@ -14,7 +14,7 @@
                                     <strong>Capacidad:</strong> <?= htmlspecialchars($sala['capacidad']) ?><br>
                                     <strong>Disponibilidad:</strong> <?= htmlspecialchars($sala['disponibilidad']) ?>
                                 </p>
-                                <a href="/salas/editar/<?= $sala['id'] ?>" class="btn btn-warning btn-sm">Editar</a>
+                                <a href="salas/editar/<?= $sala['id'] ?>" class="btn btn-warning btn-sm">Editar</a>
                                 <a href="/salas/eliminar/<?= $sala['id'] ?>" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro de que deseas eliminar esta sala?')">Eliminar</a>
                             </div>
                         </div>

@@ -16,7 +16,7 @@ class MonitorControlador extends Controller
     {
         $monitor_id = $_SESSION['usuario_id'];
         $solicitudes = Solicitud::obtenerPorMonitor($monitor_id);
-        $this->renderAdmin("monitor/verMisSolicitudes", $solicitudes);
+        $this->renderAdmin("monitor/verMisSolicitudes", ['solicitudes' => $solicitudes]);
     }
 
     public function formSolicitud()

@@ -3,10 +3,10 @@
         <a href="verSolicitudes" class="btn btn-secondary mb-3">Volver</a>
         
         <?php
-        if (!empty($data)) {
+        if (!empty($solicitudes)) {
         ?>
             <div class="row">
-                <?php foreach ($data as $s): ?>
+                <?php foreach ($solicitudes as $s): ?>
                     <div class="col-md-6 mb-3">
                         <div class="card">
                             <div class="card-body">

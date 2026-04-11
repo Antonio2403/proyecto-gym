@@ -27,19 +27,19 @@ class AdminControlador extends Controller
     public function verSolicitudes()
     {
         $solicitudes = Solicitud::obtenerPendientes();
-        $this->renderAdmin("admin/verSolicitudes", $solicitudes);
+        $this->renderAdmin("admin/verSolicitudes", [ 'solicitudes' => $solicitudes ]);
     }
 
     public function verSolicitudesAprobadas()
     {
         $solicitudes = Solicitud::obtenerAprobadas();
-        $this->renderAdmin("admin/verSolicitudesAprobadas", $solicitudes);
+        $this->renderAdmin("admin/verSolicitudesAprobadas", [ 'solicitudes' => $solicitudes ]);
     }
 
     public function verSolicitudesRechazadas()
     {
         $solicitudes = Solicitud::obtenerRechazadas();
-        $this->renderAdmin("admin/verSolicitudesRechazadas", $solicitudes);
+        $this->renderAdmin("admin/verSolicitudesRechazadas", [ 'solicitudes' => $solicitudes ]);
     }
 
     public function aprobarSolicitud()

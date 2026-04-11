@@ -3,10 +3,10 @@
         <a href="verSolicitudes" class="btn btn-secondary mb-3">Volver</a>
         
         <?php
-        if (!empty($data)) {
+        if (!empty($solicitudes)) {
         ?>
             <div class="list-group">
-                <?php foreach ($data as $s): ?>
+                <?php foreach ($solicitudes as $s): ?>
                     <div class="list-group-item">
                         <p class="mb-0">
                             <strong>Solicitante:</strong> <?= $s['nombre'] ?> | 

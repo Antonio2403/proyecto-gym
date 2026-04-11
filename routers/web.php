@@ -47,6 +47,8 @@ controller($router, 'get', '/monitor/verMisSolicitudes', 'MonitorControlador@ver
 controller($router, 'get', '/admin/gestionSubscripciones', 'SubscripcionControlador@mostrarSubscripciones');
 controller($router, 'get', '/admin/formSubscripcion', 'SubscripcionControlador@formSubscripcion');
 controller($router, 'post', '/admin/crearSubscripcion', 'SubscripcionControlador@crearSubscripcion');
+controller($router, 'get', '/admin/formEditarSubscripcion', 'SubscripcionControlador@formEditarSubscripcion');
+controller($router, 'post', '/admin/editarSubscripcion', 'SubscripcionControlador@editarSubscripcion');
 
 //Pago
 controller($router, 'get', '/pago', 'PagoControlador@index');
@@ -59,5 +61,5 @@ controller($router, 'get', '/monitor/verSalas', 'SalaControlador@index');
 controller($router, 'get', '/monitor/salas/crear', 'SalaControlador@formCrearSala');
 controller($router, 'post', '/monitor/salas/crear', 'SalaControlador@crear');
 controller($router, 'get', '/monitor/salas/eliminar/(\d+)', 'SalaControlador@eliminar');
-controller($router, 'get', '/monitor/salas/editar/(\d+)', 'SalaControlador@actualizar');
+controller($router, 'get', '/monitor/salas/editar/(\d+)', 'SalaControlador@formEditarSala');
 controller($router, 'post', '/monitor/salas/editar/(\d+)', 'SalaControlador@actualizar');
