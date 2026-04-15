@@ -48,7 +48,7 @@ class BasedeDatos
                         ON DELETE CASCADE
                     )
                 ");
-                $conexionDB->exec("
+            $conexionDB->exec("
                     CREATE TABLE IF NOT EXISTS monitores (
                         id INT AUTO_INCREMENT PRIMARY KEY,
                         usuario_id INT UNIQUE,
@@ -59,7 +59,7 @@ class BasedeDatos
                         ON DELETE CASCADE
                     )
                 ");
-                $conexionDB->exec("
+            $conexionDB->exec("
                     CREATE TABLE IF NOT EXISTS clientes (
                         id INT AUTO_INCREMENT PRIMARY KEY,
                         usuario_id INT UNIQUE,
@@ -70,26 +70,26 @@ class BasedeDatos
                     )
                 ");
 
-                $password = password_hash("admin123", PASSWORD_DEFAULT);
+            $password = password_hash("admin123", PASSWORD_DEFAULT);
 
-                $stmtCheck = $conexionDB->query("SELECT id FROM usuarios WHERE email = 'admin@gym.com'");
-                
-                if ($stmtCheck->rowCount() == 0) {
-                    $stmt = $conexionDB->prepare("
+            $stmtCheck = $conexionDB->query("SELECT id FROM usuarios WHERE email = 'admin@gym.com'");
+
+            if ($stmtCheck->rowCount() == 0) {
+                $stmt = $conexionDB->prepare("
                         INSERT INTO usuarios (DNI, nombre, apellido1, apellido2, email, clave, telefono)
                         VALUES (?, ?, ?, ?, ?, ?, ?)
                     ");
-                    $stmt->execute(['00000000A', 'Admin', '123', '', 'admin@gym.com', $password, '000000000']);
+                $stmt->execute(['00000000A', 'Admin', '123', '', 'admin@gym.com', $password, '000000000']);
 
-                    $usuario_id = $conexionDB->lastInsertId();
+                $usuario_id = $conexionDB->lastInsertId();
 
-                    $stmt2 = $conexionDB->prepare("
+                $stmt2 = $conexionDB->prepare("
                         INSERT INTO administradores (usuario_id, nivel_acceso)
                         VALUES (?, ?)
                     ");
-                    $stmt2->execute([$usuario_id, 'admin']);
-                }
-                $conexionDB->exec("
+                $stmt2->execute([$usuario_id, 'admin']);
+            }
+            $conexionDB->exec("
                 CREATE TABLE IF NOT EXISTS solicitudes (
                     id INT AUTO_INCREMENT PRIMARY KEY,
                     monitor_id INT,
@@ -204,23 +204,18 @@ class BasedeDatos
             ");
 
             $conexionDB->exec("
-                CREATE TABLE IF NOT EXISTS material (
+                CREATE TABLE IF NOT EXISTS materiales (
                     id INT AUTO_INCREMENT PRIMARY KEY,
+                    sala_id INT NOT NULL,
                     nombre VARCHAR(100),
-                    estado ENUM('B','M')
-                )
+                    estado ENUM('B','M'),
+
+                    FOREIGN KEY (sala_id) REFERENCES salas(id)
+                        ON DELETE CASCADE
+                );
             ");
 
-            $conexionDB->exec("
-                CREATE TABLE IF NOT EXISTS sala_material (
-                    id INT AUTO_INCREMENT PRIMARY KEY,
-                    sala_id INT,
-                    material_id INT,
 
-                    FOREIGN KEY (sala_id) REFERENCES salas(id),
-                    FOREIGN KEY (material_id) REFERENCES material(id)
-                )
-            ");
 
             return $conexionDB;
         } catch (\Throwable $th) {

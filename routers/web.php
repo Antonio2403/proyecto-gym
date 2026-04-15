@@ -63,3 +63,11 @@ controller($router, 'post', '/monitor/salas/crear', 'SalaControlador@crear');
 controller($router, 'get', '/monitor/salas/eliminar/(\d+)', 'SalaControlador@eliminar');
 controller($router, 'get', '/monitor/salas/editar/(\d+)', 'SalaControlador@formEditarSala');
 controller($router, 'post', '/monitor/salas/editar/(\d+)', 'SalaControlador@actualizar');
+
+//Materiales
+controller($router, 'get', '/monitor/salas/(\d+)/materiales/', 'MaterialControlador@index');
+controller($router, 'get', '/monitor/salas/(\d+)/materiales/crear', 'MaterialControlador@fromCrearMaterial');
+controller($router, 'post', '/monitor/salas/(\d+)/materiales/crear', 'MaterialControlador@crear');
+controller($router, 'get', '/monitor/salas/(\d+)/materiales/editar/(\d+)', 'MaterialControlador@formEditarMaterial');
+controller($router, 'post', '/monitor/salas/(\d+)/materiales/editar/(\d+)', 'MaterialControlador@editar');
+controller($router, 'get', '/monitor/salas/(\d+)/materiales/eliminar/(\d+)', 'MaterialControlador@eliminar');

@@ -2,13 +2,22 @@
 
 require_once "core/Controller.php";
 require_once "app/modelos/sala.php";
+require_once "app/modelos/material.php";
 
 Class SalaControlador extends Controller
 {
     public function index()
     {
         $salas = Sala::obtenerTodas();
-        $this->renderAdmin("salas/verSalas", ["salas" => $salas]);
+        $salasConMateriales = [];
+        
+        foreach ($salas as $sala) {
+            $materiales = Material::obtenerPorSala($sala['id']);
+            $sala['nmateriales'] = count($materiales);
+            $salasConMateriales[] = $sala;
+        }
+        
+        $this->renderAdmin("salas/verSalas", ["salas" => $salasConMateriales]);
     }
 
     public function crear()

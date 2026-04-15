@@ -12,9 +12,11 @@
                                 <h5 class="card-title"><?= htmlspecialchars($sala['nombre']) ?></h5>
                                 <p class="card-text">
                                     <strong>Capacidad:</strong> <?= htmlspecialchars($sala['capacidad']) ?><br>
-                                    <strong>Disponibilidad:</strong> <?= htmlspecialchars($sala['disponibilidad']) ?>
+                                    <strong>Disponibilidad:</strong> <?= htmlspecialchars($sala['disponibilidad']) ?><br>
+                                    <strong>Materiales:</strong> <?= $sala['nmateriales'] ?>
                                 </p>
-                                <a href="salas/editar/<?= $sala['id'] ?>" class="btn btn-warning btn-sm">Editar</a>
+                                <a href="salas/<?= $sala['id'] ?>/materiales/" class="btn btn-info btn-sm">Editar materiales</a>
+                                <a href="salas/editar/<?= $sala['id'] ?>" class="btn btn-warning btn-sm">Editar sala</a>
                                 <a href="/salas/eliminar/<?= $sala['id'] ?>" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro de que deseas eliminar esta sala?')">Eliminar</a>
                             </div>
                         </div>
