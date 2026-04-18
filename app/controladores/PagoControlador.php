@@ -8,7 +8,7 @@ class PagoControlador extends Controller
     public function index()
     {
         $subscripciones = Subscripcion::obtenerTodas();
-        $this->renderFrontend("pago/pagar", ['subscripciones' => $subscripciones]);
+        $this->renderFrontend("frontend/pago/pagar", ['subscripciones' => $subscripciones]);
     }
 
     public function crearIntentoPago()
@@ -52,7 +52,6 @@ class PagoControlador extends Controller
             echo json_encode([
                 'clientSecret' => $intent->client_secret
             ]);
-
         } catch (Exception $e) {
             echo json_encode([
                 'error' => $e->getMessage()
@@ -80,29 +79,33 @@ class PagoControlador extends Controller
 
                 $conexion = BasedeDatos::Conectar();
 
+                $stmt = $conexion->prepare("SELECT id FROM clientes WHERE usuario_id = ?");
+                $stmt->execute([$_SESSION['usuario_id']]);
+                $cliente = $stmt->fetch(PDO::FETCH_ASSOC);
+
+                if (!$cliente) {
+                    die("El usuario no es cliente");
+                }
+
+                $cliente_id = $cliente['id'];
+
+                // Insert correcto
                 $stmt = $conexion->prepare("
                     INSERT INTO cliente_subscripcion (cliente_id, subscripcion_id, fecha_inicio)
                     VALUES (?, ?, NOW())
                 ");
 
-                $cliente_id = $_SESSION['usuario_id'] ?? null;
-
-                if (!$cliente_id) {
-                    throw new Exception("Usuario no logueado");
-                }
-
                 $stmt->execute([$cliente_id, $subscripcion_id]);
             }
-
         } catch (Exception $e) {
             echo "Error: " . $e->getMessage();
         }
 
-        $this->renderFrontend("pago/exito");
+        $this->renderFrontend("frontend/pago/exito");
     }
 
     public function cancelado()
     {
-        $this->renderFrontend("pago/cancelado");
+        $this->renderFrontend("frontend/pago/cancelado");
     }
 }

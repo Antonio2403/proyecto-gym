@@ -10,9 +10,7 @@
 
         <!-- Usuario -->
         <div class="user-panel mt-3 pb-3 mb-3 d-flex align-items-center">
-            <div class="image">
-                <img src="https://via.placeholder.com/36" class="img-circle elevation-2" alt="User Image">
-            </div>
+                <i class="fas fa-user-tie img-circle elevation-2" style="font-size: 36px; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; background-color: #f0f0f0; border-radius: 50%;"></i>
             <div class="info">
                 <a href="#" class="d-block fw-bold">
                     <?= $_SESSION['usuario'] ?? 'Usuario' ?>

@@ -32,4 +32,11 @@ class Monitor extends Usuario
         $stmt->bindValue(':disponibilidad', $this->disponibilidad);
         return $stmt->execute();
     }
+
+    public static function obtenerTodos()
+    {
+        $conexion = BasedeDatos::Conectar();
+        $stmt = $conexion->query("SELECT m.*, u.nombre, u.email FROM monitores m JOIN usuarios u ON m.usuario_id = u.id");
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }

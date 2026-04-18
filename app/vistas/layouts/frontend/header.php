@@ -20,10 +20,14 @@
             <a class="navbar-brand" href="/proyecto-gym/login">Login</a>
             <a class="navbar-brand" href="/proyecto-gym/contacto">Contacto</a>
             <a class="navbar-brand" href="/proyecto-gym/quienes-somos">Quienes somos</a>
+            <div>
+                <a href="/proyecto-gym/logout" class="btn btn-danger text-white ms-2">Logout</a>
+            </div>
 
             <div>
                 <a href="/proyecto-gym/pago" class="btn btn-warning">Suscripciones</a>
             </div>
+            
         </div>
     </nav>
 

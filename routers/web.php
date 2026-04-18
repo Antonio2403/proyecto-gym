@@ -71,3 +71,14 @@ controller($router, 'post', '/monitor/salas/(\d+)/materiales/crear', 'MaterialCo
 controller($router, 'get', '/monitor/salas/(\d+)/materiales/editar/(\d+)', 'MaterialControlador@formEditarMaterial');
 controller($router, 'post', '/monitor/salas/(\d+)/materiales/editar/(\d+)', 'MaterialControlador@editar');
 controller($router, 'get', '/monitor/salas/(\d+)/materiales/eliminar/(\d+)', 'MaterialControlador@eliminar');
+
+//Actividades ADMIN
+controller($router, 'get', '/admin/gestionarActividades', 'ActividadControlador@gestionarActividades');
+controller($router, 'get', '/admin/actividades/crear', 'ActividadControlador@formActividad');
+controller($router, 'post', '/admin/actividades/crear', 'ActividadControlador@crearActividad');
+controller($router, 'get', '/admin/actividades/editar/(\d+)', 'ActividadControlador@formEditarActividad');
+controller($router, 'post', '/admin/actividades/editar/(\d+)', 'ActividadControlador@editarActividad');
+controller($router, 'get', '/admin/actividades/eliminar/(\d+)', 'ActividadControlador@eliminarActividad');
+
+//Actividades Usuario
+controller($router, 'get', '/usuario/actividades', 'ActividadControlador@index');

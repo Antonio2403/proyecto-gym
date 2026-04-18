@@ -7,16 +7,19 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item">
-                    <a href="/proyecto-gym/admin/registrarMonitor" class="nav-link">Alta Monitor</a>
+                    <a href="/proyecto-gym/admin/registrarMonitor" class="nav-link">Monitores</a>
                 </li>
                 <li class="nav-item">
-                    <a href="/proyecto-gym/admin/verSolicitudes" class="nav-link">Ver Solicitudes</a>
+                    <a href="/proyecto-gym/admin/verSolicitudes" class="nav-link">Solicitudes</a>
                 </li>
                 <li class="nav-item">
-                    <a href="/proyecto-gym/admin/gestionSubscripciones" class="nav-link">Gestión de Subscripciones</a>
+                    <a href="/proyecto-gym/admin/gestionSubscripciones" class="nav-link">Subscripciones</a>
                 </li>
                 <li class="nav-item">
-                    <a href="/proyecto-gym/monitor/verSalas" class="nav-link">Ver salas</a>
+                    <a href="/proyecto-gym/monitor/verSalas" class="nav-link">Salas</a>
+                </li>
+                <li class="nav-item">
+                    <a href="/proyecto-gym/admin/gestionarActividades" class="nav-link">Actividades</a>
                 </li>
                 <li class="nav-item">
                     <a href="/proyecto-gym/logout" class="nav-link btn btn-danger text-white ms-2">Logout</a>

@@ -12,6 +12,14 @@
                     <label for="estado" class="form-label">estado:</label>
                     <input type="text" class="form-control" id="estado" name="estado" required>
                 </div>
+                <div class="mb-3">
+                    <label for="estado" class="form-label">Estado:</label>
+                    <select class="form-control" id="estado" name="estado" required>
+                        <option value="">Seleccionar estado</option>
+                        <option value="B">Buen estado</option>
+                        <option value="M">Mal estado</option>
+                    </select>
+                </div>
                 <button type="submit" class="btn btn-primary w-100">Registrar Material</button>
             </form>
         </div>

@@ -14,7 +14,12 @@
                     </div>
                     <div class="mb-3">
                         <label for="disponibilidad" class="form-label">Disponibilidad:</label>
-                        <input type="text" class="form-control" id="disponibilidad" name="disponibilidad" required>
+                        <select class="form-control" id="disponibilidad" name="disponibilidad" required>
+                            <option value="">Seleccionar...</option>
+                            <option value="L">Libre</option>
+                            <option value="U">En uso</option>
+                            <option value="R">Reservada</option>
+                        </select>
                     </div>
                     <button type="submit" class="btn btn-primary w-100">Crear Sala</button>
                 </form>
