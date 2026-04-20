@@ -17,7 +17,9 @@
     <nav class="navbar navbar-dark bg-dark navbar-expand-lg">
         <div class="container">
             <a class="navbar-brand" href="/proyecto-gym/inicio">GYM</a>
-            <a class="navbar-brand" href="/proyecto-gym/login">Login</a>
+            <?php if (!isset($_SESSION)): ?>
+                <a class="navbar-brand" href="/proyecto-gym/login">Login</a>
+            <?php endif; ?>
             <a class="navbar-brand" href="/proyecto-gym/contacto">Contacto</a>
             <a class="navbar-brand" href="/proyecto-gym/quienes-somos">Quienes somos</a>
             <div>

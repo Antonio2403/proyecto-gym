@@ -125,7 +125,11 @@ class BasedeDatos
                     duracion INT,
                     monitor_id INT,
                     sala_id INT,
+                    fecha_inicio DATETIME,
+                    fecha_fin DATETIME,
+                    dia_semana ENUM('L','M','X','J','V','S','D'),
                     descripcion TEXT,
+                    plazas INT DEFAULT 20,
                     FOREIGN KEY (monitor_id) REFERENCES monitores(id),
                     FOREIGN KEY (sala_id) REFERENCES salas(id)
                 )

@@ -82,3 +82,9 @@ controller($router, 'get', '/admin/actividades/eliminar/(\d+)', 'ActividadContro
 
 //Actividades Usuario
 controller($router, 'get', '/usuario/actividades', 'ActividadControlador@index');
+
+
+//Inscripcion
+controller($router, 'post', '/usuario/inscripciones/apuntarse', 'InscripcionControlador@inscribirse');
+controller($router, 'post', '/usuario/inscripciones/cancelar/', 'InscripcionControlador@cancelar');
+controller($router, 'get', '/usuario/inscripciones/mis-inscripciones', 'InscripcionControlador@misIncripciones');

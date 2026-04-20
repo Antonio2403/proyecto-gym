@@ -9,7 +9,8 @@ class ActividadControlador extends Controller
 {
     public function index()
     {
-        $this->renderFrontend("frontend/actividades");
+        $actividades = Actividad::obtenerTodas();
+        $this->renderFrontend("frontend/actividades", ['actividades' => $actividades]);
     }
 
     public function gestionarActividades()
@@ -41,15 +42,35 @@ class ActividadControlador extends Controller
     {
         $nombre = $_POST['nombre'] ?? null;
         $descripcion = $_POST['descripcion'] ?? null;
+        $duracion = $_POST['duracion'] ?? 60;
+        $dia_semana = $_POST['dia_semana'] ?? null;
+        $hora_inicio = $_POST['hora_inicio'] ?? null;
         $sala_id = $_POST['sala_id'] ?? null;
         $monitor_id = $_POST['monitor_id'] ?? null;
 
-        if (!$nombre || !$sala_id || !$monitor_id) {
+        if (!$nombre || !$hora_inicio || !$dia_semana) {
             header("Location: /admin/actividades/crear?error=1");
             return;
         }
 
-        if (Actividad::guardar($nombre, $descripcion, $sala_id, $monitor_id)) {
+        // 👉 fecha base ficticia (solo para almacenar)
+        $fecha_base = date("Y-m-d");
+
+        $fecha_inicio = $fecha_base . " " . $hora_inicio . ":00";
+
+        // 👉 sumar 1 hora automáticamente
+        $fecha_fin = date("Y-m-d H:i:s", strtotime($fecha_inicio . " +1 hour"));
+
+        if (Actividad::guardar(
+            $nombre,
+            $descripcion,
+            $duracion,
+            $monitor_id,
+            $sala_id,
+            $fecha_inicio,
+            $fecha_fin,
+            $dia_semana
+        )) {
             header("Location: /proyecto-gym/admin/gestionarActividades?success=1");
         } else {
             echo "Error al crear la actividad.";
