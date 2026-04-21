@@ -14,23 +14,45 @@
 
 <body>
 
-    <nav class="navbar navbar-dark bg-dark navbar-expand-lg">
-        <div class="container">
-            <a class="navbar-brand" href="/proyecto-gym/inicio">GYM</a>
-            <?php if (!isset($_SESSION)): ?>
-                <a class="navbar-brand" href="/proyecto-gym/login">Login</a>
+<nav class="navbar navbar-dark bg-dark navbar-expand-lg">
+    <div class="container">
+
+        <a class="navbar-brand" href="/proyecto-gym/inicio">GYM</a>
+
+        <!-- SI NO ESTÁ LOGUEADO -->
+        <?php if (!isset($_SESSION['usuario_id'])): ?>
+            <a class="navbar-brand" href="/proyecto-gym/login">Login</a>
+        <?php endif; ?>
+
+        <a class="navbar-brand" href="/proyecto-gym/contacto">Contacto</a>
+        <a class="navbar-brand" href="/proyecto-gym/quienes-somos">Quiénes somos</a>
+
+        <!-- SOLO LOGUEADO -->
+        <?php if (isset($_SESSION['usuario_id'])): ?>
+            <a class="navbar-brand" href="/proyecto-gym/actividades">Actividades</a>
+        <?php endif; ?>
+
+        <div class="ms-auto">
+
+            <?php if (isset($_SESSION['usuario_id'])): ?>
+
+                <span class="navbar-text text-white me-2">
+                    Bienvenido, <?= $_SESSION['nombre'] ?>
+                </span>
+
+                <a href="/proyecto-gym/logout" class="btn btn-danger ms-2">
+                    Logout
+                </a>
+
             <?php endif; ?>
-            <a class="navbar-brand" href="/proyecto-gym/contacto">Contacto</a>
-            <a class="navbar-brand" href="/proyecto-gym/quienes-somos">Quienes somos</a>
-            <div>
-                <a href="/proyecto-gym/logout" class="btn btn-danger text-white ms-2">Logout</a>
-            </div>
 
-            <div>
-                <a href="/proyecto-gym/pago" class="btn btn-warning">Suscripciones</a>
-            </div>
-            
+            <a href="/proyecto-gym/pago" class="btn btn-warning ms-2">
+                Suscripciones
+            </a>
+
         </div>
-    </nav>
 
-    <div class="container mt-4">
+    </div>
+</nav>
+
+<div class="container mt-4">

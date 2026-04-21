@@ -34,10 +34,8 @@
             <tbody>
 
                 <?php
-                // Horas del día (puedes ajustar)
                 $horas = range(8, 22);
 
-                // Mapa días
                 $dias = ['L','M','X','J','V','S','D'];
 
                 foreach ($horas as $hora):
