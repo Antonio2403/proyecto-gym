@@ -1,16 +1,17 @@
+<?php
+if (!isset($_SESSION['usuario_id'])) {
+    header('Location: /proyecto-gym/login?error=Debes iniciar sesión para ver las actividades');
+    exit;
+}
+?>
 <div class="container mt-4">
     <h3 class="text-center mb-4">Horario de Actividades</h3>
-    <!-- ALERTAS -->
-    <?php if (isset($_GET['success'])): ?>
-        <div class="alert alert-success text-center">
-            Te has apuntado correctamente a la actividad
-        </div>
+    <?php if (isset($_GET['error'])): ?>
+        <?php $errorMsg = htmlspecialchars($_GET['error']); ?>
     <?php endif; ?>
 
-    <?php if (isset($_GET['error'])): ?>
-        <div class="alert alert-danger text-center">
-            Error al apuntarse a la actividad
-        </div>
+    <?php if (isset($_GET['success'])): ?>
+        <?php $succsessMsg = htmlspecialchars($_GET['success']); ?>
     <?php endif; ?>
 
     <a href="/proyecto-gym/usuario/inscripciones/mis-inscripciones" class="btn btn-primary mb-3">Ver mis inscripciones</a>
@@ -36,7 +37,7 @@
                 <?php
                 $horas = range(8, 22);
 
-                $dias = ['L','M','X','J','V','S','D'];
+                $dias = ['L', 'M', 'X', 'J', 'V', 'S', 'D'];
 
                 foreach ($horas as $hora):
                 ?>
@@ -78,3 +79,66 @@
         </table>
     </div>
 </div>
+
+<!-- MODAL ERROR -->
+<?php if (isset($errorMsg)): ?>
+    <div class="modal fade" id="errorModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title">Error</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body text-center">
+                    <?= $errorMsg ?>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var errorModal = new bootstrap.Modal(document.getElementById('errorModal'));
+            errorModal.show();
+        });
+    </script>
+<?php endif; ?>
+
+
+<!-- MODAL SUCCESS -->
+<?php if (isset($succsessMsg)): ?>
+    <div class="modal fade" id="successModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <div class="modal-header bg-success text-white">
+                    <h5 class="modal-title">Éxito</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body text-center">
+                    <?= $succsessMsg ?>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var successModal = new bootstrap.Modal(document.getElementById('successModal'));
+            successModal.show();
+        });
+    </script>
+<?php endif; ?>

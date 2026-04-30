@@ -27,9 +27,19 @@ controller($router, 'post', '/usuario/registrar', 'UsuarioControlador@registrar'
 controller($router, 'post', '/login', 'LoginControlador@login');
 controller($router, 'get', '/logout', 'LoginControlador@logout');
 
+//Clientes
+controller($router, 'get', '/admin/verClientes', 'AdminControlador@verClientes');
+controller($router, 'get', '/clientes/editar', 'UsuarioControlador@formEditarCliente');
+controller($router, 'post', '/clientes/editar', 'UsuarioControlador@editarCliente');
+
 //Registrar y crear monitores
+controller($router, 'get', '/admin/verMonitores', 'AdminControlador@verMonitores');
 controller($router, 'get', '/admin/registrarMonitor', 'AdminControlador@registrarMonitor');
 controller($router, 'post', '/admin/crearMonitor', 'AdminControlador@crearMonitor');
+controller($router, 'get', '/admin/monitores/editar/(\d+)', 'AdminControlador@formEditarMonitor');
+controller($router, 'post', '/admin/monitores/editar', 'AdminControlador@editarMonitor');
+
+
 
 //Solicitudes admin
 controller($router, 'get', '/admin/verSolicitudes', 'AdminControlador@verSolicitudes');

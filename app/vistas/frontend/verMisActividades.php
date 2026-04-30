@@ -1,3 +1,9 @@
+<?php
+if (!isset($_SESSION['usuario_id'])) {
+    header('Location: /proyecto-gym/login?error=Debes iniciar sesión para ver tus actividades');
+    exit;
+}
+?>
 <div class="container mt-4">
     <a href="/proyecto-gym/usuario/actividades" class="btn btn-secondary mb-3">
         <i class="fas fa-arrow-left"></i> Volver al horario

@@ -15,41 +15,77 @@
 <body>
 
 <nav class="navbar navbar-dark bg-dark navbar-expand-lg">
-    <div class="container">
+    <div class="container-fluid">
 
-        <a class="navbar-brand" href="/proyecto-gym/inicio">GYM</a>
+        <a class="navbar-brand fw-bold" href="/proyecto-gym/inicio">GYM</a>
 
-        <!-- SI NO ESTÁ LOGUEADO -->
-        <?php if (!isset($_SESSION['usuario_id'])): ?>
-            <a class="navbar-brand" href="/proyecto-gym/login">Login</a>
-        <?php endif; ?>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
-        <a class="navbar-brand" href="/proyecto-gym/contacto">Contacto</a>
-        <a class="navbar-brand" href="/proyecto-gym/quienes-somos">Quiénes somos</a>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav mx-auto">
+                <!-- SI NO ESTÁ LOGUEADO -->
+                <?php if (!isset($_SESSION['usuario_id'])): ?>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/proyecto-gym/login">Login</a>
+                    </li>
+                <?php endif; ?>
 
-        <!-- SOLO LOGUEADO -->
-        <?php if (isset($_SESSION['usuario_id'])): ?>
-            <a class="navbar-brand" href="/proyecto-gym/actividades">Actividades</a>
-        <?php endif; ?>
+                <li class="nav-item">
+                    <a class="nav-link" href="/proyecto-gym/contacto">Contacto</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/proyecto-gym/quienes-somos">Quiénes somos</a>
+                </li>
 
-        <div class="ms-auto">
+                <!-- SOLO LOGUEADO -->
+                <?php if (isset($_SESSION['usuario_id'])): ?>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/proyecto-gym/actividades">Actividades</a>
+                    </li>
+                <?php endif; ?>
+            </ul>
 
-            <?php if (isset($_SESSION['usuario_id'])): ?>
-
-                <span class="navbar-text text-white me-2">
-                    Bienvenido, <?= $_SESSION['nombre'] ?>
-                </span>
-
-                <a href="/proyecto-gym/logout" class="btn btn-danger ms-2">
-                    Logout
-                </a>
-
-            <?php endif; ?>
-
-            <a href="/proyecto-gym/pago" class="btn btn-warning ms-2">
-                Suscripciones
-            </a>
-
+            <ul class="navbar-nav ms-auto">
+                <!-- MENÚ DE USUARIO LOGUEADO -->
+                <?php if (isset($_SESSION['usuario_id'])): ?>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            <img src="https://ui-avatars.com/api/?name=<?= urlencode($_SESSION['nombre']) ?>&background=random" alt="Avatar" style="width: 24px; height: 24px; border-radius: 50%; margin-right: 5px;"> <?= $_SESSION['nombre'] ?>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li>
+                                <a class="dropdown-item" href="/proyecto-gym/clientes/editar">
+                                    Modificar perfil
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="/proyecto-gym/pago">
+                                    Suscripciones
+                                </a>
+                            </li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <a class="dropdown-item" href="/proyecto-gym/darse-de-baja">
+                                    Darse de baja
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item text-danger" href="/proyecto-gym/logout">
+                                    Cerrar sesión
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                <?php else: ?>
+                    <li class="nav-item">
+                        <a href="/proyecto-gym/pago" class="btn btn-warning btn-sm ms-2">
+                            Suscripciones
+                        </a>
+                    </li>
+                <?php endif; ?>
+            </ul>
         </div>
 
     </div>

@@ -123,45 +123,110 @@ class Usuario
         }
     }
 
-public static function obtenerPorEmail($email)
-{
-    $conexion = BasedeDatos::Conectar();
+    public static function obtenerPorEmail($email)
+    {
+        $conexion = BasedeDatos::Conectar();
 
-    if ($conexion) {
+        if ($conexion) {
+
+            try {
+
+                $stmt = $conexion->prepare("SELECT * FROM usuarios WHERE email = :email");
+                $stmt->bindParam(':email', $email);
+                $stmt->execute();
+
+                if ($stmt->rowCount() == 1) {
+
+                    $usuarioData = $stmt->fetch(PDO::FETCH_ASSOC);
+
+                    $usuario = new Usuario(
+                        $usuarioData['DNI'],
+                        $usuarioData['nombre'],
+                        $usuarioData['apellido1'],
+                        $usuarioData['apellido2'],
+                        $usuarioData['email'],
+                        $usuarioData['clave'],
+                        $usuarioData['telefono']
+                    );
+
+                    $usuario->id = $usuarioData['id'];
+
+                    return $usuario;
+                }
+            } catch (Throwable $th) {
+
+                echo "Error al obtener usuario: " . $th->getMessage();
+            }
+        }
+
+        return null;
+    }
+
+    public static function actualizar($id, $DNI, $nombre, $apellido1, $apellido2, $email, $clave, $telefono)
+    {
+        $conexion = BasedeDatos::Conectar();
+
+        if (!$conexion) {
+            return false;
+        }
 
         try {
 
-            $stmt = $conexion->prepare("SELECT * FROM usuarios WHERE email = :email");
-            $stmt->bindParam(':email', $email);
-            $stmt->execute();
+            // QUERY BASE (sin contraseña)
+            $sql = "UPDATE usuarios 
+                SET DNI = :DNI,
+                    nombre = :nombre,
+                    apellido1 = :apellido1,
+                    apellido2 = :apellido2,
+                    email = :email,
+                    telefono = :telefono";
 
-            if ($stmt->rowCount() == 1) {
-
-                $usuarioData = $stmt->fetch(PDO::FETCH_ASSOC);
-
-                $usuario = new Usuario(
-                    $usuarioData['DNI'],
-                    $usuarioData['nombre'],
-                    $usuarioData['apellido1'],
-                    $usuarioData['apellido2'],
-                    $usuarioData['email'],
-                    $usuarioData['clave'],
-                    $usuarioData['telefono']
-                );
-
-                $usuario->id = $usuarioData['id'];
-
-                return $usuario;
+            // SI HAY CONTRASEÑA → se añade
+            if (!empty($clave)) {
+                $sql .= ", clave = :clave";
             }
 
-        } catch (Throwable $th) {
+            $sql .= " WHERE id = :id";
 
-            echo "Error al obtener usuario: " . $th->getMessage();
+            $stmt = $conexion->prepare($sql);
+
+            // BINDS
+            $stmt->bindParam(':DNI', $DNI);
+            $stmt->bindParam(':nombre', $nombre);
+            $stmt->bindParam(':apellido1', $apellido1);
+            $stmt->bindParam(':apellido2', $apellido2);
+            $stmt->bindParam(':email', $email);
+            $stmt->bindParam(':telefono', $telefono);
+            $stmt->bindParam(':id', $id);
+
+            // SOLO si hay contraseña
+            if (!empty($clave)) {
+                $hashedPassword = password_hash($clave, PASSWORD_DEFAULT);
+                $stmt->bindParam(':clave', $hashedPassword);
+            }
+
+            return $stmt->execute();
+        } catch (Throwable $th) {
+            echo "Error al actualizar el usuario: " . $th->getMessage();
+            return false;
         }
     }
+    
+    public static function eliminar($id)
+    {
+        $conexion = BasedeDatos::Conectar();
 
-    return null;
+        if ($conexion) {
+            try {
+                $stmt = $conexion->prepare("DELETE FROM usuarios WHERE id = :id");
+                $stmt->bindParam(':id', $id);
+                return $stmt->execute();
+            } catch (Throwable $th) {
+                echo "Error al eliminar el usuario: " . $th->getMessage();
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
 }
-
-}
-?>

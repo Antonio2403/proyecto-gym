@@ -7,7 +7,7 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item">
-                    <a href="/proyecto-gym/admin/registrarMonitor" class="nav-link">Monitores</a>
+                    <a href="/proyecto-gym/admin/verMonitores" class="nav-link">Monitores</a>
                 </li>
                 <li class="nav-item">
                     <a href="/proyecto-gym/admin/verSolicitudes" class="nav-link">Solicitudes</a>

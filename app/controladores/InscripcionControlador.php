@@ -50,7 +50,7 @@ class InscripcionControlador extends Controller
 
         // Evitar duplicados
         if (Inscripcion::yaInscrito($cliente_id, $actividad_id)) {
-            header("Location: /proyecto-gym/horario?error=duplicado");
+            header("Location: /proyecto-gym//usuario/actividades?error=Ya estás inscrito en esta actividad");
             exit;
         }
 
@@ -60,7 +60,7 @@ class InscripcionControlador extends Controller
 
         // Clase llena
         if ($inscritos >= $actividad['plazas']) {
-            header("Location:/proyecto-gym/usuario/actividades?error=completo");
+            header("Location:/proyecto-gym/usuario/actividades?error=Esta actividad ya está llena");
             exit;
         }
 
@@ -92,6 +92,6 @@ class InscripcionControlador extends Controller
             echo "Error: {$mail->ErrorInfo}";
         }
 
-        header("Location:/proyecto-gym/usuario/actividades?success=1");
+        header("Location:/proyecto-gym/usuario/actividades?success=Has reservado tu plaza con exito");
     }
 }

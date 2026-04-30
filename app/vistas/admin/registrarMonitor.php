@@ -2,7 +2,7 @@
 
         <div class="row mb-3">
             <div class="col-12">
-                <a href="/proyecto-gym/inicioAdmin" class="btn btn-secondary">Volver</a>
+                <a href="/proyecto-gym/admin/verMonitores" class="btn btn-secondary">Volver</a>
             </div>
         </div>
 

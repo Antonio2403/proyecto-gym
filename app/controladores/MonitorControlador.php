@@ -6,7 +6,6 @@ require_once "app/modelos/solicitud.php";
 
 class MonitorControlador extends Controller
 {
-
     public function verMonitorSolicitudes()
     {
         $this->renderAdmin("monitor/verMonitorSolicitudes");
