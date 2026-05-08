@@ -1,0 +1,102 @@
+/**
+ * Spartum — refinamiento AdminLTE
+ */
+
+:root {
+    --gp-admin-accent: #ff6b35;
+    --gp-admin-accent-soft: rgba(255, 107, 53, 0.15);
+    --gp-admin-teal: #14b8a6;
+    --gp-admin-dark: #0f1419;
+    --gp-admin-sidebar: #0c1018;
+}
+
+body.hold-transition {
+    font-family: "DM Sans", system-ui, sans-serif;
+}
+
+.main-sidebar {
+    background: linear-gradient(180deg, var(--gp-admin-sidebar) 0%, #080b10 100%) !important;
+}
+
+.sidebar-dark-primary .nav-sidebar > .nav-item > .nav-link.active {
+    background: linear-gradient(90deg, var(--gp-admin-accent-soft), transparent) !important;
+    border-left: 3px solid var(--gp-admin-accent);
+    color: #fff !important;
+}
+
+.sidebar-dark-primary .nav-sidebar > .nav-item > .nav-link:hover {
+    background: rgba(255, 255, 255, 0.06) !important;
+}
+
+[class*="sidebar-dark-"] .brand-link {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+[class*="sidebar-dark-"] .user-panel {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.main-header.navbar {
+    background: var(--gp-admin-dark) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.navbar-light .navbar-nav .nav-link {
+    color: rgba(255, 255, 255, 0.85) !important;
+}
+
+.content-wrapper {
+    background: linear-gradient(180deg, #0f1419 0%, #121821 100%) !important;
+    color: #e8ecf4;
+}
+
+.content-wrapper .content-header h1 {
+    font-weight: 700;
+    letter-spacing: -0.02em;
+}
+
+.card {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 0.75rem;
+}
+
+.card-header {
+    border-bottom-color: rgba(255, 255, 255, 0.08);
+    font-weight: 600;
+}
+
+.table {
+    color: #e8ecf4;
+}
+
+.table-bordered td,
+.table-bordered th {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--gp-admin-accent), #e85d2c);
+    border: none;
+    font-weight: 600;
+}
+
+.btn-primary:hover {
+    filter: brightness(1.06);
+}
+
+.text-muted {
+    color: #97a0b3 !important;
+}
+
+/* Obligatoriedad en formularios */
+.form-label.gp-label-required::after,
+label.gp-label-required::after {
+    content: " *";
+    color: var(--bs-danger);
+    font-weight: 700;
+}
+
+.gp-form-required-legend {
+    font-size: 0.8125rem;
+}

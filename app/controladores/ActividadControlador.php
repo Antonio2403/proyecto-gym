@@ -9,14 +9,66 @@ class ActividadControlador extends Controller
 {
     public function index()
     {
+        $this->redirigirFisioFueraPortal();
+
         $actividades = Actividad::obtenerTodas();
-        $this->renderFrontend("frontend/actividades", ['actividades' => $actividades]);
+
+        $semana = isset($_GET['semana']) ? (int) $_GET['semana'] : 0;
+        if ($semana !== 0 && $semana !== 1) {
+            $semana = 0;
+        }
+
+        $tz = new DateTimeZone(date_default_timezone_get());
+        $monday = new DateTime('monday this week', $tz);
+        if ($semana === 1) {
+            $monday->modify('+1 week');
+        }
+        $sunday = clone $monday;
+        $sunday->modify('+6 days');
+
+        $weekLabel = sprintf(
+            'Semana del %s al %s',
+            $monday->format('d/m/Y'),
+            $sunday->format('d/m/Y')
+        );
+
+        $weekStart = $monday->format('Y-m-d');
+        $weekEnd = $sunday->format('Y-m-d');
+
+        $actividades = array_values(array_filter($actividades, static function (array $act) use ($weekStart, $weekEnd): bool {
+            $rec = (int) ($act['recurrente'] ?? 1);
+            if ($rec === 1) {
+                return true;
+            }
+            $fi = $act['fecha_inicio'] ?? '';
+            if ($fi === '') {
+                return false;
+            }
+            $d = substr((string) $fi, 0, 10);
+
+            return $d >= $weekStart && $d <= $weekEnd;
+        }));
+
+        $ids = array_map(static fn (array $a): int => (int) $a['id'], $actividades);
+        $inscritosPorActividad = Actividad::contarInscritosPorActividades($ids);
+
+        $this->renderFrontend('frontend/actividades', [
+            'actividades' => $actividades,
+            'inscritos_por_actividad' => $inscritosPorActividad,
+            'semana_offset' => $semana,
+            'week_label' => $weekLabel,
+            'schedule_week_monday' => $weekStart,
+        ]);
     }
 
     public function gestionarActividades()
     {
-        $actividades = Actividad::obtenerTodas();
-        $this->renderAdmin("admin/gestionarActividades", ['actividades' => $actividades]);
+        $salas = Sala::obtenerTodas();
+        $monitoresFiltro = Monitor::obtenerTodos();
+        $this->renderAdmin('admin/gestionarActividades', [
+            'salas' => $salas,
+            'monitoresFiltro' => $monitoresFiltro,
+        ]);
     }
 
     public function formActividad()
@@ -32,7 +84,7 @@ class ActividadControlador extends Controller
         $monitores = Monitor::obtenerTodos();
         $actividad = Actividad::obtenerPorId($id);
         if (!$actividad) {
-            header("Location: /admin/gestionarActividades?error=notfound");
+            header('Location: ' . url('/admin/gestionarActividades') . '?error=notfound');
             return;
         }
         $this->renderAdmin("admin/formEditarActividades", ['actividad' => $actividad, 'salas' => $salas, 'monitores' => $monitores]);
@@ -40,16 +92,27 @@ class ActividadControlador extends Controller
 
     public function crearActividad()
     {
-        $nombre = $_POST['nombre'] ?? null;
-        $descripcion = $_POST['descripcion'] ?? null;
-        $duracion = $_POST['duracion'] ?? 60;
-        $dia_semana = $_POST['dia_semana'] ?? null;
-        $hora_inicio = $_POST['hora_inicio'] ?? null;
-        $sala_id = $_POST['sala_id'] ?? null;
-        $monitor_id = $_POST['monitor_id'] ?? null;
+        if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') {
+            header('Location: ' . url('/admin/actividades/crear'));
+            return;
+        }
 
-        if (!$nombre || !$hora_inicio || !$dia_semana) {
-            header("Location: /admin/actividades/crear?error=1");
+        $nombre = trim((string) ($_POST['nombre'] ?? ''));
+        $descripcion = trim((string) ($_POST['descripcion'] ?? ''));
+        $duracion = (int) ($_POST['duracion'] ?? 0);
+        $dia_semana = (string) ($_POST['dia_semana'] ?? '');
+        $hora_inicio = trim((string) ($_POST['hora_inicio'] ?? ''));
+        $sala_id = (int) ($_POST['sala_id'] ?? 0);
+        $monitor_id = (int) ($_POST['monitor_id'] ?? 0);
+
+        $diasValidos = ['L', 'M', 'X', 'J', 'V', 'S', 'D'];
+        if ($nombre === '' || $hora_inicio === '' || !in_array($dia_semana, $diasValidos, true)) {
+            header('Location: ' . url('/admin/actividades/crear') . '?error=1');
+            return;
+        }
+
+        if ($duracion < 1 || $duracion > 600 || $sala_id <= 0 || $monitor_id <= 0) {
+            header('Location: ' . url('/admin/actividades/crear') . '?error=1');
             return;
         }
 
@@ -71,32 +134,45 @@ class ActividadControlador extends Controller
             $fecha_fin,
             $dia_semana
         )) {
-            header("Location: /proyecto-gym/admin/gestionarActividades?success=1");
+            header('Location: ' . url('/admin/gestionarActividades') . '?success=1');
         } else {
             echo "Error al crear la actividad.";
         }
     }
     public function editarActividad($id)
     {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-
-            $id = $_POST['id'];
-            $nombre = $_POST['nombre'];
-            $descripcion = $_POST['descripcion'];
-            $sala_id = $_POST['sala_id'];
-            $monitor_id = $_POST['monitor_id'];
-
-            Actividad::actualizar($id, $nombre, $descripcion, $sala_id, $monitor_id);
-
-            header("Location: /proyecto-gym/admin/gestionarActividades?success=1");
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            header('Location: ' . url('/admin/gestionarActividades'));
             exit;
         }
+
+        $postId = (int) ($_POST['id'] ?? 0);
+        $routeId = (int) $id;
+        if ($postId !== $routeId || $postId <= 0) {
+            header('Location: ' . url('/admin/gestionarActividades') . '?error=1');
+            exit;
+        }
+
+        $nombre = trim((string) ($_POST['nombre'] ?? ''));
+        $descripcion = trim((string) ($_POST['descripcion'] ?? ''));
+        $sala_id = (int) ($_POST['sala_id'] ?? 0);
+        $monitor_id = (int) ($_POST['monitor_id'] ?? 0);
+
+        if ($nombre === '' || $sala_id <= 0 || $monitor_id <= 0) {
+            header('Location: ' . url('/admin/actividades/editar/' . $postId) . '?error=1');
+            exit;
+        }
+
+        Actividad::actualizar($postId, $nombre, $descripcion, $sala_id, $monitor_id);
+
+        header('Location: ' . url('/admin/gestionarActividades') . '?success=1');
+        exit;
     }
 
     public function eliminarActividad($id)
     {
         if (Actividad::eliminar($id)) {
-            header("Location: /proyecto-gym/admin/gestionarActividades?deleted=1");
+            header('Location: ' . url('/admin/gestionarActividades') . '?deleted=1');
         } else {
             echo "Error al eliminar la actividad.";
         }

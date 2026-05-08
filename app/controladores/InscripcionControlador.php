@@ -3,36 +3,65 @@
 require_once 'app/modelos/inscripcion.php';
 require_once 'app/modelos/actividades.php';
 require_once 'core/Controller.php';
-require 'vendor/autoload.php';
-
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\Exception;
-
-
 
 class InscripcionControlador extends Controller
 {
     public function misIncripciones()
     {
+        $this->redirigirFisioFueraPortal();
         $inscripciones = Inscripcion::obtenerInscripciones();
         $this->renderFrontend("frontend/verMisActividades", ['inscripciones' => $inscripciones]);
     }
 
     public function cancelar()
     {
-        $id = $_POST['inscripcion_id'];
-
-        if (Inscripcion::cancelar($id)) {
-            header("Location: /proyecto-gym/usuario/inscripciones/mis-inscripciones?success=1");
-        } else {
-            header("Location: /proyecto-gym/usuario/inscripciones/mis-inscripciones?error=1");
+        if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') {
+            header('Location: ' . url('/usuario/inscripciones/mis-inscripciones'));
+            exit;
         }
+
+        $this->redirigirFisioFueraPortal();
+
+        if (empty($_SESSION['usuario_id'])) {
+            header('Location: ' . url('/login') . '?error=' . rawurlencode('Debes iniciar sesión'));
+            exit;
+        }
+
+        $id = (int) ($_POST['inscripcion_id'] ?? 0);
+        if ($id <= 0) {
+            header('Location: ' . url('/usuario/inscripciones/mis-inscripciones') . '?error=1');
+            exit;
+        }
+
+        if (Inscripcion::cancelarParaUsuario($id, (int) $_SESSION['usuario_id'])) {
+            header('Location: ' . url('/usuario/inscripciones/mis-inscripciones') . '?success=1');
+        } else {
+            header('Location: ' . url('/usuario/inscripciones/mis-inscripciones') . '?error=1');
+        }
+        exit;
     }
 
     public function inscribirse()
     {
-        $actividad_id = $_POST['actividad_id'];
-        $usuario_id = $_SESSION['usuario_id'];
+        if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') {
+            header('Location: ' . url('/usuario/actividades'));
+            exit;
+        }
+
+        $this->redirigirFisioFueraPortal();
+
+        if (empty($_SESSION['usuario_id'])) {
+            header('Location: ' . url('/login') . '?error=' . rawurlencode('Debes iniciar sesión'));
+            exit;
+        }
+
+        $actividad_id = (int) ($_POST['actividad_id'] ?? 0);
+        if ($actividad_id <= 0) {
+            header('Location: ' . url('/usuario/actividades') . '?error=' . rawurlencode('Actividad no válida'));
+            exit;
+        }
+
+        $usuario_id = (int) $_SESSION['usuario_id'];
 
         $conexion = BasedeDatos::Conectar();
 
@@ -50,7 +79,7 @@ class InscripcionControlador extends Controller
 
         // Evitar duplicados
         if (Inscripcion::yaInscrito($cliente_id, $actividad_id)) {
-            header("Location: /proyecto-gym//usuario/actividades?error=Ya estás inscrito en esta actividad");
+            header('Location: ' . url('/usuario/actividades') . '?error=' . rawurlencode('Ya estás inscrito en esta actividad'));
             exit;
         }
 
@@ -60,38 +89,38 @@ class InscripcionControlador extends Controller
 
         // Clase llena
         if ($inscritos >= $actividad['plazas']) {
-            header("Location:/proyecto-gym/usuario/actividades?error=Esta actividad ya está llena");
+            header('Location: ' . url('/usuario/actividades') . '?error=' . rawurlencode('Esta actividad ya está llena'));
             exit;
         }
 
         // Insertar
         Inscripcion::inscribir($cliente_id, $actividad_id);
-        $mail = new PHPMailer(true);
 
-        try {
-            // Configuración SMTP
-            $mail->isSMTP();
-            $mail->Host       = 'sandbox.smtp.mailtrap.io';
-            $mail->SMTPAuth   = true;
-            $mail->Username   = $_ENV['Mailtrap_USERNAME'];
-            $mail->Password   = $_ENV['Mailtrap_PASSWORD'];
-            $mail->Port       = 2525; // o 587
+        $fechaSesionComentarios = Inscripcion::fechaProximaOcurrenciaActividad($actividad_id);
 
-            // Remitente y destinatario
-            $mail->setFrom('no-reply@tuapp.com', 'Tu App');
-            $mail->addAddress($cliente_email);
-
-            // Contenido
-            $mail->isHTML(true);
-            $mail->Subject = 'Prueba desde PHP';
-            $mail->Body    = '<b>Funciona correctamente</b>';
-            $mail->AltBody = 'Funciona correctamente';
-
-            $mail->send();
-        } catch (Exception $e) {
-            echo "Error: {$mail->ErrorInfo}";
+        require_once dirname(__DIR__, 2) . '/core/helpers/mail_smtp.php';
+        $mailErrBooking = null;
+        if (!gp_mail_send(
+            $cliente_email,
+            'Confirmación de reserva',
+            '<p>Has reservado tu plaza correctamente.</p>',
+            'Has reservado tu plaza correctamente.',
+            $mailErrBooking
+        )) {
+            error_log('[Spartum reserva] correo no enviado: ' . (string) $mailErrBooking);
         }
 
-        header("Location:/proyecto-gym/usuario/actividades?success=Has reservado tu plaza con exito");
+        if ($fechaSesionComentarios !== null && $fechaSesionComentarios !== '') {
+            $params = [
+                'actividad_id' => $actividad_id,
+                'fecha' => $fechaSesionComentarios,
+                'orden' => 'desc',
+                'info' => 'Reserva realizada. Aquí aparecerán los comentarios de esta sesión; podrás dejar la tuya cuando termine.',
+            ];
+            header('Location: ' . url('/usuario/actividades/sesion/comentarios') . '?' . http_build_query($params));
+        } else {
+            header('Location: ' . url('/usuario/actividades') . '?success=' . rawurlencode('Has reservado tu plaza con exito'));
+        }
+        exit;
     }
 }

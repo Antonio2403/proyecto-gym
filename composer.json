@@ -1,4 +1,6 @@
 {
+    "name": "spartum/spartum",
+    "description": "Spartum — aplicación de gestión de gimnasio",
     "require": {
         "bramus/router": "^1.6",
         "stripe/stripe-php": "^19.4",

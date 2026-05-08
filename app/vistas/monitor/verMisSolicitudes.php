@@ -1,9 +1,10 @@
 
-        <a href="verMonitorSolicitudes" class="btn btn-secondary mb-4">Volver</a>
-        
+        <a href="<?= htmlspecialchars(url('/monitor/verMonitorSolicitudes')) ?>" class="btn btn-secondary mb-4">Volver</a>
+
         <?php
-        if (!empty($data)) {
-            foreach ($data as $s):
+        $lista = $solicitudes ?? [];
+        if (!empty($lista)) {
+            foreach ($lista as $s):
         ?>
                 <div class="card mb-3">
                     <div class="card-body">
@@ -21,9 +22,9 @@
                         </div>
                     </div>
                 </div>
-        <?php 
+        <?php
             endforeach;
         } else {
             echo "<p class='alert alert-info'>No hay solicitudes hechas por ti.</p>";
-        } 
+        }
         ?>

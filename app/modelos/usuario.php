@@ -10,6 +10,8 @@ class Usuario
     private $email;
     private $clave;
     private $telefono;
+    /** 1 = puede iniciar sesión como cliente; 0 = pendiente de confirmar email */
+    private $emailConfirmado = 1;
 
     public function __construct($DNI, $nombre, $apellido1, $apellido2, $email, $clave, $telefono)
     {
@@ -62,37 +64,102 @@ class Usuario
         return $this->telefono;
     }
 
+    public function getEmailConfirmado(): int
+    {
+        return (int) $this->emailConfirmado;
+    }
+
+    /**
+     * Activa la cuenta si el token coincide y no ha caducado. Devuelve el email o null.
+     */
+    public static function confirmarEmailConToken(string $tokenPlano): ?string
+    {
+        $tokenPlano = trim($tokenPlano);
+        if (strlen($tokenPlano) < 32) {
+            return null;
+        }
+
+        $conexion = BasedeDatos::Conectar();
+        if (!$conexion) {
+            return null;
+        }
+
+        $st = $conexion->prepare(
+            'SELECT id, email, token_confirmacion_expira FROM usuarios
+             WHERE token_confirmacion = :t AND email_confirmado = 0 LIMIT 1'
+        );
+        $st->execute([':t' => $tokenPlano]);
+        $row = $st->fetch(PDO::FETCH_ASSOC);
+        if (!$row) {
+            return null;
+        }
+        $exp = $row['token_confirmacion_expira'] ?? null;
+        if ($exp === null || strtotime((string) $exp) < time()) {
+            return null;
+        }
+
+        $upd = $conexion->prepare(
+            'UPDATE usuarios SET email_confirmado = 1, token_confirmacion = NULL, token_confirmacion_expira = NULL
+             WHERE id = :id AND email_confirmado = 0 AND token_confirmacion = :t2'
+        );
+        $upd->execute([
+            ':id' => (int) $row['id'],
+            ':t2' => $tokenPlano,
+        ]);
+        if ($upd->rowCount() < 1) {
+            return null;
+        }
+
+        return (string) $row['email'];
+    }
+
+    /**
+     * Inserta usuario + fila de cliente en la conexión indicada (idealmente dentro de una transacción).
+     *
+     * @param string|null $tokenPlano token aleatorio (se guarda igual en BD); si null, cuenta activa de inmediato
+     * @param string|null $tokenExpiraYmdHis fin de validez del token
+     */
+    public function persistirComoNuevoCliente(\PDO $conexion, ?string $tokenPlano = null, ?string $tokenExpiraYmdHis = null): bool
+    {
+        try {
+            $hashedPassword = password_hash($this->clave, PASSWORD_DEFAULT);
+            $confirmado = ($tokenPlano === null || $tokenPlano === '') ? 1 : 0;
+            $stmt = $conexion->prepare(
+                'INSERT INTO usuarios (DNI, nombre, apellido1, apellido2, email, clave, telefono, email_confirmado, token_confirmacion, token_confirmacion_expira)
+                 VALUES (:DNI, :nombre, :apellido1, :apellido2, :email, :clave, :telefono, :email_confirmado, :token_confirmacion, :token_confirmacion_expira)'
+            );
+            $stmt->bindParam(':DNI', $this->DNI);
+            $stmt->bindParam(':nombre', $this->nombre);
+            $stmt->bindParam(':apellido1', $this->apellido1);
+            $stmt->bindParam(':apellido2', $this->apellido2);
+            $stmt->bindParam(':email', $this->email);
+            $stmt->bindParam(':clave', $hashedPassword);
+            $stmt->bindParam(':telefono', $this->telefono);
+            $stmt->bindValue(':email_confirmado', $confirmado, PDO::PARAM_INT);
+            $stmt->bindValue(':token_confirmacion', $confirmado === 0 ? $tokenPlano : null);
+            $stmt->bindValue(':token_confirmacion_expira', $confirmado === 0 ? $tokenExpiraYmdHis : null);
+            if (!$stmt->execute()) {
+                return false;
+            }
+            $usuarioId = (int) $conexion->lastInsertId();
+            $insCli = $conexion->prepare(
+                'INSERT INTO clientes (usuario_id, metodo_pago) VALUES (?, ?)'
+            );
+
+            return $insCli->execute([$usuarioId, 'desconocido']);
+        } catch (\Throwable $th) {
+            return false;
+        }
+    }
+
     public function registrar()
     {
         $conexion = BasedeDatos::Conectar();
-        if ($conexion) {
-            try {
-                $hashedPassword = password_hash($this->clave, PASSWORD_DEFAULT);
-                $stmt = $conexion->prepare("INSERT INTO usuarios (DNI, nombre, apellido1, apellido2, email, clave, telefono) VALUES (:DNI, :nombre, :apellido1, :apellido2, :email, :clave, :telefono)");
-                $stmt->bindParam(':DNI', $this->DNI);
-                $stmt->bindParam(':nombre', $this->nombre);
-                $stmt->bindParam(':apellido1', $this->apellido1);
-                $stmt->bindParam(':apellido2', $this->apellido2);
-                $stmt->bindParam(':email', $this->email);
-                $stmt->bindParam(':clave', $hashedPassword);
-                $stmt->bindParam(':telefono', $this->telefono);
-                if ($stmt->execute()) {
-                    $usuario_id = $conexion->lastInsertId();
-
-                    $conexion->exec("
-                        INSERT INTO clientes (usuario_id, metodo_pago)
-                        VALUES ($usuario_id, 'desconocido')
-                    ");
-                    return true;
-                }
-                return false;
-            } catch (\Throwable $th) {
-                //echo "Error al registrar el usuario: " . $th->getMessage();
-                return false;
-            }
-        } else {
+        if (!$conexion) {
             return false;
         }
+
+        return $this->persistirComoNuevoCliente($conexion);
     }
     public static function obtenerPorId($id)
     {
@@ -104,7 +171,7 @@ class Usuario
                 $stmt->execute();
                 if ($stmt->rowCount() == 1) {
                     $usuarioData = $stmt->fetch(PDO::FETCH_ASSOC);
-                    return new Usuario(
+                    $u = new Usuario(
                         $usuarioData['DNI'],
                         $usuarioData['nombre'],
                         $usuarioData['apellido1'],
@@ -113,6 +180,10 @@ class Usuario
                         $usuarioData['clave'],
                         $usuarioData['telefono']
                     );
+                    $u->id = (int) $usuarioData['id'];
+                    $u->emailConfirmado = (int) ($usuarioData['email_confirmado'] ?? 1);
+
+                    return $u;
                 }
             } catch (\Throwable $th) {
                 echo "Error al obtener el usuario: " . $th->getMessage();
@@ -150,6 +221,7 @@ class Usuario
                     );
 
                     $usuario->id = $usuarioData['id'];
+                    $usuario->emailConfirmado = (int) ($usuarioData['email_confirmado'] ?? 1);
 
                     return $usuario;
                 }
@@ -162,7 +234,7 @@ class Usuario
         return null;
     }
 
-    public static function actualizar($id, $DNI, $nombre, $apellido1, $apellido2, $email, $clave, $telefono)
+    public static function actualizar($id, $DNI, $nombre, $apellido1, $apellido2, $email, $clave, $telefono, $especialidad = null, $disponibilidad = null)
     {
         $conexion = BasedeDatos::Conectar();
 
@@ -172,7 +244,7 @@ class Usuario
 
         try {
 
-            // QUERY BASE (sin contraseña)
+            // QUERY BASE (sin contraseña). $especialidad / $disponibilidad solo los usa Monitor.
             $sql = "UPDATE usuarios 
                 SET DNI = :DNI,
                     nombre = :nombre,

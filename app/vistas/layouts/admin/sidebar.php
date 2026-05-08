@@ -1,109 +1,116 @@
-<aside class="main-sidebar sidebar-dark-primary elevation-4">
+<?php
+$rol = $_SESSION['rol'] ?? '';
+$dashboardHref = $rol === 'admin' ? url('/admin') : url('/inicioMonitor');
+$currentPath = strtok($_SERVER['REQUEST_URI'] ?? '', '?');
+/** @psalm-suppress PossiblyFalseArgument */
+$baseRouter = rtrim(router_server_base_path(), '/');
+if ($baseRouter !== '/' && $baseRouter !== '' && str_starts_with($currentPath, $baseRouter)) {
+    $currentPath = substr($currentPath, strlen($baseRouter)) ?: '/';
+}
 
-    <!-- Logo -->
-    <a href="/proyecto-gym" class="brand-link text-center">
-        <span class="brand-text font-weight-bold fs-5">GYM PANEL</span>
-    </a>
+function gp_admin_nav_active(string $prefix, string $currentPath): string
+{
+    $p = '/' . ltrim($prefix, '/');
+    if ($p !== '/' && str_starts_with($currentPath, $p)) {
+        return ' active';
+    }
 
-    <!-- Sidebar -->
-    <div class="sidebar">
+    return '';
+}
+?>
+<div class="gp-admin-page flex-grow-1">
+    <div class="container-fluid px-3 px-lg-4 py-4">
+        <div class="row g-4 align-items-start">
+            <aside class="col-lg-3 col-xl-2">
+                <div class="gp-admin-sidecard p-3 sticky-lg-top" style="top: 1rem;">
+                    <div class="gp-admin-user-line">
+                        <div class="fw-semibold text-dark"><?= htmlspecialchars($_SESSION['nombre'] ?? 'Usuario') ?></div>
+                        <span class="badge rounded-pill mt-1 bg-secondary bg-opacity-25 text-secondary-emphasis">
+                            <?= htmlspecialchars($rol) ?>
+                        </span>
+                    </div>
 
-        <!-- Usuario -->
-        <div class="user-panel mt-3 pb-3 mb-3 d-flex align-items-center">
-                <i class="fas fa-user-tie img-circle elevation-2" style="font-size: 36px; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; background-color: #f0f0f0; border-radius: 50%;"></i>
-            <div class="info">
-                <a href="#" class="d-block fw-bold">
-                    <?= $_SESSION['usuario'] ?? 'Usuario' ?>
-                </a>
-                <small class="text-muted d-block">
-                    <span class="badge bg-success"><?= $_SESSION['rol'] ?? 'N/A' ?></span>
-                </small>
-            </div>
-        </div>
-
-        <!-- Menú -->
-        <nav class="mt-2">
-            <ul class="nav nav-pills nav-sidebar flex-column gap-2" data-widget="treeview">
-
-                <!-- DASHBOARD -->
-                <li class="nav-item">
-                    <a href="/proyecto-gym/admin" class="nav-link rounded">
-                        <i class="nav-icon fas fa-home"></i>
-                        <p>Dashboard</p>
-                    </a>
-                </li>
-
-                <!-- ADMIN -->
-                <?php if (isset($_SESSION['rol']) && $_SESSION['rol'] === 'admin'): ?>
-                    <li class="nav-header text-uppercase fw-bold mt-3">ADMIN</li>
-                    
-                    <li class="nav-item">
-                        <a href="/proyecto-gym/admin/usuarios" class="nav-link rounded">
-                            <i class="nav-icon fas fa-users"></i>
-                            <p>Usuarios</p>
+                    <nav class="nav flex-column gp-admin-nav gap-1 mt-2">
+                        <a href="<?= htmlspecialchars($dashboardHref) ?>"
+                           class="nav-link gp-admin-nav-link<?= $currentPath === '/admin' || $currentPath === '/inicioMonitor' ? ' active' : '' ?>">
+                            <i class="fas fa-home me-2 text-opacity-75"></i> Inicio
                         </a>
-                    </li>
 
-                    <li class="nav-item">
-                        <a href="/proyecto-gym/admin/monitores" class="nav-link rounded">
-                            <i class="nav-icon fas fa-user-tie"></i>
-                            <p>Monitores</p>
+                        <?php if ($rol === 'admin'): ?>
+                            <div class="gp-admin-nav-heading">Administración</div>
+                            <a href="<?= htmlspecialchars(url('/admin/verClientes')) ?>"
+                               class="nav-link gp-admin-nav-link<?= gp_admin_nav_active('/admin/verClientes', $currentPath) ?>">
+                                <i class="fas fa-users me-2 text-opacity-75"></i> Clientes
+                            </a>
+                            <a href="<?= htmlspecialchars(url('/admin/verMonitores')) ?>"
+                               class="nav-link gp-admin-nav-link<?= gp_admin_nav_active('/admin/verMonitores', $currentPath) ?>">
+                                <i class="fas fa-user-tie me-2 text-opacity-75"></i> Monitores
+                            </a>
+                            <a href="<?= htmlspecialchars(url('/admin/fisioterapeutas')) ?>"
+                               class="nav-link gp-admin-nav-link<?= gp_admin_nav_active('/admin/fisioterapeutas', $currentPath) ?>">
+                                <i class="fas fa-heart-pulse me-2 text-opacity-75"></i> Fisioterapeutas
+                            </a>
+                            <a href="<?= htmlspecialchars(url('/admin/gestionSubscripciones')) ?>"
+                               class="nav-link gp-admin-nav-link<?=
+                                    gp_admin_nav_active('/admin/gestionSubscripciones', $currentPath)
+                                    . gp_admin_nav_active('/admin/formSubscripcion', $currentPath)
+                                    . gp_admin_nav_active('/admin/formEditarSubscripcion', $currentPath)
+                                ?>">
+                                <i class="fas fa-credit-card me-2 text-opacity-75"></i> Suscripciones
+                            </a>
+                            <a href="<?= htmlspecialchars(url('/admin/verSolicitudes')) ?>"
+                               class="nav-link gp-admin-nav-link<?= gp_admin_nav_active('/admin/verSolicitudes', $currentPath) ?>">
+                                <i class="fas fa-envelope me-2 text-opacity-75"></i> Solicitudes
+                            </a>
+                            <a href="<?= htmlspecialchars(url('/admin/feedback')) ?>"
+                               class="nav-link gp-admin-nav-link<?=
+                                    gp_admin_nav_active('/admin/feedback', $currentPath)
+                                ?>">
+                                <i class="fas fa-comment-dots me-2 text-opacity-75"></i> Feedback contacto
+                            </a>
+                            <a href="<?= htmlspecialchars(url('/admin/gestionarActividades')) ?>"
+                               class="nav-link gp-admin-nav-link<?=
+                                    gp_admin_nav_active('/admin/gestionarActividades', $currentPath)
+                                    . gp_admin_nav_active('/admin/actividades', $currentPath)
+                                ?>">
+                                <i class="fas fa-calendar-alt me-2 text-opacity-75"></i> Actividades
+                            </a>
+                        <?php endif; ?>
+
+                        <?php if ($rol === 'monitor'): ?>
+                            <div class="gp-admin-nav-heading">Monitor</div>
+                            <a href="<?= htmlspecialchars(url('/monitor/verMonitorSolicitudes')) ?>"
+                               class="nav-link gp-admin-nav-link<?= gp_admin_nav_active('/monitor/verMonitorSolicitudes', $currentPath) ?>">
+                                <i class="fas fa-envelope-open me-2 text-opacity-75"></i> Solicitudes centro
+                            </a>
+                            <a href="<?= htmlspecialchars(url('/monitor/formSolicitud')) ?>"
+                               class="nav-link gp-admin-nav-link<?= gp_admin_nav_active('/monitor/formSolicitud', $currentPath) ?>">
+                                <i class="fas fa-plus-circle me-2 text-opacity-75"></i> Nueva solicitud
+                            </a>
+                            <a href="<?= htmlspecialchars(url('/monitor/verMisSolicitudes')) ?>"
+                               class="nav-link gp-admin-nav-link<?= gp_admin_nav_active('/monitor/verMisSolicitudes', $currentPath) ?>">
+                                <i class="fas fa-list me-2 text-opacity-75"></i> Mis solicitudes
+                            </a>
+                        <?php endif; ?>
+
+                        <div class="gp-admin-nav-heading">Operaciones</div>
+                        <a href="<?= htmlspecialchars(url('/monitor/verSalas')) ?>"
+                           class="nav-link gp-admin-nav-link<?=
+                                gp_admin_nav_active('/monitor/verSalas', $currentPath)
+                                . gp_admin_nav_active('/monitor/salas', $currentPath)
+                            ?>">
+                            <i class="fas fa-dumbbell me-2 text-opacity-75"></i> Salas
                         </a>
-                    </li>
 
-                    <li class="nav-item">
-                        <a href="/proyecto-gym/admin/suscripciones" class="nav-link rounded">
-                            <i class="nav-icon fas fa-credit-card"></i>
-                            <p>Suscripciones</p>
+                        <a href="<?= htmlspecialchars(url('/logout')) ?>"
+                           data-gp-confirm
+                           data-gp-confirm-title="Cerrar sesión"
+                           data-gp-confirm-body="¿Salir del panel?"
+                           data-gp-confirm-ok="Sí, salir"
+                           class="nav-link gp-admin-nav-link text-danger fw-semibold mt-3 border border-danger border-opacity-25 rounded">
+                            <i class="fas fa-sign-out-alt me-2"></i> Cerrar sesión
                         </a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a href="/proyecto-gym/admin/solicitudes" class="nav-link rounded">
-                            <i class="nav-icon fas fa-envelope"></i>
-                            <p>Solicitudes</p>
-                        </a>
-                    </li>
-                <?php endif; ?>
-
-                <!-- MONITOR -->
-                <?php if (isset($_SESSION['rol']) && $_SESSION['rol'] === 'monitor'): ?>
-                    <li class="nav-header text-uppercase fw-bold mt-3">MONITOR</li>
-
-                    <li class="nav-item">
-                        <a href="/proyecto-gym/monitor/solicitudes" class="nav-link rounded">
-                            <i class="nav-icon fas fa-envelope-open"></i>
-                            <p>Ver Solicitudes</p>
-                        </a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a href="/proyecto-gym/monitor/mis-solicitudes" class="nav-link rounded">
-                            <i class="nav-icon fas fa-list"></i>
-                            <p>Mis Solicitudes</p>
-                        </a>
-                    </li>
-                <?php endif; ?>
-
-                <!-- GENERAL -->
-                <li class="nav-header text-uppercase fw-bold mt-3">GENERAL</li>
-
-                <li class="nav-item">
-                    <a href="/proyecto-gym/salas" class="nav-link rounded">
-                        <i class="nav-icon fas fa-dumbbell"></i>
-                        <p>Salas</p>
-                    </a>
-                </li>
-
-                <li class="nav-item mt-4">
-                    <a href="/proyecto-gym/logout" class="nav-link rounded bg-danger text-white">
-                        <i class="nav-icon fas fa-sign-out-alt"></i>
-                        <p>Cerrar sesión</p>
-                    </a>
-                </li>
-
-            </ul>
-        </nav>
-
-    </div>
-</aside>
+                    </nav>
+                </div>
+            </aside>
+            <div class="col-lg-9 col-xl-10 gp-admin-content">

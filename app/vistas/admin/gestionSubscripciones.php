@@ -1,14 +1,67 @@
 <div class="content-wrapper">
+    <div class="container-fluid mt-4">
 
-        <div class="mb-4">
-            <a href="../inicioAdmin" class="btn btn-secondary">Volver</a>
-            <a href="formSubscripcion" class="btn btn-primary">Crear Subscripción</a>
+        <div class="mb-4 d-flex flex-wrap gap-2 align-items-center">
+            <a href="<?= htmlspecialchars(url('/inicioAdmin')) ?>" class="btn btn-secondary btn-sm fw-semibold">Volver</a>
+            <a href="<?= htmlspecialchars(url('/admin/formSubscripcion')) ?>" class="btn btn-primary fw-semibold">Crear suscripción</a>
         </div>
 
-        <?php if (!empty($subscripciones)): ?>
+        <h3 class="mb-3">Suscripciones</h3>
+
+        <div
+            class="gp-admin-grid gp-admin-card-panel"
+            data-gp-admin-grid="subscripciones"
+            data-endpoint="<?= htmlspecialchars(url('/admin/ajax/subscripciones')) ?>"
+            data-colspan="5"
+            data-url-edit-base="<?= htmlspecialchars(url('/admin/formEditarSubscripcion')) ?>">
+
+            <form class="gp-admin-grid-filters row g-2 align-items-end mb-3" data-grid-filters novalidate>
+                <div class="col-lg-4">
+                    <label class="form-label small text-muted mb-0">Buscar (nombre)</label>
+                    <input type="search" class="form-control form-control-sm" name="q" placeholder="Nombre del plan…" autocomplete="off">
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label small text-muted mb-0">Nombre contiene</label>
+                    <input type="text" class="form-control form-control-sm" name="nombre" autocomplete="off">
+                </div>
+                <div class="col-md-4 col-lg-2">
+                    <label class="form-label small text-muted mb-0">Precio desde (€)</label>
+                    <input type="number" step="0.01" min="0" class="form-control form-control-sm" name="precio_min" autocomplete="off">
+                </div>
+                <div class="col-md-4 col-lg-2">
+                    <label class="form-label small text-muted mb-0">Precio hasta (€)</label>
+                    <input type="number" step="0.01" min="0" class="form-control form-control-sm" name="precio_max" autocomplete="off">
+                </div>
+                <div class="col-md-6 col-lg-2">
+                    <label class="form-label small text-muted mb-0">Duración mín (meses)</label>
+                    <input type="number" min="1" class="form-control form-control-sm" name="duracion_min" autocomplete="off">
+                </div>
+                <div class="col-md-6 col-lg-2">
+                    <label class="form-label small text-muted mb-0">Duración máx (meses)</label>
+                    <input type="number" min="1" class="form-control form-control-sm" name="duracion_max" autocomplete="off">
+                </div>
+                <div class="col-12 d-flex flex-wrap gap-2 mt-2">
+                    <button type="submit" class="btn btn-primary btn-sm">Buscar</button>
+                    <button type="button" class="btn btn-outline-secondary btn-sm" data-grid-reset>Limpiar</button>
+                    <div class="ms-lg-auto d-flex align-items-center gap-2">
+                        <label class="small text-muted mb-0">Por página</label>
+                        <select class="form-select form-select-sm" data-grid-per-page style="width: auto;">
+                            <option value="10" selected>10</option>
+                            <option value="15">15</option>
+                            <option value="25">25</option>
+                        </select>
+                    </div>
+                </div>
+            </form>
+
+            <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-2">
+                <small class="text-muted" data-grid-status>&nbsp;</small>
+                <div data-grid-pagination></div>
+            </div>
+
             <div class="table-responsive">
-                <table class="table table-striped table-hover">
-                    <thead class="table-dark">
+                <table class="table table-bordered align-middle mb-0">
+                    <thead>
                         <tr>
                             <th>ID</th>
                             <th>Nombre</th>
@@ -17,22 +70,11 @@
                             <th>Acciones</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <?php foreach ($subscripciones as $subscripcion): ?>
-                            <tr>
-                                <td><?php echo $subscripcion['id']; ?></td>
-                                <td><?php echo $subscripcion['nombre']; ?></td>
-                                <td><?php echo $subscripcion['precio']. " €"; ?></td>
-                                <td><?php echo $subscripcion['duracion']." meses"; ?></td>
-                                <td>
-                                    <a href="formEditarSubscripcion?id=<?php echo $subscripcion['id']; ?>" class="btn btn-sm btn-warning">Editar</a>
-                                </td>
-                            </tr>
-                        <?php endforeach; ?>
+                    <tbody data-grid-body>
+                        <tr><td colspan="5" class="text-muted py-4">Cargando…</td></tr>
                     </tbody>
                 </table>
             </div>
-        <?php else: ?>
-            <div class="alert alert-info">No hay subscripciones disponibles</div>
-        <?php endif; ?>
+        </div>
     </div>
+</div>

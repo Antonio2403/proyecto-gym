@@ -28,41 +28,60 @@ class MaterialControlador extends Controller
 
     public function crear($sala_id)
     {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $nombre = $_POST['nombre'];
-            $estado = $_POST['estado'];
-
-            if (Material::guardar($sala_id, $nombre, $estado)) {
-                header("Location: /proyecto-gym/monitor/salas/" . $sala_id . "/materiales");
-                exit();
-            } else {
-                error_log("Error al guardar el material.");
-            }
+        $sala_id = (int) $sala_id;
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            header('Location: ' . url('/monitor/salas/' . $sala_id . '/materiales/crear'));
+            exit;
         }
+
+        $nombre = trim((string) ($_POST['nombre'] ?? ''));
+        $estado = (string) ($_POST['estado'] ?? '');
+
+        if ($nombre === '' || !in_array($estado, ['B', 'M'], true)) {
+            header('Location: ' . url('/monitor/salas/' . $sala_id . '/materiales/crear') . '?error=1');
+            exit;
+        }
+
+        if (Material::guardar($sala_id, $nombre, $estado)) {
+            header('Location: ' . url('/monitor/salas/' . $sala_id . '/materiales'));
+            exit;
+        }
+
+        header('Location: ' . url('/monitor/salas/' . $sala_id . '/materiales/crear') . '?error=1');
+        exit;
     }
 
     public function editar($sala_id, $material_id)
     {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $nombre = $_POST['nombre'];
-            $estado = $_POST['estado'];
+        $sala_id = (int) $sala_id;
+        $material_id = (int) $material_id;
 
-            if (Material::actualizar($material_id, $nombre, $estado)) {
-                header("Location: /proyecto-gym/monitor/salas/" . $sala_id . "/materiales");
-                exit();
-            } else {
-                error_log("Error al actualizar el material.");
-            }
-
-            header("Location: /proyecto-gym/monitor/salas/" . $sala_id . "/materiales");
-            exit();
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            header('Location: ' . url('/monitor/salas/' . $sala_id . '/materiales'));
+            exit;
         }
+
+        $nombre = trim((string) ($_POST['nombre'] ?? ''));
+        $estado = (string) ($_POST['estado'] ?? '');
+
+        if ($nombre === '' || !in_array($estado, ['B', 'M'], true)) {
+            header('Location: ' . url('/monitor/salas/' . $sala_id . '/materiales/editar/' . $material_id) . '?error=1');
+            exit;
+        }
+
+        if (Material::actualizar($material_id, $nombre, $estado)) {
+            header('Location: ' . url('/monitor/salas/' . $sala_id . '/materiales'));
+            exit;
+        }
+
+        header('Location: ' . url('/monitor/salas/' . $sala_id . '/materiales/editar/' . $material_id) . '?error=1');
+        exit;
     }
 
     public function eliminar($sala_id, $material_id)
     {
         if (Material::eliminar($material_id)) {
-            header("Location: /proyecto-gym/monitor/salas/" . $sala_id . "/materiales");
+            header('Location: ' . url('/monitor/salas/' . $sala_id . '/materiales'));
             exit();
         } else {
             echo "Error al eliminar la sala.";

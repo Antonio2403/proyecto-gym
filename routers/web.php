@@ -17,20 +17,39 @@ function controller($router, $method, $route, $action)
 //Inicio
 controller($router, 'get', '/', 'InicioControlador@index');
 controller($router, 'get', '/inicio', 'InicioControlador@index');
+controller($router, 'get', '/quienes-somos', 'InicioControlador@quienesSomos');
 controller($router, 'get', '/inicioAdmin', 'InicioControlador@inicioAdmin');
 controller($router, 'get', '/inicioUsuario', 'InicioControlador@inicioUsuario');
 controller($router, 'get', '/inicioMonitor', 'InicioControlador@inicioMonitor');
+controller($router, 'get', '/admin', 'InicioControlador@inicioAdmin');
 
 //Login y registro
 controller($router, 'get', '/login', 'LoginControlador@mostrarLogin');
 controller($router, 'post', '/usuario/registrar', 'UsuarioControlador@registrar');
+controller($router, 'get', '/confirmar-cuenta', 'UsuarioControlador@confirmarCuenta');
 controller($router, 'post', '/login', 'LoginControlador@login');
 controller($router, 'get', '/logout', 'LoginControlador@logout');
 
 //Clientes
 controller($router, 'get', '/admin/verClientes', 'AdminControlador@verClientes');
+controller($router, 'get', '/admin/ajax/clientes', 'AdminAjaxControlador@clientes');
+controller($router, 'get', '/admin/ajax/monitores', 'AdminAjaxControlador@monitores');
+controller($router, 'get', '/admin/ajax/subscripciones', 'AdminAjaxControlador@subscripciones');
+controller($router, 'get', '/admin/ajax/actividades', 'AdminAjaxControlador@actividades');
+controller($router, 'get', '/admin/ajax/fisioterapeutas', 'AdminAjaxControlador@fisioterapeutas');
+controller($router, 'get', '/admin/ajax/feedback', 'AdminAjaxControlador@feedback');
+controller($router, 'get', '/admin/ajax/solicitudes', 'AdminAjaxControlador@solicitudes');
 controller($router, 'get', '/clientes/editar', 'UsuarioControlador@formEditarCliente');
 controller($router, 'post', '/clientes/editar', 'UsuarioControlador@editarCliente');
+controller($router, 'get', '/darse-de-baja', 'UsuarioControlador@darseDeBaja');
+
+// Fisioterapeutas (admin)
+controller($router, 'get', '/admin/fisioterapeutas', 'AdminFisioterapeutaControlador@index');
+controller($router, 'get', '/admin/fisioterapeutas/nuevo', 'AdminFisioterapeutaControlador@formNuevo');
+controller($router, 'post', '/admin/fisioterapeutas/nuevo', 'AdminFisioterapeutaControlador@crear');
+controller($router, 'get', '/admin/fisioterapeutas/editar/(\d+)', 'AdminFisioterapeutaControlador@formEditar');
+controller($router, 'post', '/admin/fisioterapeutas/editar', 'AdminFisioterapeutaControlador@guardarEditar');
+controller($router, 'get', '/admin/fisioterapeutas/eliminar/(\d+)', 'AdminFisioterapeutaControlador@eliminar');
 
 //Registrar y crear monitores
 controller($router, 'get', '/admin/verMonitores', 'AdminControlador@verMonitores');
@@ -38,6 +57,7 @@ controller($router, 'get', '/admin/registrarMonitor', 'AdminControlador@registra
 controller($router, 'post', '/admin/crearMonitor', 'AdminControlador@crearMonitor');
 controller($router, 'get', '/admin/monitores/editar/(\d+)', 'AdminControlador@formEditarMonitor');
 controller($router, 'post', '/admin/monitores/editar', 'AdminControlador@editarMonitor');
+controller($router, 'get', '/admin/monitores/eliminar/(\d+)', 'AdminControlador@eliminarMonitor');
 
 
 
@@ -76,6 +96,7 @@ controller($router, 'post', '/monitor/salas/editar/(\d+)', 'SalaControlador@actu
 
 //Materiales
 controller($router, 'get', '/monitor/salas/(\d+)/materiales/', 'MaterialControlador@index');
+controller($router, 'get', '/monitor/salas/(\d+)/materiales', 'MaterialControlador@index');
 controller($router, 'get', '/monitor/salas/(\d+)/materiales/crear', 'MaterialControlador@fromCrearMaterial');
 controller($router, 'post', '/monitor/salas/(\d+)/materiales/crear', 'MaterialControlador@crear');
 controller($router, 'get', '/monitor/salas/(\d+)/materiales/editar/(\d+)', 'MaterialControlador@formEditarMaterial');
@@ -97,4 +118,27 @@ controller($router, 'get', '/usuario/actividades', 'ActividadControlador@index')
 //Inscripcion
 controller($router, 'post', '/usuario/inscripciones/apuntarse', 'InscripcionControlador@inscribirse');
 controller($router, 'post', '/usuario/inscripciones/cancelar/', 'InscripcionControlador@cancelar');
+controller($router, 'post', '/usuario/inscripciones/cancelar', 'InscripcionControlador@cancelar');
 controller($router, 'get', '/usuario/inscripciones/mis-inscripciones', 'InscripcionControlador@misIncripciones');
+
+// Fisioterapia (clientes; suscripción con fisio = S)
+controller($router, 'get', '/usuario/fisio', 'FisioControlador@index');
+controller($router, 'get', '/usuario/fisio/solicitar', 'FisioControlador@formSolicitar');
+controller($router, 'post', '/usuario/fisio/solicitar', 'FisioControlador@solicitar');
+controller($router, 'get', '/usuario/fisio/mis-citas', 'FisioControlador@misCitas');
+controller($router, 'post', '/usuario/fisio/cancelar-cita', 'FisioControlador@cancelarCita');
+
+// Panel fisioterapeuta (cuenta vinculada en admin; rol sesión fisio)
+controller($router, 'get', '/fisio/citas/confirmadas', 'FisioPanelControlador@citasConfirmadas');
+controller($router, 'get', '/fisio/citas', 'FisioPanelControlador@citas');
+controller($router, 'get', '/fisio', 'FisioPanelControlador@inicio');
+
+// Contacto y mensajes recibidos (admin)
+controller($router, 'get', '/contacto', 'FeedbackControlador@formContacto');
+controller($router, 'post', '/contacto/enviar', 'FeedbackControlador@guardar');
+controller($router, 'get', '/admin/feedback', 'FeedbackControlador@verAdmin');
+controller($router, 'get', '/admin/feedback/eliminar/(\d+)', 'FeedbackControlador@eliminar');
+
+// Comentarios por sesión de actividad (usuarios)
+controller($router, 'get', '/usuario/actividades/sesion/comentarios', 'ComentarioActividadControlador@ver');
+controller($router, 'post', '/usuario/actividades/sesion/comentarios', 'ComentarioActividadControlador@guardar');

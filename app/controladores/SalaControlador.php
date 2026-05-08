@@ -22,18 +22,27 @@ Class SalaControlador extends Controller
 
     public function crear()
     {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $nombre = $_POST['nombre'];
-            $capacidad = $_POST['capacidad'];
-            $disponibilidad = $_POST['disponibilidad'];
-
-            if (Sala::crear($nombre, $capacidad, $disponibilidad)) {
-                header("Location: /proyecto-gym/monitor/verSalas");
-                exit();
-            } else {
-                echo "Error al crear la sala.";
-            }
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            header('Location: ' . url('/monitor/salas/crear'));
+            exit;
         }
+
+        $nombre = trim((string) ($_POST['nombre'] ?? ''));
+        $capacidad = (int) ($_POST['capacidad'] ?? 0);
+        $disponibilidad = trim((string) ($_POST['disponibilidad'] ?? ''));
+
+        if ($nombre === '' || $capacidad < 1 || $capacidad > 10000 || $disponibilidad === '') {
+            header('Location: ' . url('/monitor/salas/crear') . '?error=1');
+            exit;
+        }
+
+        if (Sala::crear($nombre, $capacidad, $disponibilidad)) {
+            header('Location: ' . url('/monitor/verSalas'));
+            exit;
+        }
+
+        header('Location: ' . url('/monitor/salas/crear') . '?error=1');
+        exit;
     }
     public function formCrearSala()
     {
@@ -53,7 +62,7 @@ Class SalaControlador extends Controller
     public function eliminar($id)
     {
         if (Sala::eliminar($id)) {
-            header("Location: /proyecto-gym/monitor/verSalas");
+            header('Location: ' . url('/monitor/verSalas'));
             exit();
         } else {
             echo "Error al eliminar la sala.";
@@ -62,21 +71,28 @@ Class SalaControlador extends Controller
 
     public function actualizar($id)
     {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $nombre = $_POST['nombre'];
-            $capacidad = $_POST['capacidad'];
-            $disponibilidad = $_POST['disponibilidad'];
-
-            if (Sala::actualizar($id, $nombre, $capacidad, $disponibilidad)) {
-                header("Location: /proyecto-gym/monitor/verSalas");
-                exit();
-            } else {
-                echo "Error al actualizar la sala.";
-            }
-        } else {
-            // Aquí podrías cargar los datos actuales de la sala para mostrar en el formulario
-            // y luego renderizar la vista de actualización
+        $id = (int) $id;
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            header('Location: ' . url('/monitor/verSalas'));
+            exit;
         }
+
+        $nombre = trim((string) ($_POST['nombre'] ?? ''));
+        $capacidad = (int) ($_POST['capacidad'] ?? 0);
+        $disponibilidad = trim((string) ($_POST['disponibilidad'] ?? ''));
+
+        if ($nombre === '' || $capacidad < 1 || $capacidad > 10000 || $disponibilidad === '') {
+            header('Location: ' . url('/monitor/salas/editar/' . $id) . '?error=1');
+            exit;
+        }
+
+        if (Sala::actualizar($id, $nombre, $capacidad, $disponibilidad)) {
+            header('Location: ' . url('/monitor/verSalas'));
+            exit;
+        }
+
+        header('Location: ' . url('/monitor/salas/editar/' . $id) . '?error=1');
+        exit;
     }
 }
 

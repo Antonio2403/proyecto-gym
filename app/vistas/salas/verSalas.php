@@ -1,8 +1,8 @@
 <div class="content-wrapper">
 
         <h1 class="mb-4">Salas disponibles</h1>
-        <a href="salas/crear" class="btn btn-primary mb-3">Crear nueva sala</a>
-        
+        <a href="<?= htmlspecialchars(url('/monitor/salas/crear')) ?>" class="btn btn-primary mb-3">Crear nueva sala</a>
+
         <?php if (!empty($salas)): ?>
             <div class="row">
                 <?php foreach ($salas as $sala): ?>
@@ -15,9 +15,14 @@
                                     <strong>Disponibilidad:</strong> <?= htmlspecialchars($sala['disponibilidad']) ?><br>
                                     <strong>Materiales:</strong> <?= $sala['nmateriales'] ?>
                                 </p>
-                                <a href="salas/<?= $sala['id'] ?>/materiales/" class="btn btn-info btn-sm">Editar materiales</a>
-                                <a href="salas/editar/<?= $sala['id'] ?>" class="btn btn-warning btn-sm">Editar sala</a>
-                                <a href="/salas/eliminar/<?= $sala['id'] ?>" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro de que deseas eliminar esta sala?')">Eliminar</a>
+                                <a href="<?= htmlspecialchars(url('/monitor/salas/' . $sala['id'] . '/materiales/')) ?>" class="btn btn-info btn-sm">Editar materiales</a>
+                                <a href="<?= htmlspecialchars(url('/monitor/salas/editar/' . $sala['id'])) ?>" class="btn btn-warning btn-sm">Editar sala</a>
+                                <a href="<?= htmlspecialchars(url('/monitor/salas/eliminar/' . $sala['id'])) ?>" class="btn btn-danger btn-sm"
+                                   data-gp-confirm
+                                   data-gp-danger="true"
+                                   data-gp-confirm-title="Eliminar sala"
+                                   data-gp-confirm-body="¿Eliminar esta sala? Esta acción no se puede deshacer desde la web."
+                                   data-gp-confirm-ok="Sí, eliminar">Eliminar</a>
                             </div>
                         </div>
                     </div>

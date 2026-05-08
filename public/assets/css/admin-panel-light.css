@@ -1,0 +1,157 @@
+/**
+ * Panel interno (admin/monitor): mismo lenguaje visual que la web pública.
+ */
+
+.gp-admin-topnav {
+    background: var(--gp-navy, #2c3544) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    padding-top: 0.35rem;
+    padding-bottom: 0.35rem;
+}
+
+.gp-admin-topnav .navbar-brand {
+    font-family: var(--gp-display, "Outfit", sans-serif);
+    font-weight: 700;
+}
+
+.gp-admin-topnav .nav-link {
+    color: rgba(255, 255, 255, 0.88);
+}
+
+.gp-admin-topnav .nav-link:hover {
+    color: #fff;
+}
+
+.gp-admin-page {
+    flex: 1;
+    background: var(--gp-page, #eef1f6);
+}
+
+.gp-admin-sidecard {
+    background: var(--gp-white, #fff);
+    border-radius: var(--gp-radius-sm, 0.5rem);
+    border: 1px solid var(--gp-border-light, #e8ecf2);
+    box-shadow: var(--gp-shadow-xs, 0 1px 2px rgba(44, 53, 68, 0.05));
+}
+
+.gp-admin-user-line {
+    font-size: 0.85rem;
+    color: var(--gp-text-secondary, #475569);
+    border-bottom: 1px solid var(--gp-border-light, #e8ecf2);
+    padding-bottom: 0.75rem;
+    margin-bottom: 0.75rem;
+}
+
+.gp-admin-nav .gp-admin-nav-link {
+    border-radius: var(--gp-radius-sm, 0.5rem);
+    color: var(--gp-text, #1e293b);
+    padding: 0.5rem 0.65rem;
+    font-weight: 500;
+}
+
+.gp-admin-nav .gp-admin-nav-link:hover {
+    background: var(--gp-orange-soft, rgba(196, 92, 40, 0.12));
+    color: var(--gp-navy, #2c3544);
+}
+
+.gp-admin-nav .gp-admin-nav-link.active {
+    background: var(--gp-navy, #2c3544);
+    color: #fff;
+}
+
+.gp-admin-nav-heading {
+    font-size: 0.65rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--gp-muted, #64748b);
+    margin-top: 1rem;
+    margin-bottom: 0.35rem;
+    padding-left: 0.65rem;
+    font-weight: 700;
+}
+
+.gp-admin-content .content-wrapper {
+    background: transparent;
+    padding: 0;
+}
+
+.gp-admin-card-panel {
+    background: var(--gp-white, #fff);
+    border: 1px solid var(--gp-border-light, #e8ecf2);
+    border-radius: var(--gp-radius, 0.75rem);
+    box-shadow: var(--gp-shadow-sm, 0 2px 8px rgba(44, 53, 68, 0.06));
+    padding: 1.35rem 1.5rem;
+}
+
+.gp-admin-content .gp-admin-card-panel h1,
+.gp-admin-content .gp-admin-card-panel h2,
+.gp-admin-content .gp-admin-card-panel h3 {
+    color: var(--gp-text, #1e293b);
+    font-family: var(--gp-display, "Outfit", sans-serif);
+}
+
+.gp-admin-content .table thead th {
+    background: var(--gp-navy, #2c3544);
+    color: #fff;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    border-color: rgba(255, 255, 255, 0.12);
+}
+
+.gp-admin-content .table-bordered td,
+.gp-admin-content .table-bordered th {
+    border-color: var(--gp-border, #d5dde8);
+}
+
+@media (max-width: 991.98px) {
+    .gp-admin-sidecard {
+        margin-bottom: 0.25rem;
+    }
+}
+
+.gp-admin-grid-filters .form-label {
+    font-size: 0.75rem;
+}
+
+.gp-admin-grid-filters select,
+.gp-admin-grid-filters input {
+    font-size: 0.875rem;
+}
+
+.gp-admin-grid [data-grid-pagination] .pagination .page-link {
+    color: var(--gp-navy, #2c3544);
+}
+
+.gp-admin-grid [data-grid-pagination] .page-item.active .page-link {
+    background: var(--gp-navy, #2c3544);
+    border-color: var(--gp-navy, #2c3544);
+}
+
+.gp-admin-dash-card {
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.gp-admin-dash-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--gp-shadow-md, 0 4px 14px rgba(44, 53, 68, 0.12)) !important;
+}
+
+.site-body.gp-admin-body-root {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.gp-admin-content > .content-wrapper {
+    background: var(--gp-white, #fff);
+    border: 1px solid var(--gp-border-light, #e8ecf2);
+    border-radius: var(--gp-radius, 0.75rem);
+    box-shadow: var(--gp-shadow-sm, 0 2px 8px rgba(44, 53, 68, 0.06));
+    padding: 1.35rem 1.5rem;
+}
+
+.gp-admin-content .btn-success {
+    background: var(--gp-green, #2f8f4a);
+    border-color: var(--gp-green, #2f8f4a);
+}

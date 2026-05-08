@@ -7,14 +7,16 @@
         </div>
 
         <div class="card-body">
-            <form action="/proyecto-gym/admin/actividades/editar/<?= $actividad['id'] ?>" method="post">
+            <p class="gp-form-required-legend text-muted mb-3">Los campos con <span class="text-danger fw-bold" aria-hidden="true">*</span> son obligatorios.</p>
+            <form action="<?= htmlspecialchars(url('/admin/actividades/editar/' . (int) $actividad['id'])) ?>" method="post" class="needs-validation" novalidate data-gp-validate="activityEdit"
+                  data-gp-confirm data-gp-confirm-title="Guardar actividad" data-gp-confirm-body="¿Guardar los cambios de esta actividad?" data-gp-confirm-ok="Guardar">
 
                 <!-- ID oculto -->
                 <input type="hidden" name="id" value="<?= $actividad['id']; ?>">
 
                 <!-- Nombre -->
                 <div class="mb-3">
-                    <label for="nombre" class="form-label">Nombre de la Actividad</label>
+                    <label for="nombre" class="form-label gp-label-required">Nombre de la Actividad</label>
                     <input 
                         type="text" 
                         class="form-control" 
@@ -54,7 +56,7 @@
 
                 <!-- Monitor -->
                 <div class="mb-3">
-                    <label for="monitor" class="form-label">Monitor</label>
+                    <label for="monitor" class="form-label gp-label-required">Monitor</label>
                     <select class="form-select" id="monitor" name="monitor_id" required>
                         <option value="">Seleccione un monitor</option>
                         <?php foreach ($monitores as $monitor): ?>
