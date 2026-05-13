@@ -103,7 +103,13 @@ class Cliente extends Usuario
                 u.apellido1,
                 u.apellido2,
                 u.email,
-                u.telefono';
+                u.telefono,
+                u.bloqueo_tipo,
+                u.bloqueado_hasta,
+                u.bloqueo_motivo,
+                cs.id AS plan_rel_id,
+                cs.fecha_fin AS plan_fecha_fin,
+                s.nombre AS plan_nombre';
 
         $stmt = $conexion->prepare('SELECT COUNT(*) ' . $baseFrom . $where);
         foreach ($bind as $k => $v) {
@@ -116,7 +122,14 @@ class Cliente extends Usuario
         $page = min($page, $totalPages);
         $offset = ($page - 1) * $perPage;
 
-        $sql = $sel . $baseFrom . $where . ' ORDER BY c.id DESC LIMIT :lim OFFSET :off';
+        $sql = $sel . $baseFrom . "
+            LEFT JOIN cliente_subscripcion cs
+                ON cs.cliente_id = c.id
+               AND cs.estado = 'A'
+               AND (cs.fecha_inicio IS NULL OR cs.fecha_inicio <= NOW())
+               AND (cs.fecha_fin IS NULL OR cs.fecha_fin >= NOW())
+            LEFT JOIN subscripciones s ON s.id = cs.subscripcion_id
+        " . $where . ' ORDER BY c.id DESC LIMIT :lim OFFSET :off';
         $stmt = $conexion->prepare($sql);
         foreach ($bind as $k => $v) {
             $stmt->bindValue($k, $v);
@@ -133,6 +146,44 @@ class Cliente extends Usuario
             'per_page' => $perPage,
             'total_pages' => $totalPages,
         ];
+    }
+
+    public static function cancelarPlanActivo(int $clienteId): bool
+    {
+        $conexion = BasedeDatos::Conectar();
+        if (!$conexion) {
+            return false;
+        }
+
+        try {
+            $stmt = $conexion->prepare(
+                "UPDATE cliente_subscripcion
+                 SET estado = 'C', fecha_fin = LEAST(IFNULL(fecha_fin, NOW()), NOW())
+                 WHERE cliente_id = ?
+                   AND estado = 'A'
+                   AND (fecha_inicio IS NULL OR fecha_inicio <= NOW())
+                   AND (fecha_fin IS NULL OR fecha_fin >= NOW())"
+            );
+            $stmt->execute([$clienteId]);
+            return $stmt->rowCount() > 0;
+        } catch (Throwable $e) {
+            error_log('[Cliente] cancelarPlanActivo: ' . $e->getMessage());
+            return false;
+        }
+    }
+
+    public static function usuarioIdPorClienteId(int $clienteId): ?int
+    {
+        $conexion = BasedeDatos::Conectar();
+        if (!$conexion) {
+            return null;
+        }
+
+        $stmt = $conexion->prepare('SELECT usuario_id FROM clientes WHERE id = ? LIMIT 1');
+        $stmt->execute([$clienteId]);
+        $id = $stmt->fetchColumn();
+
+        return $id !== false ? (int) $id : null;
     }
 
     public static function obtenerPorId($id)

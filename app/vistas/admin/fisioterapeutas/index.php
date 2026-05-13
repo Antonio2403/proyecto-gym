@@ -1,34 +1,16 @@
 <div class="content-wrapper">
     <div class="container-fluid mt-4">
-        <div class="d-flex flex-column flex-md-row justify-content-between align-items-start gap-3 mb-3">
-            <div>
-                <h2 class="mb-1">Fisioterapeutas</h2>
-                <p class="text-muted mb-0">Alta, edición y eliminación de profesionales disponibles para citas.</p>
+        <header class="gp-page-header">
+            <div class="gp-page-header__title">
+                <h2 class="h4 mb-1">Fisioterapeutas</h2>
+                <p class="text-muted small">Alta, edición y eliminación de profesionales disponibles para citas.</p>
             </div>
-            <div class="d-flex flex-wrap gap-2">
-                <a href="<?= htmlspecialchars(url('/admin/fisioterapeutas/nuevo')) ?>" class="btn btn-primary fw-semibold">
-                    Nuevo fisio
+            <div class="gp-view-toolbar">
+                <a href="<?= htmlspecialchars(url('/admin/fisioterapeutas/nuevo')) ?>" class="btn btn-primary btn-sm">
+                    <i class="fas fa-plus me-1" aria-hidden="true"></i> Nuevo fisio
                 </a>
             </div>
-        </div>
-
-        <?php
-        $notice = isset($_GET['success']) ? 'created' : (isset($_GET['updated']) ? 'updated' : (isset($_GET['deleted']) ? 'deleted' : null));
-        if ($notice !== null): ?>
-            <div class="alert alert-success gp-admin-alert" role="alert">
-                <?php if ($notice === 'created'): ?>
-                    Fisioterapeuta creado correctamente.
-                <?php elseif ($notice === 'updated'): ?>
-                    Cambios guardados correctamente.
-                <?php else: ?>
-                    Registro eliminado.
-                <?php endif; ?>
-            </div>
-        <?php endif; ?>
-
-        <?php if (!empty($_GET['error'])): ?>
-            <div class="alert alert-danger gp-admin-alert" role="alert"><?= htmlspecialchars((string) $_GET['error']) ?></div>
-        <?php endif; ?>
+        </header>
 
         <div
             class="gp-admin-grid gp-admin-card-panel p-0"

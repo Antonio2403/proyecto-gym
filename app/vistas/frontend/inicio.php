@@ -13,7 +13,16 @@
                     Tu próxima rutina empieza aquí.
                 </p>
                 <div class="d-flex flex-wrap gap-3">
-                    <?php if (isset($_SESSION['usuario_id'])): ?>
+                    <?php if (isset($_SESSION['usuario_id']) && ($_SESSION['rol'] ?? '') === 'admin'): ?>
+                        <a href="<?= htmlspecialchars(url('/admin')) ?>" class="btn btn-primary btn-lg px-4">Volver al panel</a>
+                        <a href="<?= htmlspecialchars(url('/cuenta/perfil')) ?>" class="btn btn-outline-light btn-lg px-4">Mi perfil</a>
+                    <?php elseif (isset($_SESSION['usuario_id']) && ($_SESSION['rol'] ?? '') === 'monitor'): ?>
+                        <a href="<?= htmlspecialchars(url('/inicioMonitor')) ?>" class="btn btn-primary btn-lg px-4">Volver al panel</a>
+                        <a href="<?= htmlspecialchars(url('/monitor/verSalas')) ?>" class="btn btn-outline-light btn-lg px-4">Salas</a>
+                    <?php elseif (isset($_SESSION['usuario_id']) && ($_SESSION['rol'] ?? '') === 'fisio'): ?>
+                        <a href="<?= htmlspecialchars(url('/fisio')) ?>" class="btn btn-primary btn-lg px-4">Panel fisio</a>
+                        <a href="<?= htmlspecialchars(url('/fisio/citas')) ?>" class="btn btn-outline-light btn-lg px-4">Citas</a>
+                    <?php elseif (isset($_SESSION['usuario_id'])): ?>
                         <a href="<?= htmlspecialchars(url('/usuario/actividades')) ?>" class="btn btn-primary btn-lg px-4">Ver horario</a>
                         <a href="<?= htmlspecialchars(url('/pago')) ?>" class="btn btn-outline-light btn-lg px-4">Mi plan</a>
                     <?php else: ?>

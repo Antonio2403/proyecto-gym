@@ -1,12 +1,13 @@
 <?php
 
-require_once "core/Controller.php";
+require_once 'core/Controller.php';
 
-class ErrorControlador extends Controller {
-    public function error404() {
-        header("HTTP/1.0 404 Not Found");
-        $this->renderFrontend("error404");
+class ErrorControlador extends Controller
+{
+    public function notFound(): void
+    {
+        http_response_code(404);
+        $motivo = trim((string) ($_GET['motivo'] ?? ''));
+        $this->renderFrontend('frontend/error404', ['motivo' => $motivo]);
     }
 }
-
-?>

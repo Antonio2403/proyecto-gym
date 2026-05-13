@@ -3,9 +3,9 @@ require_once "app/modelos/usuario.php";
 
 class Admin extends Usuario
 {
-    public function __construct($nombre, $email, $clave, $telefono)
+    public function __construct($DNI, $nombre, $apellido1, $apellido2, $email, $clave, $telefono)
     {
-        parent::__construct($nombre, $email, $clave, $telefono);
+        parent::__construct($DNI, $nombre, $apellido1, $apellido2, $email, $clave, $telefono);
     }
 
     public static function crearMonitor($datos)
@@ -18,8 +18,8 @@ class Admin extends Usuario
             $hashedPassword = password_hash($datos['clave'], PASSWORD_DEFAULT);
 
             $stmt = $conexion->prepare("
-            INSERT INTO usuarios (DNI, nombre, apellido1, apellido2, email, clave, telefono)
-            VALUES (:DNI, :nombre, :apellido1, :apellido2, :email, :clave, :telefono)
+            INSERT INTO usuarios (DNI, nombre, apellido1, apellido2, email, clave, telefono, password_changed_at)
+            VALUES (:DNI, :nombre, :apellido1, :apellido2, :email, :clave, :telefono, NOW())
         ");
 
             $stmt->execute([
@@ -50,7 +50,7 @@ class Admin extends Usuario
             return true;
         } catch (Throwable $th) {
             $conexion->rollBack();
-            echo "Error: " . $th->getMessage();
+            error_log('[Admin] crearMonitor: ' . $th->getMessage());
             return false;
         }
     }

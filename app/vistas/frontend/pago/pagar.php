@@ -6,6 +6,9 @@ $subscripciones = $subscripciones ?? [];
 $idPlanActual = isset($planActivo['plan_id']) ? (int) $planActivo['plan_id'] : null;
 $esCliente = isset($_SESSION['usuario_id']) && ($_SESSION['rol'] ?? '') === 'cliente';
 $stripePk = htmlspecialchars($_ENV['STRIPE_PUBLISHABLE_KEY'] ?? '');
+$planesComparativa = $planActivo && $idPlanActual !== null
+    ? array_values(array_filter($subscripciones, static fn($s) => (int) ($s['id'] ?? 0) !== $idPlanActual))
+    : $subscripciones;
 ?>
 
 <div class="container py-5">
@@ -28,10 +31,13 @@ $stripePk = htmlspecialchars($_ENV['STRIPE_PUBLISHABLE_KEY'] ?? '');
     </header>
 
     <?php if ($planActivo): ?>
-        <div class="gp-plan-current-banner mb-4 mx-auto">
+        <div class="gp-plan-current-banner gp-plan-current-banner--hero mb-4 mx-auto">
             <div class="row align-items-center g-3">
                 <div class="col-md-8">
                     <span class="gp-badge gp-badge-soft mb-2 d-inline-block">Tu plan actual</span>
+                    <?php if ((int) ($planActivo['en_oferta'] ?? 0) === 1): ?>
+                        <span class="gp-badge gp-badge-soft mb-2 d-inline-block">Oferta contratada</span>
+                    <?php endif; ?>
                     <h2 class="h5 mb-1 text-dark"><?= htmlspecialchars((string) ($planActivo['plan_nombre'] ?? 'Plan')) ?></h2>
                     <p class="text-muted small mb-0">
                         Vigente hasta:
@@ -40,6 +46,15 @@ $stripePk = htmlspecialchars($_ENV['STRIPE_PUBLISHABLE_KEY'] ?? '');
                             : '<strong>sin fecha de fin definida</strong>' ?>
                         · Mientras esté activo no puedes contratar otro plan diferente desde la web.
                     </p>
+                    <div class="gp-current-plan-details mt-3">
+                        <span><strong>Precio:</strong> <?= isset($planActivo['precio']) ? htmlspecialchars((string) $planActivo['precio']) . ' €' : 'no disponible' ?></span>
+                        <span><strong>Duración contratada:</strong> <?= (int) ($planActivo['duracion'] ?? 0) ?> mes(es)</span>
+                        <span><strong>Clases/semana:</strong> <?= (int) ($planActivo['numero_clases'] ?? 0) > 0 ? (int) $planActivo['numero_clases'] : 'sin límite explícito' ?></span>
+                        <span><strong>Fisio:</strong> <?= (($planActivo['fisio'] ?? '') === 'S') ? 'incluida' : 'no incluida' ?></span>
+                        <?php if (($planActivo['plan_catalogo_estado'] ?? 'A') !== 'A'): ?>
+                            <span><strong>Catálogo:</strong> ya no disponible para nuevas compras</span>
+                        <?php endif; ?>
+                    </div>
                 </div>
                 <div class="col-md-4 text-md-end">
                     <a href="<?= htmlspecialchars(url('/usuario/actividades')) ?>" class="btn btn-primary btn-sm">Ir a actividades</a>
@@ -48,8 +63,19 @@ $stripePk = htmlspecialchars($_ENV['STRIPE_PUBLISHABLE_KEY'] ?? '');
         </div>
     <?php endif; ?>
 
-    <div class="row justify-content-center g-4 align-items-stretch">
-        <?php foreach ($subscripciones as $sub): ?>
+    <div class="d-flex flex-wrap align-items-end justify-content-between gap-3 mb-3">
+        <div>
+            <h2 class="h4 mb-1">Planes disponibles</h2>
+            <p class="text-muted small mb-0">
+                <?= $planActivo
+                    ? 'Puedes consultar otros planes, pero solo recepción puede cambiar o cancelar tu plan activo.'
+                    : 'Revisa de un vistazo precio, duración, clases, fisioterapia y disponibilidad.' ?>
+            </p>
+        </div>
+    </div>
+
+    <div class="gp-plans-grid">
+        <?php foreach ($planesComparativa as $sub): ?>
             <?php
             $sid = (int) ($sub['id'] ?? 0);
             $esActual = $idPlanActual !== null && $sid === $idPlanActual;
@@ -57,68 +83,75 @@ $stripePk = htmlspecialchars($_ENV['STRIPE_PUBLISHABLE_KEY'] ?? '');
             $clasesPorSemana = (int) ($sub['numero_clases'] ?? 0);
             $durMeses = (int) ($sub['duracion'] ?? 0);
             $conFisio = (($sub['fisio'] ?? '') === 'S');
-            $puedePagar = $esCliente && !$planActivo;
+            $esOferta = (int) ($sub['en_oferta'] ?? 0) === 1 && !empty($sub['oferta_fin']);
+            $ofertaFin = $esOferta ? (string) $sub['oferta_fin'] : '';
+            $ofertaMotivo = trim((string) ($sub['oferta_motivo'] ?? 'Oferta limitada'));
+            $retiradoCatalogo = (string) ($sub['estado'] ?? 'A') !== 'A';
+            $comprable = !$retiradoCatalogo && (!$esOferta || strtotime($ofertaFin) > time());
+            $puedePagar = $esCliente && !$planActivo && $comprable;
             ?>
-            <div class="col-md-6 col-xl-4 d-flex">
-                <article class="gp-plan-card mx-auto flex-fill<?=
-                    $esActual ? ' gp-plan-card--current' : ''
-                    ?><?=
-                    ($bloqueadoPorOtroPlan || (!$esCliente && !$esActual)) ? ' gp-plan-card--muted' : ''
-                    ?>">
-                    <?php if ($esActual): ?>
-                        <span class="gp-plan-ribbon"><span class="me-1">✓</span> Tu plan</span>
+            <article class="gp-plan-card<?=
+                $esActual ? ' gp-plan-card--current' : ''
+                ?><?=
+                ($bloqueadoPorOtroPlan || (!$esCliente && !$esActual) || (!$comprable && !$esActual)) ? ' gp-plan-card--muted' : ''
+                ?>">
+                <?php if ($esActual): ?>
+                    <span class="gp-plan-ribbon"><span class="me-1">✓</span> Tu plan</span>
+                <?php elseif ($esOferta): ?>
+                    <span class="gp-plan-ribbon gp-plan-ribbon--offer">Oferta</span>
+                <?php endif; ?>
+                <header class="gp-plan-card-head pb-3">
+                    <div class="d-flex justify-content-between align-items-start gap-3">
+                        <div>
+                            <h2 class="h4 mb-1"><?= htmlspecialchars((string) ($sub['nombre'] ?? 'Plan')) ?></h2>
+                            <p class="small text-muted mb-0"><?= $esOferta ? 'Oferta por tiempo limitado' : 'Plan del catálogo' ?></p>
+                        </div>
+                        <div class="gp-plan-card-price text-end"><?= isset($sub['precio']) ? htmlspecialchars((string) $sub['precio']) . ' €' : '—' ?></div>
+                    </div>
+                    <?php if ($esOferta && !$retiradoCatalogo): ?>
+                        <div class="gp-plan-offer-box mt-3" data-offer-countdown="<?= htmlspecialchars($ofertaFin) ?>">
+                            <strong><?= htmlspecialchars($ofertaMotivo !== '' ? $ofertaMotivo : 'Oferta limitada') ?></strong>
+                            <span class="d-block small">Disponible para comprar hasta: <?= htmlspecialchars(substr($ofertaFin, 0, 16)) ?></span>
+                            <span class="d-block small" data-offer-countdown-label>Calculando tiempo restante...</span>
+                        </div>
                     <?php endif; ?>
-                    <header class="gp-plan-card-head text-center pb-3">
-                        <h2 class="h4 mb-1"><?= htmlspecialchars((string) ($sub['nombre'] ?? 'Plan')) ?></h2>
-                        <div class="gp-plan-card-price"><?= htmlspecialchars((string) $sub['precio']) ?> €</div>
-                        <p class="small text-muted mb-0"><?= $durMeses > 0 ? 'Facturación por periodo de ' . $durMeses . ' mes(es)' : '' ?></p>
-                    </header>
-                    <ul class="gp-plan-features list-unstyled small mb-4 flex-grow-1">
-                        <li><span class="gp-plan-ico" aria-hidden="true"></span> <strong>Vigencia del abono:</strong> <?= $durMeses ?> mes(es).</li>
-                        <li><span class="gp-plan-ico" aria-hidden="true"></span>
-                            <strong>Actividades de grupo:</strong>
-                            <?= $clasesPorSemana > 0
-                                ? 'hasta ' . $clasesPorSemana . ' sesiones reservadas por semana.'
-                                : 'consulta disponibilidad en recepción.' ?>
-                        </li>
-                        <li><span class="gp-plan-ico" aria-hidden="true"></span> <strong>Acceso:</strong> reserva plaza en tus actividades favoritas desde la app web.</li>
-                        <li><span class="gp-plan-ico" aria-hidden="true"></span>
-                            <strong>Fisioterapia:</strong>
-                            <?= $conFisio
-                                ? 'incluida (citas según disponibilidad y tu plan físico).'
-                                : 'no incluida en este precio.' ?>
-                        </li>
-                        <li><span class="gp-plan-ico" aria-hidden="true"></span> <strong>Gestión:</strong> atención en recepción y cambios tramitados en el centro.</li>
-                    </ul>
+                </header>
 
-                    <?php if ($bloqueadoPorOtroPlan): ?>
-                        <div class="d-grid gap-2">
-                            <button type="button" class="btn btn-outline-secondary" disabled>Otro plan ya activo</button>
-                            <span class="text-center small text-muted">Desactiva tu suscripción vigente antes de cambiar (consulta recepción).</span>
-                        </div>
-                    <?php elseif (!$esCliente): ?>
-                        <div class="d-grid gap-2 mt-auto">
-                            <a href="<?= htmlspecialchars(url('/login')) ?>" class="btn btn-primary fw-semibold">Inicia sesión para contratar</a>
-                            <?php if ($esActual): ?>
-                                <span class="small text-muted text-center">Este es tu plan después de iniciar sesión.</span>
-                            <?php endif; ?>
-                        </div>
-                    <?php elseif ($esActual): ?>
-                        <button type="button" class="btn btn-success fw-semibold w-100" disabled>Tu suscripción vigente</button>
-                        <p class="small text-muted text-center mb-0 mt-2">Renovaciones y cambios desde el centro o recepción.</p>
-                    <?php else: ?>
-                        <button type="button" class="btn btn-dark fw-semibold w-100"
-                                <?= $puedePagar ? '' : 'disabled title="No disponible"' ?>
-                                data-sub-id="<?= $sid ?>">
-                            <?= $puedePagar ? 'Contratar este plan' : 'No disponible' ?>
-                        </button>
-                    <?php endif; ?>
-                </article>
-            </div>
+                <div class="gp-plan-comparison small flex-grow-1">
+                    <div><span>Duración</span><strong><?= $durMeses > 0 ? $durMeses . ' mes(es)' : 'no definida' ?></strong></div>
+                    <div><span>Clases/semana</span><strong><?= $clasesPorSemana > 0 ? 'hasta ' . $clasesPorSemana : 'sin límite explícito' ?></strong></div>
+                    <div><span>Fisioterapia</span><strong><?= $conFisio ? 'incluida' : 'no incluida' ?></strong></div>
+                </div>
+
+                <ul class="gp-plan-features list-unstyled small my-4">
+                    <li><span class="gp-plan-ico" aria-hidden="true"></span> Reserva plaza en actividades desde la app web.</li>
+                    <li><span class="gp-plan-ico" aria-hidden="true"></span> Atención en recepción y cambios tramitados en el centro.</li>
+                </ul>
+
+                <?php if ($bloqueadoPorOtroPlan): ?>
+                    <div class="d-grid gap-2">
+                        <button type="button" class="btn btn-outline-secondary" disabled>Plan activo en tu cuenta</button>
+                        <span class="text-center small text-muted">Para cambiar, cancelar o darte de baja debes contactar con recepción.</span>
+                    </div>
+                <?php elseif (!$esCliente): ?>
+                    <div class="d-grid gap-2 mt-auto">
+                        <a href="<?= htmlspecialchars(url('/login')) ?>" class="btn btn-primary fw-semibold">Inicia sesión para contratar</a>
+                    </div>
+                <?php elseif ($esActual): ?>
+                    <button type="button" class="btn btn-success fw-semibold w-100" disabled>Tu suscripción vigente</button>
+                    <p class="small text-muted text-center mb-0 mt-2">Vence el <?= !empty($planActivo['fecha_fin']) ? htmlspecialchars(substr((string) $planActivo['fecha_fin'], 0, 16)) : 'día indicado por el centro' ?>.</p>
+                <?php else: ?>
+                    <button type="button" class="btn btn-dark fw-semibold w-100"
+                            <?= $puedePagar ? '' : 'disabled title="No disponible"' ?>
+                            data-sub-id="<?= $sid ?>">
+                        <?= $puedePagar ? 'Contratar este plan' : 'No disponible' ?>
+                    </button>
+                <?php endif; ?>
+            </article>
         <?php endforeach; ?>
     </div>
 
-    <?php if (empty($subscripciones)): ?>
+    <?php if (empty($planesComparativa)): ?>
         <p class="alert alert-secondary text-center">No hay planes publicados por el momento.</p>
     <?php endif; ?>
 
@@ -157,9 +190,11 @@ $stripePk = htmlspecialchars($_ENV['STRIPE_PUBLISHABLE_KEY'] ?? '');
         return;
         <?php endif; ?>
 
+        const csrfMeta = document.querySelector('meta[name="csrf-token"]');
+        const csrfToken = csrfMeta ? csrfMeta.getAttribute('content') || '' : '';
         fetch(<?= json_encode(url('/pago/crear-intento'), JSON_UNESCAPED_SLASHES) ?>, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 'Content-Type': 'application/json', 'X-CSRF-Token': csrfToken },
             body: JSON.stringify({ subscripcion_id }),
         })
             .then((res) => res.json())
@@ -207,11 +242,7 @@ $stripePk = htmlspecialchars($_ENV['STRIPE_PUBLISHABLE_KEY'] ?? '');
                 const { error } = await stripe.confirmPayment({
                     elements,
                     confirmParams: {
-                        return_url:
-                            window.location.origin +
-                            <?= json_encode(url('/pago/exito'), JSON_UNESCAPED_SLASHES) ?> +
-                            '?subscripcion_id=' +
-                            encodeURIComponent(String(sid)),
+                        return_url: window.location.origin + <?= json_encode(url('/pago/exito'), JSON_UNESCAPED_SLASHES) ?>,
                     },
                 });
                 if (error) {
@@ -223,5 +254,26 @@ $stripePk = htmlspecialchars($_ENV['STRIPE_PUBLISHABLE_KEY'] ?? '');
             if (submitBtn) submitBtn.disabled = false;
         });
     }
+
+    document.querySelectorAll('[data-offer-countdown]').forEach(function (box) {
+        var raw = String(box.getAttribute('data-offer-countdown') || '').replace(' ', 'T');
+        var label = box.querySelector('[data-offer-countdown-label]');
+        var end = new Date(raw).getTime();
+        function render() {
+            var diff = end - Date.now();
+            if (!label || !Number.isFinite(end)) return;
+            if (diff <= 0) {
+                label.textContent = 'Promoción finalizada';
+                return;
+            }
+            var mins = Math.floor(diff / 60000);
+            var days = Math.floor(mins / 1440);
+            var hours = Math.floor((mins % 1440) / 60);
+            var minutes = mins % 60;
+            label.textContent = 'Quedan para comprar: ' + days + 'd ' + hours + 'h ' + minutes + 'm';
+        }
+        render();
+        setInterval(render, 60000);
+    });
 })();
 </script>

@@ -1,15 +1,17 @@
 <div class="content-wrapper">
     <div class="container-fluid mt-4">
 
-        <div class="mb-3 d-flex flex-wrap gap-2 align-items-center">
-            <a href="<?= htmlspecialchars(url('/admin/registrarMonitor')) ?>" class="btn btn-primary">+ Nuevo monitor</a>
-        </div>
-
-        <h2 class="mb-3">Gestión de monitores</h2>
-
-        <?php if (!empty($_GET['error'])): ?>
-            <div class="alert alert-danger"><?= htmlspecialchars((string) $_GET['error']) ?></div>
-        <?php endif; ?>
+        <header class="gp-page-header">
+            <div class="gp-page-header__title">
+                <h2 class="h4 mb-1">Gestión de monitores</h2>
+                <p class="text-muted small">Alta, edición y baja del equipo de monitores.</p>
+            </div>
+            <div class="gp-view-toolbar">
+                <a href="<?= htmlspecialchars(url('/admin/registrarMonitor')) ?>" class="btn btn-primary btn-sm">
+                    <i class="fas fa-plus me-1" aria-hidden="true"></i> Nuevo monitor
+                </a>
+            </div>
+        </header>
 
         <div
             class="gp-admin-grid gp-admin-card-panel"
@@ -26,7 +28,7 @@
                 </div>
                 <div class="col-md-3">
                     <label class="form-label small text-muted mb-0">DNI</label>
-                    <input type="text" class="form-control form-control-sm" name="dni" autocomplete="off">
+                    <input type="text" class="form-control form-control-sm font-monospace gp-doc-identidad-input" name="dni" maxlength="9" autocomplete="off" inputmode="text" placeholder="12345678A" data-gp-doc-identidad-es>
                 </div>
                 <div class="col-md-4">
                     <label class="form-label small text-muted mb-0">Email</label>
@@ -75,7 +77,7 @@
                             <th>Teléfono</th>
                             <th>Especialidad</th>
                             <th>Disponibilidad</th>
-                            <th>Acciones</th>
+                            <th class="gp-actions-col">Acciones</th>
                         </tr>
                     </thead>
                     <tbody data-grid-body>

@@ -1,9 +1,16 @@
 <div class="content-wrapper">
     <div class="container-fluid mt-4">
 
-        <a href="<?= htmlspecialchars(url('/admin/verSolicitudes')) ?>" class="btn btn-secondary mb-3">Volver a pendientes</a>
-
-        <h2 class="mb-3">Solicitudes aprobadas</h2>
+        <header class="gp-page-header">
+            <div class="gp-page-header__title">
+                <h2 class="h4 mb-1">Solicitudes aprobadas</h2>
+            </div>
+            <div class="gp-view-toolbar">
+                <a href="<?= htmlspecialchars(url('/admin/verSolicitudes')) ?>" class="btn btn-outline-secondary btn-sm">
+                    <i class="fas fa-arrow-left me-1" aria-hidden="true"></i> Pendientes
+                </a>
+            </div>
+        </header>
 
         <div
             class="gp-admin-grid gp-admin-card-panel"
@@ -65,7 +72,7 @@
                             <th>Motivo</th>
                             <th>Revisión</th>
                             <th>Estado</th>
-                            <th>Acciones</th>
+                            <th class="gp-actions-col">Acciones</th>
                         </tr>
                     </thead>
                     <tbody data-grid-body>

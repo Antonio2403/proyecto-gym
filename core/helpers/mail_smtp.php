@@ -150,6 +150,12 @@ function gp_mail_send(string $to, string $subject, string $htmlBody, string $tex
             $fromAddr = 'no-reply@localhost';
         }
         $mail->setFrom($fromAddr, $fromName !== '' ? $fromName : 'Spartum');
+        $reply = gp_mail_env('MAIL_REPLY_TO');
+        if ($reply !== '' && fv_email_valido($reply)) {
+            $mail->addReplyTo($reply);
+        } elseif ($smtpUser !== '' && fv_email_valido($smtpUser)) {
+            $mail->addReplyTo($smtpUser);
+        }
         $mail->addAddress($to);
         $mail->isHTML(true);
         $mail->CharSet = 'UTF-8';

@@ -102,4 +102,20 @@ class Feedback
 
         return (bool) $st->execute([$id]);
     }
+
+    /** @return array<string, mixed>|null */
+    public static function obtenerPorId(int $id): ?array
+    {
+        if ($id <= 0) {
+            return null;
+        }
+        $db = BasedeDatos::Conectar();
+        $st = $db->prepare(
+            'SELECT id, nombre, email, asunto, mensaje, fecha_creacion FROM feedback WHERE id = ? LIMIT 1'
+        );
+        $st->execute([$id]);
+        $row = $st->fetch(PDO::FETCH_ASSOC);
+
+        return $row ?: null;
+    }
 }

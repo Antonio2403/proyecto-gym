@@ -1,38 +1,35 @@
-<div class="content-wrapper">
+<div class="content-wrapper gp-dash">
     <div class="container-fluid">
-        <div class="gp-admin-card-panel mb-4">
-            <h1 class="h3 mb-2">Panel de monitor</h1>
-            <p class="text-muted mb-0">
+        <header class="gp-dash-hero">
+            <span class="gp-badge d-inline-block mb-2">Monitor</span>
+            <h1 class="h3 mb-0">Panel de monitor</h1>
+            <p class="mb-0 mt-2">
                 Hola, <?= htmlspecialchars($_SESSION['nombre'] ?? 'Monitor') ?>.
-                Desde aquí gestionas solicitudes al centro y las salas del gimnasio.
+                Accesos rápidos a solicitudes y salas del centro.
             </p>
-        </div>
+        </header>
 
-        <div class="row g-3">
-            <div class="col-sm-6 col-xl-4">
-                <a href="<?= htmlspecialchars(url('/monitor/verMonitorSolicitudes')) ?>" class="text-decoration-none d-block gp-admin-card-panel h-100 shadow-sm gp-admin-dash-card">
-                    <div class="fw-semibold text-dark"><i class="fas fa-envelope-open me-2 text-primary"></i>Solicitudes del centro</div>
-                    <div class="small text-muted mt-1">Revisa las peticiones abiertas por el equipo.</div>
-                </a>
-            </div>
-            <div class="col-sm-6 col-xl-4">
-                <a href="<?= htmlspecialchars(url('/monitor/formSolicitud')) ?>" class="text-decoration-none d-block gp-admin-card-panel h-100 shadow-sm gp-admin-dash-card">
-                    <div class="fw-semibold text-dark"><i class="fas fa-plus-circle me-2 text-primary"></i>Nueva solicitud</div>
-                    <div class="small text-muted mt-1">Envía una solicitud a administración.</div>
-                </a>
-            </div>
-            <div class="col-sm-6 col-xl-4">
-                <a href="<?= htmlspecialchars(url('/monitor/verMisSolicitudes')) ?>" class="text-decoration-none d-block gp-admin-card-panel h-100 shadow-sm gp-admin-dash-card">
-                    <div class="fw-semibold text-dark"><i class="fas fa-list me-2 text-primary"></i>Mis solicitudes</div>
-                    <div class="small text-muted mt-1">Historial de tus peticiones.</div>
-                </a>
-            </div>
-            <div class="col-sm-6 col-xl-4">
-                <a href="<?= htmlspecialchars(url('/monitor/verSalas')) ?>" class="text-decoration-none d-block gp-admin-card-panel h-100 shadow-sm gp-admin-dash-card">
-                    <div class="fw-semibold text-dark"><i class="fas fa-dumbbell me-2 text-primary"></i>Salas</div>
-                    <div class="small text-muted mt-1">Gestionar salas y materiales.</div>
-                </a>
-            </div>
-        </div>
+        <nav class="gp-bento gp-bento--admin gp-bento--monitor-grid" aria-label="Menú de monitor">
+            <a href="<?= htmlspecialchars(url('/monitor/verMonitorSolicitudes')) ?>" class="gp-bento-tile gp-motion-item">
+                <span class="gp-bento-tile__icon" aria-hidden="true"><i class="fas fa-envelope-open"></i></span>
+                <span class="gp-bento-tile__label">Solicitudes centro</span>
+                <span class="gp-bento-tile__desc">Revisar peticiones del equipo</span>
+            </a>
+            <a href="<?= htmlspecialchars(url('/monitor/verSalas')) ?>" class="gp-bento-tile gp-motion-item">
+                <span class="gp-bento-tile__icon" aria-hidden="true"><i class="fas fa-dumbbell"></i></span>
+                <span class="gp-bento-tile__label">Salas</span>
+                <span class="gp-bento-tile__desc">Espacios y materiales</span>
+            </a>
+            <a href="<?= htmlspecialchars(url('/monitor/formSolicitud')) ?>" class="gp-bento-tile gp-motion-item">
+                <span class="gp-bento-tile__icon" aria-hidden="true"><i class="fas fa-plus-circle"></i></span>
+                <span class="gp-bento-tile__label">Nueva solicitud</span>
+                <span class="gp-bento-tile__desc">Enviar petición al centro</span>
+            </a>
+            <a href="<?= htmlspecialchars(url('/monitor/verMisSolicitudes')) ?>" class="gp-bento-tile gp-motion-item">
+                <span class="gp-bento-tile__icon" aria-hidden="true"><i class="fas fa-list"></i></span>
+                <span class="gp-bento-tile__label">Mis solicitudes</span>
+                <span class="gp-bento-tile__desc">Estado de tus envíos</span>
+            </a>
+        </nav>
     </div>
 </div>

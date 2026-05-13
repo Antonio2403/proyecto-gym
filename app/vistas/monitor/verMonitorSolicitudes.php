@@ -27,8 +27,8 @@ $labelEstado = static function (string $est): string {
 };
 ?>
 <div class="content-wrapper">
-    <div class="container-fluid">
-        <div class="gp-admin-card-panel mb-4">
+    <div class="container-fluid gp-monitor-requests">
+        <div class="gp-admin-card-panel mb-4 border-0 shadow-sm">
             <div class="d-flex flex-column flex-lg-row justify-content-between align-items-start gap-3">
                 <div>
                     <h1 class="h3 mb-2">Solicitudes del centro</h1>
@@ -36,21 +36,21 @@ $labelEstado = static function (string $est): string {
                         Peticiones del equipo de monitores. Las pendientes las gestiona administración; aquí solo consultas el estado del centro.
                     </p>
                 </div>
-                <div class="d-flex flex-wrap gap-2">
-                    <a href="<?= htmlspecialchars(url('/monitor/formSolicitud')) ?>" class="btn btn-primary btn-sm fw-semibold">
-                        <i class="fas fa-plus-circle me-1"></i> Nueva solicitud
+                <div class="gp-view-toolbar">
+                    <a href="<?= htmlspecialchars(url('/monitor/formSolicitud')) ?>" class="btn btn-primary btn-sm">
+                        <i class="fas fa-plus-circle me-1" aria-hidden="true"></i> Nueva solicitud
                     </a>
-                    <a href="<?= htmlspecialchars(url('/monitor/verMisSolicitudes')) ?>" class="btn btn-outline-primary btn-sm fw-semibold">
-                        <i class="fas fa-user me-1"></i> Mis solicitudes
+                    <a href="<?= htmlspecialchars(url('/monitor/verMisSolicitudes')) ?>" class="btn btn-outline-secondary btn-sm">
+                        <i class="fas fa-list me-1" aria-hidden="true"></i> Mis solicitudes
                     </a>
-                    <a href="<?= htmlspecialchars(url('/inicioMonitor')) ?>" class="btn btn-outline-secondary btn-sm fw-semibold">
-                        <i class="fas fa-arrow-left me-1"></i> Inicio monitor
+                    <a href="<?= htmlspecialchars(url('/inicioMonitor')) ?>" class="btn btn-outline-secondary btn-sm">
+                        <i class="fas fa-home me-1" aria-hidden="true"></i> Inicio monitor
                     </a>
                 </div>
             </div>
         </div>
 
-        <div class="gp-admin-card-panel p-0 overflow-hidden mb-4">
+        <div class="gp-admin-card-panel p-0 overflow-hidden mb-4 border-0 shadow-sm">
             <div class="px-3 px-md-4 py-3 border-bottom bg-light bg-opacity-50">
                 <h2 class="h5 mb-0 text-dark fw-semibold">
                     <i class="fas fa-hourglass-half me-2 text-warning"></i>
@@ -60,7 +60,7 @@ $labelEstado = static function (string $est): string {
             </div>
             <div class="table-responsive">
                 <?php if (!empty($pendientes)): ?>
-                    <table class="table table-bordered align-middle mb-0">
+                    <table class="table table-bordered align-middle mb-0 gp-table-light">
                         <thead>
                             <tr>
                                 <th>ID</th>
@@ -99,7 +99,7 @@ $labelEstado = static function (string $est): string {
 
         <div class="row g-4">
             <div class="col-lg-6">
-                <div class="gp-admin-card-panel p-0 overflow-hidden h-100">
+                <div class="gp-admin-card-panel p-0 overflow-hidden h-100 border-0 shadow-sm">
                     <div class="px-3 py-3 border-bottom bg-light bg-opacity-50">
                         <h2 class="h6 mb-0 text-dark fw-semibold">
                             <i class="fas fa-check me-2 text-success"></i> Últimas aprobadas
@@ -108,7 +108,7 @@ $labelEstado = static function (string $est): string {
                     </div>
                     <div class="table-responsive">
                         <?php if (!empty($aprobadas)): ?>
-                            <table class="table table-sm table-bordered align-middle mb-0">
+                            <table class="table table-sm table-bordered align-middle mb-0 gp-table-light">
                                 <thead>
                                     <tr>
                                         <th>Monitor</th>
@@ -133,7 +133,7 @@ $labelEstado = static function (string $est): string {
                 </div>
             </div>
             <div class="col-lg-6">
-                <div class="gp-admin-card-panel p-0 overflow-hidden h-100">
+                <div class="gp-admin-card-panel p-0 overflow-hidden h-100 border-0 shadow-sm">
                     <div class="px-3 py-3 border-bottom bg-light bg-opacity-50">
                         <h2 class="h6 mb-0 text-dark fw-semibold">
                             <i class="fas fa-times me-2 text-danger"></i> Últimas rechazadas
@@ -142,7 +142,7 @@ $labelEstado = static function (string $est): string {
                     </div>
                     <div class="table-responsive">
                         <?php if (!empty($rechazadas)): ?>
-                            <table class="table table-sm table-bordered align-middle mb-0">
+                            <table class="table table-sm table-bordered align-middle mb-0 gp-table-light">
                                 <thead>
                                     <tr>
                                         <th>Monitor</th>

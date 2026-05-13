@@ -5,10 +5,16 @@ if (!isset($_SESSION['usuario_id'])) {
 }
 $semanaOffset = (int) ($semana_offset ?? 0);
 $weekLabel = (string) ($week_label ?? '');
-$inscritosPorActividad = is_array($inscritos_por_actividad ?? null)
-    ? $inscritos_por_actividad
+$inscritosPorCelda = is_array($inscritos_por_celda ?? null)
+    ? $inscritos_por_celda
     : [];
 $scheduleWeekMonday = isset($schedule_week_monday) ? (string) $schedule_week_monday : '';
+$offsetDiaSemana = ['L' => 0, 'M' => 1, 'X' => 2, 'J' => 3, 'V' => 4, 'S' => 5, 'D' => 6];
+$tienePlanActivo = !empty($tiene_plan_activo);
+$esClienteSocio = !empty($es_cliente_socio);
+$cupoResumen = is_array($cupo_resumen_semana ?? null) ? $cupo_resumen_semana : null;
+$inscritoPorSesion = is_array($inscrito_por_sesion ?? null) ? $inscrito_por_sesion : [];
+$puedeMasReservaSemana = !isset($puede_mas_reserva_semana) || $puede_mas_reserva_semana;
 ?>
 <div class="gp-schedule-page py-4 py-lg-5">
     <div class="container-fluid px-lg-5">
@@ -23,6 +29,9 @@ $scheduleWeekMonday = isset($schedule_week_monday) ? (string) $schedule_week_mon
             <?php if (isset($_GET['error'])): ?>
                 <?php $errorMsg = htmlspecialchars((string) $_GET['error']); ?>
             <?php endif; ?>
+            <?php if (isset($_GET['info'])): ?>
+                <?php $infoMsg = htmlspecialchars((string) $_GET['info']); ?>
+            <?php endif; ?>
             <?php if (isset($_GET['success'])): ?>
                 <?php $succsessMsg = htmlspecialchars((string) $_GET['success']); ?>
             <?php endif; ?>
@@ -33,11 +42,40 @@ $scheduleWeekMonday = isset($schedule_week_monday) ? (string) $schedule_week_mon
                        class="btn gp-btn-orange fw-semibold px-4 py-2">
                         Ver mis inscripciones
                     </a>
-                    <div class="gp-week-toggle btn-group" role="group" aria-label="Cambiar semana">
-                        <a href="<?= htmlspecialchars(url('/usuario/actividades') . '?semana=0') ?>"
-                           class="btn <?= $semanaOffset === 0 ? 'active' : '' ?>">Semana actual</a>
-                        <a href="<?= htmlspecialchars(url('/usuario/actividades') . '?semana=1') ?>"
-                           class="btn <?= $semanaOffset === 1 ? 'active' : '' ?>">Semana siguiente</a>
+                    <div class="d-flex flex-column flex-sm-row align-items-stretch align-items-sm-center gap-2 gap-sm-3">
+                        <?php if ($esClienteSocio): ?>
+                            <?php if ($tienePlanActivo && $cupoResumen && (int) ($cupoResumen['max_semana'] ?? 0) > 0): ?>
+                            <div class="gp-schedule-quota-hint text-center text-sm-start small text-white-50 px-3 py-2 rounded-3 border border-light border-opacity-25 bg-dark bg-opacity-40"
+                                 role="status"
+                                 title="Reservas de esta semana según tu plan activo">
+                                <span class="d-block text-white-50 text-uppercase small mb-1" style="letter-spacing: .04em;">Tu plan esta semana</span>
+                                <span class="text-white fw-semibold"><?= (int) ($cupoResumen['usado'] ?? 0) ?></span>
+                                <span class="text-white-50"> reservas usadas de </span>
+                                <span class="text-white fw-semibold"><?= (int) $cupoResumen['max_semana'] ?></span>
+                                <?php if (isset($cupoResumen['restante'])): ?>
+                                    <span class="text-white-50"> · te quedan </span>
+                                    <span class="text-warning fw-semibold"><?= (int) $cupoResumen['restante'] ?></span>
+                                <?php endif; ?>
+                            </div>
+                            <?php elseif ($tienePlanActivo && $cupoResumen && (int) ($cupoResumen['max_semana'] ?? 0) <= 0): ?>
+                            <div class="gp-schedule-quota-hint small text-white-50 px-3 py-2 rounded-3 border border-light border-opacity-25 bg-dark bg-opacity-40" role="status">
+                                <strong class="text-white">Plan activo:</strong> sin tope fijo de clases por semana en el sistema.
+                            </div>
+                            <?php else: ?>
+                            <div class="gp-schedule-quota-hint small px-3 py-2 rounded-3 border border-warning border-opacity-50 bg-dark bg-opacity-50 text-start" role="alert">
+                                <strong class="text-warning">Sin plan activo.</strong>
+                                <span class="text-white-50"> No puedes reservar ni gestionar plazas hasta contratar o renovar en </span>
+                                <a class="link-warning fw-semibold" href="<?= htmlspecialchars(url('/pago')) ?>">Planes</a>.
+                                <span class="text-white-50 d-block mt-1 small">Si tenías reservas antiguas, quedan congeladas hasta que vuelvas a tener un plan en vigor.</span>
+                            </div>
+                            <?php endif; ?>
+                        <?php endif; ?>
+                        <div class="gp-week-toggle btn-group" role="group" aria-label="Cambiar semana">
+                            <a href="<?= htmlspecialchars(url('/usuario/actividades') . '?semana=0') ?>"
+                               class="btn <?= $semanaOffset === 0 ? 'active' : '' ?>">Semana actual</a>
+                            <a href="<?= htmlspecialchars(url('/usuario/actividades') . '?semana=1') ?>"
+                               class="btn <?= $semanaOffset === 1 ? 'active' : '' ?>">Semana siguiente</a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -68,11 +106,21 @@ $scheduleWeekMonday = isset($schedule_week_monday) ? (string) $schedule_week_mon
                                     <td class="gp-schedule-cell align-top">
                                         <?php
                                         foreach ($actividades as $act):
+                                            $diasAct = $act['dias'] ?? [];
                                             $horaActividad = date('H', strtotime($act['fecha_inicio']));
-                                            if ($act['dia_semana'] == $dia && (int) $horaActividad === $hora):
-                                                $actId = (int) $act['id'];
-                                                $plazas = max(1, (int) ($act['plazas'] ?? 20));
-                                                $inscritos = (int) ($inscritosPorActividad[$actId] ?? 0);
+                                            if (!in_array($dia, $diasAct, true) || (int) $horaActividad !== $hora) {
+                                                continue;
+                                            }
+                                            $actId = (int) $act['id'];
+                                            $plazas = max(1, (int) ($act['plazas'] ?? 20));
+                                            $fechaCelda = '';
+                                            if ($scheduleWeekMonday !== '' && preg_match('/^\d{4}-\d{2}-\d{2}$/', $scheduleWeekMonday) && isset($offsetDiaSemana[$dia])) {
+                                                $fechaCelda = (new DateTimeImmutable($scheduleWeekMonday))->modify('+' . $offsetDiaSemana[$dia] . ' days')->format('Y-m-d');
+                                            }
+                                            $cellKey = $fechaCelda !== '' ? ($actId . '_' . $fechaCelda) : '';
+                                            $inscritos = ($cellKey !== '' && isset($inscritosPorCelda[$cellKey]))
+                                                ? (int) $inscritosPorCelda[$cellKey]
+                                                : 0;
                                                 $tplId = 'gp-act-pop-' . $actId . '-' . $dia . '-' . $hora;
                                                 $desc = trim((string) ($act['descripcion'] ?? ''));
                                                 $monitorNombre = trim((string) ($act['monitor_nombre'] ?? ''));
@@ -84,16 +132,18 @@ $scheduleWeekMonday = isset($schedule_week_monday) ? (string) $schedule_week_mon
                                                     $fechaUnica = date('d/m/Y', strtotime($act['fecha_inicio']));
                                                 }
                                                 $cupoLleno = $inscritos >= $plazas;
-                                                $fechaComentarios = '';
-                                                if ($scheduleWeekMonday !== '' && preg_match('/^\d{4}-\d{2}-\d{2}$/', $scheduleWeekMonday)) {
-                                                    if ((int) ($act['recurrente'] ?? 1) === 1) {
-                                                        $offsetDia = ['L' => 0, 'M' => 1, 'X' => 2, 'J' => 3, 'V' => 4, 'S' => 5, 'D' => 6];
-                                                        $delta = $offsetDia[$dia] ?? 0;
-                                                        $fechaComentarios = (new DateTimeImmutable($scheduleWeekMonday))->modify('+' . $delta . ' days')->format('Y-m-d');
-                                                    } elseif (!empty($act['fecha_inicio'])) {
-                                                        $fechaComentarios = substr((string) $act['fecha_inicio'], 0, 10);
-                                                    }
+                                                $fechaComentarios = $fechaCelda;
+                                                if ($fechaComentarios === '' && (int) ($act['recurrente'] ?? 1) === 0 && !empty($act['fecha_inicio'])) {
+                                                    $fechaComentarios = substr((string) $act['fecha_inicio'], 0, 10);
                                                 }
+                                                $fechaSesionReserva = $fechaCelda !== '' ? $fechaCelda : $fechaComentarios;
+                                                $cellKeyIns = ($actId > 0 && $fechaSesionReserva !== '' && preg_match('/^\d{4}-\d{2}-\d{2}$/', $fechaSesionReserva))
+                                                    ? ($actId . '_' . $fechaSesionReserva)
+                                                    : '';
+                                                $yaInscrito = $tienePlanActivo && $cellKeyIns !== '' && isset($inscritoPorSesion[$cellKeyIns]);
+                                                $limiteSemanalAgotado = $tienePlanActivo && !$puedeMasReservaSemana && !$yaInscrito;
+                                                $sinPlan = !$tienePlanActivo;
+                                                $bloqueadoHorario = ($fechaCelda === '' && (int) ($act['recurrente'] ?? 1) === 1);
                                                 $urlOpiniones = '';
                                                 if ($fechaComentarios !== '') {
                                                     $urlOpiniones = url('/usuario/actividades/sesion/comentarios') . '?' . http_build_query([
@@ -131,19 +181,30 @@ $scheduleWeekMonday = isset($schedule_week_monday) ? (string) $schedule_week_mon
                                                         <span class="gp-schedule-act-capacity" title="Personas apuntadas / plazas totales"><?= (int) $inscritos ?> / <?= (int) $plazas ?></span>
                                                     </div>
                                                 </div>
+                                                <?php
+                                                if ($yaInscrito): ?>
+                                                    <button type="button" class="btn btn-secondary btn-sm w-100 mb-1" disabled title="Ya tienes plaza en esta sesión">Inscrito</button>
+                                                <?php elseif ($sinPlan): ?>
+                                                    <button type="button" class="btn btn-outline-secondary btn-sm w-100 mb-1" disabled title="Contrata un plan para reservar">Requiere plan</button>
+                                                <?php elseif ($limiteSemanalAgotado): ?>
+                                                    <button type="button" class="btn btn-outline-warning btn-sm w-100 mb-1 text-dark" disabled title="Has usado todas las reservas de esta semana según tu plan">Límite semanal</button>
+                                                <?php elseif ($cupoLleno || $bloqueadoHorario): ?>
+                                                    <button type="button" class="btn gp-btn-apuntarse btn-sm w-100 mb-1" disabled><?= $cupoLleno ? 'Completo' : '—' ?></button>
+                                                <?php else: ?>
                                                 <form method="post" action="<?= htmlspecialchars(url('/usuario/inscripciones/apuntarse')) ?>" class="mb-1"
                                                       data-gp-confirm
                                                       data-gp-confirm-title="Reservar plaza"
                                                       data-gp-confirm-body="¿Confirmar tu apuntamiento a esta actividad en el horario mostrado?"
                                                       data-gp-confirm-ok="Sí, reservar">
                                                     <input type="hidden" name="actividad_id" value="<?= $actId ?>">
-                                                    <button type="submit" class="btn gp-btn-apuntarse btn-sm w-100"<?= $cupoLleno ? ' disabled' : '' ?>><?= $cupoLleno ? 'Completo' : 'Apuntarse' ?></button>
+                                                    <input type="hidden" name="fecha_sesion" value="<?= htmlspecialchars($fechaSesionReserva) ?>">
+                                                    <button type="submit" class="btn gp-btn-apuntarse btn-sm w-100"><?= $cupoLleno ? 'Completo' : 'Apuntarse' ?></button>
                                                 </form>
+                                                <?php endif; ?>
                                                 <?php if ($urlOpiniones !== ''): ?>
                                                     <a href="<?= htmlspecialchars($urlOpiniones) ?>" class="gp-schedule-opiniones d-block btn btn-outline-light btn-sm w-100 py-1 lh-sm small text-decoration-none">Opiniones</a>
                                                 <?php endif; ?>
                                         <?php
-                                            endif;
                                         endforeach;
                                         ?>
                                     </td>
@@ -161,6 +222,28 @@ $scheduleWeekMonday = isset($schedule_week_monday) ? (string) $schedule_week_mon
     </div>
 </div>
 
+<?php if (isset($infoMsg)): ?>
+    <div class="modal fade" id="infoModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content gp-modal-dark">
+                <div class="modal-header border-0">
+                    <h5 class="modal-title">Información</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body text-center"><?= htmlspecialchars((string) $infoMsg, ENT_QUOTES, 'UTF-8') ?></div>
+                <div class="modal-footer border-0">
+                    <button type="button" class="btn btn-outline-light" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            new bootstrap.Modal(document.getElementById('infoModal')).show();
+        });
+    </script>
+<?php endif; ?>
+
 <?php if (isset($errorMsg)): ?>
     <div class="modal fade" id="errorModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
@@ -169,7 +252,7 @@ $scheduleWeekMonday = isset($schedule_week_monday) ? (string) $schedule_week_mon
                     <h5 class="modal-title">Error</h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
                 </div>
-                <div class="modal-body text-center"><?= $errorMsg ?></div>
+                <div class="modal-body text-center"><?= htmlspecialchars((string) $errorMsg, ENT_QUOTES, 'UTF-8') ?></div>
                 <div class="modal-footer border-0">
                     <button type="button" class="btn btn-outline-light" data-bs-dismiss="modal">Cerrar</button>
                 </div>
@@ -216,7 +299,7 @@ $scheduleWeekMonday = isset($schedule_week_monday) ? (string) $schedule_week_mon
                     <h5 class="modal-title">Correcto</h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
                 </div>
-                <div class="modal-body text-center"><?= $succsessMsg ?></div>
+                <div class="modal-body text-center"><?= htmlspecialchars((string) $succsessMsg, ENT_QUOTES, 'UTF-8') ?></div>
                 <div class="modal-footer border-0">
                     <button type="button" class="btn btn-success" data-bs-dismiss="modal">Genial</button>
                 </div>

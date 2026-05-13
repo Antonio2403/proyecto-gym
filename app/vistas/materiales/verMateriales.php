@@ -1,40 +1,63 @@
 <div class="content-wrapper">
-<a href="crear" class="btn btn-primary mb-3">Registrar Nuevo Material</a>
-<a href="<?= htmlspecialchars(url('/monitor/verSalas')) ?>" class="btn btn-secondary mb-3">Volver a Salas</a>
-<?php
-if (empty($materiales)): ?>
-    <div class="alert alert-info">
-        <p>Aún no hay ningún material en esta sala.</p>
-    </div>
-<?php else: ?>
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Nombre</th>
-                <th>Descripción</th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php foreach ($materiales as $material): ?>
-                <tr>
-                    <td><?php echo $material['id']; ?></td>
-                    <td><?php echo $material['nombre']; ?></td>
-                    <td><?php echo $material['estado']; ?></td>
-                    <td>
-                        <a href="<?= htmlspecialchars(url('/monitor/salas/' . $material['sala_id'] . '/materiales/editar/' . $material['id'])) ?>" class="btn btn-sm btn-primary">Editar</a>
-                        <a href="<?= htmlspecialchars(url('/monitor/salas/' . $material['sala_id'] . '/materiales/eliminar/' . $material['id'])) ?>" class="btn btn-sm btn-danger"
-                           data-gp-confirm
-                           data-gp-danger="true"
-                           data-gp-confirm-title="Eliminar material"
-                           data-gp-confirm-body="¿Eliminar este material de la sala?"
-                           data-gp-confirm-ok="Sí, eliminar">Eliminar</a>
-                    </td>
-                </tr>
-            <?php endforeach; ?>
-        </tbody>
-    </table>
-<?php endif; ?>
+    <div class="container-fluid mt-4">
+        <header class="gp-page-header">
+            <div class="gp-page-header__title">
+                <h1 class="h4 mb-1">Materiales de la sala</h1>
+                <p class="text-muted small mb-0">Inventario y estado del material en esta sala.</p>
+            </div>
+            <div class="gp-view-toolbar">
+                <a href="<?= htmlspecialchars(url('/monitor/salas/' . (int) $sala_id . '/materiales/crear')) ?>" class="btn btn-primary btn-sm">
+                    <i class="fas fa-plus me-1" aria-hidden="true"></i> Nuevo material
+                </a>
+                <a href="<?= htmlspecialchars(url('/monitor/verSalas')) ?>" class="btn btn-outline-secondary btn-sm">
+                    <i class="fas fa-arrow-left me-1" aria-hidden="true"></i> Volver a salas
+                </a>
+            </div>
+        </header>
 
+        <?php if (empty($materiales)): ?>
+            <div class="alert alert-info border-0 shadow-sm">Aún no hay ningún material en esta sala.</div>
+        <?php else: ?>
+            <div class="gp-admin-card-panel p-0 overflow-hidden">
+                <div class="table-responsive">
+                    <table class="table table-bordered align-middle mb-0 gp-data-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nombre</th>
+                                <th>Estado</th>
+                                <th class="gp-actions-col">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($materiales as $material): ?>
+                                <tr>
+                                    <td><?= (int) $material['id'] ?></td>
+                                    <td><?= htmlspecialchars((string) $material['nombre'], ENT_QUOTES, 'UTF-8') ?></td>
+                                    <td><?= htmlspecialchars((string) $material['estado'], ENT_QUOTES, 'UTF-8') ?></td>
+                                    <td class="gp-actions-cell">
+                                        <div class="gp-actions-stack">
+                                            <a href="<?= htmlspecialchars(url('/monitor/salas/' . $material['sala_id'] . '/materiales/editar/' . $material['id'])) ?>" class="btn btn-sm gp-btn-action gp-btn-action--edit">
+                                                <i class="fas fa-pen me-1" aria-hidden="true"></i> Editar
+                                            </a>
+                                            <form method="post" action="<?= htmlspecialchars(url('/monitor/salas/' . (int) $material['sala_id'] . '/materiales/eliminar/' . (int) $material['id'])) ?>"
+                                                  data-gp-confirm
+                                                  data-gp-danger="true"
+                                                  data-gp-confirm-title="Eliminar material"
+                                                  data-gp-confirm-body="¿Eliminar este material de la sala?"
+                                                  data-gp-confirm-ok="Sí, eliminar">
+                                                <button type="submit" class="btn btn-sm gp-btn-action gp-btn-action--danger">
+                                                    <i class="fas fa-trash me-1" aria-hidden="true"></i> Eliminar
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        <?php endif; ?>
+    </div>
 </div>

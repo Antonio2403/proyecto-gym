@@ -1,0 +1,123 @@
+CHANGELOG del proyecto Spartum
+==============================
+
+1. Login, registro y sesiones
+   - Corregido el registro local cuando no hay SMTP configurado: si MAIL_HOST está vacío, la cuenta queda activa sin bloquearse por el envío de correo.
+   - Mejorada la búsqueda de usuarios por email/DNI y el login con regeneración de sesión tras autenticación correcta.
+   - Añadido cierre de sesión más completo y cierre automático por inactividad configurable con SESSION_IDLE_TIMEOUT_SECONDS.
+   - Eliminadas confirmaciones modales innecesarias en login/registro; los errores y avisos se muestran como alertas.
+
+2. Base de datos, datos demo y secretos
+   - Email inicial del administrador: alfonsojaime02@gmail.com.
+   - El script scripts/seed_demo_data.php queda pensado para CLI y datos demo, no para acceso web.
+   - Protegidos scripts, código interno y ficheros sensibles mediante .htaccess, devolviendo la página 404 en vez de mensajes feos.
+   - Añadidas migraciones automáticas para columnas nuevas: foto de perfil, promociones de suscripciones, recuperación de cuenta y políticas de seguridad.
+
+3. Recuperación de cuenta
+   - Panel admin con código visible por ticket para poder dictarlo en recepción.
+   - Botón para copiar el código sin guion y cierre manual de tickets.
+   - Flujo público mejorado para solicitar ticket, introducir número/código y continuar aunque el usuario no recuerde el correo.
+   - Mensajes y estilos adaptados al tema Spartum.
+   - Un solo ticket pendiente por usuario; validez 48 h; tras cancelar desde la web, 48 h de espera para abrir otro; botón para copiar el número de ticket; fecha de caducidad mostrada en formato local.
+   - Pantalla aparte «Ya tengo el código»: el número de ticket se rellena solo si la sesión del navegador coincide con el ticket creado; alternativa con DNI, teléfono y código si se cambia de dispositivo (`POST /ticket/codigo-por-dni`).
+
+4. Seguridad y formularios
+   - Protección CSRF central para POST.
+   - Conversión de borrados críticos a POST.
+   - Guards de rol en áreas admin/monitor/cliente.
+   - Endurecimiento de Stripe: metadata, validación de importe, moneda, usuario, plan y fecha de fin.
+   - Escapado HTML en vistas con datos de base de datos.
+   - CHECK de integridad en BD (usuarios DNI/email, tickets recuperación, subscripciones, feedback) aplicados desde app/modelos/database.php; reglas de negocio y DNI módulo 23 siguen en PHP.
+   - Arranque seguro: core/bootstrap_security.php (cabeceras HTTP, sesión strict/HttpOnly/SameSite/Lax, Secure solo con HTTPS o APP_FORCE_SECURE_COOKIES); PDO ATTR_EMULATE_PREPARES=false; uploads con .htaccess anti-PHP; avatares con getimagesize además de finfo.
+
+5. Admin, navegación y perfil
+   - Rutas /cuenta/perfil para admin y monitor.
+   - Corrección del bug "Cliente no encontrado" al abrir perfil desde una cuenta de admin/monitor.
+   - Logo del header siempre enlaza a /inicio para todos los roles.
+   - Header de admin/monitor ajustado al mismo tamaño visual que el público y navegación centrada.
+   - Sidebar admin/monitor recolocado para no superponerse al header al hacer scroll.
+   - Foto de perfil visible y editable desde "Mi perfil"; cada usuario solo puede cambiar su propia imagen.
+   - Añadido acceso "Mi panel" para clientes/usuarios, enlazando a su panel de cuenta.
+
+6. Actividades y borrado por POST
+   - Corregido el borrado de actividades en el panel admin: elimina comentarios, inscripciones y días vinculados antes de borrar la actividad.
+   - Página 404 adaptada: si hay sesión iniciada no muestra "Iniciar sesión" y mantiene el botón de inicio centrado.
+
+7. Suscripciones y ofertas
+   - Eliminar una suscripción ahora la retira del catálogo sin romper suscripciones ya compradas.
+   - Añadidos campos de oferta limitada: activo, motivo de promoción y fecha/hora de fin.
+   - Las ofertas aparecen con distintivo "Oferta", fecha de finalización y contador de tiempo restante.
+   - La fecha de una oferta es el límite para comprarla; la duración real del cliente se calcula desde la compra según los meses del plan.
+   - Las ofertas caducadas se retiran automáticamente del catálogo; los clientes que ya pagaron conservan su vigencia y beneficios hasta la fecha de fin de su plan.
+   - Las suscripciones retiradas se eliminan automáticamente cuando ya no queda ningún cliente con esa suscripción activa.
+   - Vista de planes rediseñada: el plan activo se muestra como resumen separado y el catálogo solo lista otros planes disponibles.
+   - Eliminado el estado "contratable" de la comparativa; con un plan activo solo recepción/admin puede cancelar o cambiar el plan.
+   - Panel admin de clientes: acciones para cancelar plan activo, baja normal indefinida, baja permanente y reactivación de usuarios.
+   - Login bloquea cuentas dadas de baja temporal o permanentemente, y las sesiones activas se cierran si el usuario queda bloqueado.
+   - Baja normal indefinida: cancela el plan activo y mantiene la cuenta bloqueada hasta reactivación por ticket de recepción.
+   - Nueva página /ticket para tickets de gestión de cuenta, sustituyendo la experiencia anterior de /no-recuerdo-mi-cuenta.
+   - Los tickets de gestión distinguen entre recuperar correo, cambiar contraseña y reactivar cuenta dada de baja normal.
+   - La confirmación con número de ticket y código de 6 dígitos no crea un ticket nuevo; solo completa el ticket ya abierto.
+   - El panel admin muestra claramente si el ticket es para recuperar correo, cambiar contraseña o reactivar una cuenta.
+   - El panel de tickets de cuenta se recarga solo cuando cambia la lista (polling con firma y GET /admin/ajax/recuperacion-tickets-firma).
+   - El login usa un único enlace de "Crear ticket de gestión de cuenta" en lugar de enlaces separados de recuperación/reactivación.
+   - Los campos de código de 6 dígitos se formatean automáticamente como 123-456 usando solo números.
+   - Los campos de teléfono en tickets y registro aceptan solo números, validan 9 dígitos y se autoformatean como 612 34 56 78.
+   - Baja permanente: bloquea la cuenta y no permite reactivación web ni reactivación accidental desde el panel.
+   - Comprobación automática de sesión cada pocos segundos: si el admin da de baja a un usuario conectado, se muestra una modal y se cierra la sesión sin recargar manualmente.
+   - Antes de aplicar baja normal en recepción, el panel muestra una modal con las condiciones que se deben leer al cliente.
+
+8. UX/UI
+   - Campos DNI/NIE: máximo 9 caracteres, formato en vivo (8 dígitos + letra o NIE X/Y/Z + 7 dígitos + letra) y ayuda en formularios.
+   - Scrollbars: estilo Spartum solo en motores WebKit/Blink (Chrome, Edge, Safari); Firefox (Gecko) usa la barra nativa del sistema.
+   - Página /ticket con estilo Spartum (fondo, tarjeta y tarjetas de tipo de ticket).
+   - Animación del interruptor login/registro con desplazamiento rápido y suavizado final.
+   - Modal global reservado para confirmaciones relevantes/irreversibles, con estilo diferenciado para acciones peligrosas.
+   - Banner funcional de aceptación de cookies en la esquina inferior derecha, guardado desde backend.
+   - El banner de cookies se cierra con animación hacia abajo y guarda también una cookie local de respaldo; el JS se renombró a site-preferences.js para evitar bloqueos de extensiones por nombre.
+   - Header público alineado en ancho/alto con el header de admin/monitor y opciones del nav centradas en escritorio.
+   - Ubicación exacta en footer: Calle Camelia Nº 16, Lepe (Huelva), con enlace a Google Maps sin cargar scripts bloqueables en la página.
+
+Archivos modificados de forma relevante:
+- .htaccess
+- index.php
+- routers/web.php
+- app/controladores/ActividadControlador.php
+- app/controladores/AdminControlador.php
+- app/controladores/InicioControlador.php
+- app/controladores/LoginControlador.php
+- app/controladores/PagoControlador.php
+- app/controladores/ReactivarCuentaControlador.php
+- app/controladores/SubscripcionControlador.php
+- app/controladores/UsuarioControlador.php
+- app/modelos/actividades.php
+- app/modelos/cliente.php
+- app/modelos/database.php
+- app/modelos/recuperacion_cuenta_ticket.php
+- app/modelos/susbscripcion.php
+- app/modelos/usuario.php
+- app/vistas/admin/formSubscripcion.php
+- app/vistas/admin/formEditarSubscripcion.php
+- app/vistas/admin/gestionSubscripciones.php
+- app/vistas/frontend/error404.php
+- app/vistas/frontend/formEditarPerfilCuenta.php
+- app/vistas/frontend/login.php
+- app/vistas/frontend/pago/pagar.php
+- app/vistas/frontend/reactivarCuenta.php
+- app/vistas/layouts/admin/footer.php
+- app/vistas/layouts/admin/navbar.php
+- app/vistas/layouts/admin/sidebar.php
+- app/vistas/layouts/frontend/footer.php
+- app/vistas/layouts/frontend/header.php
+- public/assets/css/admin-panel-light.css
+- public/assets/css/app-theme.css
+- public/assets/js/admin-datagrid.js
+- public/assets/js/site-preferences.js
+- public/assets/js/form-validacion.js
+- VALIDACIONES_CAPAS.txt
+- core/bootstrap_security.php
+- public/assets/uploads/.htaccess
+- public/assets/uploads/avatars/.gitkeep
+- app/vistas/frontend/comentariosActividad.php
+
+==============================

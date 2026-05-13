@@ -28,6 +28,7 @@
      * @param {object} opts
      * @param {string} [opts.title]
      * @param {string} [opts.body]
+     * @param {string} [opts.bodyHtml]
      * @param {string} [opts.okLabel]
      * @param {boolean} [opts.danger]
      * @param {function()} opts.onConfirm
@@ -56,7 +57,11 @@
         }
 
         titleEl.textContent = opts.title || 'Confirmar acción';
-        bodyEl.textContent = opts.body || '¿Continuar con esta acción?';
+        if (opts.bodyHtml) {
+            bodyEl.innerHTML = opts.bodyHtml;
+        } else {
+            bodyEl.textContent = opts.body || '¿Continuar con esta acción?';
+        }
         okBtn.textContent = opts.okLabel || 'Sí, continuar';
 
         okBtn.className = 'btn ' + (opts.danger ? 'btn-danger' : 'btn-primary');
@@ -127,6 +132,7 @@
                 gpConfirm({
                     title: readDs(form, 'gpConfirmTitle', 'Confirmar'),
                     body: readDs(form, 'gpConfirmBody', '¿Enviar este formulario?'),
+                    bodyHtml: readDs(form, 'gpConfirmBodyHtml', ''),
                     okLabel: readDs(form, 'gpConfirmOk', 'Sí'),
                     danger: form.getAttribute('data-gp-danger') === 'true',
                     onConfirm: function () {
@@ -152,6 +158,7 @@
                 gpConfirm({
                     title: readDs(a, 'gpConfirmTitle', 'Confirmar'),
                     body: readDs(a, 'gpConfirmBody', '¿Seguir con esta acción?'),
+                    bodyHtml: readDs(a, 'gpConfirmBodyHtml', ''),
                     okLabel: readDs(a, 'gpConfirmOk', 'Sí'),
                     danger: a.getAttribute('data-gp-danger') === 'true',
                     onConfirm: function () {

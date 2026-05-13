@@ -1,5 +1,6 @@
 /**
  * Validación de formularios (cliente) alineada con las reglas del servidor.
+ * Solo UX: la BD y PHP siguen siendo la fuente de verdad (ver VALIDACIONES_CAPAS.txt).
  * Uso: <form data-gp-validate="login" class="needs-validation" novalidate>
  */
 (function () {
@@ -14,6 +15,31 @@
     function emailOk(val) {
         var t = trimStr(val).toLowerCase();
         return t !== '' && /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(t);
+    }
+
+    function telefonoDigitosNacionales(raw) {
+        var t = trimStr(raw).replace(/[^0-9]/g, '');
+        if (t.indexOf('0034') === 0) t = t.slice(4);
+        else if (t.indexOf('34') === 0 && t.length > 9) t = t.slice(2);
+        return t;
+    }
+
+    function formatTelefono(raw) {
+        var t = telefonoDigitosNacionales(raw).slice(0, 9);
+        if (t.length <= 3) return t;
+        if (t.length <= 5) return t.slice(0, 3) + ' ' + t.slice(3);
+        if (t.length <= 7) return t.slice(0, 3) + ' ' + t.slice(3, 5) + ' ' + t.slice(5);
+        return t.slice(0, 3) + ' ' + t.slice(3, 5) + ' ' + t.slice(5, 7) + ' ' + t.slice(7, 9);
+    }
+
+    function telefonoEsOpcionalOk(raw) {
+        var t = telefonoDigitosNacionales(raw);
+        if (t === '') return true;
+        return /^[6-9]\d{8}$/.test(t);
+    }
+
+    function telefonoEsObligatorioOk(raw) {
+        return telefonoEsOpcionalOk(raw) && telefonoDigitosNacionales(raw) !== '';
     }
 
     function dniNieOk(raw) {
@@ -34,6 +60,48 @@
         }
 
         return false;
+    }
+
+    /**
+     * DNI: 8 dígitos + 1 letra. NIE: X/Y/Z + 7 dígitos + 1 letra. Máximo 9 caracteres, sin espacios.
+     */
+    function formatDocumentoIdentidadEs(raw) {
+        var s = String(raw || '').replace(/\s+/g, '').toUpperCase();
+        var out = '';
+        var i;
+        for (i = 0; i < s.length && out.length < 9; i++) {
+            var c = s.charAt(i);
+            if (out.length === 0) {
+                if (/[0-9XYZ]/.test(c)) {
+                    out += c;
+                }
+                continue;
+            }
+            if (/^[XYZ]/.test(out)) {
+                if (out.length <= 7 && /\d/.test(c)) {
+                    out += c;
+                } else if (out.length === 8 && /[A-Z]/.test(c)) {
+                    out += c;
+                }
+            } else {
+                if (out.length <= 7 && /\d/.test(c)) {
+                    out += c;
+                } else if (out.length === 8 && /[A-Z]/.test(c)) {
+                    out += c;
+                }
+            }
+        }
+        return out;
+    }
+
+    function claveFuerteOk(raw) {
+        var s = trimStr(raw);
+        if (s.length < 16) return false;
+        if (!/[A-Z]/.test(s)) return false;
+        if (!/[a-z]/.test(s)) return false;
+        if (!/[0-9]/.test(s)) return false;
+        if (!/[^A-Za-z0-9]/.test(s)) return false;
+        return true;
     }
 
     /** @returns {HTMLInputElement|HTMLSelectElement|HTMLTextAreaElement|null} */
@@ -82,10 +150,14 @@
     handlers.login = function (form) {
         clearCustomValidity(form);
         var ok = true;
-        var em = field(form, 'email');
+        var idf = field(form, 'identificador');
         var cl = field(form, 'clave');
-        if (!emailOk(em ? em.value : '')) {
-            setValidity(em, 'Introduce un email válido.');
+        var rawId = idf ? trimStr(idf.value) : '';
+        if (rawId === '') {
+            setValidity(idf, 'Indica tu email o DNI/NIE.');
+            ok = false;
+        } else if (!emailOk(rawId.toLowerCase()) && !dniNieOk(rawId)) {
+            setValidity(idf, 'Introduce un email válido o un DNI/NIE correcto.');
             ok = false;
         }
         if (!cl || trimStr(cl.value) === '') {
@@ -103,6 +175,7 @@
         ok = requireNonEmpty(form, 'apellido1', 'El primer apellido es obligatorio.') && ok;
         ok = requireNonEmpty(form, 'email', 'El email es obligatorio.') && ok;
         ok = requireNonEmpty(form, 'clave', 'La contraseña es obligatoria.') && ok;
+        ok = requireNonEmpty(form, 'clave_confirmar', 'Confirma la contraseña.') && ok;
 
         var dni = field(form, 'DNI');
         if (dni && trimStr(dni.value) && !dniNieOk(dni.value)) {
@@ -117,8 +190,19 @@
         }
 
         var pw = field(form, 'clave');
-        if (pw && trimStr(pw.value).length > 0 && trimStr(pw.value).length < 8) {
-            pw.setCustomValidity('La contraseña debe tener al menos 8 caracteres.');
+        var pw2 = field(form, 'clave_confirmar');
+        if (pw && trimStr(pw.value) && !claveFuerteOk(pw.value)) {
+            pw.setCustomValidity('La contraseña debe tener al menos 16 caracteres e incluir mayúsculas, minúsculas, números y símbolos.');
+            ok = false;
+        }
+        if (pw && pw2 && trimStr(pw.value) !== trimStr(pw2.value)) {
+            pw2.setCustomValidity('Las contraseñas deben coincidir.');
+            ok = false;
+        }
+
+        var tel = field(form, 'telefono');
+        if (tel && trimStr(tel.value) && !telefonoEsOpcionalOk(tel.value)) {
+            tel.setCustomValidity('Teléfono no válido: debe tener 9 dígitos y formato 612 34 56 78, o déjalo vacío.');
             ok = false;
         }
 
@@ -146,9 +230,20 @@
         }
 
         var pw = field(form, 'clave');
+        var pw2 = field(form, 'clave_confirmar');
         var pv = trimStr(pw ? pw.value : '');
-        if (pw && pv.length > 0 && pv.length < 8) {
-            pw.setCustomValidity('La nueva contraseña debe tener al menos 8 caracteres.');
+        if (pw && pv.length > 0 && !claveFuerteOk(pv)) {
+            pw.setCustomValidity('La nueva contraseña debe tener al menos 16 caracteres e incluir mayúsculas, minúsculas, números y símbolos.');
+            ok = false;
+        }
+        if (pw && pw2 && pv.length > 0 && trimStr(pw2.value) !== pv) {
+            pw2.setCustomValidity('Las contraseñas deben coincidir.');
+            ok = false;
+        }
+
+        var tel = field(form, 'telefono');
+        if (tel && trimStr(tel.value) && !telefonoEsOpcionalOk(tel.value)) {
+            tel.setCustomValidity('Teléfono no válido: debe tener 9 dígitos y formato 612 34 56 78, o déjalo vacío.');
             ok = false;
         }
 
@@ -189,10 +284,10 @@
             ok = false;
         }
 
-        var dia = field(form, 'dia_semana');
-        var dias = ['L', 'M', 'X', 'J', 'V', 'S', 'D'];
-        if (!dia || dias.indexOf(trimStr(dia.value)) === -1) {
-            setValidity(dia, 'Elige un día de la semana.');
+        var marcados = form.querySelectorAll('input[name="dias_semana[]"]:checked');
+        if (!marcados || marcados.length < 1) {
+            var anyCb = form.querySelector('input[name="dias_semana[]"]');
+            setValidity(anyCb, 'Marca al menos un día.');
             ok = false;
         }
 
@@ -220,6 +315,22 @@
         var ok = true;
         ok = requireNonEmpty(form, 'nombre', 'El nombre es obligatorio.') && ok;
 
+        var marcados = form.querySelectorAll('input[name="dias_semana[]"]:checked');
+        if (!marcados || marcados.length < 1) {
+            var anyCb = form.querySelector('input[name="dias_semana[]"]');
+            setValidity(anyCb, 'Marca al menos un día.');
+            ok = false;
+        }
+
+        var dur = field(form, 'duracion');
+        var d = dur ? parseInt(dur.value, 10) : NaN;
+        if (!dur || !Number.isFinite(d) || d < 1 || d > 600) {
+            setValidity(dur, 'Duración entre 1 y 600 minutos.');
+            ok = false;
+        }
+
+        ok = requireNonEmpty(form, 'hora_inicio', 'Indica la hora.') && ok;
+
         var sala = field(form, 'sala_id');
         var salaV = sala ? parseInt(sala.value, 10) : 0;
         if (!sala || !Number.isFinite(salaV) || salaV <= 0) {
@@ -245,6 +356,7 @@
         ok = requireNonEmpty(form, 'apellido1', 'El primer apellido es obligatorio.') && ok;
         ok = requireNonEmpty(form, 'email', 'El email es obligatorio.') && ok;
         ok = requireNonEmpty(form, 'clave', 'La contraseña es obligatoria.') && ok;
+        ok = requireNonEmpty(form, 'clave_confirmar', 'Confirma la contraseña.') && ok;
         ok = requireNonEmpty(form, 'telefono', 'El teléfono es obligatorio.') && ok;
         ok = requireNonEmpty(form, 'especialidad', 'La especialidad es obligatoria.') && ok;
         ok = requireNonEmpty(form, 'disponibilidad', 'La disponibilidad es obligatoria.') && ok;
@@ -262,8 +374,19 @@
         }
 
         var pw = field(form, 'clave');
-        if (pw && trimStr(pw.value).length < 8) {
-            pw.setCustomValidity('La contraseña debe tener al menos 8 caracteres.');
+        var pw2 = field(form, 'clave_confirmar');
+        if (pw && !claveFuerteOk(pw.value)) {
+            pw.setCustomValidity('La contraseña debe tener al menos 16 caracteres e incluir mayúsculas, minúsculas, números y símbolos.');
+            ok = false;
+        }
+        if (pw && pw2 && trimStr(pw.value) !== trimStr(pw2.value)) {
+            pw2.setCustomValidity('Las contraseñas deben coincidir.');
+            ok = false;
+        }
+
+        var tel = field(form, 'telefono');
+        if (tel && !telefonoEsObligatorioOk(tel.value)) {
+            tel.setCustomValidity('Teléfono obligatorio: 9 dígitos con formato 612 34 56 78.');
             ok = false;
         }
 
@@ -294,11 +417,142 @@
         }
 
         var pw = field(form, 'clave');
-        if (pw && trimStr(pw.value).length > 0 && trimStr(pw.value).length < 8) {
-            pw.setCustomValidity('La contraseña debe tener al menos 8 caracteres.');
+        var pw2 = field(form, 'clave_confirmar');
+        var pv = pw ? trimStr(pw.value) : '';
+        if (pw && pv.length > 0 && !claveFuerteOk(pv)) {
+            pw.setCustomValidity('La contraseña debe tener al menos 16 caracteres e incluir mayúsculas, minúsculas, números y símbolos.');
+            ok = false;
+        }
+        if (pw && pw2 && pv.length > 0 && trimStr(pw2.value) !== pv) {
+            pw2.setCustomValidity('Las contraseñas deben coincidir.');
             ok = false;
         }
 
+        var tel = field(form, 'telefono');
+        if (tel && !telefonoEsObligatorioOk(tel.value)) {
+            tel.setCustomValidity('Teléfono obligatorio: 9 dígitos con formato 612 34 56 78.');
+            ok = false;
+        }
+
+        return ok;
+    };
+
+    handlers.changePassword = function (form) {
+        clearCustomValidity(form);
+        var ok = true;
+        ok = requireNonEmpty(form, 'clave_actual', 'Indica tu contraseña actual.') && ok;
+        ok = requireNonEmpty(form, 'clave_nueva', 'Indica la nueva contraseña.') && ok;
+        ok = requireNonEmpty(form, 'clave_nueva2', 'Confirma la nueva contraseña.') && ok;
+        var n1 = field(form, 'clave_nueva');
+        var n2 = field(form, 'clave_nueva2');
+        if (n1 && trimStr(n1.value) && !claveFuerteOk(n1.value)) {
+            n1.setCustomValidity('La nueva contraseña debe cumplir los requisitos de complejidad.');
+            ok = false;
+        }
+        if (n1 && n2 && trimStr(n1.value) !== trimStr(n2.value)) {
+            n2.setCustomValidity('Las contraseñas nuevas deben coincidir.');
+            ok = false;
+        }
+        return ok;
+    };
+
+    handlers.recoverEmail = function (form) {
+        clearCustomValidity(form);
+        var ok = true;
+        var em = field(form, 'email');
+        if (!em || !emailOk(em.value)) {
+            setValidity(em, 'Introduce un email válido.');
+            ok = false;
+        }
+        return ok;
+    };
+
+    handlers.recoveryDniPhone = function (form) {
+        clearCustomValidity(form);
+        var ok = true;
+        ok = requireNonEmpty(form, 'dni', 'El DNI o NIE es obligatorio.') && ok;
+        ok = requireNonEmpty(form, 'telefono', 'El teléfono es obligatorio.') && ok;
+        var dni = field(form, 'dni');
+        if (dni && trimStr(dni.value) && !dniNieOk(dni.value)) {
+            dni.setCustomValidity('DNI o NIE no válido.');
+            ok = false;
+        }
+        var tel = field(form, 'telefono');
+        if (tel && !telefonoEsObligatorioOk(tel.value)) {
+            tel.setCustomValidity('Teléfono: 9 dígitos con formato 612 34 56 78.');
+            ok = false;
+        }
+        return ok;
+    };
+
+    handlers.recoveryDniCode = function (form) {
+        clearCustomValidity(form);
+        var ok = true;
+        var sid = field(form, 'solicitud_id');
+        if (!sid || trimStr(sid.value) === '' || parseInt(sid.value, 10) <= 0) {
+            setValidity(sid, 'Falta el ticket enlazado. Vuelve a «Ya tengo el código» desde la página del ticket.');
+            ok = false;
+        }
+        var inp = field(form, 'codigo_verificacion');
+        if (!inp || trimStr(inp.value) === '') {
+            setValidity(inp, 'Introduce el código de 6 dígitos que te ha dado recepción.');
+            ok = false;
+        }
+        if (inp && trimStr(inp.value)) {
+            var t = trimStr(inp.value).replace(/[^0-9]/g, '');
+            if (t.length !== 6) {
+                inp.setCustomValidity('El código tiene 6 dígitos (formato 123-456).');
+                ok = false;
+            }
+        }
+        return ok;
+    };
+
+    handlers.recoveryDniPhoneCode = function (form) {
+        clearCustomValidity(form);
+        var ok = true;
+        ok = requireNonEmpty(form, 'dni', 'El DNI o NIE es obligatorio.') && ok;
+        ok = requireNonEmpty(form, 'telefono', 'El teléfono es obligatorio.') && ok;
+        var dni = field(form, 'dni');
+        if (dni && trimStr(dni.value) && !dniNieOk(dni.value)) {
+            dni.setCustomValidity('DNI o NIE no válido.');
+            ok = false;
+        }
+        var tel = field(form, 'telefono');
+        if (tel && !telefonoEsObligatorioOk(tel.value)) {
+            tel.setCustomValidity('Teléfono: 9 dígitos con formato 612 34 56 78.');
+            ok = false;
+        }
+        var inp = field(form, 'codigo_verificacion');
+        if (!inp || trimStr(inp.value) === '') {
+            setValidity(inp, 'Introduce el código de 6 dígitos que te ha dado recepción.');
+            ok = false;
+        }
+        if (inp && trimStr(inp.value)) {
+            var t = trimStr(inp.value).replace(/[^0-9]/g, '');
+            if (t.length !== 6) {
+                inp.setCustomValidity('El código tiene 6 dígitos (formato 123-456).');
+                ok = false;
+            }
+        }
+        return ok;
+    };
+
+    handlers.resetPassword = function (form) {
+        clearCustomValidity(form);
+        var ok = true;
+        ok = requireNonEmpty(form, 'clave_nueva', 'Indica la nueva contraseña.') && ok;
+        ok = requireNonEmpty(form, 'clave_nueva2', 'Confirma la contraseña.') && ok;
+        var n1 = field(form, 'clave_nueva');
+        var n2 = field(form, 'clave_nueva2');
+        if (n1 && trimStr(n1.value) && !claveFuerteOk(n1.value)) {
+            n1.setCustomValidity('La contraseña debe cumplir los requisitos de complejidad.');
+            ok = false;
+        }
+        if (n1 && n2 && trimStr(n1.value) !== trimStr(n2.value)) {
+            n2.setCustomValidity('Las contraseñas deben coincidir.');
+            ok = false;
+        }
         return ok;
     };
 
@@ -328,6 +582,25 @@
                 setValidity(dur, 'Duración entre 1 y 120 meses.');
                 ok = false;
             }
+        }
+
+        var clases = field(form, 'numero_clases');
+        var cv = clases ? trimStr(clases.value) : '';
+        if (!clases || cv === '' || !/^\d+$/.test(cv)) {
+            setValidity(clases, 'Indica las clases por semana (0 si no hay límite).');
+            ok = false;
+        } else {
+            var cInt = parseInt(cv, 10);
+            if (cInt < 0 || cInt > 99) {
+                setValidity(clases, 'Clases por semana entre 0 y 99.');
+                ok = false;
+            }
+        }
+
+        var fisio = field(form, 'fisio');
+        if (!fisio || ['S', 'N'].indexOf(fisio.value) === -1) {
+            setValidity(fisio, 'Selecciona si incluye fisioterapia.');
+            ok = false;
         }
 
         return ok;
@@ -509,11 +782,201 @@
         });
     }
 
+    function currentCsrfToken() {
+        var meta = document.querySelector('meta[name="csrf-token"]');
+        return meta ? trimStr(meta.getAttribute('content') || '') : '';
+    }
+
+    function ensureCsrfInput(form) {
+        if (!form || String(form.method || '').toLowerCase() !== 'post') return;
+        var token = currentCsrfToken();
+        if (!token) return;
+        var inp = form.querySelector('input[name="csrf_token"]');
+        if (!inp) {
+            inp = document.createElement('input');
+            inp.type = 'hidden';
+            inp.name = 'csrf_token';
+            form.appendChild(inp);
+        }
+        inp.value = token;
+    }
+
     document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('submit', function (evt) {
+            if (evt.target instanceof HTMLFormElement) {
+                ensureCsrfInput(evt.target);
+            }
+        }, true);
+
         document.querySelectorAll('form[data-gp-validate]').forEach(function (form) {
             if (!(form instanceof HTMLFormElement)) return;
             var key = trimStr(form.getAttribute('data-gp-validate'));
             attachForm(form, key);
+        });
+
+        function collectRevealIds(btn) {
+            var ids = [];
+            var singleId = btn.getAttribute('data-gp-pass-reveal');
+            var groupRaw = btn.getAttribute('data-gp-pass-reveal-group');
+            if (singleId && trimStr(singleId)) ids.push(trimStr(singleId));
+            if (groupRaw) {
+                groupRaw.split(',').forEach(function (s) {
+                    var id = trimStr(s);
+                    if (id && ids.indexOf(id) === -1) ids.push(id);
+                });
+            }
+            return ids;
+        }
+
+        function wirePressHoldReveal(btn) {
+            var ids = collectRevealIds(btn);
+            if (ids.length === 0) return;
+            function els() {
+                return ids.map(function (id) { return document.getElementById(id); }).filter(function (el) {
+                    return el && 'type' in el;
+                });
+            }
+            function showPlain(show) {
+                els().forEach(function (el) {
+                    el.type = show ? 'text' : 'password';
+                });
+            }
+            function pe(e) {
+                if (e) e.preventDefault();
+            }
+            function start(e) {
+                pe(e);
+                showPlain(true);
+            }
+            function end() {
+                showPlain(false);
+            }
+            btn.addEventListener('mousedown', start);
+            btn.addEventListener('touchstart', start, { passive: false });
+            btn.addEventListener('mouseup', end);
+            btn.addEventListener('mouseleave', end);
+            btn.addEventListener('touchend', end);
+            btn.addEventListener('touchcancel', end);
+            btn.addEventListener('keydown', function (e) {
+                if (e.key === ' ' || e.key === 'Enter') {
+                    pe(e);
+                    showPlain(true);
+                }
+            });
+            btn.addEventListener('keyup', function (e) {
+                if (e.key === ' ' || e.key === 'Enter') end();
+            });
+            btn.addEventListener('blur', end);
+        }
+
+        document.querySelectorAll('[data-gp-pass-reveal], [data-gp-pass-reveal-group]').forEach(function (btn) {
+            wirePressHoldReveal(btn);
+        });
+
+        function wireTelefonoFormatter(input) {
+            if (!input) return;
+            function applyFormat() {
+                input.value = formatTelefono(input.value);
+            }
+            input.addEventListener('input', applyFormat);
+            input.addEventListener('blur', applyFormat);
+            input.addEventListener('paste', function (ev) {
+                var txt = '';
+                try {
+                    txt = (ev.clipboardData || window.clipboardData).getData('text') || '';
+                } catch (e) {
+                    return;
+                }
+                ev.preventDefault();
+                input.value = formatTelefono(txt);
+                try {
+                    input.dispatchEvent(new Event('input', { bubbles: true }));
+                } catch (e2) {
+                }
+            });
+            applyFormat();
+        }
+
+        document.querySelectorAll('[data-gp-phone-input]').forEach(function (input) {
+            wireTelefonoFormatter(input);
+        });
+
+        function wireDocumentoIdentidadEs(input) {
+            if (!input) {
+                return;
+            }
+            function applyDoc() {
+                input.value = formatDocumentoIdentidadEs(input.value);
+            }
+            input.addEventListener('input', applyDoc);
+            input.addEventListener('blur', applyDoc);
+            input.addEventListener('paste', function (ev) {
+                var txt = '';
+                try {
+                    txt = (ev.clipboardData || window.clipboardData).getData('text') || '';
+                } catch (e) {
+                    return;
+                }
+                ev.preventDefault();
+                input.value = formatDocumentoIdentidadEs(txt);
+                try {
+                    input.dispatchEvent(new Event('input', { bubbles: true }));
+                } catch (e2) {
+                }
+            });
+            applyDoc();
+        }
+
+        document.querySelectorAll('[data-gp-doc-identidad-es]').forEach(function (input) {
+            wireDocumentoIdentidadEs(input);
+        });
+
+        function evalClaveFuerteParts(s) {
+            return {
+                len: s.length >= 16,
+                upper: /[A-Z]/.test(s),
+                lower: /[a-z]/.test(s),
+                num: /[0-9]/.test(s),
+                sym: /[^A-Za-z0-9]/.test(s)
+            };
+        }
+
+        function wirePasswordStrength(input, listRoot) {
+            if (!input || !listRoot) return;
+            var touched = false;
+            function setIdle(key) {
+                var li = listRoot.querySelector('[data-rule="' + key + '"]');
+                if (!li) return;
+                li.classList.remove('gp-pass-rule--ok', 'gp-pass-rule--fail');
+                li.classList.add('gp-pass-rule--idle');
+            }
+            function paint() {
+                var s = trimStr(input.value);
+                if (!touched && s.length === 0) {
+                    ['len', 'upper', 'lower', 'num', 'sym'].forEach(setIdle);
+                    return;
+                }
+                touched = true;
+                var p = evalClaveFuerteParts(s);
+                ['len', 'upper', 'lower', 'num', 'sym'].forEach(function (key) {
+                    var li = listRoot.querySelector('[data-rule="' + key + '"]');
+                    if (!li) return;
+                    li.classList.remove('gp-pass-rule--idle');
+                    var ok = p[key];
+                    li.classList.toggle('gp-pass-rule--ok', ok);
+                    li.classList.toggle('gp-pass-rule--fail', !ok);
+                });
+            }
+            input.addEventListener('input', paint);
+            input.addEventListener('change', paint);
+            ['len', 'upper', 'lower', 'num', 'sym'].forEach(setIdle);
+        }
+
+        document.querySelectorAll('[data-gp-pass-rules-for]').forEach(function (listRoot) {
+            var id = trimStr(listRoot.getAttribute('data-gp-pass-rules-for'));
+            if (!id) return;
+            var input = document.getElementById(id);
+            wirePasswordStrength(input, listRoot);
         });
     });
 })();

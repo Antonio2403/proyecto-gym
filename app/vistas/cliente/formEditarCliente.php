@@ -15,17 +15,17 @@
                 <div class="card border-0">
                     <div class="card-body p-4">
                         <p class="gp-form-required-legend text-muted mb-3"><span class="text-danger fw-bold" aria-hidden="true">*</span> Obligatorio</p>
-                        <form action="<?= htmlspecialchars(url('/clientes/editar')) ?>" method="POST" class="needs-validation" novalidate data-gp-validate="editClient"
-                              data-gp-confirm data-gp-confirm-title="Guardar perfil" data-gp-confirm-body="¿Guardar los cambios de tu perfil?" data-gp-confirm-ok="Guardar">
+                        <form action="<?= htmlspecialchars(url('/clientes/editar')) ?>" method="POST" class="needs-validation" novalidate data-gp-validate="editClient">
                             <input type="hidden" name="id" value="<?= isset($cliente['usuario_id']) ? htmlspecialchars($cliente['usuario_id']) : '' ?>">
                             <div class="row g-3">
                                 <div class="col-md-6">
                                     <label for="DNI" class="form-label gp-label-required">DNI / NIE</label>
-                                    <input type="text" class="form-control" id="DNI" name="DNI" value="<?= isset($cliente['DNI']) ? htmlspecialchars($cliente['DNI']) : '' ?>" required>
+                                    <input type="text" class="form-control font-monospace gp-doc-identidad-input" id="DNI" name="DNI" value="<?= isset($cliente['DNI']) ? htmlspecialchars($cliente['DNI']) : '' ?>" required maxlength="9" autocomplete="off" inputmode="text" placeholder="12345678A" data-gp-doc-identidad-es>
+                                    <p class="form-text small">8 números y letra, o NIE (X/Y/Z + 7 dígitos + letra).</p>
                                 </div>
                                 <div class="col-md-6">
                                     <label for="telefono" class="form-label">Teléfono</label>
-                                    <input type="text" class="form-control" id="telefono" name="telefono" value="<?= isset($cliente['telefono']) ? htmlspecialchars($cliente['telefono']) : '' ?>">
+                                    <input type="tel" class="form-control" id="telefono" name="telefono" inputmode="numeric" autocomplete="tel" placeholder="612345678" pattern="[0-9+\s]{9,15}" value="<?= isset($cliente['telefono']) ? htmlspecialchars($cliente['telefono']) : '' ?>">
                                 </div>
                                 <div class="col-12">
                                     <label for="nombre" class="form-label gp-label-required">Nombre</label>
@@ -43,10 +43,17 @@
                                     <label for="email" class="form-label gp-label-required">Email</label>
                                     <input type="email" class="form-control" id="email" name="email" value="<?= isset($cliente['email']) ? htmlspecialchars($cliente['email']) : '' ?>" required autocomplete="email">
                                 </div>
-                                <div class="col-12">
+                                <div class="col-md-6">
                                     <label for="clave" class="form-label">Nueva contraseña</label>
-                                    <input type="password" class="form-control" id="clave" name="clave" autocomplete="new-password" minlength="8">
-                                    <small class="text-muted">Déjalo vacío si no quieres cambiarla.</small>
+                                    <div class="input-group">
+                                        <input type="password" class="form-control" id="clave" name="clave" autocomplete="new-password" minlength="16">
+                                        <button class="btn btn-outline-secondary" type="button" data-gp-pass-reveal-group="clave,clave_confirmar" aria-label="Mostrar u ocultar contraseñas">Ver</button>
+                                    </div>
+                                    <small class="text-muted">Déjalo vacío si no quieres cambiarla. Si la cambias: mín. 16 caracteres con mayúsculas, minúsculas, número y símbolo.</small>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="clave_confirmar" class="form-label">Confirmar nueva contraseña</label>
+                                    <input type="password" class="form-control" id="clave_confirmar" name="clave_confirmar" autocomplete="new-password" minlength="16">
                                 </div>
                             </div>
                             <div class="d-flex flex-wrap gap-2 justify-content-end mt-4">
@@ -61,33 +68,8 @@
     </div>
 </div>
 
-<!-- MODAL ERROR -->
 <?php if (isset($errorMsg)): ?>
-    <div class="modal fade" id="errorModal" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
-
-                <div class="modal-header bg-danger text-white">
-                    <h5 class="modal-title">Error</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-
-                <div class="modal-body text-center">
-                    <?= $errorMsg ?>
-                </div>
-
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                </div>
-
-            </div>
-        </div>
+    <div class="container mt-3">
+        <div class="alert alert-warning border-0 shadow-sm text-center"><?= $errorMsg ?></div>
     </div>
-
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            var errorModal = new bootstrap.Modal(document.getElementById('errorModal'));
-            errorModal.show();
-        });
-    </script>
 <?php endif; ?>

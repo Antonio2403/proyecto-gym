@@ -1,20 +1,19 @@
 <div class="content-wrapper py-3">
     <div class="container-fluid mt-4">
-        <h3 class="mb-3">Mensajes de contacto</h3>
-
-        <?php if (!empty($_GET['deleted'])): ?>
-            <div class="alert alert-success">Mensaje eliminado.</div>
-        <?php endif; ?>
-        <?php if (!empty($_GET['error'])): ?>
-            <div class="alert alert-danger"><?= htmlspecialchars((string) $_GET['error']) ?></div>
-        <?php endif; ?>
+        <header class="gp-page-header">
+            <div class="gp-page-header__title">
+                <h3 class="h4 mb-1 text-dark">Mensajes de contacto</h3>
+                <p class="text-muted small">Consulta y responde al feedback recibido desde la web.</p>
+            </div>
+        </header>
 
         <div
-            class="gp-admin-grid gp-admin-card-panel"
+            class="gp-admin-grid gp-admin-card-panel border-0 shadow-sm"
             data-gp-admin-grid="feedback"
             data-endpoint="<?= htmlspecialchars(url('/admin/ajax/feedback')) ?>"
-            data-colspan="6"
-            data-url-del-prefix="<?= htmlspecialchars(url('/admin/feedback/eliminar/')) ?>">
+            data-colspan="7"
+            data-url-del-prefix="<?= htmlspecialchars(url('/admin/feedback/eliminar/')) ?>"
+            data-url-responder-prefix="<?= htmlspecialchars(url('/admin/feedback/responder/')) ?>">
 
             <form class="gp-admin-grid-filters row g-2 align-items-end mb-3" data-grid-filters novalidate>
                 <div class="col-lg-4">
@@ -70,11 +69,11 @@
                             <th>Email</th>
                             <th>Asunto</th>
                             <th>Mensaje</th>
-                            <th></th>
+                            <th class="text-end">Acciones</th>
                         </tr>
                     </thead>
                     <tbody data-grid-body>
-                        <tr><td colspan="6" class="text-muted py-4">Cargando…</td></tr>
+                        <tr><td colspan="7" class="text-muted py-4">Cargando…</td></tr>
                     </tbody>
                 </table>
             </div>

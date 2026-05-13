@@ -5,11 +5,17 @@
         $monitoresFiltro = $monitoresFiltro ?? [];
         ?>
 
-        <div class="mb-3">
-            <a href="<?= htmlspecialchars(url('/admin/actividades/crear')) ?>" class="btn btn-primary fw-semibold">+ Nueva actividad</a>
-        </div>
-
-        <h2 class="mb-3">Gestión de actividades</h2>
+        <header class="gp-page-header">
+            <div class="gp-page-header__title">
+                <h2 class="h4 mb-1">Gestión de actividades</h2>
+                <p class="text-muted small">Horarios, salas y monitores asignados.</p>
+            </div>
+            <div class="gp-view-toolbar">
+                <a href="<?= htmlspecialchars(url('/admin/actividades/crear')) ?>" class="btn btn-primary btn-sm">
+                    <i class="fas fa-plus me-1" aria-hidden="true"></i> Nueva actividad
+                </a>
+            </div>
+        </header>
 
         <div
             class="gp-admin-grid gp-admin-card-panel"
@@ -101,7 +107,7 @@
                             <th>Hora fin</th>
                             <th>Sala</th>
                             <th>Monitor</th>
-                            <th>Acciones</th>
+                            <th class="gp-actions-col">Acciones</th>
                         </tr>
                     </thead>
                     <tbody data-grid-body>

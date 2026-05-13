@@ -62,17 +62,17 @@ function router_server_base_path(): string
 }
 
 /**
- * URL absoluta (esquema + host + path de la app). Para enlaces en correo define APP_URL en .env
- * (ej. https://tudominio.com o https://tudominio.com/proyecto-gym si el vhost no incluye la subcarpeta).
+ * URL absoluta (esquema + host + path de la app). Si APP_URL incluye la subcarpeta
+ * de la aplicación, no se duplica app_base_path().
  */
 function app_url_absolute(string $path = '/'): string
 {
-    $rel = url($path);
     $fromEnv = $_ENV['APP_URL'] ?? getenv('APP_URL');
     if (is_string($fromEnv) && trim($fromEnv) !== '') {
-        return rtrim($fromEnv, '/') . ($rel === '' ? '/' : $rel);
+        return rtrim($fromEnv, '/') . '/' . ltrim($path, '/');
     }
 
+    $rel = url($path);
     $https = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off')
         || (isset($_SERVER['SERVER_PORT']) && (string) $_SERVER['SERVER_PORT'] === '443');
     $scheme = $https ? 'https' : 'http';

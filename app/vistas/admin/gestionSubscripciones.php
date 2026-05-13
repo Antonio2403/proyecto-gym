@@ -1,19 +1,28 @@
 <div class="content-wrapper">
     <div class="container-fluid mt-4">
 
-        <div class="mb-4 d-flex flex-wrap gap-2 align-items-center">
-            <a href="<?= htmlspecialchars(url('/inicioAdmin')) ?>" class="btn btn-secondary btn-sm fw-semibold">Volver</a>
-            <a href="<?= htmlspecialchars(url('/admin/formSubscripcion')) ?>" class="btn btn-primary fw-semibold">Crear suscripción</a>
-        </div>
-
-        <h3 class="mb-3">Suscripciones</h3>
+        <header class="gp-page-header">
+            <div class="gp-page-header__title">
+                <h3 class="h4 mb-1">Suscripciones</h3>
+                <p class="text-muted small">Planes de membresía del centro.</p>
+            </div>
+            <div class="gp-view-toolbar">
+                <a href="<?= htmlspecialchars(url('/inicioAdmin')) ?>" class="btn btn-outline-secondary btn-sm">
+                    <i class="fas fa-arrow-left me-1" aria-hidden="true"></i> Volver
+                </a>
+                <a href="<?= htmlspecialchars(url('/admin/formSubscripcion')) ?>" class="btn btn-primary btn-sm">
+                    <i class="fas fa-plus me-1" aria-hidden="true"></i> Crear suscripción
+                </a>
+            </div>
+        </header>
 
         <div
             class="gp-admin-grid gp-admin-card-panel"
             data-gp-admin-grid="subscripciones"
             data-endpoint="<?= htmlspecialchars(url('/admin/ajax/subscripciones')) ?>"
-            data-colspan="5"
-            data-url-edit-base="<?= htmlspecialchars(url('/admin/formEditarSubscripcion')) ?>">
+            data-colspan="9"
+            data-url-edit-base="<?= htmlspecialchars(url('/admin/formEditarSubscripcion')) ?>"
+            data-url-delete="<?= htmlspecialchars(url('/admin/eliminarSubscripcion')) ?>">
 
             <form class="gp-admin-grid-filters row g-2 align-items-end mb-3" data-grid-filters novalidate>
                 <div class="col-lg-4">
@@ -67,11 +76,15 @@
                             <th>Nombre</th>
                             <th>Precio</th>
                             <th>Duración</th>
-                            <th>Acciones</th>
+                            <th>Clases/semana</th>
+                            <th>Fisio</th>
+                            <th>Oferta</th>
+                            <th>Estado</th>
+                            <th class="gp-actions-col">Acciones</th>
                         </tr>
                     </thead>
                     <tbody data-grid-body>
-                        <tr><td colspan="5" class="text-muted py-4">Cargando…</td></tr>
+                        <tr><td colspan="9" class="text-muted py-4">Cargando…</td></tr>
                     </tbody>
                 </table>
             </div>

@@ -5,13 +5,21 @@
 .gp-admin-topnav {
     background: var(--gp-navy, #2c3544) !important;
     border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-    padding-top: 0.35rem;
-    padding-bottom: 0.35rem;
+    padding-top: 0.65rem;
+    padding-bottom: 0.65rem;
+    z-index: 1030;
+    min-height: 68px;
+}
+
+.gp-admin-topnav .container-fluid {
+    position: relative;
 }
 
 .gp-admin-topnav .navbar-brand {
     font-family: var(--gp-display, "Outfit", sans-serif);
-    font-weight: 700;
+    font-weight: 800;
+    font-size: 1.3rem;
+    letter-spacing: -0.03em;
 }
 
 .gp-admin-topnav .nav-link {
@@ -20,6 +28,35 @@
 
 .gp-admin-topnav .nav-link:hover {
     color: #fff;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: var(--gp-radius-sm, 0.5rem);
+}
+
+.gp-admin-topnav .btn-outline-light {
+    border-color: rgba(255, 255, 255, 0.45);
+    color: #fff;
+}
+
+.gp-admin-topnav .btn-outline-light:hover {
+    background: var(--gp-orange, #c45c28);
+    border-color: var(--gp-orange, #c45c28);
+    color: #fff;
+}
+
+@media (min-width: 992px) {
+    .gp-admin-topnav .navbar-collapse {
+        position: relative;
+        min-height: 42px;
+    }
+
+    .gp-admin-topnav .navbar-nav.mx-auto {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        justify-content: center;
+        width: max-content;
+        max-width: calc(100vw - 28rem);
+    }
 }
 
 .gp-admin-page {
@@ -29,9 +66,10 @@
 
 .gp-admin-sidecard {
     background: var(--gp-white, #fff);
-    border-radius: var(--gp-radius-sm, 0.5rem);
+    border-radius: var(--gp-radius, 0.75rem);
     border: 1px solid var(--gp-border-light, #e8ecf2);
     box-shadow: var(--gp-shadow-xs, 0 1px 2px rgba(44, 53, 68, 0.05));
+    z-index: 10;
 }
 
 .gp-admin-user-line {
@@ -44,9 +82,11 @@
 
 .gp-admin-nav .gp-admin-nav-link {
     border-radius: var(--gp-radius-sm, 0.5rem);
-    color: var(--gp-text, #1e293b);
-    padding: 0.5rem 0.65rem;
+    color: var(--gp-text-secondary, #475569);
+    padding: 0.48rem 0.7rem;
     font-weight: 500;
+    font-size: 0.9rem;
+    border: 1px solid transparent;
 }
 
 .gp-admin-nav .gp-admin-nav-link:hover {
@@ -57,6 +97,19 @@
 .gp-admin-nav .gp-admin-nav-link.active {
     background: var(--gp-navy, #2c3544);
     color: #fff;
+    border-color: transparent;
+    box-shadow: var(--gp-shadow-xs);
+}
+
+.gp-admin-nav .gp-admin-nav-link i {
+    color: var(--gp-orange, #c45c28);
+    opacity: 0.9;
+}
+
+.gp-admin-nav .gp-admin-nav-link.active i,
+.gp-admin-nav .gp-admin-nav-link:hover i {
+    color: inherit;
+    opacity: 1;
 }
 
 .gp-admin-nav-heading {
@@ -104,14 +157,36 @@
     border-color: var(--gp-border, #d5dde8);
 }
 
+.gp-admin-content .gp-data-table tbody td {
+    vertical-align: middle;
+}
+
+.gp-admin-content .gp-data-table tbody tr:nth-child(even) td {
+    background: var(--gp-page-subtle, #f8f9fc);
+}
+
+.gp-sala-card {
+    border: 1px solid var(--gp-border-light, #e8ecf2) !important;
+    border-radius: var(--gp-radius, 0.75rem);
+}
+
+.gp-sala-card .card-title {
+    font-family: var(--gp-display, "Outfit", sans-serif);
+    font-weight: 700;
+}
+
 @media (max-width: 991.98px) {
     .gp-admin-sidecard {
         margin-bottom: 0.25rem;
     }
 }
 
-.gp-admin-grid-filters .form-label {
-    font-size: 0.75rem;
+.gp-admin-grid .table td.gp-actions-cell .gp-status-pill {
+    font-size: 0.68rem;
+}
+
+.gp-admin-grid .gp-actions-stack .gp-btn-action {
+    box-shadow: none;
 }
 
 .gp-admin-grid-filters select,
@@ -128,15 +203,6 @@
     border-color: var(--gp-navy, #2c3544);
 }
 
-.gp-admin-dash-card {
-    transition: transform 0.15s ease, box-shadow 0.15s ease;
-}
-
-.gp-admin-dash-card:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--gp-shadow-md, 0 4px 14px rgba(44, 53, 68, 0.12)) !important;
-}
-
 .site-body.gp-admin-body-root {
     display: flex;
     flex-direction: column;
@@ -144,14 +210,80 @@
 }
 
 .gp-admin-content > .content-wrapper {
-    background: var(--gp-white, #fff);
-    border: 1px solid var(--gp-border-light, #e8ecf2);
-    border-radius: var(--gp-radius, 0.75rem);
-    box-shadow: var(--gp-shadow-sm, 0 2px 8px rgba(44, 53, 68, 0.06));
-    padding: 1.35rem 1.5rem;
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+    padding: 0.25rem 0 1rem;
 }
 
-.gp-admin-content .btn-success {
-    background: var(--gp-green, #2f8f4a);
-    border-color: var(--gp-green, #2f8f4a);
+.gp-dash .content-wrapper,
+.gp-admin-content > .content-wrapper.gp-dash {
+    padding: 0;
+}
+
+/* Tickets recuperación de cuenta */
+.gp-ticket-card {
+    border: 1px solid var(--gp-border-light, #e8ecf2) !important;
+}
+
+.gp-ticket-id {
+    font-size: 1.05rem;
+    color: var(--gp-navy, #2c3544);
+}
+
+.gp-ticket-empty {
+    background: var(--gp-page, #eef1f6);
+}
+
+.gp-ticket-code-wrap {
+    margin-bottom: 1rem;
+}
+
+.gp-ticket-code-wrap .gp-recovery-code-display {
+    margin-bottom: 0.75rem;
+}
+
+.gp-ticket-code-hint {
+    font-size: 0.8125rem;
+    line-height: 1.45;
+    color: var(--gp-text-muted, #5c6570);
+}
+
+/* Seguridad (panel) */
+.gp-admin-security-card {
+    border-left: 4px solid var(--gp-orange, #c45c28) !important;
+}
+
+.gp-admin-security-icon-wrap {
+    width: 48px;
+    height: 48px;
+    background: linear-gradient(135deg, var(--gp-navy, #2c3544), var(--gp-navy-mid, #384356));
+}
+
+/* Tickets cuenta — cabecera y pestañas */
+.gp-admin-tickets-page .gp-admin-tickets-hero {
+    border-left: 4px solid var(--gp-orange, #c45c28) !important;
+}
+
+.gp-admin-pill-tabs .nav-link {
+    border: 1px solid var(--gp-border-light, #e8ecf2);
+    color: var(--gp-text-secondary, #475569);
+    background: var(--gp-white, #fff);
+}
+
+.gp-admin-pill-tabs .nav-link:hover {
+    border-color: rgba(196, 92, 40, 0.35);
+    color: var(--gp-navy, #2c3544);
+}
+
+.gp-admin-pill-tabs .nav-link.active {
+    background: var(--gp-navy, #2c3544);
+    color: #fff !important;
+    border-color: var(--gp-navy, #2c3544);
+}
+
+/* Monitor — solicitudes */
+.gp-monitor-requests .gp-monitor-request-card {
+    border-left: 3px solid rgba(196, 92, 40, 0.45);
 }

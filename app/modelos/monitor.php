@@ -6,9 +6,9 @@ class Monitor extends Usuario
     private $especialidad;
     private $disponibilidad;
 
-    public function __construct($nombre, $email, $clave, $telefono, $especialidad, $disponibilidad)
+    public function __construct($DNI, $nombre, $apellido1, $apellido2, $email, $clave, $telefono, $especialidad, $disponibilidad)
     {
-        parent::__construct($nombre, $email, $clave, $telefono);
+        parent::__construct($DNI, $nombre, $apellido1, $apellido2, $email, $clave, $telefono);
         $this->especialidad = $especialidad;
         $this->disponibilidad = $disponibilidad;
     }
@@ -210,7 +210,7 @@ class Monitor extends Usuario
         $usuario_id = $monitor['usuario_id'];
 
         if ($clave) {
-            $stmt = $conexion->prepare("UPDATE usuarios SET DNI = :DNI, nombre = :nombre, apellido1 = :apellido1, apellido2 = :apellido2, email = :email, clave = :clave, telefono = :telefono WHERE id = :usuario_id");
+            $stmt = $conexion->prepare("UPDATE usuarios SET DNI = :DNI, nombre = :nombre, apellido1 = :apellido1, apellido2 = :apellido2, email = :email, clave = :clave, telefono = :telefono, password_changed_at = NOW() WHERE id = :usuario_id");
             $stmt->bindValue(':clave', password_hash($clave, PASSWORD_DEFAULT));
         } else {
             $stmt = $conexion->prepare("UPDATE usuarios SET DNI = :DNI, nombre = :nombre, apellido1 = :apellido1, apellido2 = :apellido2, email = :email, telefono = :telefono WHERE id = :usuario_id");

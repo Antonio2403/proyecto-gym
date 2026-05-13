@@ -7,17 +7,20 @@ class MaterialControlador extends Controller
 {
     public function index($sala_id)
     {
+        $this->requireRole(['admin', 'monitor']);
         $materiales = Material::obtenerPorSala($sala_id);
         $this->renderAdmin("materiales/verMateriales", ["materiales" => $materiales, "sala_id" => $sala_id]);
     }
 
     public function fromCrearMaterial($sala_id)
     {
+        $this->requireRole(['admin', 'monitor']);
         $this->renderAdmin("materiales/formMaterial", ["sala_id" => $sala_id]);
     }
 
     public function formEditarMaterial($sala_id, $material_id)
     {
+        $this->requireRole(['admin', 'monitor']);
         $material = Material::obtenerPorId($material_id);
         if ($material) {
             $this->renderAdmin("materiales/formEditarMaterial", ["material" => $material, "sala_id" => $sala_id]);
@@ -28,6 +31,7 @@ class MaterialControlador extends Controller
 
     public function crear($sala_id)
     {
+        $this->requireRole(['admin', 'monitor']);
         $sala_id = (int) $sala_id;
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             header('Location: ' . url('/monitor/salas/' . $sala_id . '/materiales/crear'));
@@ -53,6 +57,7 @@ class MaterialControlador extends Controller
 
     public function editar($sala_id, $material_id)
     {
+        $this->requireRole(['admin', 'monitor']);
         $sala_id = (int) $sala_id;
         $material_id = (int) $material_id;
 
@@ -80,11 +85,17 @@ class MaterialControlador extends Controller
 
     public function eliminar($sala_id, $material_id)
     {
+        $this->requireRole(['admin', 'monitor']);
+        if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') {
+            header('Location: ' . url('/monitor/salas/' . (int) $sala_id . '/materiales'));
+            exit;
+        }
         if (Material::eliminar($material_id)) {
             header('Location: ' . url('/monitor/salas/' . $sala_id . '/materiales'));
             exit();
         } else {
-            echo "Error al eliminar la sala.";
+            header('Location: ' . url('/monitor/salas/' . $sala_id . '/materiales') . '?error=' . rawurlencode('No se pudo eliminar el material'));
+            exit();
         }
     }
 }

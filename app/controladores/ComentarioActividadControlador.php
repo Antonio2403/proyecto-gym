@@ -39,7 +39,9 @@ class ComentarioActividadControlador extends Controller
         }
 
         $esRecurrente = (int) ($actividad['recurrente'] ?? 1) === 1;
-        if ($esRecurrente && $this->codigoDiaDesdeFecha($fecha) !== $actividad['dia_semana']) {
+        $diasAct = Actividad::diasParaActividadId($actividadId);
+        $codFecha = $this->codigoDiaDesdeFecha($fecha);
+        if ($esRecurrente && !in_array($codFecha, $diasAct, true)) {
             header('Location: ' . url('/usuario/actividades') . '?error=' . urlencode('La fecha no coincide con esta actividad'));
             exit;
         }

@@ -1,0 +1,7 @@
+# Mitiga ejecución de scripts si alguien consigue subir un .php disfrazado.
+# Las imágenes (jpg, png, webp) siguen sirviéndose con normalidad.
+<IfModule mod_authz_core.c>
+    <FilesMatch "(?i)\.(php|phtml|phar|php7|php8)$">
+        Require all denied
+    </FilesMatch>
+</IfModule>

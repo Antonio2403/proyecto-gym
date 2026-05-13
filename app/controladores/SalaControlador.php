@@ -8,6 +8,7 @@ Class SalaControlador extends Controller
 {
     public function index()
     {
+        $this->requireRole(['admin', 'monitor']);
         $salas = Sala::obtenerTodas();
         $salasConMateriales = [];
         
@@ -22,6 +23,7 @@ Class SalaControlador extends Controller
 
     public function crear()
     {
+        $this->requireRole(['admin', 'monitor']);
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             header('Location: ' . url('/monitor/salas/crear'));
             exit;
@@ -46,11 +48,13 @@ Class SalaControlador extends Controller
     }
     public function formCrearSala()
     {
+        $this->requireRole(['admin', 'monitor']);
         $this->renderAdmin("salas/formSala");
     }
 
     public function formEditarSala($id)
     {
+        $this->requireRole(['admin', 'monitor']);
         $sala = Sala::obtenerPorId($id);
         if ($sala) {
             $this->renderAdmin("salas/formEditarSala", ["sala" => $sala]);
@@ -61,16 +65,23 @@ Class SalaControlador extends Controller
 
     public function eliminar($id)
     {
+        $this->requireRole(['admin', 'monitor']);
+        if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') {
+            header('Location: ' . url('/monitor/verSalas'));
+            exit;
+        }
         if (Sala::eliminar($id)) {
             header('Location: ' . url('/monitor/verSalas'));
             exit();
         } else {
-            echo "Error al eliminar la sala.";
+            header('Location: ' . url('/monitor/verSalas') . '?error=' . rawurlencode('No se pudo eliminar la sala'));
+            exit();
         }
     }
 
     public function actualizar($id)
     {
+        $this->requireRole(['admin', 'monitor']);
         $id = (int) $id;
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             header('Location: ' . url('/monitor/verSalas'));

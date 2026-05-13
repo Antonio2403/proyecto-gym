@@ -116,4 +116,18 @@ class AdminAjaxControlador extends Controller
         $result = Solicitud::buscarPaginado($estado, $p['page'], $p['per_page'], $f);
         $this->sendJson(array_merge(['ok' => true, 'estado' => $estado], $result));
     }
+
+    /** Firma para auto-actualizar el panel de tickets de cuenta (polling). */
+    public function recuperacionTicketsFirma(): void
+    {
+        $this->requireAdminJson();
+        require_once __DIR__ . '/../modelos/recuperacion_cuenta_ticket.php';
+        try {
+            $firma = RecuperacionCuentaTicket::firmaVistaAdminTickets(50);
+        } catch (\Throwable $e) {
+            error_log('[Spartum] recuperacionTicketsFirma: ' . $e->getMessage());
+            $this->sendJson(['ok' => false, 'error' => 'No se pudo comprobar el estado.'], 500);
+        }
+        $this->sendJson(['ok' => true, 'firma' => $firma]);
+    }
 }

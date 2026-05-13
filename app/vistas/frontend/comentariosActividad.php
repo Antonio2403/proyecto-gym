@@ -28,7 +28,7 @@ $qBase = [
         <div class="alert alert-success border-0">Comentario publicado.</div>
     <?php endif; ?>
     <?php if (!empty($_GET['error'])): ?>
-        <div class="alert alert-danger border-0"><?= htmlspecialchars($_GET['error']) ?></div>
+        <div class="alert alert-danger border-0"><?= htmlspecialchars((string) $_GET['error'], ENT_QUOTES, 'UTF-8') ?></div>
     <?php endif; ?>
 
     <?php if (empty($tiene_reserva_sesion)): ?>

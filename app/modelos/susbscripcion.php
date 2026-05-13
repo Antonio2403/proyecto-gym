@@ -2,14 +2,19 @@
 
 class Subscripcion
 {
-    public static function crear($nombre, $precio, $duracion)
+    public static function crear($nombre, $precio, $duracion, int $numeroClases = 0, string $fisio = 'N', int $enOferta = 0, ?string $ofertaMotivo = null, ?string $ofertaFin = null)
     {
         $db = BasedeDatos::Conectar();
-        $query = "INSERT INTO subscripciones (nombre, precio, duracion) VALUES (:nombre, :precio, :duracion)";
+        $query = "INSERT INTO subscripciones (nombre, precio, duracion, numero_clases, fisio, en_oferta, oferta_motivo, oferta_fin, estado) VALUES (:nombre, :precio, :duracion, :numero_clases, :fisio, :en_oferta, :oferta_motivo, :oferta_fin, 'A')";
         $stmt = $db->prepare($query);
         $stmt->bindParam(':nombre', $nombre);
         $stmt->bindParam(':precio', $precio);
         $stmt->bindParam(':duracion', $duracion);
+        $stmt->bindValue(':numero_clases', $numeroClases, PDO::PARAM_INT);
+        $stmt->bindValue(':fisio', $fisio);
+        $stmt->bindValue(':en_oferta', $enOferta, PDO::PARAM_INT);
+        $stmt->bindValue(':oferta_motivo', $ofertaMotivo);
+        $stmt->bindValue(':oferta_fin', $ofertaFin);
         return $stmt->execute();
     }
     public static function obtenerTodas()
@@ -24,7 +29,8 @@ class Subscripcion
     public static function obtenerActivasCatalogo(): array
     {
         $db = BasedeDatos::Conectar();
-        $stmt = $db->query("SELECT * FROM subscripciones WHERE estado = 'A' ORDER BY precio ASC, id ASC");
+        self::sincronizarCatalogo($db);
+        $stmt = $db->query("SELECT * FROM subscripciones WHERE estado = 'A' AND (en_oferta = 0 OR (oferta_fin IS NOT NULL AND oferta_fin > NOW())) ORDER BY precio ASC, id ASC");
 
         return $stmt ? $stmt->fetchAll(PDO::FETCH_ASSOC) : [];
     }
@@ -38,6 +44,7 @@ class Subscripcion
         $perPage = min(50, max(5, $perPage));
 
         $db = BasedeDatos::Conectar();
+        self::sincronizarCatalogo($db);
         $bind = [];
         $conds = [];
 
@@ -107,6 +114,7 @@ class Subscripcion
     public static function obtenerPorId($id)
     {
         $db = BasedeDatos::Conectar();
+        self::sincronizarCatalogo($db);
         $query = "SELECT * FROM subscripciones WHERE id = :id";
         $stmt = $db->prepare($query);
         $stmt->bindParam(':id', $id);
@@ -116,20 +124,99 @@ class Subscripcion
     public static function eliminar($id)
     {
         $db = BasedeDatos::Conectar();
-        $query = "DELETE FROM subscripciones WHERE id = :id";
+        $query = "UPDATE subscripciones SET estado = 'I' WHERE id = :id";
         $stmt = $db->prepare($query);
         $stmt->bindParam(':id', $id);
-        return $stmt->execute();
+        $ok = $stmt->execute();
+        self::purgarRetiradasSinUso($db);
+
+        return $ok;
     }
-    public static function actualizar($id, $nombre, $precio, $duracion)
+    public static function actualizar($id, $nombre, $precio, $duracion, int $numeroClases = 0, string $fisio = 'N', int $enOferta = 0, ?string $ofertaMotivo = null, ?string $ofertaFin = null)
     {
         $db = BasedeDatos::Conectar();
-        $query = "UPDATE subscripciones SET nombre = :nombre, precio = :precio, duracion = :duracion WHERE id = :id";
+        $query = "UPDATE subscripciones SET nombre = :nombre, precio = :precio, duracion = :duracion, numero_clases = :numero_clases, fisio = :fisio, en_oferta = :en_oferta, oferta_motivo = :oferta_motivo, oferta_fin = :oferta_fin WHERE id = :id";
         $stmt = $db->prepare($query);
         $stmt->bindParam(':id', $id);
         $stmt->bindParam(':nombre', $nombre);
         $stmt->bindParam(':precio', $precio);
         $stmt->bindParam(':duracion', $duracion);
+        $stmt->bindValue(':numero_clases', $numeroClases, PDO::PARAM_INT);
+        $stmt->bindValue(':fisio', $fisio);
+        $stmt->bindValue(':en_oferta', $enOferta, PDO::PARAM_INT);
+        $stmt->bindValue(':oferta_motivo', $ofertaMotivo);
+        $stmt->bindValue(':oferta_fin', $ofertaFin);
         return $stmt->execute();
+    }
+
+    public static function sincronizarCatalogo(?PDO $db = null): void
+    {
+        $db = $db ?: BasedeDatos::Conectar();
+        self::cerrarSuscripcionesClienteCaducadas($db);
+        self::retirarOfertasFueraDePlazo($db);
+        self::purgarRetiradasSinUso($db);
+    }
+
+    /**
+     * El plazo de oferta solo limita la compra. No toca cliente_subscripcion:
+     * quien compró antes conserva su fecha_fin.
+     */
+    private static function retirarOfertasFueraDePlazo(PDO $db): void
+    {
+        try {
+            $db->exec("UPDATE subscripciones SET estado = 'I' WHERE estado = 'A' AND en_oferta = 1 AND (oferta_fin IS NULL OR oferta_fin <= NOW())");
+        } catch (Throwable $e) {
+            error_log('[Subscripcion] retirarOfertasFueraDePlazo: ' . $e->getMessage());
+        }
+    }
+
+    private static function cerrarSuscripcionesClienteCaducadas(PDO $db): void
+    {
+        try {
+            $db->exec("UPDATE cliente_subscripcion SET estado = 'C' WHERE estado = 'A' AND fecha_fin IS NOT NULL AND fecha_fin < NOW()");
+        } catch (Throwable $e) {
+            error_log('[Subscripcion] cerrarSuscripcionesClienteCaducadas: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Borra del catálogo las suscripciones retiradas cuando ningún cliente la usa ya.
+     */
+    public static function purgarRetiradasSinUso(?PDO $db = null): void
+    {
+        $db = $db ?: BasedeDatos::Conectar();
+
+        try {
+            $st = $db->query(
+                "SELECT s.id
+                 FROM subscripciones s
+                 WHERE s.estado = 'I'
+                   AND NOT EXISTS (
+                       SELECT 1
+                       FROM cliente_subscripcion cs
+                       WHERE cs.subscripcion_id = s.id
+                         AND cs.estado = 'A'
+                         AND (cs.fecha_fin IS NULL OR cs.fecha_fin >= NOW())
+                   )"
+            );
+            $ids = $st ? array_map('intval', $st->fetchAll(PDO::FETCH_COLUMN)) : [];
+            if ($ids === []) {
+                return;
+            }
+
+            $placeholders = implode(',', array_fill(0, count($ids), '?'));
+            $upd = $db->prepare(
+                "UPDATE cliente_subscripcion
+                 SET subscripcion_id = NULL
+                 WHERE subscripcion_id IN ($placeholders)
+                   AND (estado <> 'A' OR fecha_fin IS NULL OR fecha_fin < NOW())"
+            );
+            $upd->execute($ids);
+
+            $del = $db->prepare("DELETE FROM subscripciones WHERE id IN ($placeholders)");
+            $del->execute($ids);
+        } catch (Throwable $e) {
+            error_log('[Subscripcion] purgarRetiradasSinUso: ' . $e->getMessage());
+        }
     }
 }

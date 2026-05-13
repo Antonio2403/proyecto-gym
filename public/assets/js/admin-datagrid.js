@@ -50,29 +50,110 @@
         return [r.monitor_nombre, r.monitor_apellido1, r.monitor_apellido2].filter(Boolean).join(' ').trim();
     }
 
-    function linkBtn(href, cls, label, confirmMsg) {
+    function csrfToken() {
+        var meta = document.querySelector('meta[name="csrf-token"]');
+        return meta ? String(meta.getAttribute('content') || '') : '';
+    }
+
+    function submitPost(href, fields) {
+        var form = document.createElement('form');
+        form.method = 'post';
+        form.action = href;
+        Object.keys(fields || {}).forEach(function (name) {
+            var hidden = document.createElement('input');
+            hidden.type = 'hidden';
+            hidden.name = name;
+            hidden.value = fields[name];
+            form.appendChild(hidden);
+        });
+        var token = csrfToken();
+        if (token) {
+            var inp = document.createElement('input');
+            inp.type = 'hidden';
+            inp.name = 'csrf_token';
+            inp.value = token;
+            form.appendChild(inp);
+        }
+        document.body.appendChild(form);
+        form.submit();
+    }
+
+    function actionCls(kind) {
+        var base = 'btn btn-sm gp-btn-action ';
+        var map = {
+            edit: base + 'gp-btn-action--edit',
+            ok: base + 'gp-btn-action--ok',
+            warn: base + 'gp-btn-action--warn',
+            danger: base + 'gp-btn-action--danger',
+            neutral: base + 'gp-btn-action--neutral',
+            reply: base + 'gp-btn-action--reply',
+        };
+
+        return map[kind] || map.neutral;
+    }
+
+    function actionsCell(useCol) {
+        var td = document.createElement('td');
+        td.className = 'gp-actions-cell';
+        var stack = document.createElement('div');
+        stack.className = 'gp-actions-stack' + (useCol ? ' gp-actions-stack--col' : '');
+        td.appendChild(stack);
+
+        return { td: td, stack: stack };
+    }
+
+    function statusPill(kind, label) {
+        var span = document.createElement('span');
+        var map = {
+            active: 'gp-status-pill--active',
+            temp: 'gp-status-pill--temp',
+            banned: 'gp-status-pill--banned',
+            pending: 'gp-status-pill--pending',
+            ok: 'gp-status-pill--ok',
+            reject: 'gp-status-pill--reject',
+        };
+        span.className = 'gp-status-pill ' + (map[kind] || 'gp-status-pill--neutral');
+        span.textContent = label;
+
+        return span;
+    }
+
+    function appendAction(stack, node) {
+        stack.appendChild(node);
+    }
+
+    function linkBtn(href, cls, label, confirmMsg, method, fields) {
         var a = document.createElement('a');
         a.href = href;
         a.className = cls;
         a.textContent = label;
+        method = String(method || 'get').toLowerCase();
         if (confirmMsg) {
             a.addEventListener('click', function (e) {
                 e.preventDefault();
                 if (typeof window.gpConfirm === 'function') {
                     window.gpConfirm({
-                        title: 'Confirmar eliminación',
+                        title: label === 'Baja normal' ? 'Condiciones de baja normal' : 'Confirmar acción',
                         body: confirmMsg,
                         danger: true,
-                        okLabel: 'Eliminar',
+                        okLabel: label === 'Baja normal' ? 'He leído las condiciones al cliente' : 'Confirmar',
                         onConfirm: function () {
-                            window.location.href = href;
+                            if (method === 'post') {
+                                submitPost(href, fields);
+                            } else {
+                                window.location.href = href;
+                            }
                         },
                     });
 
                     return;
                 }
                 if (window.confirm(confirmMsg)) {
-                    window.location.href = href;
+                    if (method === 'post') {
+                        submitPost(href, fields);
+                    } else {
+                        window.location.href = href;
+                    }
                 }
             });
         }
@@ -97,6 +178,9 @@
         }
 
         if (kind === 'clientes') {
+            var cancelPlanUrl = root.getAttribute('data-url-cancel-plan') || '';
+            var blockUrl = root.getAttribute('data-url-block') || '';
+            var unblockUrl = root.getAttribute('data-url-unblock') || '';
             rows.forEach(function (r) {
                 var tr = document.createElement('tr');
                 textCell(tr, r.cliente_id);
@@ -105,6 +189,38 @@
                 textCell(tr, r.email);
                 textCell(tr, r.telefono);
                 textCell(tr, r.metodo_pago || '—');
+                textCell(tr, r.plan_nombre ? (r.plan_nombre + (r.plan_fecha_fin ? ' · hasta ' + String(r.plan_fecha_fin).slice(0, 16) : '')) : '—');
+                var tdEstado = document.createElement('td');
+                tdEstado.className = 'gp-status-cell';
+                if (r.bloqueo_tipo === 'P') {
+                    tdEstado.appendChild(statusPill('banned', 'Baja permanente'));
+                } else if (r.bloqueo_tipo === 'T') {
+                    tdEstado.appendChild(statusPill('temp', 'Baja normal'));
+                } else {
+                    tdEstado.appendChild(statusPill('active', 'Activa'));
+                }
+                tr.appendChild(tdEstado);
+
+                var act = actionsCell(true);
+                if (cancelPlanUrl && r.plan_rel_id) {
+                    appendAction(act.stack, linkBtn(cancelPlanUrl, actionCls('warn'), 'Cancelar plan', '¿Cancelar el plan activo de este cliente? Esta acción debe hacerse solo si recepción lo ha confirmado.', 'post', { cliente_id: r.cliente_id }));
+                }
+                if (unblockUrl && r.bloqueo_tipo === 'T') {
+                    appendAction(act.stack, linkBtn(unblockUrl, actionCls('ok'), 'Reactivar', '¿Reactivar el acceso de este usuario?', 'post', { cliente_id: r.cliente_id }));
+                } else if (r.bloqueo_tipo === 'P') {
+                    appendAction(act.stack, statusPill('banned', 'Sin acciones'));
+                } else if (blockUrl) {
+                    appendAction(act.stack, linkBtn(
+                        blockUrl,
+                        actionCls('neutral'),
+                        'Baja normal',
+                        'CONDICIONES DE BAJA NORMAL: el usuario perderá el acceso inmediatamente y se cerrará su sesión si la tiene abierta. Su plan activo se cancelará y no conservará ninguna suscripción. Para volver, deberá crear un ticket de reactivación y acudir a recepción, donde se le facilitará un código de 6 dígitos. Al reactivarse no tendrá ningún plan activo. Lee estas condiciones al cliente antes de confirmar.',
+                        'post',
+                        { cliente_id: r.cliente_id, tipo: 'T' }
+                    ));
+                    appendAction(act.stack, linkBtn(blockUrl, actionCls('danger'), 'Banear', '¿Dar de baja permanentemente este usuario? Se cancelará también su plan activo.', 'post', { cliente_id: r.cliente_id, tipo: 'P' }));
+                }
+                tr.appendChild(act.td);
                 frag.appendChild(tr);
             });
 
@@ -124,19 +240,19 @@
                 textCell(tr, r.telefono);
                 textCell(tr, r.especialidad);
                 textCell(tr, r.disponibilidad);
-                var tdA = document.createElement('td');
-                tdA.className = 'text-nowrap';
-                tdA.appendChild(linkBtn(pEdit + encodeURIComponent(r.monitor_id), 'btn btn-warning btn-sm', 'Editar', ''));
-                tdA.appendChild(document.createTextNode(' '));
-                tdA.appendChild(
+                var actMon = actionsCell();
+                appendAction(actMon.stack, linkBtn(pEdit + encodeURIComponent(r.monitor_id), actionCls('edit'), 'Editar', ''));
+                appendAction(
+                    actMon.stack,
                     linkBtn(
                         pDel + encodeURIComponent(r.monitor_id),
-                        'btn btn-danger btn-sm',
+                        actionCls('danger'),
                         'Eliminar',
-                        '¿Eliminar este monitor?'
+                        '¿Eliminar este monitor?',
+                        'post'
                     )
                 );
-                tr.appendChild(tdA);
+                tr.appendChild(actMon.td);
                 frag.appendChild(tr);
             });
 
@@ -145,17 +261,34 @@
 
         if (kind === 'subscripciones') {
             var baseEdit = root.getAttribute('data-url-edit-base') || '';
+            var deleteUrl = root.getAttribute('data-url-delete') || '';
             rows.forEach(function (r) {
                 var tr = document.createElement('tr');
                 textCell(tr, r.id);
                 textCell(tr, r.nombre);
                 textCell(tr, r.precio + ' €');
                 textCell(tr, r.duracion + ' meses');
-                var tdA = document.createElement('td');
+                textCell(tr, r.numero_clases == null ? '0' : r.numero_clases);
+                textCell(tr, r.fisio === 'S' ? 'Sí' : 'No');
+                textCell(tr, r.en_oferta == 1 ? ((r.oferta_motivo || 'Oferta') + (r.oferta_fin ? ' · hasta ' + String(r.oferta_fin).slice(0, 16) : '')) : '—');
+                textCell(tr, r.estado === 'A' ? 'Activa' : 'Retirada');
+                var actSub = actionsCell();
                 var editHref = baseEdit + '?id=' + encodeURIComponent(r.id);
-                tdA.appendChild(linkBtn(editHref, 'btn btn-sm btn-warning', 'Editar', ''));
-
-                tr.appendChild(tdA);
+                appendAction(actSub.stack, linkBtn(editHref, actionCls('edit'), 'Editar', ''));
+                if (deleteUrl && r.estado === 'A') {
+                    appendAction(
+                        actSub.stack,
+                        linkBtn(
+                            deleteUrl,
+                            actionCls('danger'),
+                            'Retirar',
+                            '¿Retirar esta suscripción del catálogo? Los clientes que ya la tienen conservarán su vigencia.',
+                            'post',
+                            { id: r.id }
+                        )
+                    );
+                }
+                tr.appendChild(actSub.td);
                 frag.appendChild(tr);
             });
 
@@ -177,20 +310,19 @@
                 textCell(tr, timeFromDt(r.fecha_fin));
                 textCell(tr, r.sala_nombre || '—');
                 textCell(tr, r.monitor_nombre || '—');
-                var tdA = document.createElement('td');
-                tdA.className = 'text-nowrap';
-                tdA.appendChild(linkBtn(pe + encodeURIComponent(r.id), 'btn btn-warning btn-sm', 'Editar', ''));
-                tdA.appendChild(document.createTextNode(' '));
-                tdA.appendChild(
+                var actAct = actionsCell();
+                appendAction(actAct.stack, linkBtn(pe + encodeURIComponent(r.id), actionCls('edit'), 'Editar', ''));
+                appendAction(
+                    actAct.stack,
                     linkBtn(
                         pd + encodeURIComponent(r.id),
-                        'btn btn-danger btn-sm',
+                        actionCls('danger'),
                         'Eliminar',
-                        '¿Seguro que quieres eliminar esta actividad?'
+                        '¿Seguro que quieres eliminar esta actividad?',
+                        'post'
                     )
                 );
-
-                tr.appendChild(tdA);
+                tr.appendChild(actAct.td);
                 frag.appendChild(tr);
             });
 
@@ -205,20 +337,19 @@
                 textCell(tr, r.id);
                 textCell(tr, r.nombre);
                 textCell(tr, r.especialidad || '—');
-                var tdA = document.createElement('td');
-                tdA.className = 'text-nowrap';
-                tdA.appendChild(linkBtn(pfE + encodeURIComponent(r.id), 'btn btn-sm btn-outline-primary', 'Editar', ''));
-                tdA.appendChild(document.createTextNode(' '));
-                tdA.appendChild(
+                var actFis = actionsCell();
+                appendAction(actFis.stack, linkBtn(pfE + encodeURIComponent(r.id), actionCls('edit'), 'Editar', ''));
+                appendAction(
+                    actFis.stack,
                     linkBtn(
                         pfD + encodeURIComponent(r.id),
-                        'btn btn-sm btn-outline-danger',
+                        actionCls('danger'),
                         'Eliminar',
-                        '¿Eliminar este fisioterapeuta? No podrá tener citas asociadas.'
+                        '¿Eliminar este fisioterapeuta? No podrá tener citas asociadas.',
+                        'post'
                     )
                 );
-
-                tr.appendChild(tdA);
+                tr.appendChild(actFis.td);
                 frag.appendChild(tr);
             });
 
@@ -227,6 +358,7 @@
 
         if (kind === 'feedback') {
             var pfX = root.getAttribute('data-url-del-prefix') || '';
+            var pfR = root.getAttribute('data-url-responder-prefix') || '';
             rows.forEach(function (r) {
                 var tr = document.createElement('tr');
                 textCell(tr, r.fecha_creacion);
@@ -238,12 +370,19 @@
                 tdM.style.whiteSpace = 'pre-wrap';
                 tdM.textContent = r.mensaje || '';
 
-                var tdA = document.createElement('td');
-                tdA.appendChild(
-                    linkBtn(pfX + encodeURIComponent(r.id), 'btn btn-sm btn-danger', 'Eliminar', '¿Eliminar este mensaje?')
+                var actFb = actionsCell();
+                if (pfR) {
+                    appendAction(
+                        actFb.stack,
+                        linkBtn(pfR + encodeURIComponent(r.id), actionCls('reply'), 'Responder', '', 'get')
+                    );
+                }
+                appendAction(
+                    actFb.stack,
+                    linkBtn(pfX + encodeURIComponent(r.id), actionCls('danger'), 'Eliminar', '¿Eliminar este mensaje?', 'post')
                 );
                 tr.appendChild(tdM);
-                tr.appendChild(tdA);
+                tr.appendChild(actFb.td);
                 frag.appendChild(tr);
             });
 
@@ -270,56 +409,60 @@
 
                 textCell(tr, r.fecha_revision || '—');
 
-                var se = String(r.estado || est || 'P').toUpperCase();
-
                 var tdEst = document.createElement('td');
-                var badge = document.createElement('span');
-                badge.className =
-                    se === 'A' ? 'badge text-bg-success' : se === 'R' ? 'badge text-bg-danger' : 'badge text-bg-warning text-dark';
-                badge.textContent = SolicitudEstadoMeta(se).label;
-
-                tdEst.appendChild(badge);
-
+                tdEst.className = 'gp-status-cell';
+                var se = String(r.estado || est || 'P').toUpperCase();
+                if (se === 'A') {
+                    tdEst.appendChild(statusPill('ok', SolicitudEstadoMeta(se).label));
+                } else if (se === 'R') {
+                    tdEst.appendChild(statusPill('reject', SolicitudEstadoMeta(se).label));
+                } else {
+                    tdEst.appendChild(statusPill('pending', SolicitudEstadoMeta(se).label));
+                }
                 tr.appendChild(tdEst);
 
-                var tdAct = document.createElement('td');
-                tdAct.className = 'text-nowrap';
-
+                var actSol = actionsCell();
                 if (est === 'P') {
-                    var form = document.createElement('form');
-                    form.method = 'post';
-                    form.action = aprUrl;
-                    form.className = 'd-inline-flex flex-column gap-1 align-items-start';
-
-                    var hid = document.createElement('input');
-                    hid.type = 'hidden';
-                    hid.name = 'id';
-                    hid.value = String(r.id);
-                    form.appendChild(hid);
-
                     var btnA = document.createElement('button');
-                    btnA.type = 'submit';
-                    btnA.name = 'estado';
-                    btnA.value = 'A';
-                    btnA.className = 'btn btn-sm btn-success';
+                    btnA.type = 'button';
+                    btnA.className = actionCls('ok');
                     btnA.textContent = 'Aprobar';
+                    btnA.addEventListener('click', function () {
+                        submitPost(aprUrl, { id: String(r.id), estado: 'A' });
+                    });
 
                     var btnR = document.createElement('button');
-                    btnR.type = 'submit';
-                    btnR.name = 'estado';
-                    btnR.value = 'R';
-                    btnR.className = 'btn btn-sm btn-danger';
+                    btnR.type = 'button';
+                    btnR.className = actionCls('danger');
                     btnR.textContent = 'Rechazar';
+                    btnR.addEventListener('click', function () {
+                        if (typeof window.gpConfirm === 'function') {
+                            window.gpConfirm({
+                                title: 'Rechazar solicitud',
+                                body: '¿Rechazar esta solicitud del monitor?',
+                                danger: true,
+                                okLabel: 'Rechazar',
+                                onConfirm: function () {
+                                    submitPost(aprUrl, { id: String(r.id), estado: 'R' });
+                                },
+                            });
 
-                    form.appendChild(btnA);
-                    form.appendChild(btnR);
+                            return;
+                        }
+                        if (window.confirm('¿Rechazar esta solicitud del monitor?')) {
+                            submitPost(aprUrl, { id: String(r.id), estado: 'R' });
+                        }
+                    });
 
-                    tdAct.appendChild(form);
+                    appendAction(actSol.stack, btnA);
+                    appendAction(actSol.stack, btnR);
                 } else {
-                    tdAct.textContent = '—';
+                    var dash = document.createElement('span');
+                    dash.className = 'gp-actions-empty';
+                    dash.textContent = '—';
+                    appendAction(actSol.stack, dash);
                 }
-
-                tr.appendChild(tdAct);
+                tr.appendChild(actSol.td);
                 frag.appendChild(tr);
             });
 

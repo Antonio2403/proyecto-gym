@@ -1,2 +1,5 @@
 /vendor
 .env
+env
+.claves
+*.local

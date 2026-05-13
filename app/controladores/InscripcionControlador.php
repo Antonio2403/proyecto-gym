@@ -2,6 +2,7 @@
 
 require_once 'app/modelos/inscripcion.php';
 require_once 'app/modelos/actividades.php';
+require_once 'app/modelos/cliente_subscripcion.php';
 require_once 'core/Controller.php';
 
 class InscripcionControlador extends Controller
@@ -9,8 +10,13 @@ class InscripcionControlador extends Controller
     public function misIncripciones()
     {
         $this->redirigirFisioFueraPortal();
+        $uid = (int) ($_SESSION['usuario_id'] ?? 0);
+        $tienePlan = $uid > 0 && ClienteSubscripcion::tieneSuscripcionActivaPorUsuarioId($uid);
         $inscripciones = Inscripcion::obtenerInscripciones();
-        $this->renderFrontend("frontend/verMisActividades", ['inscripciones' => $inscripciones]);
+        $this->renderFrontend('frontend/verMisActividades', [
+            'inscripciones' => $inscripciones,
+            'tiene_plan_activo' => $tienePlan,
+        ]);
     }
 
     public function cancelar()
@@ -22,8 +28,17 @@ class InscripcionControlador extends Controller
 
         $this->redirigirFisioFueraPortal();
 
-        if (empty($_SESSION['usuario_id'])) {
+        $uid = (int) ($_SESSION['usuario_id'] ?? 0);
+        if ($uid <= 0) {
             header('Location: ' . url('/login') . '?error=' . rawurlencode('Debes iniciar sesión'));
+            exit;
+        }
+        if (!ClienteSubscripcion::tieneSuscripcionActivaPorUsuarioId($uid)) {
+            header(
+                'Location: ' . url('/usuario/inscripciones/mis-inscripciones') . '?error=' . rawurlencode(
+                    'Necesitas un plan activo para gestionar reservas. Contrata o renueva en Planes.'
+                )
+            );
             exit;
         }
 
@@ -56,12 +71,22 @@ class InscripcionControlador extends Controller
         }
 
         $actividad_id = (int) ($_POST['actividad_id'] ?? 0);
-        if ($actividad_id <= 0) {
-            header('Location: ' . url('/usuario/actividades') . '?error=' . rawurlencode('Actividad no válida'));
+        $fecha_sesion = trim((string) ($_POST['fecha_sesion'] ?? ''));
+        if ($actividad_id <= 0 || !preg_match('/^\d{4}-\d{2}-\d{2}$/', $fecha_sesion)) {
+            header('Location: ' . url('/usuario/actividades') . '?error=' . rawurlencode('Datos de reserva no válidos'));
             exit;
         }
 
         $usuario_id = (int) $_SESSION['usuario_id'];
+
+        if (!ClienteSubscripcion::tieneSuscripcionActivaPorUsuarioId($usuario_id)) {
+            header(
+                'Location: ' . url('/usuario/actividades') . '?error=' . rawurlencode(
+                    'Necesitas un plan activo y pago al día para reservar. Contrata o renueva en la sección de planes.'
+                )
+            );
+            exit;
+        }
 
         $conexion = BasedeDatos::Conectar();
 
@@ -74,29 +99,46 @@ class InscripcionControlador extends Controller
             die("No eres cliente");
         }
 
-        $cliente_id = $cliente['id'];
+        $cliente_id = (int) $cliente['id'];
         $cliente_email = $cliente['email'];
 
-        // Evitar duplicados
-        if (Inscripcion::yaInscrito($cliente_id, $actividad_id)) {
-            header('Location: ' . url('/usuario/actividades') . '?error=' . rawurlencode('Ya estás inscrito en esta actividad'));
+        if (!Actividad::fechaEsSesionValida($actividad_id, $fecha_sesion)) {
+            header('Location: ' . url('/usuario/actividades') . '?error=' . rawurlencode('La fecha no corresponde a esta actividad'));
             exit;
         }
 
-        // Obtener capacidad
+        if (!ClienteSubscripcion::puedeNuevaReservaEsaSemana($cliente_id, $fecha_sesion)) {
+            $cupo = ClienteSubscripcion::cupoReservasSemana($cliente_id, $fecha_sesion);
+            $msg = sprintf(
+                'Has superado el máximo de inscripciones posibles esta semana con tu plan (%d de %d reservas).',
+                $cupo['usado'],
+                $cupo['max_semana']
+            );
+            header('Location: ' . url('/usuario/actividades') . '?error=' . rawurlencode($msg));
+            exit;
+        }
+
+        if (Inscripcion::yaInscritoEnSesion($cliente_id, $actividad_id, $fecha_sesion)) {
+            header('Location: ' . url('/usuario/actividades') . '?info=' . rawurlencode('Ya estás inscrito en esta sesión'));
+            exit;
+        }
+
         $actividad = Actividad::obtenerPorId($actividad_id);
-        $inscritos = Inscripcion::contarInscritos($actividad_id);
-
-        // Clase llena
-        if ($inscritos >= $actividad['plazas']) {
-            header('Location: ' . url('/usuario/actividades') . '?error=' . rawurlencode('Esta actividad ya está llena'));
+        if (!$actividad) {
+            header('Location: ' . url('/usuario/actividades') . '?error=' . rawurlencode('Actividad no encontrada'));
             exit;
         }
 
-        // Insertar
-        Inscripcion::inscribir($cliente_id, $actividad_id);
+        $inscritos = Inscripcion::contarInscritosSesion($actividad_id, $fecha_sesion);
+        $plazas = max(1, (int) ($actividad['plazas'] ?? 20));
+        if ($inscritos >= $plazas) {
+            header('Location: ' . url('/usuario/actividades') . '?error=' . rawurlencode('Esta sesión ya está llena'));
+            exit;
+        }
 
-        $fechaSesionComentarios = Inscripcion::fechaProximaOcurrenciaActividad($actividad_id);
+        Inscripcion::inscribir($cliente_id, $actividad_id, $fecha_sesion);
+
+        $fechaSesionComentarios = $fecha_sesion;
 
         require_once dirname(__DIR__, 2) . '/core/helpers/mail_smtp.php';
         $mailErrBooking = null;

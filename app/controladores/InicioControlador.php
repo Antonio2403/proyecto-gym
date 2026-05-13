@@ -14,7 +14,45 @@ class InicioControlador extends Controller {
         $this->renderFrontend('frontend/quienesSomos');
     }
 
-    public function inicioAdmin(){
+    public function aceptarCookies(): void
+    {
+        if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') {
+            http_response_code(404);
+            return;
+        }
+
+        setcookie('gp_cookie_consent', 'accepted', [
+            'expires' => time() + 365 * 86400,
+            'path' => app_base_path() ?: '/',
+            'secure' => (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off'),
+            'httponly' => false,
+            'samesite' => 'Lax',
+        ]);
+
+        header('Content-Type: application/json; charset=utf-8');
+        echo json_encode(['ok' => true], JSON_UNESCAPED_UNICODE);
+    }
+
+    public function inicioAdmin()
+    {
+        if (empty($_SESSION['usuario_id'])) {
+            header('Location: ' . url('/login') . '?error=' . rawurlencode('Debes iniciar sesión'));
+            exit;
+        }
+        $rol = (string) ($_SESSION['rol'] ?? '');
+        if ($rol === 'monitor') {
+            header('Location: ' . url('/inicioMonitor'));
+            exit;
+        }
+        if ($rol === 'fisio') {
+            header('Location: ' . url('/fisio'));
+            exit;
+        }
+        if ($rol !== 'admin') {
+            header('Location: ' . url('/inicioUsuario'));
+            exit;
+        }
+
         $this->renderAdmin("admin/inicioAdmin");
     }
 

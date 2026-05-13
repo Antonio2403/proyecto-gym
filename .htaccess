@@ -1,5 +1,13 @@
 RewriteEngine On
 
+# Bloquear secretos, scripts y código interno si el proyecto se sirve desde htdocs.
+RewriteRule ^(?:env|\.env|\.claves|composer\.(?:json|lock)|CAMBIOS_CONVERSACION\.txt|CHANGELOG\.txt)$ index.php [L,NC]
+RewriteRule ^(?:app|core|script|scripts|vendor|\.git)(?:/|$) index.php [L,NC]
+
+# Si obtienes 404 de Apache al usar /login y la app está en htdocs/MI-CARPETA/, descomenta y ajusta:
+# RewriteBase /MI-CARPETA/
+# Si el DocumentRoot de Apache apunta directamente a esta carpeta del proyecto, no uses RewriteBase (o RewriteBase /).
+
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 

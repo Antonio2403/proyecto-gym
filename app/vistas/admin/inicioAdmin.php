@@ -1,53 +1,62 @@
-<div class="content-wrapper">
+<div class="content-wrapper gp-dash">
     <div class="container-fluid">
-        <div class="gp-admin-card-panel mb-4">
-            <h1 class="h3 mb-2">Administración</h1>
-            <p class="text-muted mb-0">Accesos rápidos al panel Clara / Spartum.</p>
-        </div>
+        <header class="gp-dash-hero">
+            <span class="gp-badge d-inline-block mb-2">Panel</span>
+            <h1 class="h3 mb-0">Administración</h1>
+            <p class="mb-0 mt-2">Accesos rápidos al centro. Elige un módulo para gestionar.</p>
+        </header>
 
-        <div class="row g-3">
-            <div class="col-sm-6 col-xl-4">
-                <a href="<?= htmlspecialchars(url('/admin/verClientes')) ?>" class="text-decoration-none d-block gp-admin-card-panel h-100">
-                    <div class="fw-semibold text-dark"><i class="fas fa-users me-2 text-primary"></i>Clientes</div>
-                    <div class="small text-muted mt-1">Listado de usuarios registrados</div>
-                </a>
-            </div>
-            <div class="col-sm-6 col-xl-4">
-                <a href="<?= htmlspecialchars(url('/admin/fisioterapeutas')) ?>" class="text-decoration-none d-block gp-admin-card-panel h-100">
-                    <div class="fw-semibold text-dark"><i class="fas fa-heart-pulse me-2 text-primary"></i>Fisioterapeutas</div>
-                    <div class="small text-muted mt-1">Altas y edición de fisios</div>
-                </a>
-            </div>
-            <div class="col-sm-6 col-xl-4">
-                <a href="<?= htmlspecialchars(url('/admin/gestionarActividades')) ?>" class="text-decoration-none d-block gp-admin-card-panel h-100">
-                    <div class="fw-semibold text-dark"><i class="fas fa-calendar-alt me-2 text-primary"></i>Actividades</div>
-                    <div class="small text-muted mt-1">Sesiones y horarios</div>
-                </a>
-            </div>
-            <div class="col-sm-6 col-xl-4">
-                <a href="<?= htmlspecialchars(url('/admin/gestionSubscripciones')) ?>" class="text-decoration-none d-block gp-admin-card-panel h-100">
-                    <div class="fw-semibold text-dark"><i class="fas fa-credit-card me-2 text-primary"></i>Suscripciones</div>
-                    <div class="small text-muted mt-1">Planes y precios</div>
-                </a>
-            </div>
-            <div class="col-sm-6 col-xl-4">
-                <a href="<?= htmlspecialchars(url('/admin/verMonitores')) ?>" class="text-decoration-none d-block gp-admin-card-panel h-100">
-                    <div class="fw-semibold text-dark"><i class="fas fa-user-tie me-2 text-primary"></i>Monitores</div>
-                    <div class="small text-muted mt-1">Equipo del centro</div>
-                </a>
-            </div>
-            <div class="col-sm-6 col-xl-4">
-                <a href="<?= htmlspecialchars(url('/admin/verSolicitudes')) ?>" class="text-decoration-none d-block gp-admin-card-panel h-100">
-                    <div class="fw-semibold text-dark"><i class="fas fa-envelope me-2 text-primary"></i>Solicitudes</div>
-                    <div class="small text-muted mt-1">Peticiones de monitores</div>
-                </a>
-            </div>
-            <div class="col-sm-6 col-xl-4">
-                <a href="<?= htmlspecialchars(url('/admin/feedback')) ?>" class="text-decoration-none d-block gp-admin-card-panel h-100">
-                    <div class="fw-semibold text-dark"><i class="fas fa-comment-dots me-2 text-primary"></i>Feedback de contacto</div>
-                    <div class="small text-muted mt-1">Mensajes del formulario web</div>
-                </a>
-            </div>
-        </div>
+        <nav class="gp-bento gp-bento--admin gp-bento--admin-grid" aria-label="Menú de administración">
+            <a href="<?= htmlspecialchars(url('/admin/verClientes')) ?>" class="gp-bento-tile gp-motion-item">
+                <span class="gp-bento-tile__icon" aria-hidden="true"><i class="fas fa-users"></i></span>
+                <span class="gp-bento-tile__label">Clientes</span>
+                <span class="gp-bento-tile__desc">Altas, planes y accesos</span>
+            </a>
+            <a href="<?= htmlspecialchars(url('/admin/verMonitores')) ?>" class="gp-bento-tile gp-motion-item">
+                <span class="gp-bento-tile__icon" aria-hidden="true"><i class="fas fa-user-tie"></i></span>
+                <span class="gp-bento-tile__label">Monitores</span>
+                <span class="gp-bento-tile__desc">Equipo y especialidades</span>
+            </a>
+            <a href="<?= htmlspecialchars(url('/admin/fisioterapeutas')) ?>" class="gp-bento-tile gp-motion-item">
+                <span class="gp-bento-tile__icon" aria-hidden="true"><i class="fas fa-heart-pulse"></i></span>
+                <span class="gp-bento-tile__label">Fisioterapeutas</span>
+                <span class="gp-bento-tile__desc">Profesionales y citas</span>
+            </a>
+            <a href="<?= htmlspecialchars(url('/admin/gestionSubscripciones')) ?>" class="gp-bento-tile gp-motion-item">
+                <span class="gp-bento-tile__icon" aria-hidden="true"><i class="fas fa-credit-card"></i></span>
+                <span class="gp-bento-tile__label">Suscripciones</span>
+                <span class="gp-bento-tile__desc">Planes y ofertas</span>
+            </a>
+            <a href="<?= htmlspecialchars(url('/admin/verSolicitudes')) ?>" class="gp-bento-tile gp-motion-item">
+                <span class="gp-bento-tile__icon" aria-hidden="true"><i class="fas fa-envelope"></i></span>
+                <span class="gp-bento-tile__label">Solicitudes</span>
+                <span class="gp-bento-tile__desc">Peticiones de monitores</span>
+            </a>
+            <a href="<?= htmlspecialchars(url('/admin/recuperacion-cuenta')) ?>" class="gp-bento-tile gp-motion-item">
+                <span class="gp-bento-tile__icon" aria-hidden="true"><i class="fas fa-ticket"></i></span>
+                <span class="gp-bento-tile__label">Tickets de cuenta</span>
+                <span class="gp-bento-tile__desc">Reactivación de accesos</span>
+            </a>
+            <a href="<?= htmlspecialchars(url('/admin/feedback')) ?>" class="gp-bento-tile gp-motion-item">
+                <span class="gp-bento-tile__icon" aria-hidden="true"><i class="fas fa-comment-dots"></i></span>
+                <span class="gp-bento-tile__label">Feedback contacto</span>
+                <span class="gp-bento-tile__desc">Mensajes del formulario</span>
+            </a>
+            <a href="<?= htmlspecialchars(url('/admin/gestionarActividades')) ?>" class="gp-bento-tile gp-motion-item">
+                <span class="gp-bento-tile__icon" aria-hidden="true"><i class="fas fa-calendar-alt"></i></span>
+                <span class="gp-bento-tile__label">Actividades</span>
+                <span class="gp-bento-tile__desc">Horarios y clases</span>
+            </a>
+            <a href="<?= htmlspecialchars(url('/monitor/verSalas')) ?>" class="gp-bento-tile gp-motion-item">
+                <span class="gp-bento-tile__icon" aria-hidden="true"><i class="fas fa-dumbbell"></i></span>
+                <span class="gp-bento-tile__label">Salas</span>
+                <span class="gp-bento-tile__desc">Espacios y capacidad</span>
+            </a>
+            <a href="<?= htmlspecialchars(url('/admin/config-seguridad')) ?>" class="gp-bento-tile gp-motion-item">
+                <span class="gp-bento-tile__icon" aria-hidden="true"><i class="fas fa-shield-halved"></i></span>
+                <span class="gp-bento-tile__label">Seguridad</span>
+                <span class="gp-bento-tile__desc">Claves e inactividad</span>
+            </a>
+        </nav>
     </div>
 </div>

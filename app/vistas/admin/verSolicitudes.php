@@ -1,19 +1,22 @@
 <div class="content-wrapper">
-    <?php if (!empty($_GET['success'])): ?>
-        <div class="alert alert-success"><?= htmlspecialchars((string) $_GET['success']) ?></div>
-    <?php endif; ?>
-    <?php if (!empty($_GET['error'])): ?>
-        <div class="alert alert-danger"><?= htmlspecialchars((string) $_GET['error']) ?></div>
-    <?php endif; ?>
-
     <div class="container-fluid mt-4">
-        <div class="mb-4 d-flex flex-wrap gap-2">
-            <a href="<?= htmlspecialchars(url('/admin/verSolicitudesAprobadas')) ?>" class="btn btn-success btn-sm">Aprobadas</a>
-            <a href="<?= htmlspecialchars(url('/admin/verSolicitudesRechazadas')) ?>" class="btn btn-danger btn-sm">Rechazadas</a>
-            <a href="<?= htmlspecialchars(url('/admin')) ?>" class="btn btn-secondary btn-sm">Volver al panel</a>
-        </div>
-
-        <h2 class="mb-3">Solicitudes pendientes</h2>
+        <header class="gp-page-header">
+            <div class="gp-page-header__title">
+                <h2 class="h4 mb-1">Solicitudes pendientes</h2>
+                <p class="text-muted small">Peticiones del equipo de monitores en espera de revisión.</p>
+            </div>
+            <div class="gp-view-toolbar">
+                <a href="<?= htmlspecialchars(url('/admin/verSolicitudesAprobadas')) ?>" class="btn btn-outline-success btn-sm">
+                    <i class="fas fa-check me-1" aria-hidden="true"></i> Aprobadas
+                </a>
+                <a href="<?= htmlspecialchars(url('/admin/verSolicitudesRechazadas')) ?>" class="btn btn-outline-danger btn-sm">
+                    <i class="fas fa-times me-1" aria-hidden="true"></i> Rechazadas
+                </a>
+                <a href="<?= htmlspecialchars(url('/admin')) ?>" class="btn btn-outline-secondary btn-sm">
+                    <i class="fas fa-arrow-left me-1" aria-hidden="true"></i> Panel
+                </a>
+            </div>
+        </header>
 
         <div
             class="gp-admin-grid gp-admin-card-panel"
@@ -65,7 +68,7 @@
             </div>
 
             <div class="table-responsive">
-                <table class="table table-bordered align-middle mb-0">
+                <table class="table table-bordered align-middle mb-0 gp-data-table">
                     <thead class="small">
                         <tr>
                             <th>ID</th>
@@ -76,7 +79,7 @@
                             <th>Motivo / descripción</th>
                             <th>Revisión</th>
                             <th>Estado</th>
-                            <th>Acciones</th>
+                            <th class="gp-actions-col">Acciones</th>
                         </tr>
                     </thead>
                     <tbody data-grid-body>

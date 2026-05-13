@@ -1,0 +1,72 @@
+Spartum — capas de validación (referencia para endurecimiento y auditoría)
+========================================================================
+
+1) Resumen de responsabilidades (recomendación de la industria)
+---------------------------------------------------------------
+- Base de datos: integridad referencial (FK, UNIQUE, NOT NULL), dominios acotados (ENUM),
+  rangos y formatos que el motor puede comprobar sin contexto de aplicación (CHECK).
+  No sustituye la lógica de negocio ni la autorización por rol.
+- PHP (servidor): reglas de negocio, permisos, antiabuso, letra de control DNI/NIE (módulo 23),
+  política de contraseñas sobre texto plano antes de hash, CSRF, rate limiting, flujos multi-tabla.
+  Es la capa obligatoria para seguridad: el cliente y la BD no bastan solos.
+- JavaScript (cliente): mejora de UX (formato DNI/teléfono/código), mensajes inmediatos.
+  Debe duplicar criterios simples; no es una barrera de seguridad.
+
+2) Dónde está hoy el código relevante
+--------------------------------------
+- PHP helpers: core/helpers/form_validacion.php
+  fv_email_valido, fv_documento_identidad_es, fv_clave_fuerte, fv_telefono_es_*, fv_login_identificador, etc.
+- JS cliente: public/assets/js/form-validacion.js (handlers data-gp-validate, DNI/teléfono en vivo).
+- Modelos/controladores: validaciones ad hoc con preg_match / fv_* (p. ej. actividades fecha Y-m-d,
+  UsuarioControlador registro/edición, InscripcionControlador, RecuperarContrasenaControlador).
+- Esquema y migraciones: app/modelos/database.php (CREATE TABLE, ensureSchemaUpgrades, CHECK nuevos).
+
+3) Qué se ha reforzado en base de datos (CHECK, idempotente)
+-------------------------------------------------------------
+Al conectar con auto-setup, se intentan añadir (si no existen):
+- usuarios: formato DNI/NIE básico por REGEXP; email longitud + patrón mínimo; email_confirmado 0/1.
+- recuperacion_cuenta_ticket: intentos_codigo 0..50; longitud codigo 1..32.
+- subscripciones: precio >= 0 si no NULL; duracion y numero_clases >= 0 si no NULL.
+- feedback: email con el mismo patrón mínimo que usuarios.
+
+La letra de control del DNI/NIE (algoritmo módulo 23) sigue en PHP (fv_documento_identidad_es):
+no duplicar en triggers salvo necesidad extrema (mantenimiento y mensajes de error peores).
+
+Contraseñas: solo hash en BD; la complejidad no puede validarse en CHECK sobre la columna clave.
+
+4) Limpieza de ficheros “innecesarios”
+-------------------------------------
+No se han eliminado carpetas grandes (p. ej. public/assets/adminlte) sin inventario de referencias:
+romperían el panel. Para una limpieza segura: buscar referencias en vistas/JS, ejecutar tests,
+y mover a rama aparte.
+
+5) Capas de seguridad en despliegue (HTTP de prueba → HTTPS producción)
+------------------------------------------------------------------------
+Tres líneas de defensa complementarias (no sustituyen una a otra):
+
+a) Aplicación y servidor sin HTTPS (hosting de prueba)
+   - Sesión: use_strict_mode, solo cookies, HttpOnly, SameSite=Lax; cookie Secure solo si hay HTTPS
+     o APP_FORCE_SECURE_COOKIES=1 (p. ej. detrás de proxy TLS).
+   - Cabeceras: X-Frame-Options, X-Content-Type-Options, Referrer-Policy, Permissions-Policy;
+     HSTS solo cuando la petición es HTTPS (core/bootstrap_security.php, llamado desde index.php).
+   - SQL: PDO con consultas preparadas y ATTR_EMULATE_PREPARES=false (BasedeDatos::Conectar).
+   - POST mutadores: CSRF en routers/web.php (csrf_validate_request).
+   - Subidas: validación MIME + getimagesize; public/assets/uploads/.htaccess bloquea intérpretes PHP.
+
+b) Transporte cifrado (HTTPS en producción)
+   - Evita robo de cookies y credenciales en tránsito; activa Secure en cookies y HSTS con confianza
+     en el host final. Si el TLS termina en un proxy, APP_TRUST_PROXY=1 y cabecera X-Forwarded-Proto.
+
+c) Base de datos
+   - Integridad (FK, CHECK) y datos parametrizados; no “cifrar SQL”: lo importante es no concatenar
+     entrada de usuario en SQL y usar prepared statements.
+
+Variables .env / env (opcionales): APP_TRUST_PROXY, APP_FORCE_SECURE_COOKIES, SESSION_IDLE_TIMEOUT_SECONDS.
+
+6) Próximos pasos sugeridos (auditoría)
+---------------------------------------
+- Revisar todas las rutas POST con csrf_validate_request (routers/web.php).
+- Centralizar validación de IDs enteros positivos en un helper y usar en controladores.
+- Revisión OWASP (inyección, XSS salida en vistas, subida de ficheros, sesiones).
+- Índices y FK faltantes en tablas concretas según consultas lentas en producción.
+- En el vhost Apache/Nginx: desactivar listado de directorios (Options -Indexes) si la política del host lo permite.

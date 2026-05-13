@@ -3,12 +3,21 @@ if (!isset($_SESSION['usuario_id'])) {
     header('Location: ' . url('/login') . '?error=' . rawurlencode('Debes iniciar sesión para ver tus actividades'));
     exit;
 }
+$tienePlanActivo = !empty($tiene_plan_activo);
 ?>
 <div class="container py-4 py-lg-5">
     <header class="gp-page-header">
-        <span class="gp-badge mb-2">Reservas activas</span>
+        <span class="gp-badge mb-2">Reservas</span>
         <h1 class="h2 mb-2">Mis actividades</h1>
-        <p class="text-muted mb-0">Sesiones en las que estás inscrito. Puedes cancelar con un clic.</p>
+        <?php if ($tienePlanActivo): ?>
+            <p class="text-muted mb-0">Sesiones en las que estás inscrito. Puedes cancelar con un clic.</p>
+        <?php else: ?>
+            <p class="text-muted mb-0">
+                Sin <strong>plan activo</strong> no puedes cancelar ni nuevas reservas desde aquí.
+                Tus inscripciones anteriores se muestran solo como referencia hasta que renueves en
+                <a href="<?= htmlspecialchars(url('/pago')) ?>">Planes</a>.
+            </p>
+        <?php endif; ?>
     </header>
 
     <div class="d-flex flex-wrap gap-2 mb-4">
@@ -23,8 +32,14 @@ if (!isset($_SESSION['usuario_id'])) {
     <?php endif; ?>
 
     <?php if (isset($_GET['error'])): ?>
+        <?php
+        $errRaw = (string) ($_GET['error'] ?? '');
+        $errTxt = $errRaw === '1'
+            ? 'No se pudo cancelar la inscripción o no existe.'
+            : htmlspecialchars($errRaw, ENT_QUOTES, 'UTF-8');
+        ?>
         <div class="alert alert-danger border-0 rounded-3 mb-4 text-center">
-            Error al cancelar la inscripción
+            <?= $errTxt ?>
         </div>
     <?php endif; ?>
 
@@ -98,6 +113,7 @@ if (!isset($_SESSION['usuario_id'])) {
                                         ?>
                                     </td>
                                     <td class="text-nowrap">
+                                        <?php if ($tienePlanActivo): ?>
                                         <form method="post" action="<?= htmlspecialchars(url('/usuario/inscripciones/cancelar')) ?>" class="d-inline"
                                               data-gp-confirm
                                               data-gp-danger="true"
@@ -112,6 +128,9 @@ if (!isset($_SESSION['usuario_id'])) {
                                                 Cancelar
                                             </button>
                                         </form>
+                                        <?php else: ?>
+                                            <span class="small text-muted">—</span>
+                                        <?php endif; ?>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>
