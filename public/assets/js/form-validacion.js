@@ -12,6 +12,120 @@
         return String(v == null ? '' : v).trim();
     }
 
+    function horarioCentroCfg() {
+        return window.GP_HORARIO_CENTRO || { dias: {}, lineas: [] };
+    }
+
+    function diaLetraJs(d) {
+        var map = { 0: 'D', 1: 'L', 2: 'M', 3: 'X', 4: 'J', 5: 'V', 6: 'S' };
+        return map[d.getDay()] || '';
+    }
+
+    function minutosHora(hhmm) {
+        if (!hhmm || !/^\d{2}:\d{2}$/.test(hhmm)) {
+            return NaN;
+        }
+        var p = hhmm.split(':');
+        return parseInt(p[0], 10) * 60 + parseInt(p[1], 10);
+    }
+
+    function cabeEnDiaCentro(dia, horaInicio, duracion) {
+        var cfg = horarioCentroCfg().dias || {};
+        var r = cfg[dia];
+        if (!r) {
+            return false;
+        }
+        var ini = minutosHora(horaInicio);
+        var fin = ini + duracion;
+        var open = minutosHora(r.open);
+        var close = minutosHora(r.close);
+        return Number.isFinite(ini) && Number.isFinite(fin) && fin <= close && ini >= open;
+    }
+
+    function msgHorarioCentro() {
+        var lineas = horarioCentroCfg().lineas || [];
+        return lineas.length ? ' Horario del centro: ' + lineas.join(', ') + '.' : '';
+    }
+
+    function validarProgramacionActividad(form, recurrenteChecked) {
+        var horaEl = field(form, 'hora_inicio');
+        var hora = horaEl ? trimStr(horaEl.value) : '';
+        var durEl = field(form, 'duracion');
+        var dur = durEl ? parseInt(durEl.value, 10) : NaN;
+        if (!Number.isFinite(dur) || dur < 1) {
+            return true;
+        }
+
+        if (recurrenteChecked) {
+            var marcados = form.querySelectorAll('input[name="dias_semana[]"]:checked');
+            if (!marcados || marcados.length < 1) {
+                return true;
+            }
+            for (var i = 0; i < marcados.length; i++) {
+                var dia = marcados[i].value;
+                if (!cabeEnDiaCentro(dia, hora, dur)) {
+                    setValidity(horaEl, 'Fuera del horario de apertura para el día seleccionado.' + msgHorarioCentro());
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        var fechaEl = field(form, 'fecha_actividad');
+        var fecha = fechaEl ? trimStr(fechaEl.value) : '';
+        if (!fecha) {
+            setValidity(fechaEl, 'Indica la fecha del evento puntual.');
+            return false;
+        }
+        var d = new Date(fecha + 'T12:00:00');
+        var dia = diaLetraJs(d);
+        if (!cabeEnDiaCentro(dia, hora, dur)) {
+            setValidity(fechaEl, 'Esa fecha/hora está fuera del horario del centro.' + msgHorarioCentro());
+            return false;
+        }
+        return true;
+    }
+
+    function validarCitaFisioHorario(dtEl) {
+        if (!dtEl || trimStr(dtEl.value) === '') {
+            return true;
+        }
+        var parsed = Date.parse(dtEl.value);
+        if (!Number.isFinite(parsed)) {
+            return true;
+        }
+        var d = new Date(parsed);
+        var dia = diaLetraJs(d);
+        var hora = String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0');
+        if (!cabeEnDiaCentro(dia, hora, 30)) {
+            dtEl.setCustomValidity('La cita debe estar dentro del horario del centro.' + msgHorarioCentro());
+            return false;
+        }
+        return true;
+    }
+
+    function bindRecurrenteFechaPuntual(form) {
+        var rec = form.querySelector('input[name="recurrente"]');
+        var wrap = form.querySelector('[data-gp-fecha-puntual]');
+        var diasWrap = form.querySelector('[data-gp-dias-semana]');
+        if (!rec || !wrap) {
+            return;
+        }
+        function sync() {
+            var on = rec.checked;
+            wrap.hidden = on;
+            if (diasWrap) {
+                diasWrap.hidden = !on;
+            }
+            var fechaEl = field(form, 'fecha_actividad');
+            if (fechaEl) {
+                fechaEl.required = !on;
+            }
+        }
+        rec.addEventListener('change', sync);
+        sync();
+    }
+
     function emailOk(val) {
         var t = trimStr(val).toLowerCase();
         return t !== '' && /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(t);
@@ -307,6 +421,11 @@
             ok = false;
         }
 
+        var recCb = form.querySelector('input[name="recurrente"]');
+        if (!validarProgramacionActividad(form, !recCb || recCb.checked)) {
+            ok = false;
+        }
+
         return ok;
     };
 
@@ -342,6 +461,11 @@
         var monV = mon ? parseInt(mon.value, 10) : 0;
         if (!mon || !Number.isFinite(monV) || monV <= 0) {
             setValidity(mon, 'Selecciona un monitor.');
+            ok = false;
+        }
+
+        var recCb = form.querySelector('input[name="recurrente"]');
+        if (!validarProgramacionActividad(form, !recCb || recCb.checked)) {
             ok = false;
         }
 
@@ -709,15 +833,31 @@
             ok = false;
         }
 
-        var dt = field(form, 'fecha_hora');
-        if (!dt || trimStr(dt.value) === '') {
-            setValidity(dt, 'Indica fecha y hora.');
+        var fechaEl = field(form, 'fecha_cita');
+        var fecha = fechaEl ? trimStr(fechaEl.value) : '';
+        if (!fechaEl || !/^\d{4}-\d{2}-\d{2}$/.test(fecha)) {
+            setValidity(fechaEl, 'Indica la fecha.');
             ok = false;
-        } else {
-            var parsed = Date.parse(dt.value);
+        }
+
+        var horaEl = field(form, 'hora_cita');
+        var hora = horaEl ? trimStr(horaEl.value) : '';
+        if (!horaEl || hora === '' || horaEl.disabled) {
+            setValidity(horaEl, 'Elige una hora disponible.');
+            ok = false;
+        } else if (!/^\d{2}:\d{2}$/.test(hora)) {
+            setValidity(horaEl, 'Hora no válida.');
+            ok = false;
+        } else if (fecha !== '') {
+            var parsed = Date.parse(fecha + 'T' + hora + ':00');
             if (!Number.isFinite(parsed) || parsed < Date.now() - 5000) {
-                setValidity(dt, 'Elige una fecha y hora futuras.');
+                setValidity(horaEl, 'Elige un hueco futuro.');
                 ok = false;
+            } else {
+                var fakeDt = { value: fecha + 'T' + hora };
+                if (!validarCitaFisioHorario(fakeDt)) {
+                    ok = false;
+                }
             }
         }
 
@@ -812,6 +952,9 @@
             if (!(form instanceof HTMLFormElement)) return;
             var key = trimStr(form.getAttribute('data-gp-validate'));
             attachForm(form, key);
+            if (key === 'activityCreate' || key === 'activityEdit') {
+                bindRecurrenteFechaPuntual(form);
+            }
         });
 
         function collectRevealIds(btn) {

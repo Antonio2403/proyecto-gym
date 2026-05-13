@@ -107,6 +107,21 @@ class InscripcionControlador extends Controller
             exit;
         }
 
+        $actividad = Actividad::obtenerPorId($actividad_id);
+        if (!$actividad) {
+            header('Location: ' . url('/usuario/actividades') . '?error=' . rawurlencode('Actividad no encontrada'));
+            exit;
+        }
+
+        if (!Actividad::sesionPermiteInscripcion($actividad, $fecha_sesion)) {
+            header(
+                'Location: ' . url('/usuario/actividades') . '?error=' . rawurlencode(
+                    'No puedes reservar sesiones pasadas ni clases que ya han empezado. Elige un horario desde hoy en adelante.'
+                )
+            );
+            exit;
+        }
+
         if (!ClienteSubscripcion::puedeNuevaReservaEsaSemana($cliente_id, $fecha_sesion)) {
             $cupo = ClienteSubscripcion::cupoReservasSemana($cliente_id, $fecha_sesion);
             $msg = sprintf(
@@ -120,12 +135,6 @@ class InscripcionControlador extends Controller
 
         if (Inscripcion::yaInscritoEnSesion($cliente_id, $actividad_id, $fecha_sesion)) {
             header('Location: ' . url('/usuario/actividades') . '?info=' . rawurlencode('Ya estás inscrito en esta sesión'));
-            exit;
-        }
-
-        $actividad = Actividad::obtenerPorId($actividad_id);
-        if (!$actividad) {
-            header('Location: ' . url('/usuario/actividades') . '?error=' . rawurlencode('Actividad no encontrada'));
             exit;
         }
 

@@ -89,6 +89,7 @@ controller($router, 'post', '/admin/clientes/desbloquear', 'AdminControlador@des
 controller($router, 'get', '/clientes/editar', 'UsuarioControlador@formEditarCliente');
 controller($router, 'post', '/clientes/editar', 'UsuarioControlador@editarCliente');
 controller($router, 'get', '/darse-de-baja', 'UsuarioControlador@darseDeBaja');
+controller($router, 'post', '/darse-de-baja', 'UsuarioControlador@confirmarDarseDeBaja');
 
 // Fisioterapeutas (admin)
 controller($router, 'get', '/admin/fisioterapeutas', 'AdminFisioterapeutaControlador@index');
@@ -113,6 +114,8 @@ controller($router, 'get', '/admin/verSolicitudes', 'AdminControlador@verSolicit
 controller($router, 'get', '/admin/verSolicitudesAprobadas', 'AdminControlador@verSolicitudesAprobadas');
 controller($router, 'get', '/admin/verSolicitudesRechazadas', 'AdminControlador@verSolicitudesRechazadas');
 controller($router, 'post', '/admin/aprobar', 'AdminControlador@aprobarSolicitud');
+
+controller($router, 'get', '/monitor/mis-clases', 'MonitorControlador@misClases');
 
 //Solicitudes monitor
 controller($router, 'get', '/monitor/verMonitorSolicitudes', 'MonitorControlador@verMonitorSolicitudes');
@@ -172,6 +175,7 @@ controller($router, 'get', '/usuario/inscripciones/mis-inscripciones', 'Inscripc
 // Fisioterapia (clientes; suscripción con fisio = S)
 controller($router, 'get', '/usuario/fisio', 'FisioControlador@index');
 controller($router, 'get', '/usuario/fisio/solicitar', 'FisioControlador@formSolicitar');
+controller($router, 'get', '/usuario/fisio/horas-disponibles', 'FisioControlador@horasDisponibles');
 controller($router, 'post', '/usuario/fisio/solicitar', 'FisioControlador@solicitar');
 controller($router, 'get', '/usuario/fisio/mis-citas', 'FisioControlador@misCitas');
 controller($router, 'post', '/usuario/fisio/cancelar-cita', 'FisioControlador@cancelarCita');

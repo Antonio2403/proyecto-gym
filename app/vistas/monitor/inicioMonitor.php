@@ -10,6 +10,11 @@
         </header>
 
         <nav class="gp-bento gp-bento--admin gp-bento--monitor-grid" aria-label="Menú de monitor">
+            <a href="<?= htmlspecialchars(url('/monitor/mis-clases')) ?>" class="gp-bento-tile gp-motion-item">
+                <span class="gp-bento-tile__icon" aria-hidden="true"><i class="fas fa-calendar-check"></i></span>
+                <span class="gp-bento-tile__label">Mis clases</span>
+                <span class="gp-bento-tile__desc">Alumnos inscritos en tus sesiones</span>
+            </a>
             <a href="<?= htmlspecialchars(url('/monitor/verMonitorSolicitudes')) ?>" class="gp-bento-tile gp-motion-item">
                 <span class="gp-bento-tile__icon" aria-hidden="true"><i class="fas fa-envelope-open"></i></span>
                 <span class="gp-bento-tile__label">Solicitudes centro</span>

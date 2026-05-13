@@ -7,6 +7,8 @@ require_once 'app/modelos/monitor.php';
 require_once 'app/modelos/inscripcion.php';
 require_once 'app/modelos/cliente.php';
 require_once 'app/modelos/cliente_subscripcion.php';
+require_once dirname(__DIR__, 2) . '/core/helpers/horario_centro.php';
+require_once dirname(__DIR__, 2) . '/core/helpers/actividad_notificaciones.php';
 
 class ActividadControlador extends Controller
 {
@@ -74,6 +76,8 @@ class ActividadControlador extends Controller
             }
         }
 
+        $sesionReservablePorCelda = Actividad::mapaSesionesReservablesEnSemana($actividades, $weekStart);
+
         $usuarioId = (int) ($_SESSION['usuario_id'] ?? 0);
         $rol = (string) ($_SESSION['rol'] ?? '');
         $clienteId = $usuarioId > 0 ? Cliente::IdClientePorUsuarioId($usuarioId) : null;
@@ -99,6 +103,7 @@ class ActividadControlador extends Controller
         $this->renderFrontend('frontend/actividades', [
             'actividades' => $actividades,
             'inscritos_por_celda' => $inscritosPorCelda,
+            'sesion_reservable_por_celda' => $sesionReservablePorCelda,
             'semana_offset' => $semana,
             'week_label' => $weekLabel,
             'schedule_week_monday' => $weekStart,
@@ -170,8 +175,9 @@ class ActividadControlador extends Controller
         $sala_id = (int) ($_POST['sala_id'] ?? 0);
         $monitor_id = (int) ($_POST['monitor_id'] ?? 0);
         $recurrente = isset($_POST['recurrente']) ? 1 : 0;
+        $fechaPuntual = trim((string) ($_POST['fecha_actividad'] ?? ''));
 
-        if ($nombre === '' || $hora_inicio === '' || $diasSel === []) {
+        if ($nombre === '' || $hora_inicio === '' || ($recurrente === 1 && $diasSel === [])) {
             header('Location: ' . url('/admin/actividades/crear') . '?error=1');
             return;
         }
@@ -181,7 +187,24 @@ class ActividadControlador extends Controller
             return;
         }
 
-        $fecha_base = date('Y-m-d');
+        $horarioErr = gp_horario_validar_programacion_actividad(
+            $diasSel,
+            $hora_inicio,
+            $duracion,
+            $recurrente,
+            $recurrente === 0 ? $fechaPuntual : null
+        );
+        if ($horarioErr !== null) {
+            header('Location: ' . url('/admin/actividades/crear') . '?error=' . rawurlencode($horarioErr));
+            return;
+        }
+
+        if ($recurrente === 0) {
+            $fecha_base = $fechaPuntual;
+            $diasSel = [gp_horario_centro_dia_letra(new DateTimeImmutable($fechaPuntual))];
+        } else {
+            $fecha_base = date('Y-m-d');
+        }
         $fecha_inicio = $fecha_base . ' ' . $hora_inicio . ':00';
         $fecha_fin = date('Y-m-d H:i:s', strtotime($fecha_inicio . ' +' . $duracion . ' minutes'));
 
@@ -231,6 +254,7 @@ class ActividadControlador extends Controller
         $duracion = (int) ($_POST['duracion'] ?? 0);
         $hora_inicio = trim((string) ($_POST['hora_inicio'] ?? ''));
         $recurrente = isset($_POST['recurrente']) ? 1 : 0;
+        $fechaPuntual = trim((string) ($_POST['fecha_actividad'] ?? ''));
         $rawDias = $_POST['dias_semana'] ?? [];
         if (!is_array($rawDias)) {
             $rawDias = [];
@@ -238,14 +262,73 @@ class ActividadControlador extends Controller
         $diasValidos = ['L', 'M', 'X', 'J', 'V', 'S', 'D'];
         $diasSel = array_values(array_intersect($diasValidos, array_map('strtoupper', array_map('strval', $rawDias))));
 
-        if ($nombre === '' || $sala_id <= 0 || $monitor_id <= 0 || $hora_inicio === '' || $diasSel === [] || $duracion < 1) {
+        if ($nombre === '' || $sala_id <= 0 || $monitor_id <= 0 || $hora_inicio === '' || ($recurrente === 1 && $diasSel === []) || $duracion < 1) {
             header('Location: ' . url('/admin/actividades/editar/' . $postId) . '?error=1');
             exit;
         }
 
-        if (!Actividad::actualizarHorario($postId, $nombre, $descripcion, $sala_id, $monitor_id, $duracion, $hora_inicio, $recurrente, $diasSel)) {
+        $horarioErr = gp_horario_validar_programacion_actividad(
+            $diasSel,
+            $hora_inicio,
+            $duracion,
+            $recurrente,
+            $recurrente === 0 ? $fechaPuntual : null
+        );
+        if ($horarioErr !== null) {
+            header('Location: ' . url('/admin/actividades/editar/' . $postId) . '?error=' . rawurlencode($horarioErr));
+            exit;
+        }
+
+        $actividadAntes = Actividad::obtenerPorId($postId);
+        if (!$actividadAntes) {
+            header('Location: ' . url('/admin/gestionarActividades') . '?error=1');
+            exit;
+        }
+
+        $diasAntes = Actividad::diasParaActividadId($postId);
+        $horaAntes = !empty($actividadAntes['fecha_inicio']) ? date('H:i', strtotime((string) $actividadAntes['fecha_inicio'])) : '';
+        $recAntes = (int) ($actividadAntes['recurrente'] ?? 1);
+        $fechaAntes = substr((string) ($actividadAntes['fecha_inicio'] ?? ''), 0, 10);
+
+        $diasOrdenados = $diasSel;
+        sort($diasOrdenados);
+        $diasAntesOrden = $diasAntes;
+        sort($diasAntesOrden);
+
+        $cambioHorario = $horaAntes !== $hora_inicio
+            || $recAntes !== $recurrente
+            || $diasAntesOrden !== $diasOrdenados
+            || ($recurrente === 0 && $fechaPuntual !== '' && $fechaPuntual !== $fechaAntes);
+
+        $inscritos = [];
+        if ($cambioHorario) {
+            $inscritos = Inscripcion::listarInscritosConEmailPorActividad($postId);
+        }
+
+        if ($recurrente === 0 && $fechaPuntual !== '') {
+            $diasSel = [gp_horario_centro_dia_letra(new DateTimeImmutable($fechaPuntual))];
+        }
+
+        if (!Actividad::actualizarHorario(
+            $postId,
+            $nombre,
+            $descripcion,
+            $sala_id,
+            $monitor_id,
+            $duracion,
+            $hora_inicio,
+            $recurrente,
+            $diasSel,
+            $recurrente === 0 ? $fechaPuntual : null
+        )) {
             header('Location: ' . url('/admin/actividades/editar/' . $postId) . '?error=1');
             exit;
+        }
+
+        if ($cambioHorario) {
+            Inscripcion::eliminarTodasPorActividad($postId);
+            $motivo = 'se ha modificado el horario o los días de la clase';
+            gp_actividad_notificar_cambio_horario($nombre, $inscritos, $motivo);
         }
 
         header('Location: ' . url('/admin/gestionarActividades') . '?success=1');
@@ -259,7 +342,13 @@ class ActividadControlador extends Controller
             header('Location: ' . url('/admin/gestionarActividades'));
             exit;
         }
-        if (Actividad::eliminar($id)) {
+        $actId = (int) $id;
+        $actividad = $actId > 0 ? Actividad::obtenerPorId($actId) : null;
+        $inscritos = $actividad ? Inscripcion::listarInscritosConEmailPorActividad($actId) : [];
+        $nombreAct = $actividad ? (string) ($actividad['nombre'] ?? 'Actividad') : 'Actividad';
+
+        if ($actividad && Actividad::eliminar($actId)) {
+            gp_actividad_notificar_cancelacion($nombreAct, $inscritos);
             header('Location: ' . url('/admin/gestionarActividades') . '?deleted=1');
         } else {
             header('Location: ' . url('/admin/gestionarActividades') . '?error=' . rawurlencode('No se pudo eliminar la actividad'));

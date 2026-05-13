@@ -292,6 +292,28 @@ body::-webkit-scrollbar-corner,
     color: rgba(255, 255, 255, 0.72) !important;
 }
 
+.gp-map-embed-wrap {
+    position: relative;
+    min-height: 220px;
+    background: rgba(0, 0, 0, 0.2);
+}
+
+.gp-map-embed {
+    display: block;
+    width: 100%;
+    height: 100%;
+    min-height: 220px;
+    border: 0;
+    pointer-events: none;
+}
+
+@media (min-width: 768px) {
+    .gp-map-embed-wrap,
+    .gp-map-embed {
+        min-height: 260px;
+    }
+}
+
 @media (min-width: 992px) {
     .site-navbar .navbar-collapse {
         position: relative;
@@ -1184,6 +1206,99 @@ body::-webkit-scrollbar-corner,
     box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
 }
 
+.gp-schedule-act--past {
+    background: linear-gradient(160deg, #5c6778 0%, #3f4a59 100%);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+    opacity: 1;
+}
+
+.gp-schedule-act--past:hover,
+.gp-schedule-act--past:focus-visible {
+    transform: none;
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+}
+
+.gp-schedule-act--past .gp-schedule-act-body strong {
+    color: #f8fafc;
+}
+
+.gp-schedule-act--past .gp-schedule-act-time,
+.gp-schedule-act--past .gp-schedule-act-capacity {
+    color: #e2e8f0;
+}
+
+.gp-schedule-act--enrolled-done {
+    background: linear-gradient(160deg, #0f766e 0%, #115e59 55%, #134e4a 100%);
+    box-shadow:
+        0 2px 10px rgba(15, 118, 110, 0.35),
+        inset 0 0 0 2px rgba(167, 243, 208, 0.55);
+    opacity: 1;
+}
+
+.gp-schedule-act--enrolled-done:hover,
+.gp-schedule-act--enrolled-done:focus-visible {
+    transform: none;
+    box-shadow:
+        0 2px 10px rgba(15, 118, 110, 0.35),
+        inset 0 0 0 2px rgba(167, 243, 208, 0.55);
+}
+
+.gp-schedule-act--enrolled-done .gp-schedule-act-body strong {
+    color: #ffffff;
+}
+
+.gp-schedule-act--enrolled-done .gp-schedule-act-time,
+.gp-schedule-act--enrolled-done .gp-schedule-act-capacity {
+    color: #ccfbf1;
+}
+
+.gp-btn-inscrito {
+    border: 1px solid #93c5fd !important;
+    color: #eff6ff !important;
+    background: linear-gradient(180deg, #2563eb 0%, #1d4ed8 100%) !important;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    opacity: 1 !important;
+}
+
+.gp-btn-sesion-finalizada {
+    border: 1px solid #6ee7b7 !important;
+    color: #064e3b !important;
+    background: linear-gradient(180deg, #a7f3d0 0%, #6ee7b7 100%) !important;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    opacity: 1 !important;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.35);
+}
+
+.gp-btn-sesion-pasada {
+    border: 1px solid #cbd5e1 !important;
+    color: #f8fafc !important;
+    background: linear-gradient(180deg, #64748b 0%, #475569 100%) !important;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    opacity: 1 !important;
+}
+
+.gp-schedule-opiniones {
+    margin-top: 0.15rem;
+    font-weight: 600;
+    color: #f8fafc !important;
+    border-color: rgba(255, 255, 255, 0.35) !important;
+    background: rgba(15, 23, 42, 0.35) !important;
+}
+
+.gp-schedule-act--enrolled-done + .gp-btn-sesion-finalizada + .gp-schedule-opiniones,
+.gp-schedule-act--past ~ .gp-btn-sesion-pasada + .gp-schedule-opiniones {
+    border-color: rgba(255, 255, 255, 0.45) !important;
+}
+
+.gp-schedule-opiniones:hover {
+    color: #ffffff !important;
+    background: rgba(15, 23, 42, 0.55) !important;
+    border-color: rgba(255, 255, 255, 0.55) !important;
+}
+
 .gp-schedule-act-body strong {
     font-size: 0.8rem;
     line-height: 1.25;
@@ -1218,14 +1333,6 @@ body::-webkit-scrollbar-corner,
     opacity: 0.92;
     -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23000' d='M16 11c1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3 1.34 3 3 3zm-8 0c1.66 0 3-1.34 3-3S9.66 5 8 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z'/%3E%3C/svg%3E") center / contain no-repeat;
     mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23000' d='M16 11c1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3 1.34 3 3 3zm-8 0c1.66 0 3-1.34 3-3S9.66 5 8 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z'/%3E%3C/svg%3E") center / contain no-repeat;
-}
-
-.gp-schedule-opiniones {
-    font-weight: 600;
-}
-
-.gp-schedule-opiniones:hover {
-    background: rgba(255, 255, 255, 0.08);
 }
 
 .popover.gp-schedule-popover-bs {
@@ -1516,6 +1623,147 @@ label.gp-label-required::after {
     background:
         radial-gradient(circle at 8% 15%, rgba(196, 92, 40, 0.12), transparent 26%),
         linear-gradient(180deg, #fff, #fffaf7);
+}
+
+/* Cuenta: baja voluntaria */
+.gp-account-baja-hero {
+    border-radius: var(--gp-radius);
+    border: 1px solid rgba(185, 28, 28, 0.12);
+    background:
+        radial-gradient(circle at 100% 0%, rgba(220, 38, 38, 0.08), transparent 34%),
+        linear-gradient(180deg, #ffffff 0%, #fff9f8 100%);
+    box-shadow: var(--gp-shadow-sm);
+    overflow: hidden;
+    position: relative;
+}
+
+.gp-account-baja-hero::before {
+    content: '';
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 4px;
+    background: linear-gradient(180deg, #dc2626 0%, #e85d04 100%);
+    z-index: 0;
+}
+
+.gp-account-baja-hero__inner {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    gap: 1rem;
+    padding: 1.35rem 1.35rem 1.35rem 1.55rem;
+}
+
+@media (min-width: 768px) {
+    .gp-account-baja-hero__inner {
+        grid-template-columns: minmax(0, 1fr) auto;
+        align-items: end;
+        gap: 1.25rem 1.5rem;
+        padding: 1.5rem 1.65rem 1.5rem 1.8rem;
+    }
+}
+
+.gp-account-baja-hero__badge {
+    background: rgba(220, 38, 38, 0.08);
+    border-color: rgba(220, 38, 38, 0.18);
+    color: #991b1b;
+    margin-bottom: 0.6rem;
+}
+
+.gp-account-baja-hero h1 {
+    font-family: var(--gp-display);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--gp-text);
+    font-size: clamp(1.5rem, 3.2vw, 1.95rem);
+    margin: 0 0 0.5rem;
+    line-height: 1.15;
+}
+
+.gp-account-baja-hero__lead {
+    color: var(--gp-muted);
+    font-size: 0.95rem;
+    line-height: 1.55;
+    max-width: 40rem;
+    margin: 0;
+}
+
+.gp-account-baja-hero__meta {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+}
+
+@media (min-width: 768px) {
+    .gp-account-baja-hero__meta {
+        align-items: flex-end;
+        min-width: 12rem;
+    }
+}
+
+.gp-account-baja-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.78rem;
+    font-weight: 600;
+    padding: 0.4rem 0.75rem;
+    border-radius: 999px;
+    background: var(--gp-white);
+    border: 1px solid var(--gp-border-light);
+    color: var(--gp-text-secondary);
+    white-space: nowrap;
+}
+
+.gp-account-baja-chip--warn {
+    background: rgba(234, 88, 12, 0.08);
+    border-color: rgba(234, 88, 12, 0.22);
+    color: #9a3412;
+    white-space: normal;
+    text-align: left;
+}
+
+.gp-account-baja-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.gp-account-baja-terms {
+    margin: 0 0 1.25rem;
+    padding: 0;
+    list-style: none;
+}
+
+.gp-account-baja-terms li {
+    position: relative;
+    padding-left: 1.35rem;
+    margin-bottom: 0.65rem;
+    color: var(--gp-text-secondary);
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+.gp-account-baja-terms li:last-child {
+    margin-bottom: 0;
+}
+
+.gp-account-baja-terms li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.45rem;
+    width: 0.45rem;
+    height: 0.45rem;
+    border-radius: 50%;
+    background: rgba(220, 38, 38, 0.55);
+}
+
+.gp-account-baja-card .form-check-label {
+    color: var(--gp-text-secondary);
+    line-height: 1.45;
 }
 
 .gp-current-plan-details {

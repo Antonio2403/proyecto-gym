@@ -3,6 +3,8 @@
 require_once 'core/Controller.php';
 require_once 'app/modelos/monitor.php';
 require_once 'app/modelos/solicitud.php';
+require_once 'app/modelos/actividades.php';
+require_once 'app/modelos/inscripcion.php';
 
 class MonitorControlador extends Controller
 {
@@ -39,6 +41,51 @@ class MonitorControlador extends Controller
     {
         $this->requireMonitor();
         $this->renderAdmin('monitor/formSolicitud');
+    }
+
+    public function misClases()
+    {
+        $this->requireMonitor();
+        $monitorTablaId = Monitor::obtenerIdPorUsuarioId((int) $_SESSION['usuario_id']);
+        if ($monitorTablaId === null) {
+            header('Location: ' . url('/inicioMonitor') . '?error=' . urlencode('No se encontró el perfil de monitor.'));
+            exit;
+        }
+
+        $pag = gp_grid_pagination();
+        $filtros = [
+            'q' => gp_grid_str($_GET['q'] ?? null),
+            'actividad' => gp_grid_str($_GET['actividad'] ?? null),
+            'sala' => gp_grid_str($_GET['sala'] ?? null),
+            'cliente' => gp_grid_str($_GET['cliente'] ?? null),
+            'email' => gp_grid_str($_GET['email'] ?? null),
+            'fecha_desde' => gp_grid_str($_GET['fecha_desde'] ?? null),
+            'fecha_hasta' => gp_grid_str($_GET['fecha_hasta'] ?? null),
+            'dia_semana' => gp_grid_str($_GET['dia_semana'] ?? null),
+        ];
+
+        $resultado = Inscripcion::buscarSesionesMonitorPaginado(
+            $monitorTablaId,
+            $pag['page'],
+            $pag['per_page'],
+            $filtros
+        );
+
+        $tz = new DateTimeZone(date_default_timezone_get());
+        $hoy = (new DateTimeImmutable('today', $tz))->format('Y-m-d');
+        $defHasta = (new DateTimeImmutable('today', $tz))->modify('+13 days')->format('Y-m-d');
+
+        $this->renderAdmin('monitor/misClases', [
+            'sesiones' => $resultado['rows'],
+            'total' => $resultado['total'],
+            'page' => $resultado['page'],
+            'per_page' => $resultado['per_page'],
+            'total_pages' => $resultado['total_pages'],
+            'filtros' => $filtros,
+            'salas_filtro' => Inscripcion::salasDistintasMonitor($monitorTablaId),
+            'fecha_def_desde' => $hoy,
+            'fecha_def_hasta' => $defHasta,
+        ]);
     }
 
     public function crearSolicitud()

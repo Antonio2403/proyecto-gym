@@ -8,6 +8,9 @@ $weekLabel = (string) ($week_label ?? '');
 $inscritosPorCelda = is_array($inscritos_por_celda ?? null)
     ? $inscritos_por_celda
     : [];
+$sesionReservablePorCelda = is_array($sesion_reservable_por_celda ?? null)
+    ? $sesion_reservable_por_celda
+    : [];
 $scheduleWeekMonday = isset($schedule_week_monday) ? (string) $schedule_week_monday : '';
 $offsetDiaSemana = ['L' => 0, 'M' => 1, 'X' => 2, 'J' => 3, 'V' => 4, 'S' => 5, 'D' => 6];
 $tienePlanActivo = !empty($tiene_plan_activo);
@@ -144,6 +147,15 @@ $puedeMasReservaSemana = !isset($puede_mas_reserva_semana) || $puede_mas_reserva
                                                 $limiteSemanalAgotado = $tienePlanActivo && !$puedeMasReservaSemana && !$yaInscrito;
                                                 $sinPlan = !$tienePlanActivo;
                                                 $bloqueadoHorario = ($fechaCelda === '' && (int) ($act['recurrente'] ?? 1) === 1);
+                                                $sesionReservable = true;
+                                                if ($cellKey !== '') {
+                                                    $sesionReservable = (bool) ($sesionReservablePorCelda[$cellKey] ?? false);
+                                                } elseif ($fechaSesionReserva !== '' && preg_match('/^\d{4}-\d{2}-\d{2}$/', $fechaSesionReserva)) {
+                                                    $sesionReservable = (bool) ($sesionReservablePorCelda[$actId . '_' . $fechaSesionReserva] ?? false);
+                                                }
+                                                $sesionFinalizada = $fechaSesionReserva !== ''
+                                                    && preg_match('/^\d{4}-\d{2}-\d{2}$/', $fechaSesionReserva)
+                                                    && Actividad::sesionHaFinalizado($act, $fechaSesionReserva);
                                                 $urlOpiniones = '';
                                                 if ($fechaComentarios !== '') {
                                                     $urlOpiniones = url('/usuario/actividades/sesion/comentarios') . '?' . http_build_query([
@@ -169,7 +181,7 @@ $puedeMasReservaSemana = !isset($puede_mas_reserva_semana) || $puede_mas_reserva
                                                         </ul>
                                                     </div>
                                                 </template>
-                                                <div class="gp-schedule-act mb-2<?= $cupoLleno ? ' gp-schedule-act--full' : '' ?>"
+                                                <div class="gp-schedule-act mb-2<?= $cupoLleno ? ' gp-schedule-act--full' : '' ?><?= !$sesionReservable ? ' gp-schedule-act--past' : '' ?><?= ($yaInscrito && $sesionFinalizada) ? ' gp-schedule-act--enrolled-done' : '' ?>"
                                                      tabindex="0"
                                                      role="button"
                                                      data-gp-popover-id="<?= htmlspecialchars($tplId) ?>"
@@ -182,12 +194,16 @@ $puedeMasReservaSemana = !isset($puede_mas_reserva_semana) || $puede_mas_reserva
                                                     </div>
                                                 </div>
                                                 <?php
-                                                if ($yaInscrito): ?>
-                                                    <button type="button" class="btn btn-secondary btn-sm w-100 mb-1" disabled title="Ya tienes plaza en esta sesión">Inscrito</button>
+                                                if ($yaInscrito && $sesionFinalizada): ?>
+                                                    <button type="button" class="btn btn-sm w-100 mb-1 gp-btn-sesion-finalizada" disabled title="Te inscribiste a esta sesión y ya ha terminado">Sesión finalizada</button>
+                                                <?php elseif ($yaInscrito): ?>
+                                                    <button type="button" class="btn btn-sm w-100 mb-1 gp-btn-inscrito" disabled title="Ya tienes plaza en esta sesión">Inscrito</button>
                                                 <?php elseif ($sinPlan): ?>
                                                     <button type="button" class="btn btn-outline-secondary btn-sm w-100 mb-1" disabled title="Contrata un plan para reservar">Requiere plan</button>
                                                 <?php elseif ($limiteSemanalAgotado): ?>
                                                     <button type="button" class="btn btn-outline-warning btn-sm w-100 mb-1 text-dark" disabled title="Has usado todas las reservas de esta semana según tu plan">Límite semanal</button>
+                                                <?php elseif (!$sesionReservable): ?>
+                                                    <button type="button" class="btn btn-sm w-100 mb-1 gp-btn-sesion-pasada" disabled title="Esta sesión ya ha pasado">Sesión pasada</button>
                                                 <?php elseif ($cupoLleno || $bloqueadoHorario): ?>
                                                     <button type="button" class="btn gp-btn-apuntarse btn-sm w-100 mb-1" disabled><?= $cupoLleno ? 'Completo' : '—' ?></button>
                                                 <?php else: ?>

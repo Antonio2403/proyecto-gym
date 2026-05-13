@@ -339,7 +339,8 @@ Eliminación de actividades, monitores, fisios, salas, materiales, feedback y su
 
 | Script | Descripción |
 |--------|-------------|
-| `scripts/seed_demo_data.php` | Solo CLI (`--force`): reset demo + admin `alfonsojaime02@gmail.com` |
+| `scripts/import_demo_database.php` | Solo CLI (`--force`): importa `spartum_full_demo.sql` (esquema + demo) |
+| `scripts/spartum_full_demo.sql` | Volcado SQL con tablas y datos de prueba |
 | `scripts/reset_admin_password.php` | Solo CLI: restablecer clave admin con política fuerte |
 
 Ambos bloqueados desde web vía `.htaccess` (carpeta `scripts`).
@@ -398,7 +399,8 @@ Ejecutado `git add` el 13-may-2026. Todos pasan de `??` a **staged** (`A`):
 | `public/assets/js/gp-view-transitions.js` |
 | `public/assets/uploads/.htaccess` |
 | `scripts/reset_admin_password.php` |
-| `scripts/seed_demo_data.php` |
+| `scripts/import_demo_database.php` |
+| `scripts/spartum_full_demo.sql` |
 
 ### Modificados (`M`) — 67 archivos
 

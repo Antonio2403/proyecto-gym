@@ -1,4 +1,6 @@
 <?php
+require_once dirname(__DIR__, 3) . '/core/helpers/horario_centro.php';
+$gpHorarioLineas = gp_horario_centro_lineas();
 $gpFormTitle = 'Crear actividad';
 $gpFormBackUrl = url('/admin/gestionarActividades');
 $gpFormSubtitle = 'Programa una actividad en el horario del centro.';
@@ -6,6 +8,7 @@ $gpFormBadge = 'Actividades';
 require dirname(__DIR__) . '/layouts/partials/gp_form_panel_start.php';
 $diaOpts = ['L' => 'Lun', 'M' => 'Mar', 'X' => 'Mié', 'J' => 'Jue', 'V' => 'Vie', 'S' => 'Sáb', 'D' => 'Dom'];
 ?>
+                <p class="text-muted small mb-3">Horario del centro: <?= htmlspecialchars(implode(' · ', $gpHorarioLineas)) ?> (domingo cerrado).</p>
                 <p class="gp-form-required-legend text-muted small mb-3">Los campos con <span class="text-danger fw-bold" aria-hidden="true">*</span> son obligatorios.</p>
                 <form action="<?= htmlspecialchars(url('/admin/actividades/crear')) ?>" method="post" class="needs-validation gp-form-stack" novalidate data-gp-validate="activityCreate"
                       data-gp-confirm data-gp-confirm-title="Crear actividad" data-gp-confirm-body="¿Crear esta actividad en el horario?" data-gp-confirm-ok="Crear">
@@ -31,24 +34,29 @@ $diaOpts = ['L' => 'Lun', 'M' => 'Mar', 'X' => 'Mié', 'J' => 'Jue', 'V' => 'Vie
                         </div>
                     </div>
 
-                    <div class="mb-3">
+                    <div class="mb-3 form-check">
+                        <input class="form-check-input" type="checkbox" name="recurrente" id="recurrente" value="1" checked>
+                        <label class="form-check-label" for="recurrente">Actividad semanal recurrente</label>
+                        <p class="form-text small text-muted mb-0">Desmárcalo solo para un evento puntual (una sola fecha en el calendario).</p>
+                    </div>
+
+                    <div class="mb-3" data-gp-fecha-puntual hidden>
+                        <label class="form-label gp-label-required" for="fecha_actividad">Fecha del evento</label>
+                        <input type="date" class="form-control" name="fecha_actividad" id="fecha_actividad" min="<?= htmlspecialchars(date('Y-m-d')) ?>">
+                    </div>
+
+                    <div class="mb-3" data-gp-dias-semana>
                         <span class="form-label gp-label-required d-block">Días (puedes marcar varios con la misma hora)</span>
                         <div class="row row-cols-2 row-cols-md-4 g-2">
                             <?php foreach ($diaOpts as $code => $lbl): ?>
                                 <div class="col">
                                     <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" name="dias_semana[]" value="<?= $code ?>" id="dia_<?= $code ?>">
+                                        <input class="form-check-input" type="checkbox" name="dias_semana[]" value="<?= $code ?>" id="dia_<?= $code ?>"<?= $code === 'D' ? ' disabled title="Domingo: centro cerrado"' : '' ?>>
                                         <label class="form-check-label" for="dia_<?= $code ?>"><?= htmlspecialchars($lbl) ?></label>
                                     </div>
                                 </div>
                             <?php endforeach; ?>
                         </div>
-                    </div>
-
-                    <div class="mb-3 form-check">
-                        <input class="form-check-input" type="checkbox" name="recurrente" id="recurrente" value="1" checked>
-                        <label class="form-check-label" for="recurrente">Actividad semanal recurrente</label>
-                        <p class="form-text small text-muted mb-0">Desmárcalo solo para un evento puntual (una sola fecha en el calendario).</p>
                     </div>
 
                     <div class="gp-form-grid gp-form-grid--2">

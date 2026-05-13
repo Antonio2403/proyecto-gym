@@ -2,8 +2,92 @@
 
 class Cita
 {
+    public static function duracionConsultaMinutos(): int
+    {
+        return gp_fisio_duracion_consulta_minutos();
+    }
+
+    /** Estados que bloquean el hueco en agenda. */
+    public static function estadosQueOcupanAgenda(): array
+    {
+        return ['S', 'C'];
+    }
+
+    /**
+     * @return string[] HH:MM ya reservadas ese día para el fisio.
+     */
+    public static function horasOcupadasFisioEnDia(int $fisioId, string $fechaYmd): array
+    {
+        if ($fisioId <= 0 || !preg_match('/^\d{4}-\d{2}-\d{2}$/', $fechaYmd)) {
+            return [];
+        }
+
+        $estados = self::estadosQueOcupanAgenda();
+        $placeholders = implode(',', array_fill(0, count($estados), '?'));
+        $db = BasedeDatos::Conectar();
+        $sql = "SELECT DATE_FORMAT(fecha, '%H:%i') AS hora
+                FROM citas
+                WHERE fisio_id = ?
+                  AND DATE(fecha) = ?
+                  AND estado IN ($placeholders)
+                ORDER BY fecha ASC";
+        $params = array_merge([$fisioId, $fechaYmd], $estados);
+        $st = $db->prepare($sql);
+        $st->execute($params);
+
+        $out = [];
+        foreach ($st->fetchAll(PDO::FETCH_ASSOC) as $row) {
+            $h = (string) ($row['hora'] ?? '');
+            if ($h !== '') {
+                $out[] = $h;
+            }
+        }
+
+        return $out;
+    }
+
+    /**
+     * @return string[] HH:MM libres para nueva cita.
+     */
+    public static function horasDisponiblesFisioDia(int $fisioId, string $fechaYmd): array
+    {
+        require_once dirname(__DIR__, 2) . '/core/helpers/horario_centro.php';
+        $slots = gp_horario_slots_centro_dia($fechaYmd);
+        if ($slots === []) {
+            return [];
+        }
+        $ocupadas = self::horasOcupadasFisioEnDia($fisioId, $fechaYmd);
+
+        return array_values(array_filter(
+            $slots,
+            static fn (string $h): bool => !in_array($h, $ocupadas, true)
+        ));
+    }
+
+    public static function slotOcupado(int $fisioId, string $fechaHoraMysql): bool
+    {
+        if ($fisioId <= 0 || $fechaHoraMysql === '') {
+            return true;
+        }
+
+        $estados = self::estadosQueOcupanAgenda();
+        $placeholders = implode(',', array_fill(0, count($estados), '?'));
+        $db = BasedeDatos::Conectar();
+        $st = $db->prepare(
+            "SELECT COUNT(*) FROM citas WHERE fisio_id = ? AND fecha = ? AND estado IN ($placeholders)"
+        );
+        $params = array_merge([$fisioId, $fechaHoraMysql], $estados);
+        $st->execute($params);
+
+        return (int) $st->fetchColumn() > 0;
+    }
+
     public static function crear(int $clienteId, int $fisioId, string $fechaHora, string $motivo): bool
     {
+        if (self::slotOcupado($fisioId, $fechaHora)) {
+            return false;
+        }
+
         $db = BasedeDatos::Conectar();
         $st = $db->prepare(
             'INSERT INTO citas (cliente_id, fisio_id, fecha, motivo, estado)

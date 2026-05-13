@@ -5,6 +5,7 @@ require_once 'app/modelos/cliente.php';
 require_once 'app/modelos/cliente_subscripcion.php';
 require_once 'app/modelos/fisioterapeuta.php';
 require_once 'app/modelos/cita.php';
+require_once dirname(__DIR__, 2) . '/core/helpers/horario_centro.php';
 
 class FisioControlador extends Controller
 {
@@ -64,7 +65,41 @@ class FisioControlador extends Controller
         $fisioterapeutas = Fisioterapeuta::obtenerTodas();
         $this->renderFrontend('frontend/fisio/solicitar', [
             'fisioterapeutas' => $fisioterapeutas,
+            'horas_disponibles_url' => url('/usuario/fisio/horas-disponibles'),
+            'min_fecha_cita' => date('Y-m-d'),
         ]);
+    }
+
+    public function horasDisponibles()
+    {
+        $clienteId = $this->exigirCliente();
+        $this->exigirSuscripcionFisio($clienteId);
+
+        header('Content-Type: application/json; charset=utf-8');
+
+        $fisioId = isset($_GET['fisio_id']) ? (int) $_GET['fisio_id'] : 0;
+        $fecha = trim((string) ($_GET['fecha'] ?? ''));
+
+        if ($fisioId <= 0 || !preg_match('/^\d{4}-\d{2}-\d{2}$/', $fecha)) {
+            echo json_encode(['ok' => false, 'horas' => [], 'mensaje' => 'Datos no válidos']);
+            exit;
+        }
+
+        if (!Fisioterapeuta::obtenerPorId($fisioId)) {
+            echo json_encode(['ok' => false, 'horas' => [], 'mensaje' => 'Fisioterapeuta no válido']);
+            exit;
+        }
+
+        $horas = Cita::horasDisponiblesFisioDia($fisioId, $fecha);
+        $diaCerrado = gp_horario_slots_centro_dia($fecha) === [];
+
+        echo json_encode([
+            'ok' => true,
+            'horas' => $horas,
+            'dia_completo' => !$diaCerrado && $horas === [],
+            'dia_cerrado' => $diaCerrado,
+        ]);
+        exit;
     }
 
     public function solicitar()
@@ -78,12 +113,20 @@ class FisioControlador extends Controller
         }
 
         $fisioId = isset($_POST['fisio_id']) ? (int) $_POST['fisio_id'] : 0;
-        $fechaLocal = trim((string) ($_POST['fecha_hora'] ?? ''));
+        $fechaCita = trim((string) ($_POST['fecha_cita'] ?? ''));
+        $horaCita = trim((string) ($_POST['hora_cita'] ?? ''));
         $motivo = trim((string) ($_POST['motivo'] ?? ''));
 
-        if ($fisioId <= 0 || $fechaLocal === '' || $motivo === '') {
+        if ($fisioId <= 0 || $fechaCita === '' || $horaCita === '' || $motivo === '') {
             header(
                 'Location: ' . url('/usuario/fisio/solicitar') . '?error=' . rawurlencode('Completa todos los campos.')
+            );
+            exit;
+        }
+
+        if (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $fechaCita) || !preg_match('/^\d{2}:\d{2}$/', $horaCita)) {
+            header(
+                'Location: ' . url('/usuario/fisio/solicitar') . '?error=' . rawurlencode('Fecha u hora no válidas.')
             );
             exit;
         }
@@ -103,8 +146,15 @@ class FisioControlador extends Controller
             exit;
         }
 
-        // datetime-local → Y-m-d H:i:s
-        $ts = strtotime(str_replace('T', ' ', $fechaLocal));
+        if (!gp_horario_es_slot_valido_fisio($fechaCita, $horaCita)) {
+            header(
+                'Location: ' . url('/usuario/fisio/solicitar') . '?error=' . rawurlencode('La hora elegida no es una franja válida del centro.')
+            );
+            exit;
+        }
+
+        $fechaLocal = $fechaCita . 'T' . $horaCita;
+        $ts = strtotime($fechaCita . ' ' . $horaCita . ':00');
         if ($ts === false) {
             header(
                 'Location: ' . url('/usuario/fisio/solicitar') . '?error=' . rawurlencode('Fecha u hora no válidas.')
@@ -119,7 +169,26 @@ class FisioControlador extends Controller
             exit;
         }
 
-        $fechaMysql = date('Y-m-d H:i:s', $ts);
+        $fechaDt = (new DateTimeImmutable())->setTimestamp($ts);
+        $horarioErr = gp_horario_validar_cita_fisio($fechaDt);
+        if ($horarioErr !== null) {
+            header(
+                'Location: ' . url('/usuario/fisio/solicitar') . '?error=' . rawurlencode($horarioErr)
+            );
+            exit;
+        }
+
+        $fechaMysql = $fechaDt->format('Y-m-d H:i:s');
+
+        $disponibles = Cita::horasDisponiblesFisioDia($fisioId, $fechaCita);
+        if (!in_array($horaCita, $disponibles, true)) {
+            header(
+                'Location: ' . url('/usuario/fisio/solicitar') . '?error=' . rawurlencode(
+                    'Ese hueco ya no está disponible. Elige otra hora o día.'
+                )
+            );
+            exit;
+        }
 
         // Blindaje: volver a validar suscripción con fisio
         if (!ClienteSubscripcion::tieneFisioActivo($clienteId)) {
@@ -135,7 +204,7 @@ class FisioControlador extends Controller
         }
 
         header(
-            'Location: ' . url('/usuario/fisio/solicitar') . '?error=' . rawurlencode('No se pudo registrar la cita. Inténtalo de nuevo.')
+            'Location: ' . url('/usuario/fisio/solicitar') . '?error=' . rawurlencode('No se pudo registrar la cita. El hueco puede estar ocupado; prueba otra hora.')
         );
         exit;
     }

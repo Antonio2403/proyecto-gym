@@ -9,7 +9,7 @@ CHANGELOG del proyecto Spartum
 
 2. Base de datos, datos demo y secretos
    - Email inicial del administrador: alfonsojaime02@gmail.com.
-   - El script scripts/seed_demo_data.php queda pensado para CLI y datos demo, no para acceso web.
+   - El script scripts/import_demo_database.php importa scripts/spartum_full_demo.sql por CLI (solo con --force), no accesible por web.
    - Protegidos scripts, código interno y ficheros sensibles mediante .htaccess, devolviendo la página 404 en vez de mensajes feos.
    - Añadidas migraciones automáticas para columnas nuevas: foto de perfil, promociones de suscripciones, recuperación de cuenta y políticas de seguridad.
 

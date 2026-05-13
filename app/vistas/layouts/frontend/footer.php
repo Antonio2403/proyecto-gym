@@ -1,4 +1,11 @@
 </main>
+<?php
+require_once dirname(__DIR__, 4) . '/core/helpers/horario_centro.php';
+$gpHorarioLineas = gp_horario_centro_lineas();
+$gpMapEmbed = gp_horario_centro_maps_embed_url();
+$gpMapLink = gp_horario_centro_maps_link_url();
+$gpDireccion = gp_horario_centro_direccion();
+?>
 
 <footer class="site-footer">
     <div class="container">
@@ -26,27 +33,36 @@
             <div class="col-md-4 col-lg-3">
                 <div class="footer-col-heading">Centro</div>
                 <p class="text-muted small mb-1">Horario de atención</p>
-                <p class="text-muted small mb-2">Lun–Vie 9:00–21:00<br>Sáb 10:00–14:00</p>
+                <p class="text-muted small mb-2"><?php foreach ($gpHorarioLineas as $i => $linea): ?><?= $i > 0 ? '<br>' : '' ?><?= htmlspecialchars($linea) ?><?php endforeach; ?></p>
                 <p class="text-muted small mb-2">Lepe (Huelva)</p>
             </div>
             <div class="col-12 mt-2">
                 <div class="footer-col-heading mb-2">Ubicación</div>
                 <p class="text-muted small mb-2">
-                    Dirección exacta: <strong>Calle Camelia Nº 16, Lepe (Huelva)</strong>.
+                    Dirección exacta: <strong><?= htmlspecialchars($gpDireccion) ?></strong>.
                 </p>
-                <div class="gp-map-card rounded overflow-hidden border border-secondary border-opacity-25 p-4">
-                    <div class="row align-items-center g-3">
-                        <div class="col-md">
-                            <p class="small text-muted mb-1">Spartum · Ubicación del centro</p>
-                            <p class="h6 mb-0">Calle Camelia Nº 16, Lepe (Huelva)</p>
+                <div class="gp-map-card rounded overflow-hidden border border-secondary border-opacity-25">
+                    <div class="row g-0 align-items-stretch">
+                        <div class="col-md-6 gp-map-embed-wrap">
+                            <iframe class="gp-map-embed"
+                                    src="<?= htmlspecialchars($gpMapEmbed) ?>"
+                                    title="Mapa Spartum — <?= htmlspecialchars($gpDireccion) ?>"
+                                    loading="lazy"
+                                    referrerpolicy="no-referrer-when-downgrade"
+                                    aria-hidden="true"
+                                    tabindex="-1"></iframe>
                         </div>
-                        <div class="col-md-auto">
-                            <a class="btn btn-primary btn-sm"
-                               href="https://www.google.com/maps/search/?api=1&amp;query=Calle%20Camelia%20N%C2%BA%2016%2C%20Lepe%2C%20Huelva"
-                               target="_blank"
-                               rel="noopener">
-                                Abrir en Google Maps
-                            </a>
+                        <div class="col-md-6 p-4 d-flex flex-column justify-content-center">
+                            <p class="small text-muted mb-1">Spartum · Ubicación del centro</p>
+                            <p class="h6 mb-3"><?= htmlspecialchars($gpDireccion) ?></p>
+                            <div>
+                                <a class="btn btn-primary btn-sm"
+                                   href="<?= htmlspecialchars($gpMapLink) ?>"
+                                   target="_blank"
+                                   rel="noopener">
+                                    Abrir en Google Maps
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>

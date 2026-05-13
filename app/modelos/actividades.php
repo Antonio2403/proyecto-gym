@@ -104,6 +104,92 @@ class Actividad
         return $cod !== '' && in_array($cod, $dias, true);
     }
 
+    public static function inicioSesionTimestamp(array $actividad, string $fechaOcurrenciaYmd): ?int
+    {
+        if (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $fechaOcurrenciaYmd)) {
+            return null;
+        }
+        $fi = (string) ($actividad['fecha_inicio'] ?? '');
+        if ($fi === '') {
+            return null;
+        }
+        $hora = date('H:i:s', strtotime($fi));
+
+        return strtotime($fechaOcurrenciaYmd . ' ' . $hora);
+    }
+
+    /**
+     * Solo se puede reservar desde hoy en adelante y antes de que empiece la sesión.
+     */
+    public static function sesionPermiteInscripcion(array $actividad, string $fechaOcurrenciaYmd): bool
+    {
+        if (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $fechaOcurrenciaYmd)) {
+            return false;
+        }
+
+        $tz = new DateTimeZone(date_default_timezone_get());
+        $hoy = (new DateTimeImmutable('today', $tz))->format('Y-m-d');
+        if ($fechaOcurrenciaYmd < $hoy) {
+            return false;
+        }
+
+        $inicio = self::inicioSesionTimestamp($actividad, $fechaOcurrenciaYmd);
+
+        return $inicio !== null && time() < $inicio;
+    }
+
+    public static function sesionHaFinalizado(array $actividad, string $fechaOcurrenciaYmd): bool
+    {
+        $inicio = self::inicioSesionTimestamp($actividad, $fechaOcurrenciaYmd);
+        if ($inicio === null) {
+            return false;
+        }
+        $dur = (int) ($actividad['duracion'] ?? 0);
+        if ($dur <= 0) {
+            $dur = 60;
+        }
+
+        return time() >= ($inicio + ($dur * 60));
+    }
+
+    /**
+     * @param array<int, array<string,mixed>> $rows
+     * @return array<string, bool> clave actividadId_Y-m-d => reservable
+     */
+    public static function mapaSesionesReservablesEnSemana(array $rows, string $weekStartYmd): array
+    {
+        if (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $weekStartYmd)) {
+            return [];
+        }
+
+        $offsetDia = ['L' => 0, 'M' => 1, 'X' => 2, 'J' => 3, 'V' => 4, 'S' => 5, 'D' => 6];
+        $map = [];
+        $monday = new DateTimeImmutable($weekStartYmd);
+
+        foreach ($rows as $act) {
+            $id = (int) ($act['id'] ?? 0);
+            if ($id <= 0) {
+                continue;
+            }
+            $rec = (int) ($act['recurrente'] ?? 1);
+            if ($rec === 1) {
+                foreach ($act['dias'] ?? [] as $diaLetra) {
+                    $delta = $offsetDia[$diaLetra] ?? null;
+                    if ($delta === null) {
+                        continue;
+                    }
+                    $fechaCelda = $monday->modify('+' . $delta . ' days')->format('Y-m-d');
+                    $map[$id . '_' . $fechaCelda] = self::sesionPermiteInscripcion($act, $fechaCelda);
+                }
+            } elseif (!empty($act['fecha_inicio'])) {
+                $fechaCelda = substr((string) $act['fecha_inicio'], 0, 10);
+                $map[$id . '_' . $fechaCelda] = self::sesionPermiteInscripcion($act, $fechaCelda);
+            }
+        }
+
+        return $map;
+    }
+
     /**
      * @param string[] $diasLetras
      * @return int|false id actividad
@@ -203,13 +289,16 @@ class Actividad
      *
      * @param string[] $diasLetras
      */
-    public static function actualizarHorario(int $id, $nombre, $descripcion, $sala_id, $monitor_id, int $duracion, string $hora_inicio, int $recurrente, array $diasLetras): bool
+    public static function actualizarHorario(int $id, $nombre, $descripcion, $sala_id, $monitor_id, int $duracion, string $hora_inicio, int $recurrente, array $diasLetras, ?string $fechaPuntualYmd = null): bool
     {
         $diasLetras = self::ordenDias($diasLetras);
         if ($diasLetras === [] || $duracion < 1 || $duracion > 600) {
             return false;
         }
-        $fecha_base = date('Y-m-d');
+        if ($recurrente === 0 && ($fechaPuntualYmd === null || !preg_match('/^\d{4}-\d{2}-\d{2}$/', $fechaPuntualYmd))) {
+            return false;
+        }
+        $fecha_base = $recurrente === 0 ? $fechaPuntualYmd : date('Y-m-d');
         $fecha_inicio = $fecha_base . ' ' . $hora_inicio . ':00';
         $fecha_fin = date('Y-m-d H:i:s', strtotime($fecha_inicio . ' +' . $duracion . ' minutes'));
 
@@ -249,6 +338,27 @@ class Actividad
             LEFT JOIN monitores m ON a.monitor_id = m.id
             LEFT JOIN usuarios u ON m.usuario_id = u.id
         ");
+
+        return self::adjuntarDiasFilas($stmt->fetchAll(PDO::FETCH_ASSOC));
+    }
+
+    public static function obtenerPorMonitorId(int $monitorId): array
+    {
+        if ($monitorId <= 0) {
+            return [];
+        }
+
+        $conexion = BasedeDatos::Conectar();
+        $stmt = $conexion->prepare(
+            'SELECT a.*, s.nombre AS sala_nombre, u.nombre AS monitor_nombre
+             FROM actividades a
+             LEFT JOIN salas s ON a.sala_id = s.id
+             LEFT JOIN monitores m ON a.monitor_id = m.id
+             LEFT JOIN usuarios u ON m.usuario_id = u.id
+             WHERE a.monitor_id = ?
+             ORDER BY a.nombre ASC'
+        );
+        $stmt->execute([$monitorId]);
 
         return self::adjuntarDiasFilas($stmt->fetchAll(PDO::FETCH_ASSOC));
     }

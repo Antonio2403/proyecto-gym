@@ -3,9 +3,38 @@
 require_once "core/Controller.php";
 require_once "app/modelos/usuario.php";
 require_once "app/modelos/cliente.php";
+require_once "app/modelos/cliente_subscripcion.php";
 
 class UsuarioControlador extends Controller
 {
+    private function requireClienteSesion(): int
+    {
+        $this->redirigirFisioFueraPortal();
+        if (!isset($_SESSION['usuario_id']) || ($_SESSION['rol'] ?? '') !== 'cliente') {
+            header('Location: ' . url('/login') . '?error=' . rawurlencode('Inicia sesión como socio para gestionar tu cuenta.'));
+            exit;
+        }
+
+        return (int) $_SESSION['usuario_id'];
+    }
+
+    private function cerrarSesionActual(): void
+    {
+        $_SESSION = [];
+        if (ini_get('session.use_cookies')) {
+            $params = session_get_cookie_params();
+            setcookie(
+                session_name(),
+                '',
+                time() - 42000,
+                $params['path'],
+                $params['domain'],
+                (bool) $params['secure'],
+                (bool) $params['httponly']
+            );
+        }
+        session_destroy();
+    }
     /**
      * Envío de bienvenida; devuelve true solo si SMTP aceptó el mensaje.
      *
@@ -467,7 +496,61 @@ class UsuarioControlador extends Controller
 
     public function darseDeBaja()
     {
-        $this->redirigirFisioFueraPortal();
-        $this->renderFrontend('frontend/darseDeBaja');
+        $usuarioId = $this->requireClienteSesion();
+        $bloqueo = Usuario::estadoBloqueo($usuarioId);
+        if (!empty($bloqueo['bloqueado'])) {
+            $msg = ($bloqueo['tipo'] ?? '') === 'P'
+                ? 'Tu cuenta ya está dada de baja permanentemente. Contacta con recepción.'
+                : 'Tu cuenta ya está dada de baja. Usa el formulario de reactivación o contacta con recepción.';
+            header('Location: ' . url('/login') . '?error=' . rawurlencode($msg));
+            exit;
+        }
+
+        $plan = ClienteSubscripcion::obtenerActivaPorUsuarioId($usuarioId);
+        $this->renderFrontend('frontend/darseDeBaja', [
+            'plan_activo' => $plan,
+            'tiene_plan' => $plan !== null,
+        ]);
+    }
+
+    public function confirmarDarseDeBaja()
+    {
+        $usuarioId = $this->requireClienteSesion();
+        if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') {
+            header('Location: ' . url('/darse-de-baja'));
+            exit;
+        }
+
+        if (empty($_POST['acepto_terminos'])) {
+            header('Location: ' . url('/darse-de-baja') . '?error=' . rawurlencode('Debes leer y aceptar las condiciones de baja para continuar.'));
+            exit;
+        }
+
+        $bloqueo = Usuario::estadoBloqueo($usuarioId);
+        if (!empty($bloqueo['bloqueado'])) {
+            header('Location: ' . url('/login') . '?error=' . rawurlencode('Tu cuenta ya está dada de baja.'));
+            exit;
+        }
+
+        $clienteId = (int) (Cliente::IdClientePorUsuarioId($usuarioId) ?? 0);
+        if ($clienteId <= 0) {
+            header('Location: ' . url('/darse-de-baja') . '?error=' . rawurlencode('No se encontró tu perfil de socio.'));
+            exit;
+        }
+
+        if (!Usuario::bloquear($usuarioId, 'T', null, 'Baja normal solicitada por el usuario')) {
+            header('Location: ' . url('/darse-de-baja') . '?error=' . rawurlencode('No se pudo procesar la baja. Inténtalo de nuevo o contacta con recepción.'));
+            exit;
+        }
+
+        Cliente::cancelarPlanActivo($clienteId);
+        $this->cerrarSesionActual();
+
+        header(
+            'Location: ' . url('/login') . '?success=' . rawurlencode(
+                'Tu cuenta ha sido dada de baja. Para volver a acceder deberás crear un ticket de reactivación y acudir a recepción. Si te das de alta de nuevo, no conservarás ningún plan anterior.'
+            )
+        );
+        exit;
     }
 }
