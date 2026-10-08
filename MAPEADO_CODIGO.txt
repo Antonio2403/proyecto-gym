@@ -1,0 +1,303 @@
+==========================================================================
+ SPARTUM — MAPEADO DEL CÓDIGO POR ÁREAS
+==========================================================================
+Guía rápida de "dónde está cada cosa". Rutas relativas a la raíz del
+proyecto. Arquitectura: MVC casero en PHP puro.
+  Petición -> index.php (front controller) -> routers/web.php (Bramus
+  Router) -> app/controladores/* -> app/modelos/* (PDO/MariaDB) -> vistas
+  en app/vistas/*.
+
+Índice:
+  1. STRIPE (pagos)
+  2. VIEW TRANSITION (transición entre páginas + animaciones)
+  3. CSS (estilos y temas)
+  4. MAQUETACIÓN (layouts, vistas y parciales)
+  5. CLASES (arquitectura POO: controladores y modelos)
+  6. RUTAS (enrutado)
+  7. EXTRAS (seguridad, sesión, validación, correo, BD, JS, config...)
+
+
+==========================================================================
+ 1. STRIPE  (pasarela de pago de suscripciones)
+==========================================================================
+SDK (dependencia):
+  - composer.json / composer.lock ...... stripe/stripe-php ^19.4
+  - vendor/stripe/ ..................... SDK instalado (no versionado)
+
+Claves (entorno, NO en git):
+  - .claves ............................ claves de prueba de Stripe (test)
+  - env / .env ......................... STRIPE_SECRET_KEY, STRIPE_PUBLISHABLE_KEY
+    (STRIPE_SECRET_KEY = clave secreta servidor; STRIPE_PUBLISHABLE_KEY =
+     clave pública cliente)
+
+Backend (servidor):
+  - app/controladores/PagoControlador.php
+      · index()             -> muestra la página de pago
+      · crearIntentoPago()  -> \Stripe\Stripe::setApiKey(...) +
+                               \Stripe\PaymentIntent::create([...])  (~línea 149)
+                               devuelve clientSecret en JSON
+      · exito()             -> \Stripe\PaymentIntent::retrieve(...) (~línea 217),
+                               confirma pago y activa/renueva la suscripción
+      · cancelado()         -> pago cancelado
+
+Frontend (cliente):
+  - app/vistas/frontend/pago/pagar.php
+      · <script src="https://js.stripe.com/v3/">  (Stripe.js)
+      · Stripe(<publishable key>) + elements.create('payment') +
+        stripe.confirmPayment({...})
+  - app/vistas/frontend/pago/exito.php ...... pantalla de éxito
+  - app/vistas/frontend/pago/cancelado.php .. pantalla de cancelado
+
+Modelos relacionados con la suscripción comprada:
+  - app/modelos/susbscripcion.php .......... catálogo de planes (precio, etc.)
+  - app/modelos/cliente_subscripcion.php ... alta/estado de la suscripción del cliente
+
+Rutas (ver routers/web.php):
+  - GET  /pago               -> PagoControlador@index
+  - POST /pago/crear-intento -> PagoControlador@crearIntentoPago
+  - GET  /pago/exito         -> PagoControlador@exito
+  - GET  /pago/cancelado     -> PagoControlador@cancelado
+
+
+==========================================================================
+ 2. VIEW TRANSITION  (transición de página "cortina + logo" y animaciones)
+==========================================================================
+NOTA: no usa la View Transitions API nativa del navegador; es una
+transición propia hecha con GSAP + CSS (comentada así en el código).
+
+Motor de animación:
+  - public/assets/js/vendor/gsap.min.js ..... librería GSAP (tweens)
+
+Transición entre páginas (efecto cortina):
+  - public/assets/js/gp-page-transition.js .. lógica completa:
+      crea #gp-page-curtain (__top/__bottom/__logo), intercepta clics en
+      enlaces internos, timelines GSAP de cierre/apertura, precarga la
+      página destino con iframe oculto y bloquea el scroll.
+      Expone window.gpNavigateWithTransition.
+  - app/vistas/layouts/partials/gp_page_transition_boot.php
+      se incluye en el <head> (frontend/admin header, línea 11); pinta la
+      cortina al instante (clase gp-nav-curtain-hold) para evitar parpadeos.
+
+Animación de entrada del panel (dashboard "bento"):
+  - public/assets/js/gp-gsap-motion.js ...... gsap.from() con stagger sobre
+      .gp-bento-tile (aparecen con fade + desplazamiento).
+
+Banners flash (avisos éxito/error):
+  - public/assets/js/gp-flash-banner.js ..... mostrar/ocultar con transición.
+
+Animaciones en CSS (public/assets/css/app-theme.css):
+  - @keyframes gp-page-fade-in (~2854)  + .gp-page-enter
+  - @keyframes gp-flash-in (~3029) / gp-flash-out (~3041)
+  - #gp-page-curtain y .gp-page-curtain__top/__bottom/__logo (~2873-2942)
+  - numerosas reglas transition: (hover de botones, tarjetas, menús...)
+  - public/assets/css/style.css: @keyframes loader (~215) spinner plantilla
+
+Carga de los scripts (orden, con defer):
+  - app/vistas/layouts/frontend/footer.php  (~102-105)
+  - app/vistas/layouts/admin/footer.php     (~31-34)
+
+Accesibilidad:
+  - Respetan prefers-reduced-motion en JS (prefersReducedMotion()) y en CSS
+    (@media (prefers-reduced-motion: reduce) en app-theme.css ~2079/2866/3121).
+
+Librerías de animación de la landing pública (jQuery), init en:
+  - public/assets/js/main.js ... owlCarousel (carruseles), barfiller
+      (barras de progreso), magnificPopup (popups img/vídeo), slicknav
+      (menú móvil).
+
+
+==========================================================================
+ 3. CSS  (estilos)
+==========================================================================
+Hojas propias:
+  - public/assets/css/app-theme.css ........ tema principal (frontend + base)
+  - public/assets/css/admin-theme.css ...... tema del panel admin
+  - public/assets/css/admin-panel-light.css  variante clara del admin
+  - public/assets/css/style.css ............ estilos de la plantilla original
+
+Librerías de terceros (plantilla):
+  - bootstrap.min.css, font-awesome.min.css, flaticon.css,
+    owl.carousel.min.css, magnific-popup.css, slicknav.min.css,
+    barfiller.css   (todas en public/assets/css/)
+
+Dónde se enlazan:
+  - app/vistas/layouts/frontend/header.php (~17-20): Bootstrap(CDN),
+    Font Awesome(CDN), Google Fonts y app-theme.css
+  - app/vistas/layouts/admin/header.php    (~17-20): + admin-panel-light.css
+  - public/assets/adminlte/ ................ assets AdminLTE del panel admin
+
+Variables/tokens de diseño:
+  - definidas como custom properties (:root --gp-*) dentro de app-theme.css
+
+
+==========================================================================
+ 4. MAQUETACIÓN  (estructura HTML / plantillas)
+==========================================================================
+Render central (monta las plantillas):
+  - core/Controller.php
+      · renderFrontend($vista, $data) -> header + vista + footer (frontend)
+      · renderAdmin($vista, $data)     -> header + navbar + sidebar + vista
+                                          + footer (admin)
+
+Layouts:
+  - app/vistas/layouts/frontend/header.php, footer.php
+  - app/vistas/layouts/admin/header.php, navbar.php, sidebar.php, footer.php
+
+Parciales reutilizables (app/vistas/layouts/partials/):
+  - gp_flash_banner.php ............ banner de mensajes flash
+  - gp_form_panel_start.php / _foot.php / _end.php .. paneles de formulario
+  - gp_page_transition_boot.php .... arranque de la cortina de transición
+  - horario_centro_boot.php ........ inyecta horario del centro (JSON) a JS
+  - session_idle_meta.php .......... metadatos de caducidad de sesión
+
+Vistas por área (app/vistas/):
+  - frontend/ ... inicio, quienesSomos, login, contacto, actividades,
+                  verMisActividades, inicioUsuario, perfil, recuperar/
+                  restablecer/ reactivar contraseña, darseDeBaja, error404,
+                  pago/ (pagar, exito, cancelado), fisio/ (index, solicitar,
+                  misCitas, panel/)
+  - admin/ ...... inicioAdmin, verClientes, verMonitores, suscripciones,
+                  actividades, solicitudes, configSeguridad,
+                  recuperacionCuentaTickets, fisioterapeutas/, feedback/
+  - monitor/ .... inicioMonitor, misClases, formSolicitud, verMisSolicitudes,
+                  verMonitorSolicitudes
+  - salas/ ...... verSalas, formSala, formEditarSala
+  - materiales/ . verMateriales, formMaterial, formEditarMaterial
+  - cliente/ .... formEditarCliente
+
+
+==========================================================================
+ 5. CLASES  (arquitectura POO)  [ver también sección "ACTIVIDADES/CLASES"]
+==========================================================================
+Clase base:
+  - core/Controller.php .. clase Controller (control de acceso + render)
+
+Controladores (app/controladores/) — todos extienden Controller:
+  - InicioControlador .............. home, quiénes somos, paneles de inicio
+  - LoginControlador ............... login/logout/estado de sesión
+  - UsuarioControlador ............. registro, confirmación, perfil, baja
+  - CambioClaveControlador ......... cambio de contraseña
+  - RecuperarContrasenaControlador . recuperación de cuenta (email/DNI/ticket)
+  - ReactivarCuentaControlador ..... reactivación de cuentas de baja
+  - AdminControlador ............... núcleo del panel admin
+  - AdminAjaxControlador ........... endpoints JSON de las tablas admin
+  - AdminFisioterapeutaControlador . CRUD de fisioterapeutas
+  - MonitorControlador ............. portal del monitor
+  - SubscripcionControlador ........ CRUD de planes de suscripción
+  - ActividadControlador ........... CRUD de actividades/clases
+  - InscripcionControlador ......... inscripciones a sesiones
+  - ComentarioActividadControlador . comentarios por sesión
+  - SalaControlador ................ CRUD de salas
+  - MaterialControlador ............ CRUD de materiales por sala
+  - FisioControlador ............... portal de fisioterapia (cliente)
+  - FisioPanelControlador .......... panel del fisioterapeuta
+  - PagoControlador ................ pagos con Stripe
+  - FeedbackControlador ............ contacto y bandeja admin
+  - ErrorControlador ............... 404
+
+Modelos (app/modelos/) — acceso a datos con PDO:
+  - database.php ....... clase BasedeDatos (conexión + auto-setup de esquema)
+  - usuario.php ........ clase base Usuario
+  - admin.php .......... Admin (extiende Usuario)
+  - monitor.php ........ Monitor (extiende Usuario)
+  - cliente.php ........ Cliente (extiende Usuario)
+  - admin_config.php ... AdminConfig (config clave/valor)
+  - actividades.php .... Actividad
+  - inscripcion.php .... Inscripcion
+  - comentario.php ..... Comentario
+  - sala.php ........... Sala
+  - material.php ....... Material
+  - susbscripcion.php .. Subscripcion (catálogo de planes)
+  - cliente_subscripcion.php . ClienteSubscripcion (suscripción activa)
+  - solicitud.php ...... Solicitud (peticiones de monitores)
+  - fisioterapeuta.php . Fisioterapeuta
+  - cita.php ........... Cita (fisioterapia)
+  - feedback.php ....... Feedback
+  - recuperacion_cuenta_ticket.php . RecuperacionCuentaTicket
+
+ACTIVIDADES / CLASES del gimnasio (si "clases" = clases del gym):
+  - Modelo:        app/modelos/actividades.php, inscripcion.php, comentario.php
+  - Controladores: ActividadControlador, InscripcionControlador,
+                   ComentarioActividadControlador
+  - Vistas:        frontend/actividades.php, verMisActividades.php,
+                   monitor/misClases.php, admin/gestionarActividades.php
+  - Horario:       core/helpers/horario_centro.php (validación de franjas)
+
+
+==========================================================================
+ 6. RUTAS  (enrutado)
+==========================================================================
+Front controller:
+  - index.php ....... arranca sesión/seguridad e inicia el Router de Bramus
+  - router.php ...... arranque para el servidor integrado de PHP (php -S)
+
+Definición de rutas:
+  - routers/web.php . TODAS las rutas. Helper controller($router, metodo,
+      ruta, 'Controlador@metodo') que además valida CSRF en POST.
+  Grupos de rutas: inicio, login/registro, recuperación/reactivación,
+      cuenta/perfil, admin (clientes, monitores, fisios, suscripciones,
+      actividades, solicitudes, feedback, seguridad, tickets), monitor,
+      salas/materiales, actividades/inscripciones, fisioterapia, pago.
+
+Librería de enrutado:
+  - bramus/router (composer) + helpers de base path en core/helpers/url.php
+    (app_base_path, url(), asset(), router_server_base_path())
+
+404:
+  - $router->set404(...) en index.php -> ErrorControlador@notFound
+
+
+==========================================================================
+ 7. EXTRAS  (otras áreas relevantes)
+==========================================================================
+Seguridad / sesión:
+  - core/bootstrap_security.php .... cookies seguras + cabeceras HTTP
+  - index.php ...................... caducidad por inactividad, bloqueo/baja
+  - core/helpers/form_validacion.php  CSRF (csrf_token/csrf_validate_request)
+  - .htaccess ...................... bloquea acceso directo a ficheros/carpetas
+    internas (env, .claves, composer.*, app, core, vendor, .git)
+
+Validación (servidor):
+  - core/helpers/form_validacion.php  email, DNI/NIE, contraseña fuerte,
+      teléfono ES, identificador de login
+  - public/assets/js/form-validacion.js .. validación en cliente
+  - VALIDACIONES_CAPAS.txt ......... documentación de las capas de validación
+
+Correo (SMTP):
+  - core/helpers/mail_smtp.php ..... PHPMailer configurado por MAIL_* (.env)
+  - core/helpers/actividad_notificaciones.php .. avisos de cambio/cancelación
+
+Base de datos:
+  - app/modelos/database.php ....... conexión PDO + creación/migración de
+      esquema automática (DB_AUTO_SETUP) + datos semilla
+  - scripts/spartum_full_demo.sql .. volcado completo + datos demo
+  - scripts/import_demo_database.php  recarga la BD demo (--force)
+  - scripts/reset_admin_password.php  restablece la contraseña del admin (CLI)
+
+Grids / tablas admin:
+  - core/helpers/grid.php .......... paginación y saneo de filtros
+  - public/assets/js/admin-datagrid.js .. tablas admin con filtros/paginación AJAX
+  - app/controladores/AdminAjaxControlador.php .. datos JSON de esas tablas
+
+Horario del centro:
+  - core/helpers/horario_centro.php  franjas, validación de actividades/citas,
+      dirección y enlaces de Google Maps
+
+Otros JS propios (public/assets/js/):
+  - gp-confirm-modal.js .... modales de confirmación
+  - gp-form-unsaved.js ..... aviso de cambios sin guardar
+  - fisio-citas-slots.js ... franjas de citas de fisioterapia
+  - site-preferences.js .... preferencias del sitio
+  - main.js ................ init de la plantilla pública
+
+Configuración / dependencias:
+  - composer.json / composer.lock .. dependencias PHP
+  - env / .env / .claves ........... variables de entorno (NO versionadas)
+  - .gitignore ..................... ignora vendor, env, .claves, etc.
+
+Documentación:
+  - CHANGELOG.md / CHANGELOG.txt ... historial de cambios
+  - VALIDACIONES_CAPAS.txt ......... capas de validación
+  - MAPEADO_CODIGO.txt ............. este fichero
+
+==========================================================================
