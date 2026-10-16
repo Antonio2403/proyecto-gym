@@ -13,11 +13,11 @@
             <div class="gp-auth-switch-wrap px-2 px-sm-3 mb-0" id="authTabs" role="tablist">
                 <div class="gp-auth-switch" id="authModeSwitch">
                     <span class="gp-auth-switch-thumb" aria-hidden="true"></span>
-                    <button class="gp-auth-switch-btn active" id="login-tab" data-bs-toggle="tab" data-bs-target="#login" type="button" role="tab" aria-controls="login" aria-selected="true">
+                    <button class="gp-auth-switch-btn active" id="login-tab" data-gp-toggle="tab" data-gp-target="#login" type="button" role="tab" aria-controls="login" aria-selected="true">
                         <span class="gp-auth-switch-icon" aria-hidden="true"><i class="fas fa-right-to-bracket"></i></span>
                         <span>Iniciar sesión</span>
                     </button>
-                    <button class="gp-auth-switch-btn" id="registro-tab" data-bs-toggle="tab" data-bs-target="#registro" type="button" role="tab" aria-controls="registro" aria-selected="false">
+                    <button class="gp-auth-switch-btn" id="registro-tab" data-gp-toggle="tab" data-gp-target="#registro" type="button" role="tab" aria-controls="registro" aria-selected="false">
                         <span class="gp-auth-switch-icon" aria-hidden="true"><i class="fas fa-user-plus"></i></span>
                         <span>Crear cuenta</span>
                     </button>
@@ -127,7 +127,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function syncSwitchFromTrigger(trigger) {
         if (!trigger || trigger.getAttribute('role') !== 'tab') return;
-        var target = trigger.getAttribute('data-bs-target') || '';
+        var target = trigger.getAttribute('data-gp-target') || '';
         var isRegistro = target === '#registro';
         modeSwitch.classList.toggle('gp-auth-switch--slid', isRegistro);
         switchBar.querySelectorAll('.gp-auth-switch-btn').forEach(function (btn) {

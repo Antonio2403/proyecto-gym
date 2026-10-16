@@ -14,7 +14,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..700&family=Outfit:wght@500..800&display=swap" rel="stylesheet">
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="<?= htmlspecialchars(asset('css/tailwind.css')) ?>">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
           integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer">
     <link rel="stylesheet" href="<?= htmlspecialchars(asset('css/app-theme.css')) ?>">
@@ -39,7 +39,7 @@ $gpNavAvatarImg = 'https://ui-avatars.com/api/?name=' . rawurlencode((string) ($
 
         <a class="navbar-brand" href="<?= htmlspecialchars($gpNavbarBrandHref) ?>">Spartum</a>
 
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+        <button class="navbar-toggler" type="button" data-gp-toggle="collapse" data-gp-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Menú">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -90,7 +90,7 @@ $gpNavAvatarImg = 'https://ui-avatars.com/api/?name=' . rawurlencode((string) ($
                 <?php if (isset($_SESSION['usuario_id']) && ($_SESSION['rol'] ?? '') === 'fisio'): ?>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle d-flex align-items-center gap-2" href="#" role="button"
-                           data-bs-toggle="dropdown" aria-expanded="false">
+                           data-gp-toggle="dropdown" aria-expanded="false">
                             <img src="<?= htmlspecialchars($gpNavAvatarImg) ?>"
                                  alt="" width="32" height="32" class="rounded-circle border border-secondary border-opacity-25">
                             <span class="d-none d-md-inline text-start">
@@ -108,7 +108,7 @@ $gpNavAvatarImg = 'https://ui-avatars.com/api/?name=' . rawurlencode((string) ($
                 <?php if (isset($_SESSION['usuario_id']) && in_array((string) ($_SESSION['rol'] ?? ''), ['admin', 'monitor'], true)): ?>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle d-flex align-items-center gap-2" href="#" role="button"
-                           data-bs-toggle="dropdown" aria-expanded="false">
+                           data-gp-toggle="dropdown" aria-expanded="false">
                             <img src="<?= htmlspecialchars($gpNavAvatarImg) ?>"
                                  alt="" width="32" height="32" class="rounded-circle border border-secondary border-opacity-25">
                             <span class="d-none d-md-inline text-start">
@@ -138,7 +138,7 @@ $gpNavAvatarImg = 'https://ui-avatars.com/api/?name=' . rawurlencode((string) ($
                 <?php if (isset($_SESSION['usuario_id']) && ($_SESSION['rol'] ?? '') === 'cliente'): ?>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle d-flex align-items-center gap-2" href="#" role="button"
-                           data-bs-toggle="dropdown" aria-expanded="false">
+                           data-gp-toggle="dropdown" aria-expanded="false">
                             <img src="<?= htmlspecialchars($gpNavAvatarImg) ?>"
                                  alt="" width="32" height="32" class="rounded-circle border border-secondary border-opacity-25">
                             <span class="d-none d-md-inline text-start">

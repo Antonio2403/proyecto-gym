@@ -274,7 +274,7 @@
         if (!href || href.charAt(0) === '#') {
             return false;
         }
-        if (a.hasAttribute('download') || a.target === '_blank' || a.hasAttribute('data-bs-toggle')) {
+        if (a.hasAttribute('download') || a.target === '_blank' || a.hasAttribute('data-gp-toggle')) {
             return false;
         }
         if (a.hasAttribute('data-gp-no-vt') || a.classList.contains('gp-no-vt')) {

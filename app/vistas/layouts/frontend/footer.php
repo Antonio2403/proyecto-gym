@@ -78,11 +78,11 @@ $gpDireccion = gp_horario_centro_direccion();
         <div class="modal-content gp-modal-confirm">
             <div class="modal-header">
                 <h5 class="modal-title" id="gpGlobalConfirmModalTitle" data-gp-confirm-modal-title>Confirmar</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                <button type="button" class="btn-close" data-gp-dismiss="modal" aria-label="Cerrar"></button>
             </div>
             <div class="modal-body" data-gp-confirm-modal-body>¿Continuar?</div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-outline-secondary" data-gp-dismiss="modal">Cancelar</button>
                 <button type="button" class="btn btn-primary" data-gp-confirm-modal-ok>Sí</button>
             </div>
         </div>
@@ -98,7 +98,7 @@ $gpDireccion = gp_horario_centro_direccion();
 </aside>
 <?php endif; ?>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="<?= htmlspecialchars(asset('js/tailwind-ui.js')) ?>"></script>
 <script defer src="<?= htmlspecialchars(asset('js/vendor/gsap.min.js')) ?>"></script>
 <script defer src="<?= htmlspecialchars(asset('js/gp-page-transition.js')) ?>"></script>
 <script defer src="<?= htmlspecialchars(asset('js/gp-flash-banner.js')) ?>"></script>

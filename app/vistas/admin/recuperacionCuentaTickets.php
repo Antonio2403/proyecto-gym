@@ -25,12 +25,12 @@
 
         <ul class="nav nav-pills gap-2 mb-4 gp-admin-pill-tabs flex-wrap" id="ticketsRecTabs" role="tablist">
             <li class="nav-item" role="presentation">
-                <button class="nav-link active rounded-pill px-3" id="tab-pendientes" data-bs-toggle="pill" data-bs-target="#pane-pendientes" type="button" role="tab">
+                <button class="nav-link active rounded-pill px-3" id="tab-pendientes" data-gp-toggle="pill" data-gp-target="#pane-pendientes" type="button" role="tab">
                     Abiertos <span class="badge bg-warning text-dark ms-1"><?= count($tickets_pendientes ?? []) ?></span>
                 </button>
             </li>
             <li class="nav-item" role="presentation">
-                <button class="nav-link rounded-pill px-3" id="tab-historial" data-bs-toggle="pill" data-bs-target="#pane-historial" type="button" role="tab">
+                <button class="nav-link rounded-pill px-3" id="tab-historial" data-gp-toggle="pill" data-gp-target="#pane-historial" type="button" role="tab">
                     Historial
                 </button>
             </li>
@@ -280,26 +280,26 @@
     function saveActiveTab() {
         try {
             var active = document.querySelector('#ticketsRecTabs button.nav-link.active');
-            if (active && active.getAttribute('data-bs-target')) {
-                sessionStorage.setItem(tabKey, active.getAttribute('data-bs-target') || '');
+            if (active && active.getAttribute('data-gp-target')) {
+                sessionStorage.setItem(tabKey, active.getAttribute('data-gp-target') || '');
             }
         } catch (e) { /* ignore */ }
     }
     function restoreTab() {
         var sel = sessionStorage.getItem(tabKey);
         sessionStorage.removeItem(tabKey);
-        if (!sel || typeof window.bootstrap === 'undefined') {
+        if (!sel || typeof window.SpartumUI === 'undefined') {
             return;
         }
         var btn = null;
-        document.querySelectorAll('#ticketsRecTabs [data-bs-target]').forEach(function (b) {
-            if (b.getAttribute('data-bs-target') === sel) {
+        document.querySelectorAll('#ticketsRecTabs [data-gp-target]').forEach(function (b) {
+            if (b.getAttribute('data-gp-target') === sel) {
                 btn = b;
             }
         });
         if (btn) {
             try {
-                window.bootstrap.Tab.getOrCreateInstance(btn).show();
+                window.SpartumUI.Tab.getOrCreateInstance(btn).show();
             } catch (e2) { /* ignore */ }
         }
     }

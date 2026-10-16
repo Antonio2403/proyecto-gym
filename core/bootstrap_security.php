@@ -74,7 +74,7 @@ function gp_configure_session_ini(): void
 }
 
 /**
- * Cabeceras que no rompen CDNs (Bootstrap, fuentes) ni Stripe en el cliente.
+ * Cabeceras compatibles con los recursos de fuentes, iconos y Stripe usados en el cliente.
  * Llamar tras session_start() y antes de cualquier salida HTML.
  */
 function gp_send_security_headers(): void

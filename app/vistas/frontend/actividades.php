@@ -244,18 +244,18 @@ $puedeMasReservaSemana = !isset($puede_mas_reserva_semana) || $puede_mas_reserva
             <div class="modal-content gp-modal-dark">
                 <div class="modal-header border-0">
                     <h5 class="modal-title">Información</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                    <button type="button" class="btn-close btn-close-white" data-gp-dismiss="modal" aria-label="Cerrar"></button>
                 </div>
                 <div class="modal-body text-center"><?= htmlspecialchars((string) $infoMsg, ENT_QUOTES, 'UTF-8') ?></div>
                 <div class="modal-footer border-0">
-                    <button type="button" class="btn btn-outline-light" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-outline-light" data-gp-dismiss="modal">Cerrar</button>
                 </div>
             </div>
         </div>
     </div>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            new bootstrap.Modal(document.getElementById('infoModal')).show();
+            new SpartumUI.Modal(document.getElementById('infoModal')).show();
         });
     </script>
 <?php endif; ?>
@@ -266,25 +266,25 @@ $puedeMasReservaSemana = !isset($puede_mas_reserva_semana) || $puede_mas_reserva
             <div class="modal-content gp-modal-dark">
                 <div class="modal-header border-0">
                     <h5 class="modal-title">Error</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                    <button type="button" class="btn-close btn-close-white" data-gp-dismiss="modal" aria-label="Cerrar"></button>
                 </div>
                 <div class="modal-body text-center"><?= htmlspecialchars((string) $errorMsg, ENT_QUOTES, 'UTF-8') ?></div>
                 <div class="modal-footer border-0">
-                    <button type="button" class="btn btn-outline-light" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-outline-light" data-gp-dismiss="modal">Cerrar</button>
                 </div>
             </div>
         </div>
     </div>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            new bootstrap.Modal(document.getElementById('errorModal')).show();
+            new SpartumUI.Modal(document.getElementById('errorModal')).show();
         });
     </script>
 <?php endif; ?>
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        if (typeof bootstrap === 'undefined' || !bootstrap.Popover) {
+        if (typeof SpartumUI === 'undefined' || !SpartumUI.Popover) {
             return;
         }
         document.querySelectorAll('.gp-schedule-act[data-gp-popover-id]').forEach(function (el) {
@@ -293,7 +293,7 @@ $puedeMasReservaSemana = !isset($puede_mas_reserva_semana) || $puede_mas_reserva
             if (!tpl) {
                 return;
             }
-            new bootstrap.Popover(el, {
+            new SpartumUI.Popover(el, {
                 html: true,
                 sanitize: false,
                 trigger: 'hover focus',
@@ -313,18 +313,18 @@ $puedeMasReservaSemana = !isset($puede_mas_reserva_semana) || $puede_mas_reserva
             <div class="modal-content gp-modal-dark">
                 <div class="modal-header border-0 bg-success bg-opacity-25">
                     <h5 class="modal-title">Correcto</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                    <button type="button" class="btn-close btn-close-white" data-gp-dismiss="modal" aria-label="Cerrar"></button>
                 </div>
                 <div class="modal-body text-center"><?= htmlspecialchars((string) $succsessMsg, ENT_QUOTES, 'UTF-8') ?></div>
                 <div class="modal-footer border-0">
-                    <button type="button" class="btn btn-success" data-bs-dismiss="modal">Genial</button>
+                    <button type="button" class="btn btn-success" data-gp-dismiss="modal">Genial</button>
                 </div>
             </div>
         </div>
     </div>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            new bootstrap.Modal(document.getElementById('successModal')).show();
+            new SpartumUI.Modal(document.getElementById('successModal')).show();
         });
     </script>
 <?php endif; ?>

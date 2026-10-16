@@ -6,8 +6,8 @@ $esAdmin = ($rolPanel === 'admin');
     <div class="container-fluid px-3 px-lg-4">
         <a class="navbar-brand text-white" href="<?= htmlspecialchars(url('/inicio')) ?>">Spartum</a>
 
-        <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse"
-                data-bs-target="#adminTopNav" aria-controls="adminTopNav" aria-expanded="false" aria-label="Menú superior">
+        <button class="navbar-toggler border-0 shadow-none" type="button" data-gp-toggle="collapse"
+                data-gp-target="#adminTopNav" aria-controls="adminTopNav" aria-expanded="false" aria-label="Menú superior">
             <span class="navbar-toggler-icon" style="filter: invert(1);"></span>
         </button>
 
