@@ -54,7 +54,7 @@
             '<div class="' + headerClass + '">' +
             '<h5 class="modal-title">' + title + '</h5>' +
             (opts.showClose
-                ? '<button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>'
+                ? '<button type="button" class="btn-close btn-close-white" data-gp-dismiss="modal" aria-label="Cerrar"></button>'
                 : '') +
             '</div>' +
             '<div class="modal-body text-white-50">' + body + '</div>' +
@@ -97,8 +97,8 @@
         });
         document.body.appendChild(wrap);
 
-        if (typeof bootstrap !== 'undefined' && bootstrap.Modal) {
-            bootstrap.Modal.getOrCreateInstance(wrap, { backdrop: 'static', keyboard: false }).show();
+        if (typeof SpartumUI !== 'undefined' && SpartumUI.Modal) {
+            SpartumUI.Modal.getOrCreateInstance(wrap, { backdrop: 'static', keyboard: false }).show();
         } else {
             window.alert(msg);
         }

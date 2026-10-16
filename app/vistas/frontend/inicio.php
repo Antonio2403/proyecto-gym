@@ -86,13 +86,13 @@
         <div class="modal-content">
             <div class="modal-header bg-success text-white border-0">
                 <h5 class="modal-title" id="successModalLabel">¡Listo!</h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                <button type="button" class="btn-close btn-close-white" data-gp-dismiss="modal" aria-label="Cerrar"></button>
             </div>
             <div class="modal-body">
                 <p id="successMessage" class="mb-0"></p>
             </div>
             <div class="modal-footer border-0">
-                <button type="button" class="btn btn-success" data-bs-dismiss="modal">Continuar</button>
+                <button type="button" class="btn btn-success" data-gp-dismiss="modal">Continuar</button>
             </div>
         </div>
     </div>
@@ -105,7 +105,7 @@
 
         if (success) {
             document.getElementById('successMessage').textContent = decodeURIComponent(success);
-            const modal = new bootstrap.Modal(document.getElementById('successModal'));
+            const modal = new SpartumUI.Modal(document.getElementById('successModal'));
             modal.show();
         }
     });

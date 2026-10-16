@@ -1,6 +1,7 @@
 {
     "name": "spartum/spartum",
     "description": "Spartum — aplicación de gestión de gimnasio",
+    "license": "proprietary",
     "require": {
         "php": ">=8.1",
         "ext-curl": "*",
