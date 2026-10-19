@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <title>Propuesta de proyecto — Spartum</title>
+  <style>
+    @page {
+      size: A4;
+      margin: 16mm 18mm 18mm 18mm;
+    }
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: #fff;
+      color: #111;
+      font-family: "Liberation Serif", "Times New Roman", Times, serif;
+      font-size: 11pt;
+      line-height: 1.32;
+    }
+    .sheet {
+      max-width: 210mm;
+      margin: 0 auto;
+    }
+    .dept {
+      text-align: center;
+      font-size: 12pt;
+      margin: 0 0 10pt;
+    }
+    h1 {
+      text-align: center;
+      font-size: 16pt;
+      letter-spacing: 0.04em;
+      margin: 0 0 12pt;
+      font-weight: 700;
+    }
+    table.meta {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 0 0 12pt;
+    }
+    table.meta th,
+    table.meta td {
+      border: 1px solid #000;
+      padding: 5pt 8pt;
+      vertical-align: middle;
+    }
+    table.meta th {
+      width: 32%;
+      text-align: left;
+      font-weight: 700;
+      background: #f3f3f3;
+    }
+    h2 {
+      font-size: 12pt;
+      margin: 11pt 0 5pt;
+      padding-bottom: 2pt;
+      border-bottom: 1px solid #000;
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+    }
+    p, li { margin: 0 0 5pt; }
+    ul { margin: 0 0 7pt; padding-left: 18pt; }
+    .block { page-break-inside: avoid; }
+    strong { font-weight: 700; }
+  </style>
+</head>
+<body>
+  <div class="sheet">
+    <p class="dept">Dpto. Informática - I.E.S. ………&emsp;C.F.G.S. Desarrollo de Aplicaciones Web</p>
+    <h1>PROPUESTA DE PROYECTO</h1>
+
+    <table class="meta">
+      <tr>
+        <th>Nombre del proyecto:</th>
+        <td>Spartum (gestión web de un gimnasio)</td>
+      </tr>
+      <tr>
+        <th>Alumno:</th>
+        <td>Antonio Jesús Mora Sánchez</td>
+      </tr>
+      <tr>
+        <th>Curso:</th>
+        <td>2º DAW</td>
+      </tr>
+      <tr>
+        <th>Tutor:</th>
+        <td>Déjese este campo en blanco.</td>
+      </tr>
+    </table>
+
+    <h2>Objetivos</h2>
+    <p>El objetivo principal es crear una aplicación web para la gestión de un gimnasio, llamada <strong>Spartum</strong>. Con ella se pretende que los socios puedan registrarse, contratar un plan, ver el horario de actividades, reservar plaza y, si su suscripción lo incluye, pedir cita de fisioterapia. El personal del centro (administración, monitores y fisioterapeutas) dispondrá de paneles para gestionar clientes, clases, salas, materiales y citas.</p>
+    <p>El proyecto se usará como trabajo de fin de ciclo del CFGS de Desarrollo de Aplicaciones Web. La aplicación se publicará en un hosting real (<strong>HelioHost</strong>) para poder demostrarla en Internet, no solo en el ordenador del alumno.</p>
+    <p>No se ha seguido ningún curso de pago: el desarrollo se basa en lo trabajado en el ciclo y en documentación libre de las herramientas utilizadas.</p>
+
+    <h2>Análisis de lo existente (Opcional)</h2>
+    <p>Este proyecto se empezará desde cero. No hay una aplicación anterior propia que se vaya a sustituir.</p>
+    <p>En muchos gimnasios pequeños este trabajo se hace aún de forma manual o con herramientas genéricas (papel, WhatsApp, hojas de cálculo): control de socios, horarios, reservas de clase y citas de fisioterapia. Spartum pretende reunir esas tareas en una sola web.</p>
+
+    <h2>Análisis del sistema</h2>
+    <p>Las partes del sistema sobre las que se trabajará, y los requisitos que se pretenden satisfacer, son:</p>
+    <ul>
+      <li><strong>Zona pública:</strong> inicio, quiénes somos, contacto, login y registro.</li>
+      <li><strong>Usuarios y roles:</strong> administrador, monitor, socio y fisioterapeuta.</li>
+      <li><strong>Cuenta:</strong> inicio de sesión, confirmación de correo, recuperación de cuenta/contraseña y baja.</li>
+      <li><strong>Administración:</strong> clientes, monitores, suscripciones, actividades, fisioterapeutas y mensajes de contacto.</li>
+      <li><strong>Monitores:</strong> salas, materiales, solicitudes y seguimiento de sus clases.</li>
+      <li><strong>Socios:</strong> inscripción a actividades, contratación de planes y citas de fisioterapia (si el plan lo permite).</li>
+      <li><strong>Fisioterapeuta:</strong> panel de citas pendientes y confirmadas.</li>
+      <li><strong>Base de datos</strong> relacional para guardar usuarios, planes, actividades, inscripciones y citas.</li>
+      <li><strong>Publicación</strong> en hosting con PHP y MySQL/MariaDB.</li>
+    </ul>
+    <div class="block">
+    <p>No se adapta una aplicación ya hecha. Sí se reutilizarán librerías y plantillas de código abierto (su funcionalidad ya existe) y el trabajo del alumno será el diseño de la base de datos, la lógica de Spartum, las vistas, la seguridad y el despliegue en HelioHost.</p>
+    <p>Herramientas de terceros que se reutilizan (no se programan desde cero): Bramus Router (rutas PHP), Bootstrap / AdminLTE (interfaz), Stripe (pagos en modo prueba), PHPMailer (correo) y Composer con phpdotenv (dependencias y configuración).</p>
+    </div>
+
+    <h2>Diseño del sistema</h2>
+    <p><strong>Lenguajes:</strong> PHP 8.1 o superior (servidor); HTML, CSS y JavaScript (cliente); SQL.</p>
+    <p><strong>Base de datos:</strong> MariaDB / MySQL, gestionada con phpMyAdmin (incluido en HelioHost).</p>
+    <p><strong>Entorno e IDE:</strong> Visual Studio Code, Git / GitHub y Composer. Desarrollo en local (PHP + MySQL) y Apache en el hosting.</p>
+    <p><strong>Hosting:</strong> HelioHost (Apache, PHP, MariaDB y certificado SSL).</p>
+    <p><strong>Otros:</strong> Stripe en modo test (sin coste) y PHPMailer para avisos por correo.</p>
+    <p><strong>Requisitos mínimos estimados:</strong> navegador actual (Chrome, Firefox o Edge) y conexión a Internet. Para desarrollar en local: Windows 10/11, unos 4 GB de RAM y PHP 8.1+ con PDO MySQL.</p>
+
+    <h2>Estimación de costes</h2>
+    <p>El único gasto económico del proyecto es el <strong>hosting de HelioHost</strong>, que ya está pagado. No se ha comprado ningún curso.</p>
+    <p>El resto de herramientas son gratuitas: Visual Studio Code, Git, Composer, PHP, MariaDB/MySQL, phpMyAdmin, las librerías de código abierto (Bramus Router, PHPMailer, SDK de Stripe, Bootstrap, AdminLTE), Stripe en modo prueba y GitHub para el repositorio.</p>
+    <p>El desarrollo lo realiza el alumno como trabajo académico, sin coste laboral para ninguna empresa.</p>
+    <p><strong>Estimación temporal:</strong> el trabajo se realiza a lo largo del módulo de Proyecto de 2.º DAW (análisis, desarrollo, pruebas y publicación en HelioHost).</p>
+  </div>
+</body>
+</html>
