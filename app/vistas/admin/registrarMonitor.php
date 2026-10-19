@@ -5,15 +5,15 @@ $gpFormSubtitle = 'Alta de cuenta de monitor con datos personales y profesionale
 $gpFormBadge = 'Monitores';
 require dirname(__DIR__) . '/layouts/partials/gp_form_panel_start.php';
 ?>
-                <p class="gp-form-required-legend text-muted small mb-3">Los campos con <span class="text-danger fw-bold" aria-hidden="true">*</span> son obligatorios.</p>
+                <p class="gp-form-required-legend text-slate-500 text-sm mb-4">Los campos con <span class="text-red-600 font-bold" aria-hidden="true">*</span> son obligatorios.</p>
                 <form action="<?= htmlspecialchars(url('/admin/crearMonitor')) ?>" method="POST" class="needs-validation gp-form-stack" novalidate data-gp-validate="monitorCreate"
                       data-gp-confirm data-gp-confirm-title="Crear monitor" data-gp-confirm-body="¿Crear esta cuenta de monitor?" data-gp-confirm-ok="Crear">
 
                     <div class="gp-form-grid gp-form-grid--2">
                         <div>
                             <label for="DNI" class="form-label gp-label-required">DNI / NIE</label>
-                            <input type="text" class="form-control font-monospace gp-doc-identidad-input" id="DNI" name="DNI" required maxlength="9" autocomplete="off" inputmode="text" placeholder="12345678A" data-gp-doc-identidad-es>
-                            <p class="form-text small mb-0">8 números y letra, o NIE.</p>
+                            <input type="text" class="form-control font-mono gp-doc-identidad-input" id="DNI" name="DNI" required maxlength="9" autocomplete="off" inputmode="text" placeholder="12345678A" data-gp-doc-identidad-es>
+                            <p class="form-text text-sm mb-0">8 números y letra, o NIE.</p>
                         </div>
                         <div>
                             <label for="telefono" class="form-label gp-label-required">Teléfono</label>
@@ -41,7 +41,7 @@ require dirname(__DIR__) . '/layouts/partials/gp_form_panel_start.php';
                                 <input type="password" class="form-control" id="clave" name="clave" required minlength="16" autocomplete="new-password">
                                 <button class="btn btn-outline-secondary" type="button" data-gp-pass-reveal-group="clave,clave_confirmar" aria-label="Mostrar u ocultar contraseñas">Ver</button>
                             </div>
-                            <small class="text-muted">Mín. 16 caracteres con mayúsculas, minúsculas, número y símbolo.</small>
+                            <small class="text-slate-500">Mín. 16 caracteres con mayúsculas, minúsculas, número y símbolo.</small>
                         </div>
                         <div>
                             <label for="clave_confirmar" class="form-label gp-label-required">Confirmar contraseña</label>

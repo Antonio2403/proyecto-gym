@@ -1,9 +1,9 @@
 <div class="content-wrapper">
-    <div class="container-fluid mt-4">
+    <div class="relative w-full px-3 mt-6">
         <header class="gp-page-header">
             <div class="gp-page-header__title">
-                <h1 class="h4 mb-1">Salas del centro</h1>
-                <p class="text-muted small mb-0">Gestiona salas, capacidad y materiales asociados.</p>
+                <h1 class="text-2xl mb-1">Salas del centro</h1>
+                <p class="text-slate-500 text-sm mb-0">Gestiona salas, capacidad y materiales asociados.</p>
             </div>
             <div class="gp-view-toolbar">
                 <a href="<?= htmlspecialchars(url('/monitor/salas/crear')) ?>" class="btn btn-primary btn-sm">
@@ -13,16 +13,16 @@
         </header>
 
         <?php if (!empty($salas)): ?>
-            <div class="row g-3">
+            <div class="flex flex-wrap -mx-2 -mt-4">
                 <?php foreach ($salas as $sala): ?>
-                    <div class="col-md-6 col-xl-4">
-                        <article class="card gp-sala-card h-100 border-0 shadow-sm">
+                    <div class="w-full md:w-1/2 xl:w-1/3 max-w-full shrink-0 px-2 mt-4">
+                        <article class="card gp-sala-card h-full border-0 shadow-sm">
                             <div class="card-body">
-                                <h2 class="h5 card-title mb-2"><?= htmlspecialchars($sala['nombre']) ?></h2>
-                                <ul class="list-unstyled small text-muted mb-0">
-                                    <li class="mb-1"><strong class="text-dark">Capacidad:</strong> <?= htmlspecialchars((string) $sala['capacidad']) ?></li>
-                                    <li class="mb-1"><strong class="text-dark">Disponibilidad:</strong> <?= htmlspecialchars((string) $sala['disponibilidad']) ?></li>
-                                    <li><strong class="text-dark">Materiales:</strong> <?= (int) $sala['nmateriales'] ?></li>
+                                <h2 class="text-xl card-title mb-2"><?= htmlspecialchars($sala['nombre']) ?></h2>
+                                <ul class="list-none ps-0 text-sm text-slate-500 mb-0">
+                                    <li class="mb-1"><strong class="text-slate-800">Capacidad:</strong> <?= htmlspecialchars((string) $sala['capacidad']) ?></li>
+                                    <li class="mb-1"><strong class="text-slate-800">Disponibilidad:</strong> <?= htmlspecialchars((string) $sala['disponibilidad']) ?></li>
+                                    <li><strong class="text-slate-800">Materiales:</strong> <?= (int) $sala['nmateriales'] ?></li>
                                 </ul>
                                 <div class="gp-actions-stack">
                                     <a href="<?= htmlspecialchars(url('/monitor/salas/' . $sala['id'] . '/materiales/')) ?>" class="btn btn-sm gp-btn-action gp-btn-action--reply">

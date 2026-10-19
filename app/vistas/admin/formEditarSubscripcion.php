@@ -11,7 +11,7 @@ if (!empty($subscripcion['oferta_fin'])) {
 }
 $fisioVal = (string) ($subscripcion['fisio'] ?? 'N');
 ?>
-                <p class="gp-form-required-legend text-muted small mb-3">Todos los datos son obligatorios (<span class="text-danger fw-bold" aria-hidden="true">*</span>).</p>
+                <p class="gp-form-required-legend text-slate-500 text-sm mb-4">Todos los datos son obligatorios (<span class="text-red-600 font-bold" aria-hidden="true">*</span>).</p>
                 <form action="<?= htmlspecialchars(url('/admin/editarSubscripcion')) ?>" method="POST" class="needs-validation gp-form-stack" novalidate data-gp-validate="subscriptionEdit"
                       data-gp-confirm data-gp-confirm-title="Actualizar suscripción" data-gp-confirm-body="¿Guardar los cambios del plan?" data-gp-confirm-ok="Guardar">
                     <input type="hidden" name="id" value="<?= htmlspecialchars((string) $subscripcion['id']) ?>">
@@ -32,7 +32,7 @@ $fisioVal = (string) ($subscripcion['fisio'] ?? 'N');
                         <div>
                             <label for="numero_clases" class="form-label gp-label-required">Clases por semana</label>
                             <input type="number" id="numero_clases" name="numero_clases" class="form-control" value="<?= htmlspecialchars((string) ($subscripcion['numero_clases'] ?? 0)) ?>" required min="0" max="99" step="1">
-                            <p class="form-text small mb-0">0 = sin límite semanal explícito.</p>
+                            <p class="form-text text-sm mb-0">0 = sin límite semanal explícito.</p>
                         </div>
                         <div>
                             <label for="fisio" class="form-label gp-label-required">Fisioterapia incluida</label>
@@ -45,18 +45,18 @@ $fisioVal = (string) ($subscripcion['fisio'] ?? 'N');
 
                     <fieldset class="gp-form-fieldset mb-0">
                         <legend class="gp-form-fieldset__legend">Oferta promocional</legend>
-                        <div class="form-check form-switch mb-3">
+                        <div class="form-check form-switch mb-4">
                             <input class="form-check-input" type="checkbox" role="switch" id="en_oferta" name="en_oferta" value="1"<?= $enOferta ? ' checked' : '' ?>>
-                            <label class="form-check-label fw-semibold" for="en_oferta">Marcar como oferta por tiempo limitado</label>
+                            <label class="form-check-label font-semibold" for="en_oferta">Marcar como oferta por tiempo limitado</label>
                         </div>
-                        <div class="mb-3">
+                        <div class="mb-4">
                             <label for="oferta_motivo" class="form-label">Motivo de la promoción</label>
                             <input type="text" id="oferta_motivo" name="oferta_motivo" class="form-control" maxlength="120" value="<?= htmlspecialchars((string) ($subscripcion['oferta_motivo'] ?? '')) ?>" placeholder="Black Friday, Navidad, Halloween...">
                         </div>
                         <div class="mb-0">
                             <label for="oferta_fin" class="form-label">Fecha límite para comprar la oferta</label>
                             <input type="datetime-local" id="oferta_fin" name="oferta_fin" class="form-control" value="<?= htmlspecialchars($ofertaFin) ?>">
-                            <p class="form-text small mb-0">Al pasar esta fecha se retira del catálogo; los clientes que ya la compraron conservan su vigencia hasta su fecha_fin.</p>
+                            <p class="form-text text-sm mb-0">Al pasar esta fecha se retira del catálogo; los clientes que ya la compraron conservan su vigencia hasta su fecha_fin.</p>
                         </div>
                     </fieldset>
 

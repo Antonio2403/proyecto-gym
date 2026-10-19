@@ -1,9 +1,9 @@
 <div class="content-wrapper">
-    <div class="container-fluid mt-4">
+    <div class="relative w-full px-3 mt-6">
         <header class="gp-page-header">
             <div class="gp-page-header__title">
-                <h1 class="h4 mb-1">Materiales de la sala</h1>
-                <p class="text-muted small mb-0">Inventario y estado del material en esta sala.</p>
+                <h1 class="text-2xl mb-1">Materiales de la sala</h1>
+                <p class="text-slate-500 text-sm mb-0">Inventario y estado del material en esta sala.</p>
             </div>
             <div class="gp-view-toolbar">
                 <a href="<?= htmlspecialchars(url('/monitor/salas/' . (int) $sala_id . '/materiales/crear')) ?>" class="btn btn-primary btn-sm">

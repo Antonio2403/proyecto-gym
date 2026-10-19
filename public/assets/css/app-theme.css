@@ -162,10 +162,6 @@ body::-webkit-scrollbar-corner,
     min-height: 68px;
 }
 
-.site-navbar .container-fluid {
-    position: relative;
-}
-
 .site-navbar .navbar-brand {
     font-family: var(--gp-display);
     font-weight: 800;
@@ -1369,7 +1365,7 @@ body::-webkit-scrollbar-corner,
     border-top: 1px solid var(--gp-border-light);
 }
 
-.gp-schedule-pop-list .text-muted {
+.gp-schedule-pop-list > li > span {
     font-size: 0.7rem;
     text-transform: uppercase;
     letter-spacing: 0.04em;
@@ -2098,13 +2094,6 @@ label.gp-label-required::after {
 
 .gp-auth-inner-card {
     border-radius: 0 0 var(--gp-radius) var(--gp-radius);
-}
-
-@media (min-width: 992px) {
-    .gp-auth-inner-card .row.g-3 > [class*='col-'] {
-        padding-left: calc(var(--gp-gutter-x, 1.5rem) * 0.75);
-        padding-right: calc(var(--gp-gutter-x, 1.5rem) * 0.75);
-    }
 }
 
 /* Recuperación cuenta */

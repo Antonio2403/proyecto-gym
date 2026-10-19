@@ -1,8 +1,8 @@
 <div class="content-wrapper gp-dash">
-    <div class="container-fluid">
+    <div class="relative w-full px-3">
         <header class="gp-dash-hero">
-            <span class="gp-badge d-inline-block mb-2">Monitor</span>
-            <h1 class="h3 mb-0">Panel de monitor</h1>
+            <span class="gp-badge inline-block mb-2">Monitor</span>
+            <h1 class="text-[1.75rem] mb-0">Panel de monitor</h1>
             <p class="mb-0 mt-2">
                 Hola, <?= htmlspecialchars($_SESSION['nombre'] ?? 'Monitor') ?>.
                 Accesos rápidos a solicitudes y salas del centro.

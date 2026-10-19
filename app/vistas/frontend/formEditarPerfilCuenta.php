@@ -6,14 +6,14 @@ $gpFormSubtitle = 'Datos de usuario del equipo (administración o monitor). La c
 $gpFormBadge = 'Tu cuenta';
 require dirname(__DIR__) . '/layouts/partials/gp_form_panel_start.php';
 ?>
-                <p class="gp-form-required-legend text-muted small mb-3"><span class="text-danger fw-bold" aria-hidden="true">*</span> Obligatorio</p>
+                <p class="gp-form-required-legend text-slate-500 text-sm mb-4"><span class="text-red-600 font-bold" aria-hidden="true">*</span> Obligatorio</p>
                 <form action="<?= htmlspecialchars(url('/cuenta/perfil')) ?>" method="POST" class="needs-validation gp-form-stack" novalidate data-gp-validate="editClient" data-gp-unsaved-guard>
                     <input type="hidden" name="id" value="<?= isset($perfil['usuario_id']) ? (int) $perfil['usuario_id'] : '' ?>">
                     <div class="gp-form-grid gp-form-grid--2">
                         <div>
                             <label for="DNI_staff" class="form-label gp-label-required">DNI / NIE</label>
-                            <input type="text" class="form-control font-monospace gp-doc-identidad-input" id="DNI_staff" name="DNI" value="<?= isset($perfil['DNI']) ? htmlspecialchars((string) $perfil['DNI']) : '' ?>" required maxlength="9" autocomplete="off" inputmode="text" placeholder="12345678A" data-gp-doc-identidad-es>
-                            <p class="form-text small mb-0">8 números y letra, o NIE.</p>
+                            <input type="text" class="form-control font-mono gp-doc-identidad-input" id="DNI_staff" name="DNI" value="<?= isset($perfil['DNI']) ? htmlspecialchars((string) $perfil['DNI']) : '' ?>" required maxlength="9" autocomplete="off" inputmode="text" placeholder="12345678A" data-gp-doc-identidad-es>
+                            <p class="form-text text-sm mb-0">8 números y letra, o NIE.</p>
                         </div>
                         <div>
                             <label for="telefono_staff" class="form-label">Teléfono</label>
@@ -41,7 +41,7 @@ require dirname(__DIR__) . '/layouts/partials/gp_form_panel_start.php';
                                 <input type="password" class="form-control" id="clave_staff" name="clave" autocomplete="new-password" minlength="16">
                                 <button class="btn btn-outline-secondary" type="button" data-gp-pass-reveal-group="clave_staff,clave_confirmar_staff" aria-label="Mostrar u ocultar contraseñas">Ver</button>
                             </div>
-                            <small class="text-muted">Déjalo vacío si no quieres cambiarla. Si la cambias: mín. 16 caracteres con mayúsculas, minúsculas, número y símbolo.</small>
+                            <small class="text-slate-500">Déjalo vacío si no quieres cambiarla. Si la cambias: mín. 16 caracteres con mayúsculas, minúsculas, número y símbolo.</small>
                         </div>
                         <div>
                             <label for="clave_confirmar_staff" class="form-label">Confirmar nueva contraseña</label>

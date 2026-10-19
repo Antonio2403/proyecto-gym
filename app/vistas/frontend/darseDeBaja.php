@@ -3,16 +3,16 @@ $tienePlan = !empty($tiene_plan);
 $planActivo = is_array($plan_activo ?? null) ? $plan_activo : null;
 $planNombre = trim((string) ($planActivo['plan_nombre'] ?? ''));
 ?>
-<div class="container py-4 py-lg-5">
-    <div class="row justify-content-center">
-        <div class="col-lg-9">
+<div class="mx-auto w-full max-w-[1320px] lg:max-w-[1024px] xl:max-w-7xl px-3 py-6 lg:py-12">
+    <div class="justify-center flex flex-wrap -mx-3">
+        <div class="w-full lg:w-3/4 max-w-full shrink-0 px-3">
             <div class="gp-account-baja-toolbar">
                 <a href="<?= htmlspecialchars(url('/inicioUsuario')) ?>" class="btn btn-sm btn-outline-secondary">
                     <i class="fas fa-arrow-left me-1" aria-hidden="true"></i> Volver a mi área
                 </a>
             </div>
 
-            <header class="gp-account-baja-hero mb-4" aria-labelledby="titulo-darse-de-baja">
+            <header class="gp-account-baja-hero mb-6" aria-labelledby="titulo-darse-de-baja">
                 <div class="gp-account-baja-hero__inner">
                     <div>
                         <span class="gp-badge gp-account-baja-hero__badge">
@@ -39,12 +39,12 @@ $planNombre = trim((string) ($planActivo['plan_nombre'] ?? ''));
             </header>
 
             <?php if (!empty($_GET['error'])): ?>
-                <div class="alert alert-warning border-0 shadow-sm mb-4"><?= htmlspecialchars((string) $_GET['error']) ?></div>
+                <div class="alert alert-warning border-0 shadow-sm mb-6"><?= htmlspecialchars((string) $_GET['error']) ?></div>
             <?php endif; ?>
 
-            <div class="card border-0 shadow-sm mb-4 gp-account-baja-card">
-                <div class="card-body p-4 p-lg-5">
-                    <h2 class="h6 mb-3">Condiciones de la baja</h2>
+            <div class="card border-0 shadow-sm mb-6 gp-account-baja-card">
+                <div class="card-body p-6 lg:p-12">
+                    <h2 class="text-base mb-4">Condiciones de la baja</h2>
                     <ul class="gp-account-baja-terms">
                         <li>Perderás el acceso de inmediato y no podrás iniciar sesión con esta cuenta.</li>
                         <li>Tu sesión actual se cerrará en cuanto confirmes la baja.</li>
@@ -62,14 +62,14 @@ $planNombre = trim((string) ($planActivo['plan_nombre'] ?? ''));
                           data-gp-confirm-body="¿Confirmas que quieres darte de baja? Perderás el acceso inmediatamente, se cancelará tu plan si tienes uno y para volver necesitarás un ticket de reactivación en recepción.">
                         <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(csrf_token(), ENT_QUOTES, 'UTF-8') ?>">
 
-                        <div class="form-check mb-4">
+                        <div class="form-check mb-6">
                             <input class="form-check-input" type="checkbox" value="1" id="acepto_terminos" name="acepto_terminos" required>
                             <label class="form-check-label" for="acepto_terminos">
                                 He leído y acepto las condiciones: entiendo que no podré iniciar sesión, que deberé crear un ticket para reactivar la cuenta y que perderé mi plan activo si tengo uno.
                             </label>
                         </div>
 
-                        <div class="d-flex flex-wrap gap-2">
+                        <div class="flex flex-wrap gap-2">
                             <button type="submit" class="btn btn-danger" id="btn-confirmar-baja" disabled>
                                 Confirmar baja de cuenta
                             </button>
@@ -79,7 +79,7 @@ $planNombre = trim((string) ($planActivo['plan_nombre'] ?? ''));
                 </div>
             </div>
 
-            <p class="small text-muted mb-0">
+            <p class="text-sm text-slate-500 mb-0">
                 ¿Solo quieres pausar o cambiar de plan? Consulta
                 <a href="<?= htmlspecialchars(url('/pago')) ?>">suscripciones</a>
                 o acude a recepción antes de darte de baja.

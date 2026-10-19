@@ -19,10 +19,10 @@ $cupoResumen = is_array($cupo_resumen_semana ?? null) ? $cupo_resumen_semana : n
 $inscritoPorSesion = is_array($inscrito_por_sesion ?? null) ? $inscrito_por_sesion : [];
 $puedeMasReservaSemana = !isset($puede_mas_reserva_semana) || $puede_mas_reserva_semana;
 ?>
-<div class="gp-schedule-page py-4 py-lg-5">
-    <div class="container-fluid px-lg-5">
+<div class="gp-schedule-page py-6 lg:py-12">
+    <div class="relative w-full lg:px-12">
         <div class="gp-schedule-panel shadow-sm">
-            <header class="gp-schedule-head text-center py-4 px-3">
+            <header class="gp-schedule-head text-center py-6 px-4">
                 <h1 class="gp-schedule-title mb-2">Horario de Actividades</h1>
                 <?php if ($weekLabel !== ''): ?>
                     <p class="gp-schedule-subtitle mb-0"><?= htmlspecialchars($weekLabel) ?></p>
@@ -39,37 +39,37 @@ $puedeMasReservaSemana = !isset($puede_mas_reserva_semana) || $puede_mas_reserva
                 <?php $succsessMsg = htmlspecialchars((string) $_GET['success']); ?>
             <?php endif; ?>
 
-            <div class="gp-schedule-toolbar px-3 px-md-4 pb-3">
-                <div class="d-flex flex-column flex-md-row align-items-stretch align-items-md-center justify-content-between gap-3">
+            <div class="gp-schedule-toolbar px-4 md:px-6 pb-4">
+                <div class="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4">
                     <a href="<?= htmlspecialchars(url('/usuario/inscripciones/mis-inscripciones')) ?>"
-                       class="btn gp-btn-orange fw-semibold px-4 py-2">
+                       class="btn gp-btn-orange font-semibold px-6 py-2">
                         Ver mis inscripciones
                     </a>
-                    <div class="d-flex flex-column flex-sm-row align-items-stretch align-items-sm-center gap-2 gap-sm-3">
+                    <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-4">
                         <?php if ($esClienteSocio): ?>
                             <?php if ($tienePlanActivo && $cupoResumen && (int) ($cupoResumen['max_semana'] ?? 0) > 0): ?>
-                            <div class="gp-schedule-quota-hint text-center text-sm-start small text-white-50 px-3 py-2 rounded-3 border border-light border-opacity-25 bg-dark bg-opacity-40"
+                            <div class="gp-schedule-quota-hint text-center sm:text-left text-sm text-white/50 px-4 py-2 rounded-lg border border-slate-100/25 bg-slate-800/40"
                                  role="status"
                                  title="Reservas de esta semana según tu plan activo">
-                                <span class="d-block text-white-50 text-uppercase small mb-1" style="letter-spacing: .04em;">Tu plan esta semana</span>
-                                <span class="text-white fw-semibold"><?= (int) ($cupoResumen['usado'] ?? 0) ?></span>
-                                <span class="text-white-50"> reservas usadas de </span>
-                                <span class="text-white fw-semibold"><?= (int) $cupoResumen['max_semana'] ?></span>
+                                <span class="block text-white/50 uppercase text-sm mb-1" style="letter-spacing: .04em;">Tu plan esta semana</span>
+                                <span class="text-white font-semibold"><?= (int) ($cupoResumen['usado'] ?? 0) ?></span>
+                                <span class="text-white/50"> reservas usadas de </span>
+                                <span class="text-white font-semibold"><?= (int) $cupoResumen['max_semana'] ?></span>
                                 <?php if (isset($cupoResumen['restante'])): ?>
-                                    <span class="text-white-50"> · te quedan </span>
-                                    <span class="text-warning fw-semibold"><?= (int) $cupoResumen['restante'] ?></span>
+                                    <span class="text-white/50"> · te quedan </span>
+                                    <span class="text-yellow-700 font-semibold"><?= (int) $cupoResumen['restante'] ?></span>
                                 <?php endif; ?>
                             </div>
                             <?php elseif ($tienePlanActivo && $cupoResumen && (int) ($cupoResumen['max_semana'] ?? 0) <= 0): ?>
-                            <div class="gp-schedule-quota-hint small text-white-50 px-3 py-2 rounded-3 border border-light border-opacity-25 bg-dark bg-opacity-40" role="status">
+                            <div class="gp-schedule-quota-hint text-sm text-white/50 px-4 py-2 rounded-lg border border-slate-100/25 bg-slate-800/40" role="status">
                                 <strong class="text-white">Plan activo:</strong> sin tope fijo de clases por semana en el sistema.
                             </div>
                             <?php else: ?>
-                            <div class="gp-schedule-quota-hint small px-3 py-2 rounded-3 border border-warning border-opacity-50 bg-dark bg-opacity-50 text-start" role="alert">
-                                <strong class="text-warning">Sin plan activo.</strong>
-                                <span class="text-white-50"> No puedes reservar ni gestionar plazas hasta contratar o renovar en </span>
-                                <a class="link-warning fw-semibold" href="<?= htmlspecialchars(url('/pago')) ?>">Planes</a>.
-                                <span class="text-white-50 d-block mt-1 small">Si tenías reservas antiguas, quedan congeladas hasta que vuelvas a tener un plan en vigor.</span>
+                            <div class="gp-schedule-quota-hint text-sm px-4 py-2 rounded-lg border border-yellow-400/50 bg-slate-800/50 text-left" role="alert">
+                                <strong class="text-yellow-700">Sin plan activo.</strong>
+                                <span class="text-white/50"> No puedes reservar ni gestionar plazas hasta contratar o renovar en </span>
+                                <a class="text-amber-700 underline font-semibold" href="<?= htmlspecialchars(url('/pago')) ?>">Planes</a>.
+                                <span class="text-white/50 block mt-1 text-sm">Si tenías reservas antiguas, quedan congeladas hasta que vuelvas a tener un plan en vigor.</span>
                             </div>
                             <?php endif; ?>
                         <?php endif; ?>
@@ -83,7 +83,7 @@ $puedeMasReservaSemana = !isset($puede_mas_reserva_semana) || $puede_mas_reserva
                 </div>
             </div>
 
-            <div class="table-responsive gp-schedule-table-wrap px-2 px-md-4 pb-4">
+            <div class="table-responsive gp-schedule-table-wrap px-2 md:px-6 pb-6">
                 <table class="table table-bordered gp-schedule-grid mb-0 text-center align-middle">
                     <thead>
                         <tr>
@@ -104,7 +104,7 @@ $puedeMasReservaSemana = !isset($puede_mas_reserva_semana) || $puede_mas_reserva
                         foreach ($horas as $hora):
                         ?>
                             <tr class="gp-schedule-row">
-                                <th class="gp-schedule-hour-cell fw-semibold" scope="row"><?= sprintf('%02d:00', $hora) ?></th>
+                                <th class="gp-schedule-hour-cell font-semibold" scope="flex flex-wrap -mx-3"><?= sprintf('%02d:00', $hora) ?></th>
                                 <?php foreach ($dias as $dia): ?>
                                     <td class="gp-schedule-cell align-top">
                                         <?php
@@ -166,18 +166,18 @@ $puedeMasReservaSemana = !isset($puede_mas_reserva_semana) || $puede_mas_reserva
                                                 }
                                         ?>
                                                 <template id="<?= htmlspecialchars($tplId) ?>">
-                                                    <div class="gp-schedule-popover-inner text-start">
+                                                    <div class="gp-schedule-popover-inner text-left">
                                                         <?php if ($desc !== ''): ?>
                                                             <p class="gp-schedule-pop-desc mb-2"><?= nl2br(htmlspecialchars($desc)) ?></p>
                                                         <?php endif; ?>
-                                                        <ul class="gp-schedule-pop-list list-unstyled mb-0 small">
+                                                        <ul class="gp-schedule-pop-list list-none ps-0 mb-0 text-sm">
                                                             <?php if ($fechaUnica !== ''): ?>
-                                                                <li><span class="text-muted">Fecha</span><br><strong><?= htmlspecialchars($fechaUnica) ?></strong></li>
+                                                                <li><span class="text-slate-500">Fecha</span><br><strong><?= htmlspecialchars($fechaUnica) ?></strong></li>
                                                             <?php endif; ?>
-                                                            <li><span class="text-muted">Horario</span><br><strong><?= htmlspecialchars($horaIni) ?></strong><?= $duracion > 0 ? ' · ' . (int) $duracion . ' min' : '' ?></li>
-                                                            <li><span class="text-muted">Monitor</span><br><strong><?= htmlspecialchars($monitorNombre !== '' ? $monitorNombre : 'Sin asignar') ?></strong></li>
-                                                            <li><span class="text-muted">Sala</span><br><strong><?= htmlspecialchars($salaNombre !== '' ? $salaNombre : '—') ?></strong></li>
-                                                            <li><span class="text-muted">Ocupación</span><br><strong><?= (int) $inscritos ?> / <?= (int) $plazas ?></strong> personas</li>
+                                                            <li><span class="text-slate-500">Horario</span><br><strong><?= htmlspecialchars($horaIni) ?></strong><?= $duracion > 0 ? ' · ' . (int) $duracion . ' min' : '' ?></li>
+                                                            <li><span class="text-slate-500">Monitor</span><br><strong><?= htmlspecialchars($monitorNombre !== '' ? $monitorNombre : 'Sin asignar') ?></strong></li>
+                                                            <li><span class="text-slate-500">Sala</span><br><strong><?= htmlspecialchars($salaNombre !== '' ? $salaNombre : '—') ?></strong></li>
+                                                            <li><span class="text-slate-500">Ocupación</span><br><strong><?= (int) $inscritos ?> / <?= (int) $plazas ?></strong> personas</li>
                                                         </ul>
                                                     </div>
                                                 </template>
@@ -187,25 +187,25 @@ $puedeMasReservaSemana = !isset($puede_mas_reserva_semana) || $puede_mas_reserva
                                                      data-gp-popover-id="<?= htmlspecialchars($tplId) ?>"
                                                      data-popover-title="<?= htmlspecialchars((string) $act['nombre']) ?>"
                                                      aria-label="Detalles de la actividad: <?= htmlspecialchars((string) $act['nombre']) ?>">
-                                                    <div class="gp-schedule-act-body text-start">
-                                                        <strong class="d-block text-white"><?= htmlspecialchars((string) $act['nombre']) ?></strong>
+                                                    <div class="gp-schedule-act-body text-left">
+                                                        <strong class="block text-white"><?= htmlspecialchars((string) $act['nombre']) ?></strong>
                                                         <span class="gp-schedule-act-time"><?= htmlspecialchars($horaIni) ?></span>
                                                         <span class="gp-schedule-act-capacity" title="Personas apuntadas / plazas totales"><?= (int) $inscritos ?> / <?= (int) $plazas ?></span>
                                                     </div>
                                                 </div>
                                                 <?php
                                                 if ($yaInscrito && $sesionFinalizada): ?>
-                                                    <button type="button" class="btn btn-sm w-100 mb-1 gp-btn-sesion-finalizada" disabled title="Te inscribiste a esta sesión y ya ha terminado">Sesión finalizada</button>
+                                                    <button type="button" class="btn btn-sm w-full mb-1 gp-btn-sesion-finalizada" disabled title="Te inscribiste a esta sesión y ya ha terminado">Sesión finalizada</button>
                                                 <?php elseif ($yaInscrito): ?>
-                                                    <button type="button" class="btn btn-sm w-100 mb-1 gp-btn-inscrito" disabled title="Ya tienes plaza en esta sesión">Inscrito</button>
+                                                    <button type="button" class="btn btn-sm w-full mb-1 gp-btn-inscrito" disabled title="Ya tienes plaza en esta sesión">Inscrito</button>
                                                 <?php elseif ($sinPlan): ?>
-                                                    <button type="button" class="btn btn-outline-secondary btn-sm w-100 mb-1" disabled title="Contrata un plan para reservar">Requiere plan</button>
+                                                    <button type="button" class="btn btn-outline-secondary btn-sm w-full mb-1" disabled title="Contrata un plan para reservar">Requiere plan</button>
                                                 <?php elseif ($limiteSemanalAgotado): ?>
-                                                    <button type="button" class="btn btn-outline-warning btn-sm w-100 mb-1 text-dark" disabled title="Has usado todas las reservas de esta semana según tu plan">Límite semanal</button>
+                                                    <button type="button" class="btn btn-outline-warning btn-sm w-full mb-1 text-slate-800" disabled title="Has usado todas las reservas de esta semana según tu plan">Límite semanal</button>
                                                 <?php elseif (!$sesionReservable): ?>
-                                                    <button type="button" class="btn btn-sm w-100 mb-1 gp-btn-sesion-pasada" disabled title="Esta sesión ya ha pasado">Sesión pasada</button>
+                                                    <button type="button" class="btn btn-sm w-full mb-1 gp-btn-sesion-pasada" disabled title="Esta sesión ya ha pasado">Sesión pasada</button>
                                                 <?php elseif ($cupoLleno || $bloqueadoHorario): ?>
-                                                    <button type="button" class="btn gp-btn-apuntarse btn-sm w-100 mb-1" disabled><?= $cupoLleno ? 'Completo' : '—' ?></button>
+                                                    <button type="button" class="btn gp-btn-apuntarse btn-sm w-full mb-1" disabled><?= $cupoLleno ? 'Completo' : '—' ?></button>
                                                 <?php else: ?>
                                                 <form method="post" action="<?= htmlspecialchars(url('/usuario/inscripciones/apuntarse')) ?>" class="mb-1"
                                                       data-gp-confirm
@@ -214,11 +214,11 @@ $puedeMasReservaSemana = !isset($puede_mas_reserva_semana) || $puede_mas_reserva
                                                       data-gp-confirm-ok="Sí, reservar">
                                                     <input type="hidden" name="actividad_id" value="<?= $actId ?>">
                                                     <input type="hidden" name="fecha_sesion" value="<?= htmlspecialchars($fechaSesionReserva) ?>">
-                                                    <button type="submit" class="btn gp-btn-apuntarse btn-sm w-100"><?= $cupoLleno ? 'Completo' : 'Apuntarse' ?></button>
+                                                    <button type="submit" class="btn gp-btn-apuntarse btn-sm w-full"><?= $cupoLleno ? 'Completo' : 'Apuntarse' ?></button>
                                                 </form>
                                                 <?php endif; ?>
                                                 <?php if ($urlOpiniones !== ''): ?>
-                                                    <a href="<?= htmlspecialchars($urlOpiniones) ?>" class="gp-schedule-opiniones d-block btn btn-outline-light btn-sm w-100 py-1 lh-sm small text-decoration-none">Opiniones</a>
+                                                    <a href="<?= htmlspecialchars($urlOpiniones) ?>" class="gp-schedule-opiniones block btn btn-outline-light btn-sm w-full py-1 leading-tight text-sm no-underline">Opiniones</a>
                                                 <?php endif; ?>
                                         <?php
                                         endforeach;
@@ -232,8 +232,8 @@ $puedeMasReservaSemana = !isset($puede_mas_reserva_semana) || $puede_mas_reserva
             </div>
         </div>
 
-        <p class="text-center mt-3 mb-0">
-            <a href="<?= htmlspecialchars(url('/inicio')) ?>" class="gp-schedule-backlink small">← Volver al inicio</a>
+        <p class="text-center mt-4 mb-0">
+            <a href="<?= htmlspecialchars(url('/inicio')) ?>" class="gp-schedule-backlink text-sm">← Volver al inicio</a>
         </p>
     </div>
 </div>
@@ -311,7 +311,7 @@ $puedeMasReservaSemana = !isset($puede_mas_reserva_semana) || $puede_mas_reserva
     <div class="modal fade" id="successModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content gp-modal-dark">
-                <div class="modal-header border-0 bg-success bg-opacity-25">
+                <div class="modal-header border-0 bg-green-600/25">
                     <h5 class="modal-title">Correcto</h5>
                     <button type="button" class="btn-close btn-close-white" data-gp-dismiss="modal" aria-label="Cerrar"></button>
                 </div>

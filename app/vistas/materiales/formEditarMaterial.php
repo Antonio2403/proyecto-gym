@@ -5,7 +5,7 @@ $gpFormSubtitle = 'Actualiza el nombre y el estado del material seleccionado.';
 $gpFormBadge = 'Materiales';
 require dirname(__DIR__) . '/layouts/partials/gp_form_panel_start.php';
 ?>
-                <p class="gp-form-required-legend text-muted small mb-3">Nombre y estado son obligatorios (<span class="text-danger fw-bold" aria-hidden="true">*</span>).</p>
+                <p class="gp-form-required-legend text-slate-500 text-sm mb-4">Nombre y estado son obligatorios (<span class="text-red-600 font-bold" aria-hidden="true">*</span>).</p>
                 <form method="POST" action="<?= htmlspecialchars(url('/monitor/salas/' . (int) $sala_id . '/materiales/editar/' . (int) $material['id'])) ?>" class="needs-validation gp-form-stack" novalidate data-gp-validate="materialEdit"
                       data-gp-confirm data-gp-confirm-title="Guardar material" data-gp-confirm-body="¿Guardar los cambios del material?" data-gp-confirm-ok="Guardar">
                     <div class="gp-form-grid gp-form-grid--2">

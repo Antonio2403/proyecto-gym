@@ -169,7 +169,7 @@
             var colspan = parseInt(root.getAttribute('data-colspan') || '1', 10);
             var td0 = document.createElement('td');
             td0.colSpan = colspan;
-            td0.className = 'text-center text-muted py-4';
+            td0.className = 'text-center text-slate-500 py-6';
             td0.textContent = 'Sin resultados con los filtros actuales.';
             tr0.appendChild(td0);
             frag.appendChild(tr0);
@@ -616,7 +616,7 @@
                         var tr = document.createElement('tr');
                         var td = document.createElement('td');
                         td.colSpan = parseInt(root.getAttribute('data-colspan') || '1', 10);
-                        td.className = 'text-danger';
+                        td.className = 'text-red-600';
                         td.textContent = (data && data.error) || 'Error al cargar datos.';
                         tr.appendChild(td);
                         tbody.appendChild(tr);
@@ -644,7 +644,7 @@
                     var tr = document.createElement('tr');
                     var td = document.createElement('td');
                     td.colSpan = parseInt(root.getAttribute('data-colspan') || '1', 10);
-                    td.className = 'text-danger';
+                    td.className = 'text-red-600';
                     td.textContent = 'Error de red. Revisa la conexión e inténtalo de nuevo.';
                     tr.appendChild(td);
                     tbody.appendChild(tr);

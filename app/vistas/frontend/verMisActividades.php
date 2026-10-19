@@ -5,14 +5,14 @@ if (!isset($_SESSION['usuario_id'])) {
 }
 $tienePlanActivo = !empty($tiene_plan_activo);
 ?>
-<div class="container py-4 py-lg-5">
+<div class="mx-auto w-full max-w-[1320px] lg:max-w-[1024px] xl:max-w-7xl px-3 py-6 lg:py-12">
     <header class="gp-page-header">
         <span class="gp-badge mb-2">Reservas</span>
-        <h1 class="h2 mb-2">Mis actividades</h1>
+        <h1 class="text-[2rem] mb-2">Mis actividades</h1>
         <?php if ($tienePlanActivo): ?>
-            <p class="text-muted mb-0">Sesiones en las que estás inscrito. Puedes cancelar con un clic.</p>
+            <p class="text-slate-500 mb-0">Sesiones en las que estás inscrito. Puedes cancelar con un clic.</p>
         <?php else: ?>
-            <p class="text-muted mb-0">
+            <p class="text-slate-500 mb-0">
                 Sin <strong>plan activo</strong> no puedes cancelar ni nuevas reservas desde aquí.
                 Tus inscripciones anteriores se muestran solo como referencia hasta que renueves en
                 <a href="<?= htmlspecialchars(url('/pago')) ?>">Planes</a>.
@@ -20,13 +20,13 @@ $tienePlanActivo = !empty($tiene_plan_activo);
         <?php endif; ?>
     </header>
 
-    <div class="d-flex flex-wrap gap-2 mb-4">
-        <a href="<?= htmlspecialchars(url('/usuario/actividades')) ?>" class="btn btn-outline-light btn-sm align-self-center">← Volver al horario</a>
-        <a href="<?= htmlspecialchars(url('/inicio')) ?>" class="btn btn-outline-light btn-sm align-self-center">Inicio</a>
+    <div class="flex flex-wrap gap-2 mb-6">
+        <a href="<?= htmlspecialchars(url('/usuario/actividades')) ?>" class="btn btn-outline-light btn-sm self-center">← Volver al horario</a>
+        <a href="<?= htmlspecialchars(url('/inicio')) ?>" class="btn btn-outline-light btn-sm self-center">Inicio</a>
     </div>
 
     <?php if (isset($_GET['success'])): ?>
-        <div class="alert alert-success border-0 rounded-3 mb-4 text-center">
+        <div class="alert alert-success border-0 rounded-lg mb-6 text-center">
             Inscripción cancelada correctamente
         </div>
     <?php endif; ?>
@@ -38,14 +38,14 @@ $tienePlanActivo = !empty($tiene_plan_activo);
             ? 'No se pudo cancelar la inscripción o no existe.'
             : htmlspecialchars($errRaw, ENT_QUOTES, 'UTF-8');
         ?>
-        <div class="alert alert-danger border-0 rounded-3 mb-4 text-center">
+        <div class="alert alert-danger border-0 rounded-lg mb-6 text-center">
             <?= $errTxt ?>
         </div>
     <?php endif; ?>
 
     <div class="card border-0">
-        <div class="card-body p-0 p-md-3">
-            <div class="table-responsive rounded-3 overflow-hidden">
+        <div class="card-body p-0 md:p-4">
+            <div class="table-responsive rounded-lg overflow-hidden">
                 <table class="table table-bordered table-gym text-center align-middle mb-0">
                     <thead>
                         <tr>
@@ -63,7 +63,7 @@ $tienePlanActivo = !empty($tiene_plan_activo);
                         <?php if (!empty($inscripciones)): ?>
                             <?php foreach ($inscripciones as $ins): ?>
                                 <tr>
-                                    <td class="fw-semibold"><?= htmlspecialchars($ins['actividad']) ?></td>
+                                    <td class="font-semibold"><?= htmlspecialchars($ins['actividad']) ?></td>
                                     <td>
                                         <?php
                                         $dias = [
@@ -78,12 +78,12 @@ $tienePlanActivo = !empty($tiene_plan_activo);
                                         echo htmlspecialchars($dias[$ins['dia_semana']] ?? $ins['dia_semana']);
                                         ?>
                                     </td>
-                                    <td class="text-nowrap small">
+                                    <td class="text-nowrap text-sm">
                                         <?= date('H:i', strtotime($ins['fecha_inicio'])) ?>
                                         –
                                         <?= date('H:i', strtotime($ins['fecha_fin'])) ?>
                                     </td>
-                                    <td class="small">
+                                    <td class="text-sm">
                                         <?php
                                         $fecIns = isset($ins['fecha_ocurrencia']) ? trim((string) $ins['fecha_ocurrencia']) : '';
                                         if ($fecIns !== '' && preg_match('/^\d{4}-\d{2}-\d{2}$/', $fecIns)) {
@@ -91,13 +91,13 @@ $tienePlanActivo = !empty($tiene_plan_activo);
                                         } elseif ($fecIns !== '') {
                                             echo htmlspecialchars($fecIns);
                                         } else {
-                                            echo '<span class="text-muted">—</span>';
+                                            echo '<span class="text-slate-500">—</span>';
                                         }
                                         ?>
                                     </td>
-                                    <td class="small"><?= htmlspecialchars((string) ($ins['sala'] ?? '—')) ?></td>
-                                    <td class="small"><?= htmlspecialchars((string) ($ins['monitor'] ?? '—')) ?></td>
-                                    <td class="small">
+                                    <td class="text-sm"><?= htmlspecialchars((string) ($ins['sala'] ?? '—')) ?></td>
+                                    <td class="text-sm"><?= htmlspecialchars((string) ($ins['monitor'] ?? '—')) ?></td>
+                                    <td class="text-sm">
                                         <?php
                                         $fecIns = isset($ins['fecha_ocurrencia']) ? trim((string) $ins['fecha_ocurrencia']) : '';
                                         if ($fecIns !== '' && preg_match('/^\d{4}-\d{2}-\d{2}$/', $fecIns)) {
@@ -108,13 +108,13 @@ $tienePlanActivo = !empty($tiene_plan_activo);
                                             ]);
                                             echo '<a href="' . htmlspecialchars($commUrl) . '">Opiniones</a>';
                                         } else {
-                                            echo '<span class="text-muted">—</span>';
+                                            echo '<span class="text-slate-500">—</span>';
                                         }
                                         ?>
                                     </td>
                                     <td class="text-nowrap">
                                         <?php if ($tienePlanActivo): ?>
-                                        <form method="post" action="<?= htmlspecialchars(url('/usuario/inscripciones/cancelar')) ?>" class="d-inline"
+                                        <form method="post" action="<?= htmlspecialchars(url('/usuario/inscripciones/cancelar')) ?>" class="inline"
                                               data-gp-confirm
                                               data-gp-danger="true"
                                               data-gp-confirm-title="Cancelar reserva"
@@ -129,14 +129,14 @@ $tienePlanActivo = !empty($tiene_plan_activo);
                                             </button>
                                         </form>
                                         <?php else: ?>
-                                            <span class="small text-muted">—</span>
+                                            <span class="text-sm text-slate-500">—</span>
                                         <?php endif; ?>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>
                         <?php else: ?>
                             <tr>
-                                <td colspan="8" class="text-muted py-5">
+                                <td colspan="8" class="text-slate-500 py-12">
                                     No estás inscrito en ninguna actividad.
                                 </td>
                             </tr>

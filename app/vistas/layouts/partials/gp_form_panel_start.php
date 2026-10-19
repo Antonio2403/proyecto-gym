@@ -6,7 +6,7 @@ $gpFormBadge = $gpFormBadge ?? null;
 $gpFormHasToolbar = !empty($gpFormBadge) || !empty($gpFormBackUrl);
 ?>
 <div class="content-wrapper">
-    <div class="container-fluid gp-form-page py-2">
+    <div class="relative w-full px-3 gp-form-page py-2">
         <article class="gp-form-panel gp-motion-item">
             <header class="gp-form-panel__head">
                 <?php if ($gpFormHasToolbar): ?>
@@ -21,9 +21,9 @@ $gpFormHasToolbar = !empty($gpFormBadge) || !empty($gpFormBackUrl);
                         <?php endif; ?>
                     </div>
                 <?php endif; ?>
-                <h1 class="gp-form-panel__title h4 mb-1"><?= htmlspecialchars((string) $gpFormTitle) ?></h1>
+                <h1 class="gp-form-panel__title text-2xl mb-1"><?= htmlspecialchars((string) $gpFormTitle) ?></h1>
                 <?php if (!empty($gpFormSubtitle)): ?>
-                    <p class="gp-form-panel__lead text-muted small mb-0"><?= htmlspecialchars((string) $gpFormSubtitle) ?></p>
+                    <p class="gp-form-panel__lead text-slate-500 text-sm mb-0"><?= htmlspecialchars((string) $gpFormSubtitle) ?></p>
                 <?php endif; ?>
             </header>
             <div class="gp-form-panel__body">

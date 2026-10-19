@@ -35,13 +35,13 @@
 
     function buildThemedModalHtml(opts) {
         var variant = opts.variant || 'neutral';
-        var headerClass = 'modal-header border-secondary border-opacity-25';
+        var headerClass = 'modal-header border-slate-500/25';
         if (variant === 'danger') {
-            headerClass += ' bg-danger text-white border-0';
+            headerClass += ' bg-red-600 text-white border-0';
         } else if (variant === 'warning') {
-            headerClass += ' bg-warning text-dark border-0';
+            headerClass += ' bg-yellow-400 text-slate-800 border-0';
         } else if (variant === 'info') {
-            headerClass += ' bg-info bg-opacity-25 text-white border-0';
+            headerClass += ' bg-cyan-500/25 text-white border-0';
         }
         var title = opts.title || 'Aviso';
         var body = opts.bodyHtml || '';
@@ -50,15 +50,15 @@
 
         return (
             '<div class="modal-dialog modal-dialog-centered">' +
-            '<div class="modal-content gp-modal-dark border-secondary border-opacity-25 shadow">' +
-            '<div class="' + headerClass + '">' +
+            '<div class="modal-content gp-modal-dark border-slate-500/25 shadow">' +
+            '<div class="' + headerClass">' +
             '<h5 class="modal-title">' + title + '</h5>' +
             (opts.showClose
                 ? '<button type="button" class="btn-close btn-close-white" data-gp-dismiss="modal" aria-label="Cerrar"></button>'
                 : '') +
             '</div>' +
-            '<div class="modal-body text-white-50">' + body + '</div>' +
-            '<div class="modal-footer border-secondary border-opacity-25">' +
+            '<div class="modal-body text-white/50">' + body + '</div>' +
+            '<div class="modal-footer border-slate-500/25">' +
             '<a class="btn btn-primary" href="' + okHref + '">' + okLabel + '</a>' +
             '</div>' +
             '</div>' +
@@ -129,7 +129,7 @@
                 '<p class="mb-0">Has superado el tiempo de inactividad configurado. Por seguridad, la sesión se ha cerrado.</p>' +
                 '</div>' +
                 '<div class="gp-idle-overlay__foot">' +
-                '<a class="btn btn-primary w-100" href="' + href + '">Ir al inicio de sesión</a>' +
+                '<a class="btn btn-primary w-full" href="' + href + '">Ir al inicio de sesión</a>' +
                 '</div>' +
                 '</div>';
             document.body.appendChild(overlay);
