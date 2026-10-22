@@ -18,9 +18,10 @@
     <link rel="stylesheet" href="<?= htmlspecialchars(asset('css/tailwind.css')) ?>">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
           integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer">
-    <link rel="stylesheet" href="<?= htmlspecialchars(asset('css/app-theme.css')) ?>?v=20261022d">
+    <link rel="stylesheet" href="<?= htmlspecialchars(asset('css/app-theme.css')) ?>?v=20261022e">
     <!-- También en la página: si el navegador conserva el CSS anterior, la portada y las fotos vuelven al diseño viejo. -->
     <style>
+        .site-body .btn { border-radius: 999px; }
         .gp-photo-frame { width: 100%; overflow: hidden; }
         .gp-photo { display: block; width: 100%; height: 100%; max-width: none; object-fit: cover; object-position: center; }
         .gp-photo-frame--hero { height: min(22rem, 64vw); }
@@ -30,26 +31,19 @@
         .gp-photo-strip { display: grid; grid-template-columns: 1fr; gap: 1rem; align-items: stretch; }
         .gp-photo-card { min-width: 0; margin: 0; }
         .gp-photo-card .gp-photo-frame { width: 100%; height: 14rem; }
-        .gp-hero--cartel { display: flex; flex-direction: column; min-height: calc(100svh - 4.25rem); padding: 0; background: #1c1410; border-bottom: 0; overflow: hidden; }
-        .gp-hero-cartel__stage { position: relative; flex: 1 1 auto; display: flex; align-items: center; min-height: 26rem; }
-        .gp-hero-cartel__photo { position: absolute; inset: 0; width: 100%; height: 100%; max-width: none; object-fit: cover; object-position: center 28%; }
-        .gp-hero-cartel__shade { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(18, 14, 12, 0.9) 0%, rgba(18, 14, 12, 0.62) 36%, rgba(18, 14, 12, 0.16) 64%, rgba(18, 14, 12, 0.3) 100%); }
-        .gp-hero-cartel__copy { position: relative; z-index: 1; width: min(100%, 80rem); margin-inline: auto; padding: clamp(2.25rem, 6vw, 4.5rem) clamp(1.25rem, 4vw, 2.5rem); }
-        .site-body .gp-hero--cartel .gp-hero-title { max-width: 11ch; margin-bottom: 1.15rem; color: #fff; font-size: clamp(3.15rem, 7vw, 5.5rem); font-weight: 800; line-height: 0.92; letter-spacing: -0.045em; }
-        .site-body .gp-hero--cartel .gp-hero-lead { max-width: 26rem; margin-bottom: 1.75rem; color: rgba(255, 255, 255, 0.9); font-size: clamp(1.05rem, 1.5vw, 1.25rem); }
-        .gp-hero--cartel .btn-outline-light { border-color: rgba(255, 255, 255, 0.78); color: #fff; background: transparent; }
-        .gp-hero-cartel__strip { position: relative; z-index: 1; width: 100%; background: #fff; }
-        .gp-hero-cartel__strip-inner { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.75rem 1.5rem; width: min(100%, 80rem); margin-inline: auto; padding: 0.95rem clamp(1.25rem, 4vw, 2.5rem); }
-        .gp-hero-cartel__points { display: flex; flex-wrap: wrap; gap: 0.5rem 1.35rem; margin: 0; padding: 0; list-style: none; }
-        .gp-hero-cartel__points li { display: flex; align-items: center; gap: 0.45rem; color: #2c3544; font-weight: 600; }
-        .gp-hero-cartel__points li::before { content: ""; width: 0.45rem; height: 0.45rem; border-radius: 50%; background: #c45c28; }
-        .gp-hero-cartel__write { color: #c45c28; font-weight: 700; text-decoration: none; }
+        .gp-hero--editorial { padding: clamp(2.75rem, 7vw, 4.75rem) 0 clamp(1.5rem, 4vw, 2.5rem); text-align: center; border-bottom: 0; background: radial-gradient(ellipse 78% 68% at 50% -12%, rgba(196, 92, 40, 0.42), transparent 58%), radial-gradient(ellipse 48% 42% at 0% 18%, rgba(44, 53, 68, 0.14), transparent 52%), radial-gradient(ellipse 42% 36% at 100% 8%, rgba(59, 125, 214, 0.16), transparent 48%), linear-gradient(165deg, #f6dcc8 0%, #f7f1ea 38%, #eef1f6 100%); }
+        .gp-hero-editorial__copy { width: min(100%, 48rem); margin: 0 auto; padding: 0 1.25rem 1.75rem; }
+        .site-body .gp-hero--editorial .gp-hero-title { margin-bottom: 1rem; color: #2c3544; font-size: clamp(3rem, 6.5vw, 5.15rem); font-weight: 800; line-height: 0.96; letter-spacing: -0.045em; }
+        .site-body .gp-hero--editorial .gp-hero-lead { max-width: 28rem; margin: 0 auto 1.6rem; color: #475569; font-size: 1.15rem; }
+        .gp-hero-editorial__actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.75rem; }
+        .gp-hero--editorial .btn-primary, .gp-editorial-banner .btn-primary { border-color: #c45c28; background: linear-gradient(180deg, #e07a3d 0%, #c45c28 58%, #a84d21 100%); }
+        .gp-hero-editorial__wide { width: min(calc(100% - 2rem), 80rem); height: min(22rem, 48vw); min-height: 12.5rem; margin: 0.35rem auto 0; overflow: hidden; border-radius: 1.5rem; }
+        .gp-hero-editorial__wide .gp-photo { object-position: center 22%; }
+        .gp-editorial-banner { background: linear-gradient(90deg, #243041 0%, #2c3544 46%, #3c4e68 100%); }
+        .gp-editorial-banner__inner { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.85rem 1.5rem; width: min(100%, 80rem); margin: 0 auto; padding: 1.25rem 1.5rem; }
+        .gp-editorial-banner p { margin: 0; color: #fff; font-size: clamp(1.25rem, 2vw, 1.65rem); font-weight: 700; }
         @media (min-width: 768px) {
             .gp-photo-strip { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-        }
-        @media (max-width: 700px) {
-            .gp-hero-cartel__shade { background: linear-gradient(180deg, rgba(18, 14, 12, 0.84) 0%, rgba(18, 14, 12, 0.5) 52%, rgba(18, 14, 12, 0.62) 100%); }
-            .site-body .gp-hero--cartel .gp-hero-title { font-size: clamp(2.7rem, 13vw, 3.6rem); }
         }
     </style>
     <?php require __DIR__ . '/../partials/horario_centro_boot.php'; ?>
