@@ -4,6 +4,10 @@
 <div class="gp-auth-shell">
     <div class="mx-auto w-full max-w-[1320px] lg:max-w-[1024px] xl:max-w-7xl gp-auth-page-wrap gp-auth-page-wrap--xl px-4">
         <div class="gp-auth-card gp-auth-card--wide gp-auth-card--landscape">
+            <div class="gp-photo-frame mb-4" style="height: 12rem;">
+                <img class="gp-photo" src="<?= htmlspecialchars(asset('img/pixabay/hero-entreno.jpg')) ?>"
+                     width="854" height="1280" alt="Entrenamiento en Spartum">
+            </div>
             <div class="text-center mb-4 lg:mb-6">
                 <span class="gp-badge">Acceso miembros</span>
                 <h1 class="text-[1.75rem] mt-4 mb-2">Entra a Spartum</h1>

@@ -32,6 +32,10 @@
                 </div>
             </div>
             <div class="w-full lg:w-5/12 max-w-full shrink-0 px-3 mt-12">
+                <div class="gp-photo-frame gp-photo-frame--hero mb-4">
+                    <img class="gp-photo" src="<?= htmlspecialchars(asset('img/pixabay/hero-entreno.jpg')) ?>"
+                         width="854" height="1280" alt="Persona entrenando con mancuernas en un gimnasio">
+                </div>
                 <div class="card border-0 overflow-hidden">
                     <div class="card-body p-6 lg:p-12">
                         <h3 class="text-xl mb-4">Hoy es buen día para empezar</h3>
@@ -76,6 +80,34 @@
                     <p class="text-slate-500 text-sm mb-0">Administración y monitores coordinados para que todo fluya.</p>
                 </div>
             </div>
+        </div>
+    </div>
+</section>
+
+<section class="pb-12">
+    <div class="mx-auto w-full max-w-[1320px] lg:max-w-[1024px] xl:max-w-7xl px-3">
+        <div class="gp-photo-strip">
+            <figure class="gp-photo-card">
+                <div class="gp-photo-frame">
+                    <img class="gp-photo" src="<?= htmlspecialchars(asset('img/pixabay/mancuernas.jpg')) ?>"
+                         width="1280" height="853" alt="Mancuernas ordenadas en la zona de pesas">
+                </div>
+                <figcaption>Zona de pesas</figcaption>
+            </figure>
+            <figure class="gp-photo-card">
+                <div class="gp-photo-frame">
+                    <img class="gp-photo" src="<?= htmlspecialchars(asset('img/pixabay/yoga.jpg')) ?>"
+                         width="853" height="1280" alt="Sesión de yoga en una sala luminosa">
+                </div>
+                <figcaption>Yoga y movilidad</figcaption>
+            </figure>
+            <figure class="gp-photo-card">
+                <div class="gp-photo-frame">
+                    <img class="gp-photo" src="<?= htmlspecialchars(asset('img/pixabay/equipo.jpg')) ?>"
+                         width="1280" height="853" alt="Grupo entrenando juntos en el gimnasio">
+                </div>
+                <figcaption>Clases en grupo</figcaption>
+            </figure>
         </div>
     </div>
 </section>

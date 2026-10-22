@@ -22,6 +22,10 @@ $puedeMasReservaSemana = !isset($puede_mas_reserva_semana) || $puede_mas_reserva
 <div class="gp-schedule-page py-6 lg:py-12">
     <div class="relative w-full lg:px-12">
         <div class="gp-schedule-panel shadow-sm">
+            <div class="gp-photo-frame" style="height: 9rem; border-radius: 0; border: 0;">
+                <img class="gp-photo" src="<?= htmlspecialchars(asset('img/pixabay/equipo.jpg')) ?>"
+                     width="1280" height="853" alt="Clase en grupo en la sala del gimnasio">
+            </div>
             <header class="gp-schedule-head text-center py-6 px-4">
                 <h1 class="gp-schedule-title mb-2">Horario de Actividades</h1>
                 <?php if ($weekLabel !== ''): ?>
