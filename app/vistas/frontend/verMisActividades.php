@@ -1,8 +1,4 @@
 <?php
-if (!isset($_SESSION['usuario_id'])) {
-    header('Location: ' . url('/login') . '?error=' . rawurlencode('Debes iniciar sesión para ver tus actividades'));
-    exit;
-}
 $tienePlanActivo = !empty($tiene_plan_activo);
 ?>
 <div class="mx-auto w-full max-w-[1320px] lg:max-w-[1024px] xl:max-w-7xl px-3 py-6 lg:py-12">

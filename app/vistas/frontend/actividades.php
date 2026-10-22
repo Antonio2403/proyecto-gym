@@ -1,8 +1,4 @@
 <?php
-if (!isset($_SESSION['usuario_id'])) {
-    header('Location: ' . url('/login') . '?error=' . rawurlencode('Debes iniciar sesión para ver las actividades'));
-    exit;
-}
 $semanaOffset = (int) ($semana_offset ?? 0);
 $weekLabel = (string) ($week_label ?? '');
 $inscritosPorCelda = is_array($inscritos_por_celda ?? null)

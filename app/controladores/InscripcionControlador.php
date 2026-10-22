@@ -9,6 +9,11 @@ class InscripcionControlador extends Controller
 {
     public function misIncripciones()
     {
+        if (empty($_SESSION['usuario_id'])) {
+            header('Location: ' . url('/login') . '?error=' . rawurlencode('Tienes que iniciar sesión para ver tus actividades.'));
+            exit;
+        }
+
         $this->redirigirFisioFueraPortal();
         $uid = (int) ($_SESSION['usuario_id'] ?? 0);
         $tienePlan = $uid > 0 && ClienteSubscripcion::tieneSuscripcionActivaPorUsuarioId($uid);

@@ -14,6 +14,11 @@ class ActividadControlador extends Controller
 {
     public function index()
     {
+        if (empty($_SESSION['usuario_id'])) {
+            header('Location: ' . url('/login') . '?error=' . rawurlencode('Tienes que iniciar sesión para ver las actividades.'));
+            exit;
+        }
+
         $this->redirigirFisioFueraPortal();
 
         $actividades = Actividad::obtenerTodas();
