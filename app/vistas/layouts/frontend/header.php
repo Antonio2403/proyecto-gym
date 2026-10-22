@@ -18,32 +18,37 @@
     <link rel="stylesheet" href="<?= htmlspecialchars(asset('css/tailwind.css')) ?>">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
           integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer">
-    <link rel="stylesheet" href="<?= htmlspecialchars(asset('css/app-theme.css')) ?>?v=20261022e">
-    <!-- También en la página: si el navegador conserva el CSS anterior, la portada y las fotos vuelven al diseño viejo. -->
+    <link rel="stylesheet" href="<?= htmlspecialchars(asset('css/app-theme.css')) ?>?v=20261022f">
+    <!-- También en la página: si el navegador conserva el CSS anterior, la portada vuelve al diseño viejo. -->
     <style>
         .site-body .btn { border-radius: 999px; }
         .gp-photo-frame { width: 100%; overflow: hidden; }
         .gp-photo { display: block; width: 100%; height: 100%; max-width: none; object-fit: cover; object-position: center; }
-        .gp-photo-frame--hero { height: min(22rem, 64vw); }
-        .gp-photo-frame--hero .gp-photo { object-position: center 18%; }
-        .gp-photo-frame--wide { height: min(18rem, 56vw); }
-        .gp-photo-frame--side { height: min(28rem, 72vw); }
         .gp-photo-strip { display: grid; grid-template-columns: 1fr; gap: 1rem; align-items: stretch; }
         .gp-photo-card { min-width: 0; margin: 0; }
         .gp-photo-card .gp-photo-frame { width: 100%; height: 14rem; }
-        .gp-hero--editorial { padding: clamp(2.75rem, 7vw, 4.75rem) 0 clamp(1.5rem, 4vw, 2.5rem); text-align: center; border-bottom: 0; background: radial-gradient(ellipse 78% 68% at 50% -12%, rgba(196, 92, 40, 0.42), transparent 58%), radial-gradient(ellipse 48% 42% at 0% 18%, rgba(44, 53, 68, 0.14), transparent 52%), radial-gradient(ellipse 42% 36% at 100% 8%, rgba(59, 125, 214, 0.16), transparent 48%), linear-gradient(165deg, #f6dcc8 0%, #f7f1ea 38%, #eef1f6 100%); }
-        .gp-hero-editorial__copy { width: min(100%, 48rem); margin: 0 auto; padding: 0 1.25rem 1.75rem; }
-        .site-body .gp-hero--editorial .gp-hero-title { margin-bottom: 1rem; color: #2c3544; font-size: clamp(3rem, 6.5vw, 5.15rem); font-weight: 800; line-height: 0.96; letter-spacing: -0.045em; }
-        .site-body .gp-hero--editorial .gp-hero-lead { max-width: 28rem; margin: 0 auto 1.6rem; color: #475569; font-size: 1.15rem; }
-        .gp-hero-editorial__actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.75rem; }
-        .gp-hero--editorial .btn-primary, .gp-editorial-banner .btn-primary { border-color: #c45c28; background: linear-gradient(180deg, #e07a3d 0%, #c45c28 58%, #a84d21 100%); }
-        .gp-hero-editorial__wide { width: min(calc(100% - 2rem), 80rem); height: min(22rem, 48vw); min-height: 12.5rem; margin: 0.35rem auto 0; overflow: hidden; border-radius: 1.5rem; }
-        .gp-hero-editorial__wide .gp-photo { object-position: center 22%; }
-        .gp-editorial-banner { background: linear-gradient(90deg, #243041 0%, #2c3544 46%, #3c4e68 100%); }
-        .gp-editorial-banner__inner { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.85rem 1.5rem; width: min(100%, 80rem); margin: 0 auto; padding: 1.25rem 1.5rem; }
-        .gp-editorial-banner p { margin: 0; color: #fff; font-size: clamp(1.25rem, 2vw, 1.65rem); font-weight: 700; }
+        .gp-hero--poster { display: flex; flex-direction: column; min-height: calc(100svh - 4.25rem); padding: 0; background: #2c3544; border-bottom: 0; overflow: hidden; }
+        .gp-hero-poster__stage { position: relative; flex: 1 1 auto; display: flex; align-items: center; min-height: 28rem; background: #2c3544; }
+        .gp-hero-poster__photo { position: absolute; top: 0; right: 0; width: 58%; height: 100%; max-width: none; object-fit: cover; object-position: center 14%; }
+        .gp-hero-poster__shade { position: absolute; inset: 0; background: linear-gradient(90deg, #2c3544 0%, #2c3544 34%, rgba(44, 53, 68, 0.82) 48%, rgba(44, 53, 68, 0.28) 64%, rgba(44, 53, 68, 0) 76%); pointer-events: none; }
+        .gp-hero-poster__copy { position: relative; z-index: 1; width: min(40rem, 52%); padding: clamp(2rem, 5vw, 4.25rem) clamp(1.5rem, 4vw, 3.75rem); }
+        .site-body .gp-hero--poster .gp-hero-title { margin-bottom: 1.1rem; color: #fff; font-size: clamp(3.35rem, 5.8vw, 5.35rem); font-weight: 800; line-height: 0.94; letter-spacing: -0.045em; }
+        .site-body .gp-hero--poster .gp-hero-lead { max-width: 28rem; margin-bottom: 1.7rem; color: rgba(255, 255, 255, 0.88); font-size: clamp(1.05rem, 1.5vw, 1.28rem); }
+        .gp-hero-poster__actions { display: flex; flex-wrap: wrap; gap: 0.85rem; }
+        .gp-hero--poster .btn { border-radius: 0.8rem; }
+        .gp-hero--poster .btn-outline-light { border: 1px solid rgba(255, 255, 255, 0.85); background: transparent; color: #fff; }
+        .gp-hero-poster__strip { background: #fff; }
+        .gp-hero-poster__points { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); width: min(100%, 80rem); margin: 0 auto; padding: 1.15rem 1.25rem; list-style: none; text-align: center; }
+        .gp-hero-poster__points li { color: #2c3544; font-weight: 600; }
+        .gp-hero-poster__points a { color: #c45c28; font-weight: 700; text-decoration: none; }
         @media (min-width: 768px) {
             .gp-photo-strip { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+        }
+        @media (max-width: 860px) {
+            .gp-hero-poster__photo { width: 100%; }
+            .gp-hero-poster__shade { background: linear-gradient(180deg, rgba(44, 53, 68, 0.94) 0%, rgba(44, 53, 68, 0.82) 46%, rgba(44, 53, 68, 0.45) 100%); }
+            .gp-hero-poster__copy { width: 100%; }
+            .gp-hero-poster__points { grid-template-columns: 1fr 1fr; gap: 0.75rem 0.5rem; }
         }
     </style>
     <?php require __DIR__ . '/../partials/horario_centro_boot.php'; ?>
