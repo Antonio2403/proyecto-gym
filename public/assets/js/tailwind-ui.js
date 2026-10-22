@@ -202,7 +202,9 @@
                 var panel = selector ? document.querySelector(selector) : null;
                 if (panel) {
                     var open = panel.classList.toggle('show');
-                    panel.hidden = !open;
+                    if (!panel.classList.contains('navbar-collapse')) {
+                        panel.hidden = !open;
+                    }
                     collapse.setAttribute('aria-expanded', open ? 'true' : 'false');
                 }
                 return;
@@ -256,6 +258,10 @@
             element.hidden = !element.classList.contains('show');
         });
         document.querySelectorAll('.collapse').forEach(function (element) {
+            if (element.classList.contains('navbar-collapse')) {
+                element.hidden = false;
+                return;
+            }
             element.hidden = !element.classList.contains('show');
         });
         document.querySelectorAll('.tab-pane').forEach(function (element) {

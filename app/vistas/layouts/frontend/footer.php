@@ -99,7 +99,7 @@ $gpDireccion = gp_horario_centro_direccion();
 </aside>
 <?php endif; ?>
 
-<script src="<?= htmlspecialchars(asset('js/tailwind-ui.js')) ?>"></script>
+<script src="<?= htmlspecialchars(asset('js/tailwind-ui.js')) ?>?v=20261022c"></script>
 <script defer src="<?= htmlspecialchars(asset('js/vendor/gsap.min.js')) ?>"></script>
 <script defer src="<?= htmlspecialchars(asset('js/gp-page-transition.js')) ?>"></script>
 <script defer src="<?= htmlspecialchars(asset('js/gp-flash-banner.js')) ?>"></script>

@@ -162,6 +162,13 @@ body::-webkit-scrollbar-corner,
     min-height: 68px;
 }
 
+.site-navbar > div {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    width: 100%;
+}
+
 .site-navbar .navbar-brand {
     font-family: var(--gp-display);
     font-weight: 800;
@@ -310,19 +317,37 @@ body::-webkit-scrollbar-corner,
     }
 }
 
+@layer base {
+    @media (min-width: 1024px) {
+        .site-navbar.navbar-expand-lg .navbar-collapse,
+        .site-navbar.navbar-expand-lg .navbar-collapse[hidden] {
+            display: flex !important;
+        }
+    }
+}
+
 @media (min-width: 992px) {
+    .site-navbar > div {
+        flex-wrap: nowrap;
+    }
+
     .site-navbar .navbar-collapse {
         position: relative;
+        display: flex !important;
+        align-items: center;
+        flex: 1 1 auto;
+        min-width: 0;
         min-height: 42px;
     }
 
     .site-navbar .navbar-nav.mx-auto {
-        position: absolute;
-        left: 50%;
-        transform: translateX(-50%);
+        position: static;
+        left: auto;
+        transform: none;
+        width: auto;
+        max-width: none;
+        flex: 1 1 auto;
         justify-content: center;
-        width: max-content;
-        max-width: calc(100vw - 28rem);
     }
 }
 

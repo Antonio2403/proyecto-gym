@@ -18,7 +18,7 @@
     <link rel="stylesheet" href="<?= htmlspecialchars(asset('css/tailwind.css')) ?>">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
           integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer">
-    <link rel="stylesheet" href="<?= htmlspecialchars(asset('css/app-theme.css')) ?>?v=20261022b">
+    <link rel="stylesheet" href="<?= htmlspecialchars(asset('css/app-theme.css')) ?>?v=20261022c">
     <!-- También en la página: si el navegador conserva el CSS anterior, las fotos vuelven a su tamaño original. -->
     <style>
         .gp-photo-frame { width: 100%; overflow: hidden; }
@@ -86,15 +86,23 @@ $gpNavAvatarImg = 'https://ui-avatars.com/api/?name=' . rawurlencode((string) ($
                         <a class="nav-link" href="<?= htmlspecialchars(url('/fisio/citas/confirmadas')) ?>">Confirmadas</a>
                     </li>
                 <?php endif; ?>
+                <?php if (isset($_SESSION['usuario_id']) && in_array((string) ($_SESSION['rol'] ?? ''), ['admin', 'monitor'], true)): ?>
+                    <li class="nav-item">
+                        <a class="nav-link" href="<?= htmlspecialchars(($_SESSION['rol'] ?? '') === 'admin' ? url('/admin') : url('/inicioMonitor')) ?>">Panel</a>
+                    </li>
+                <?php endif; ?>
                 <?php if (isset($_SESSION['usuario_id']) && ($_SESSION['rol'] ?? '') === 'cliente'): ?>
                     <li class="nav-item">
                         <a class="nav-link" href="<?= htmlspecialchars(url('/inicioUsuario')) ?>">Mi panel</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="<?= htmlspecialchars(url('/usuario/actividades')) ?>">Actividades</a>
+                        <a class="nav-link" href="<?= htmlspecialchars(url('/usuario/actividades')) ?>">Clases</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="<?= htmlspecialchars(url('/usuario/inscripciones/mis-inscripciones')) ?>">Mis reservas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="<?= htmlspecialchars(url('/pago')) ?>">Planes</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="<?= htmlspecialchars(url('/usuario/fisio')) ?>">Fisioterapia</a>
