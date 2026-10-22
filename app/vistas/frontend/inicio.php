@@ -1,53 +1,45 @@
 
-<section class="gp-hero">
-    <div class="mx-auto w-full max-w-[1320px] lg:max-w-[1024px] xl:max-w-7xl px-3 relative">
-        <div class="items-start flex flex-wrap -mx-3 -mt-12">
-            <div class="w-full lg:w-7/12 max-w-full shrink-0 px-3 mt-12">
-                <span class="gp-badge mb-4">Fitness · Comunidad · Resultados</span>
-                <h1 class="gp-hero-title">
-                    Entrena fuerte.<br>
-                    <span>Vive mejor.</span>
-                </h1>
-                <p class="gp-hero-lead mb-6">
-                    Clases guiadas, suscripciones claras y un equipo que te empuja sin perderte en el camino.
-                    Tu próxima rutina empieza aquí.
-                </p>
-                <div class="flex flex-wrap gap-4">
-                    <?php if (isset($_SESSION['usuario_id']) && ($_SESSION['rol'] ?? '') === 'admin'): ?>
-                        <a href="<?= htmlspecialchars(url('/admin')) ?>" class="btn btn-primary btn-lg px-6">Volver al panel</a>
-                        <a href="<?= htmlspecialchars(url('/cuenta/perfil')) ?>" class="btn btn-outline-light btn-lg px-6">Mi perfil</a>
-                    <?php elseif (isset($_SESSION['usuario_id']) && ($_SESSION['rol'] ?? '') === 'monitor'): ?>
-                        <a href="<?= htmlspecialchars(url('/inicioMonitor')) ?>" class="btn btn-primary btn-lg px-6">Volver al panel</a>
-                        <a href="<?= htmlspecialchars(url('/monitor/verSalas')) ?>" class="btn btn-outline-light btn-lg px-6">Salas</a>
-                    <?php elseif (isset($_SESSION['usuario_id']) && ($_SESSION['rol'] ?? '') === 'fisio'): ?>
-                        <a href="<?= htmlspecialchars(url('/fisio')) ?>" class="btn btn-primary btn-lg px-6">Panel fisio</a>
-                        <a href="<?= htmlspecialchars(url('/fisio/citas')) ?>" class="btn btn-outline-light btn-lg px-6">Citas</a>
-                    <?php elseif (isset($_SESSION['usuario_id'])): ?>
-                        <a href="<?= htmlspecialchars(url('/usuario/actividades')) ?>" class="btn btn-primary btn-lg px-6">Ver horario</a>
-                        <a href="<?= htmlspecialchars(url('/pago')) ?>" class="btn btn-outline-light btn-lg px-6">Mi plan</a>
-                    <?php else: ?>
-                        <a href="<?= htmlspecialchars(url('/login')) ?>" class="btn btn-primary btn-lg px-6">Crear cuenta / Entrar</a>
-                        <a href="<?= htmlspecialchars(url('/quienes-somos')) ?>" class="btn btn-outline-light btn-lg px-6">Conócenos</a>
-                    <?php endif; ?>
-                </div>
+<section class="gp-hero gp-hero--cartel">
+    <div class="gp-hero-cartel__stage">
+        <img class="gp-hero-cartel__photo" src="<?= htmlspecialchars(asset('img/pixabay/hero-entreno.jpg')) ?>"
+             width="854" height="1280" alt="Persona entrenando con mancuernas en un gimnasio">
+        <div class="gp-hero-cartel__shade" aria-hidden="true"></div>
+        <div class="gp-hero-cartel__copy">
+            <h1 class="gp-hero-title">
+                Entrena fuerte.<br>
+                <span>Vive mejor.</span>
+            </h1>
+            <p class="gp-hero-lead">
+                Clases guiadas y un equipo que te empuja.
+            </p>
+            <div class="flex flex-wrap gap-3">
+                <?php if (isset($_SESSION['usuario_id']) && ($_SESSION['rol'] ?? '') === 'admin'): ?>
+                    <a href="<?= htmlspecialchars(url('/admin')) ?>" class="btn btn-primary btn-lg px-6">Volver al panel</a>
+                    <a href="<?= htmlspecialchars(url('/cuenta/perfil')) ?>" class="btn btn-outline-light btn-lg px-6">Mi perfil</a>
+                <?php elseif (isset($_SESSION['usuario_id']) && ($_SESSION['rol'] ?? '') === 'monitor'): ?>
+                    <a href="<?= htmlspecialchars(url('/inicioMonitor')) ?>" class="btn btn-primary btn-lg px-6">Volver al panel</a>
+                    <a href="<?= htmlspecialchars(url('/monitor/verSalas')) ?>" class="btn btn-outline-light btn-lg px-6">Salas</a>
+                <?php elseif (isset($_SESSION['usuario_id']) && ($_SESSION['rol'] ?? '') === 'fisio'): ?>
+                    <a href="<?= htmlspecialchars(url('/fisio')) ?>" class="btn btn-primary btn-lg px-6">Panel fisio</a>
+                    <a href="<?= htmlspecialchars(url('/fisio/citas')) ?>" class="btn btn-outline-light btn-lg px-6">Citas</a>
+                <?php elseif (isset($_SESSION['usuario_id'])): ?>
+                    <a href="<?= htmlspecialchars(url('/usuario/actividades')) ?>" class="btn btn-primary btn-lg px-6">Ver horario</a>
+                    <a href="<?= htmlspecialchars(url('/pago')) ?>" class="btn btn-outline-light btn-lg px-6">Mi plan</a>
+                <?php else: ?>
+                    <a href="<?= htmlspecialchars(url('/login')) ?>" class="btn btn-primary btn-lg px-6">Crear cuenta</a>
+                    <a href="<?= htmlspecialchars(url('/quienes-somos')) ?>" class="btn btn-outline-light btn-lg px-6">Conócenos</a>
+                <?php endif; ?>
             </div>
-            <div class="w-full lg:w-5/12 max-w-full shrink-0 px-3 mt-12">
-                <div class="gp-photo-frame gp-photo-frame--hero mb-4">
-                    <img class="gp-photo" src="<?= htmlspecialchars(asset('img/pixabay/hero-entreno.jpg')) ?>"
-                         width="854" height="1280" alt="Persona entrenando con mancuernas en un gimnasio">
-                </div>
-                <div class="card border-0 overflow-hidden">
-                    <div class="card-body p-6 lg:p-12">
-                        <h3 class="text-xl mb-4">Hoy es buen día para empezar</h3>
-                        <ul class="list-none ps-0 text-slate-500 text-sm mb-6">
-                            <li class="mb-2">→ Horarios organizados por salas y monitores</li>
-                            <li class="mb-2">→ Pagos con Stripe, sin complicaciones</li>
-                            <li class="mb-2">→ Panel para administración y monitores</li>
-                        </ul>
-                        <a href="<?= htmlspecialchars(url('/contacto')) ?>" class="btn btn-primary w-full">Escríbenos</a>
-                    </div>
-                </div>
-            </div>
+        </div>
+    </div>
+    <div class="gp-hero-cartel__strip">
+        <div class="gp-hero-cartel__strip-inner">
+            <ul class="gp-hero-cartel__points">
+                <li>Horarios por sala</li>
+                <li>Pagos con Stripe</li>
+                <li>Equipo coordinado</li>
+            </ul>
+            <a class="gp-hero-cartel__write" href="<?= htmlspecialchars(url('/contacto')) ?>">Escríbenos</a>
         </div>
     </div>
 </section>

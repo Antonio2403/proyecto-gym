@@ -18,8 +18,8 @@
     <link rel="stylesheet" href="<?= htmlspecialchars(asset('css/tailwind.css')) ?>">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
           integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer">
-    <link rel="stylesheet" href="<?= htmlspecialchars(asset('css/app-theme.css')) ?>?v=20261022c">
-    <!-- También en la página: si el navegador conserva el CSS anterior, las fotos vuelven a su tamaño original. -->
+    <link rel="stylesheet" href="<?= htmlspecialchars(asset('css/app-theme.css')) ?>?v=20261022d">
+    <!-- También en la página: si el navegador conserva el CSS anterior, la portada y las fotos vuelven al diseño viejo. -->
     <style>
         .gp-photo-frame { width: 100%; overflow: hidden; }
         .gp-photo { display: block; width: 100%; height: 100%; max-width: none; object-fit: cover; object-position: center; }
@@ -30,8 +30,26 @@
         .gp-photo-strip { display: grid; grid-template-columns: 1fr; gap: 1rem; align-items: stretch; }
         .gp-photo-card { min-width: 0; margin: 0; }
         .gp-photo-card .gp-photo-frame { width: 100%; height: 14rem; }
+        .gp-hero--cartel { display: flex; flex-direction: column; min-height: calc(100svh - 4.25rem); padding: 0; background: #1c1410; border-bottom: 0; overflow: hidden; }
+        .gp-hero-cartel__stage { position: relative; flex: 1 1 auto; display: flex; align-items: center; min-height: 26rem; }
+        .gp-hero-cartel__photo { position: absolute; inset: 0; width: 100%; height: 100%; max-width: none; object-fit: cover; object-position: center 28%; }
+        .gp-hero-cartel__shade { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(18, 14, 12, 0.9) 0%, rgba(18, 14, 12, 0.62) 36%, rgba(18, 14, 12, 0.16) 64%, rgba(18, 14, 12, 0.3) 100%); }
+        .gp-hero-cartel__copy { position: relative; z-index: 1; width: min(100%, 80rem); margin-inline: auto; padding: clamp(2.25rem, 6vw, 4.5rem) clamp(1.25rem, 4vw, 2.5rem); }
+        .site-body .gp-hero--cartel .gp-hero-title { max-width: 11ch; margin-bottom: 1.15rem; color: #fff; font-size: clamp(3.15rem, 7vw, 5.5rem); font-weight: 800; line-height: 0.92; letter-spacing: -0.045em; }
+        .site-body .gp-hero--cartel .gp-hero-lead { max-width: 26rem; margin-bottom: 1.75rem; color: rgba(255, 255, 255, 0.9); font-size: clamp(1.05rem, 1.5vw, 1.25rem); }
+        .gp-hero--cartel .btn-outline-light { border-color: rgba(255, 255, 255, 0.78); color: #fff; background: transparent; }
+        .gp-hero-cartel__strip { position: relative; z-index: 1; width: 100%; background: #fff; }
+        .gp-hero-cartel__strip-inner { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.75rem 1.5rem; width: min(100%, 80rem); margin-inline: auto; padding: 0.95rem clamp(1.25rem, 4vw, 2.5rem); }
+        .gp-hero-cartel__points { display: flex; flex-wrap: wrap; gap: 0.5rem 1.35rem; margin: 0; padding: 0; list-style: none; }
+        .gp-hero-cartel__points li { display: flex; align-items: center; gap: 0.45rem; color: #2c3544; font-weight: 600; }
+        .gp-hero-cartel__points li::before { content: ""; width: 0.45rem; height: 0.45rem; border-radius: 50%; background: #c45c28; }
+        .gp-hero-cartel__write { color: #c45c28; font-weight: 700; text-decoration: none; }
         @media (min-width: 768px) {
             .gp-photo-strip { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+        }
+        @media (max-width: 700px) {
+            .gp-hero-cartel__shade { background: linear-gradient(180deg, rgba(18, 14, 12, 0.84) 0%, rgba(18, 14, 12, 0.5) 52%, rgba(18, 14, 12, 0.62) 100%); }
+            .site-body .gp-hero--cartel .gp-hero-title { font-size: clamp(2.7rem, 13vw, 3.6rem); }
         }
     </style>
     <?php require __DIR__ . '/../partials/horario_centro_boot.php'; ?>
