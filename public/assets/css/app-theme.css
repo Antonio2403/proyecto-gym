@@ -800,6 +800,75 @@ body::-webkit-scrollbar-corner,
     max-width: 32rem;
 }
 
+.site-body:not(.gp-admin-body-root) .btn-primary:not(:has(i)):not([data-gp-pass-reveal]):not([data-gp-pass-reveal-group])::before,
+.site-body:not(.gp-admin-body-root) .btn-success:not(:has(i)):not([data-gp-pass-reveal]):not([data-gp-pass-reveal-group])::before,
+.site-body:not(.gp-admin-body-root) .btn-danger:not(:has(i)):not([data-gp-pass-reveal]):not([data-gp-pass-reveal-group])::before,
+.site-body:not(.gp-admin-body-root) .gp-btn-orange:not(:has(i)):not([data-gp-pass-reveal]):not([data-gp-pass-reveal-group])::before,
+.site-body:not(.gp-admin-body-root) .btn-outline-light:not(:has(i)):not([data-gp-pass-reveal]):not([data-gp-pass-reveal-group])::before,
+.site-body:not(.gp-admin-body-root) .btn-outline-secondary:not(:has(i)):not([data-gp-pass-reveal]):not([data-gp-pass-reveal-group])::before {
+    content: "";
+    width: 1em;
+    height: 1em;
+    flex: 0 0 auto;
+    background: currentColor;
+    -webkit-mask: url("../img/favicon-mark.svg") center / contain no-repeat;
+    mask: url("../img/favicon-mark.svg") center / contain no-repeat;
+}
+
+.gp-photo-frame {
+    overflow: hidden;
+    border-radius: 1.25rem;
+    border: 1px solid var(--gp-border-light);
+    box-shadow: var(--gp-shadow-sm);
+    background: var(--gp-page-subtle);
+}
+
+.gp-photo {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.gp-photo-frame--hero {
+    height: min(26rem, 72vw);
+}
+
+.gp-photo-frame--wide {
+    height: min(22rem, 62vw);
+}
+
+.gp-photo-frame--side {
+    height: min(36rem, 80vw);
+}
+
+.gp-photo-strip {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+}
+
+.gp-photo-card {
+    margin: 0;
+}
+
+.gp-photo-card .gp-photo-frame {
+    height: 14rem;
+}
+
+.gp-photo-card figcaption {
+    margin-top: 0.55rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--gp-text);
+}
+
+@media (min-width: 768px) {
+    .gp-photo-strip {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
 .gp-badge {
     display: inline-flex;
     align-items: center;

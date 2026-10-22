@@ -83,7 +83,12 @@ function gp_send_security_headers(): void
         return;
     }
 
-    header('X-Frame-Options: SAMEORIGIN');
+    // En local la vista previa de Cursor carga la app en un iframe de otro origen.
+    // SAMEORIGIN deja esa vista en blanco. En producción se mantiene.
+    $appEnv = strtolower(trim((string) ($_ENV['APP_ENV'] ?? getenv('APP_ENV') ?: 'local')));
+    if ($appEnv === 'production') {
+        header('X-Frame-Options: SAMEORIGIN');
+    }
     header('X-Content-Type-Options: nosniff');
     header('Referrer-Policy: strict-origin-when-cross-origin');
     header(

@@ -1,6 +1,6 @@
 <div class="mx-auto w-full max-w-[1320px] lg:max-w-[1024px] xl:max-w-7xl px-3 py-12">
-    <div class="justify-center flex flex-wrap -mx-3">
-        <div class="w-full lg:w-7/12 max-w-full shrink-0 px-3">
+    <div class="items-start justify-center flex flex-wrap -mx-3 -mt-6">
+        <div class="w-full lg:w-7/12 max-w-full shrink-0 px-3 mt-6">
             <header class="gp-page-header text-center lg:text-left">
                 <span class="gp-badge">Escríbenos</span>
                 <h1 class="text-[2rem] mt-4 mb-2">Contacto</h1>
@@ -38,6 +38,12 @@
                         <button type="submit" class="btn btn-primary btn-lg w-full">Enviar mensaje</button>
                     </form>
                 </div>
+            </div>
+        </div>
+        <div class="w-full lg:w-5/12 max-w-full shrink-0 px-3 mt-6">
+            <div class="gp-photo-frame gp-photo-frame--side">
+                <img class="gp-photo" src="<?= htmlspecialchars(asset('img/pixabay/pesas.jpg')) ?>"
+                     width="1280" height="853" alt="Entrenamiento con mancuerna en un banco del gimnasio">
             </div>
         </div>
     </div>

@@ -30,6 +30,11 @@ $planesComparativa = $planActivo && $idPlanActual !== null
         </p>
     </header>
 
+    <div class="gp-photo-frame gp-photo-frame--wide mb-8 mx-auto" style="max-width: 960px;">
+        <img class="gp-photo" src="<?= htmlspecialchars(asset('img/pixabay/mancuernas.jpg')) ?>"
+             width="1280" height="853" alt="Zona de mancuernas del gimnasio">
+    </div>
+
     <?php if ($planActivo): ?>
         <div class="gp-plan-current-banner gp-plan-current-banner--hero mb-6 mx-auto">
             <div class="items-center flex flex-wrap -mx-2 -mt-4">

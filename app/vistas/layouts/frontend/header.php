@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Spartum · Tu ritmo, tu meta</title>
+    <?php require __DIR__ . '/../partials/favicon.php'; ?>
     <meta name="csrf-token" content="<?= htmlspecialchars(csrf_token(), ENT_QUOTES, 'UTF-8') ?>">
     <?php require __DIR__ . '/../partials/session_idle_meta.php'; ?>
 
