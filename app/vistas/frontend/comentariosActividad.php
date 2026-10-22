@@ -11,11 +11,11 @@ $qBase = [
     'por_pagina' => $pp,
 ];
 ?>
-<div class="container py-5">
+<div class="mx-auto w-full max-w-[1320px] lg:max-w-[1024px] xl:max-w-7xl px-3 py-12">
     <header class="gp-page-header">
         <span class="gp-badge mb-2">Sesión</span>
-        <h1 class="h3 mb-2">Comentarios</h1>
-        <p class="text-muted mb-0">
+        <h1 class="text-[1.75rem] mb-2">Comentarios</h1>
+        <p class="text-slate-500 mb-0">
             <?= htmlspecialchars($actividad['nombre'] ?? '') ?> —
             <strong><?= htmlspecialchars($fechaKey) ?></strong>
         </p>
@@ -45,10 +45,10 @@ $qBase = [
     <?php endif; ?>
 
     <?php if (!empty($puedeComentar)): ?>
-        <div class="card border-0 mb-4">
-            <div class="card-body p-4">
-                <h2 class="h6 mb-3">Añadir comentario</h2>
-                <p class="gp-form-required-legend text-muted small mb-3">El comentario es obligatorio (<span class="text-danger fw-bold" aria-hidden="true">*</span>).</p>
+        <div class="card border-0 mb-6">
+            <div class="card-body p-6">
+                <h2 class="text-base mb-4">Añadir comentario</h2>
+                <p class="gp-form-required-legend text-slate-500 text-sm mb-4">El comentario es obligatorio (<span class="text-red-600 font-bold" aria-hidden="true">*</span>).</p>
                 <form method="post" action="<?= htmlspecialchars(url('/usuario/actividades/sesion/comentarios')) ?>" class="needs-validation" novalidate data-gp-validate="comments"
                       data-gp-confirm
                       data-gp-confirm-title="Publicar comentario"
@@ -58,7 +58,7 @@ $qBase = [
                     <input type="hidden" name="fecha_ocurrencia" value="<?= htmlspecialchars($fechaKey) ?>">
                     <input type="hidden" name="orden" value="<?= htmlspecialchars($orden) ?>">
                     <input type="hidden" name="por_pagina" value="<?= $pp ?>">
-                    <div class="mb-3">
+                    <div class="mb-4">
                         <label class="form-label gp-label-required" for="texto">Tu comentario</label>
                         <textarea class="form-control" id="texto" name="texto" rows="4" maxlength="2000" minlength="3" required></textarea>
                     </div>
@@ -68,10 +68,10 @@ $qBase = [
         </div>
     <?php endif; ?>
 
-    <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-3">
-        <span class="small text-muted"><?= (int) ($comentarios_total ?? 0) ?> comentario(s)</span>
-        <div class="d-flex flex-wrap align-items-center gap-2">
-            <span class="small text-muted me-1">Orden por fecha:</span>
+    <div class="flex flex-wrap justify-between items-center gap-4 mb-4">
+        <span class="text-sm text-slate-500"><?= (int) ($comentarios_total ?? 0) ?> comentario(s)</span>
+        <div class="flex flex-wrap items-center gap-2">
+            <span class="text-sm text-slate-500 me-1">Orden por fecha:</span>
             <a class="btn btn-sm <?= $orden === 'asc' ? 'btn-primary' : 'btn-outline-secondary' ?>"
                href="?<?= htmlspecialchars(http_build_query(array_merge($qBase, ['orden' => 'asc', 'p' => 1])), ENT_QUOTES, 'UTF-8') ?>">
                 Más antiguos primero
@@ -83,23 +83,23 @@ $qBase = [
         </div>
     </div>
 
-    <ul class="list-group list-group-flush rounded-3 overflow-hidden border border-secondary border-opacity-25">
+    <ul class="list-group list-group-flush rounded-lg overflow-hidden border border-slate-500/25">
         <?php foreach ($comentarios ?? [] as $c): ?>
-            <li class="list-group-item px-4 py-3">
-                <div class="small text-muted mb-2">
+            <li class="list-group-item px-6 py-4">
+                <div class="text-sm text-slate-500 mb-2">
                     <?= htmlspecialchars(trim(($c['autor_nombre'] ?? '') . ' ' . ($c['autor_apellido1'] ?? ''))) ?>
                     · <?= htmlspecialchars((string) ($c['fecha'] ?? '')) ?>
                 </div>
-                <div class="text-break" style="white-space: pre-wrap;"><?= htmlspecialchars((string) ($c['texto'] ?? '')) ?></div>
+                <div class="wrap-anywhere" style="white-space: pre-wrap;"><?= htmlspecialchars((string) ($c['texto'] ?? '')) ?></div>
             </li>
         <?php endforeach; ?>
         <?php if (empty($comentarios)): ?>
-            <li class="list-group-item text-muted px-4 py-5 text-center">Aún no hay comentarios.</li>
+            <li class="list-group-item text-slate-500 px-6 py-12 text-center">Aún no hay comentarios.</li>
         <?php endif; ?>
     </ul>
 
     <?php if ($tp > 1): ?>
-        <nav class="mt-4 d-flex flex-wrap justify-content-between align-items-center gap-3" aria-label="Paginación de comentarios">
+        <nav class="mt-6 flex flex-wrap justify-between items-center gap-4" aria-label="Paginación de comentarios">
             <div>
                 <?php if ($cp > 1): ?>
                     <a class="btn btn-sm btn-outline-light"
@@ -112,7 +112,7 @@ $qBase = [
                     </a>
                 <?php endif; ?>
             </div>
-            <ul class="pagination mb-0 flex-wrap justify-content-center">
+            <ul class="pagination mb-0 flex-wrap justify-center">
                 <?php for ($p = 1; $p <= $tp; $p++): ?>
                     <li class="page-item <?= $p === $cp ? 'active' : '' ?>">
                         <a class="page-link" href="?<?= htmlspecialchars(http_build_query(array_merge($qBase, ['orden' => $orden, 'p' => $p])), ENT_QUOTES, 'UTF-8') ?>"><?= $p ?></a>
@@ -122,7 +122,7 @@ $qBase = [
         </nav>
     <?php endif; ?>
 
-    <p class="mt-5 mb-0">
+    <p class="mt-12 mb-0">
         <a href="<?= htmlspecialchars(url('/usuario/actividades')) ?>" class="btn btn-outline-light btn-sm">&larr; Volver al horario</a>
     </p>
 </div>

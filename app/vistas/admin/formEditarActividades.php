@@ -14,19 +14,19 @@ $gpFormSubtitle = 'Modifica la programación de la actividad seleccionada.';
 $gpFormBadge = 'Actividades';
 require dirname(__DIR__) . '/layouts/partials/gp_form_panel_start.php';
 ?>
-                <p class="text-muted small mb-3">Horario del centro: <?= htmlspecialchars(implode(' · ', $gpHorarioLineas)) ?> (domingo cerrado). Si cambias día u hora, se anulan las reservas y se avisa por correo.</p>
-                <p class="gp-form-required-legend text-muted small mb-3">Los campos con <span class="text-danger fw-bold" aria-hidden="true">*</span> son obligatorios.</p>
+                <p class="text-slate-500 text-sm mb-4">Horario del centro: <?= htmlspecialchars(implode(' · ', $gpHorarioLineas)) ?> (domingo cerrado). Si cambias día u hora, se anulan las reservas y se avisa por correo.</p>
+                <p class="gp-form-required-legend text-slate-500 text-sm mb-4">Los campos con <span class="text-red-600 font-bold" aria-hidden="true">*</span> son obligatorios.</p>
                 <form action="<?= htmlspecialchars(url('/admin/actividades/editar/' . (int) $act['id'])) ?>" method="post" class="needs-validation gp-form-stack" novalidate data-gp-validate="activityEdit"
                       data-gp-confirm data-gp-confirm-title="Guardar actividad" data-gp-confirm-body="¿Guardar los cambios de esta actividad?" data-gp-confirm-ok="Guardar">
 
                     <input type="hidden" name="id" value="<?= (int) $act['id'] ?>">
 
-                    <div class="mb-3">
+                    <div class="mb-4">
                         <label for="nombre" class="form-label gp-label-required">Nombre</label>
                         <input type="text" class="form-control" id="nombre" name="nombre" value="<?= htmlspecialchars((string) $act['nombre']) ?>" required>
                     </div>
 
-                    <div class="mb-3">
+                    <div class="mb-4">
                         <label for="descripcion" class="form-label">Descripción</label>
                         <textarea class="form-control" id="descripcion" name="descripcion" rows="3"><?= htmlspecialchars((string) ($act['descripcion'] ?? '')) ?></textarea>
                     </div>
@@ -42,11 +42,11 @@ require dirname(__DIR__) . '/layouts/partials/gp_form_panel_start.php';
                         </div>
                     </div>
 
-                    <div class="mb-3" data-gp-dias-semana<?= $recurrente ? '' : ' hidden' ?>>
-                        <span class="form-label gp-label-required d-block">Días de la semana</span>
-                        <div class="row row-cols-2 row-cols-md-4 g-2">
+                    <div class="mb-4" data-gp-dias-semana<?= $recurrente ? '' : ' hidden' ?>>
+                        <span class="form-label gp-label-required block">Días de la semana</span>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
                             <?php foreach ($diaOpts as $code => $lbl): ?>
-                                <div class="col">
+                                <div>
                                     <div class="form-check">
                                         <input class="form-check-input" type="checkbox" name="dias_semana[]" value="<?= $code ?>" id="edia_<?= $code ?>"
                                             <?= in_array($code, $diasSel, true) ? ' checked' : '' ?><?= $code === 'D' ? ' disabled title="Domingo: centro cerrado"' : '' ?>>
@@ -57,13 +57,13 @@ require dirname(__DIR__) . '/layouts/partials/gp_form_panel_start.php';
                         </div>
                     </div>
 
-                    <div class="mb-3 form-check">
+                    <div class="mb-4 form-check">
                         <input class="form-check-input" type="checkbox" name="recurrente" id="erecurrente" value="1"<?= $recurrente ? ' checked' : '' ?>>
                         <label class="form-check-label" for="erecurrente">Actividad semanal recurrente</label>
-                        <p class="form-text small text-muted mb-0">Desmárcalo solo para un evento puntual (una sola fecha en el calendario).</p>
+                        <p class="form-text text-sm text-slate-500 mb-0">Desmárcalo solo para un evento puntual (una sola fecha en el calendario).</p>
                     </div>
 
-                    <div class="mb-3" data-gp-fecha-puntual<?= $recurrente ? ' hidden' : '' ?>>
+                    <div class="mb-4" data-gp-fecha-puntual<?= $recurrente ? ' hidden' : '' ?>>
                         <label class="form-label gp-label-required" for="fecha_actividad">Fecha del evento</label>
                         <input type="date" class="form-control" name="fecha_actividad" id="fecha_actividad"
                                min="<?= htmlspecialchars(date('Y-m-d')) ?>"

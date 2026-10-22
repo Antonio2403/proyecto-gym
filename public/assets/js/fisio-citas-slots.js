@@ -24,8 +24,8 @@
                 return;
             }
             hint.textContent = text;
-            hint.classList.toggle('text-danger', !!isError);
-            hint.classList.toggle('text-muted', !isError);
+            hint.classList.toggle('text-red-600', !!isError);
+            hint.classList.toggle('text-slate-500', !isError);
         }
 
         function resetHora(msg) {

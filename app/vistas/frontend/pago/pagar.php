@@ -11,42 +11,47 @@ $planesComparativa = $planActivo && $idPlanActual !== null
     : $subscripciones;
 ?>
 
-<div class="container py-5">
+<div class="mx-auto w-full max-w-[1320px] lg:max-w-[1024px] xl:max-w-7xl px-3 py-12">
     <?php if (!empty($_GET['info'])): ?>
-        <div class="alert alert-info border-0 shadow-sm mb-4"><?= htmlspecialchars((string) $_GET['info']) ?></div>
+        <div class="alert alert-info border-0 shadow-sm mb-6"><?= htmlspecialchars((string) $_GET['info']) ?></div>
     <?php endif; ?>
     <?php if (!empty($_GET['error'])): ?>
-        <div class="alert alert-warning border-0 shadow-sm mb-4"><?= htmlspecialchars((string) $_GET['error']) ?></div>
+        <div class="alert alert-warning border-0 shadow-sm mb-6"><?= htmlspecialchars((string) $_GET['error']) ?></div>
     <?php endif; ?>
 
-    <header class="gp-page-header text-center mb-4 mb-lg-5">
+    <header class="gp-page-header text-center mb-6 lg:mb-12">
         <span class="gp-badge mb-2">Suscripciones</span>
-        <h1 class="h2 mb-2">Planes Spartum</h1>
-        <p class="text-muted mb-0 mx-auto gp-pago-lead">
+        <h1 class="text-[2rem] mb-2">Planes Spartum</h1>
+        <p class="text-slate-500 mb-0 mx-auto gp-pago-lead">
             Comparativa clara de lo que incluye cada tarifa. El pago es seguro con Stripe.
             <?php if (!$esCliente): ?>
-                <span class="d-block mt-2 small"><a href="<?= htmlspecialchars(url('/login')) ?>">Inicia sesión como cliente</a> para poder contratar un plan.</span>
+                <span class="block mt-2 text-sm"><a href="<?= htmlspecialchars(url('/login')) ?>">Inicia sesión como cliente</a> para poder contratar un plan.</span>
             <?php endif; ?>
         </p>
     </header>
 
+    <div class="gp-photo-frame gp-photo-frame--wide mb-8 mx-auto" style="max-width: 960px;">
+        <img class="gp-photo" src="<?= htmlspecialchars(asset('img/pixabay/mancuernas.jpg')) ?>"
+             width="1280" height="853" alt="Zona de mancuernas del gimnasio">
+    </div>
+
     <?php if ($planActivo): ?>
-        <div class="gp-plan-current-banner gp-plan-current-banner--hero mb-4 mx-auto">
-            <div class="row align-items-center g-3">
-                <div class="col-md-8">
-                    <span class="gp-badge gp-badge-soft mb-2 d-inline-block">Tu plan actual</span>
+        <div class="gp-plan-current-banner gp-plan-current-banner--hero mb-6 mx-auto">
+            <div class="items-center flex flex-wrap -mx-2 -mt-4">
+                <div class="w-full md:w-2/3 max-w-full shrink-0 px-2 mt-4">
+                    <span class="gp-badge gp-badge-soft mb-2 inline-block">Tu plan actual</span>
                     <?php if ((int) ($planActivo['en_oferta'] ?? 0) === 1): ?>
-                        <span class="gp-badge gp-badge-soft mb-2 d-inline-block">Oferta contratada</span>
+                        <span class="gp-badge gp-badge-soft mb-2 inline-block">Oferta contratada</span>
                     <?php endif; ?>
-                    <h2 class="h5 mb-1 text-dark"><?= htmlspecialchars((string) ($planActivo['plan_nombre'] ?? 'Plan')) ?></h2>
-                    <p class="text-muted small mb-0">
+                    <h2 class="text-xl mb-1 text-slate-800"><?= htmlspecialchars((string) ($planActivo['plan_nombre'] ?? 'Plan')) ?></h2>
+                    <p class="text-slate-500 text-sm mb-0">
                         Vigente hasta:
                         <?= !empty($planActivo['fecha_fin'])
                             ? '<strong>' . htmlspecialchars(substr((string) $planActivo['fecha_fin'], 0, 16)) . '</strong>'
                             : '<strong>sin fecha de fin definida</strong>' ?>
                         · Mientras esté activo no puedes contratar otro plan diferente desde la web.
                     </p>
-                    <div class="gp-current-plan-details mt-3">
+                    <div class="gp-current-plan-details mt-4">
                         <span><strong>Precio:</strong> <?= isset($planActivo['precio']) ? htmlspecialchars((string) $planActivo['precio']) . ' €' : 'no disponible' ?></span>
                         <span><strong>Duración contratada:</strong> <?= (int) ($planActivo['duracion'] ?? 0) ?> mes(es)</span>
                         <span><strong>Clases/semana:</strong> <?= (int) ($planActivo['numero_clases'] ?? 0) > 0 ? (int) $planActivo['numero_clases'] : 'sin límite explícito' ?></span>
@@ -56,17 +61,17 @@ $planesComparativa = $planActivo && $idPlanActual !== null
                         <?php endif; ?>
                     </div>
                 </div>
-                <div class="col-md-4 text-md-end">
+                <div class="md:text-right w-full md:w-1/3 max-w-full shrink-0 px-2 mt-4">
                     <a href="<?= htmlspecialchars(url('/usuario/actividades')) ?>" class="btn btn-primary btn-sm">Ir a actividades</a>
                 </div>
             </div>
         </div>
     <?php endif; ?>
 
-    <div class="d-flex flex-wrap align-items-end justify-content-between gap-3 mb-3">
+    <div class="flex flex-wrap items-end justify-between gap-4 mb-4">
         <div>
-            <h2 class="h4 mb-1">Planes disponibles</h2>
-            <p class="text-muted small mb-0">
+            <h2 class="text-2xl mb-1">Planes disponibles</h2>
+            <p class="text-slate-500 text-sm mb-0">
                 <?= $planActivo
                     ? 'Puedes consultar otros planes, pero solo recepción puede cambiar o cancelar tu plan activo.'
                     : 'Revisa de un vistazo precio, duración, clases, fisioterapia y disponibilidad.' ?>
@@ -100,48 +105,48 @@ $planesComparativa = $planActivo && $idPlanActual !== null
                 <?php elseif ($esOferta): ?>
                     <span class="gp-plan-ribbon gp-plan-ribbon--offer">Oferta</span>
                 <?php endif; ?>
-                <header class="gp-plan-card-head pb-3">
-                    <div class="d-flex justify-content-between align-items-start gap-3">
+                <header class="gp-plan-card-head pb-4">
+                    <div class="flex justify-between items-start gap-4">
                         <div>
-                            <h2 class="h4 mb-1"><?= htmlspecialchars((string) ($sub['nombre'] ?? 'Plan')) ?></h2>
-                            <p class="small text-muted mb-0"><?= $esOferta ? 'Oferta por tiempo limitado' : 'Plan del catálogo' ?></p>
+                            <h2 class="text-2xl mb-1"><?= htmlspecialchars((string) ($sub['nombre'] ?? 'Plan')) ?></h2>
+                            <p class="text-sm text-slate-500 mb-0"><?= $esOferta ? 'Oferta por tiempo limitado' : 'Plan del catálogo' ?></p>
                         </div>
-                        <div class="gp-plan-card-price text-end"><?= isset($sub['precio']) ? htmlspecialchars((string) $sub['precio']) . ' €' : '—' ?></div>
+                        <div class="gp-plan-card-price text-right"><?= isset($sub['precio']) ? htmlspecialchars((string) $sub['precio']) . ' €' : '—' ?></div>
                     </div>
                     <?php if ($esOferta && !$retiradoCatalogo): ?>
-                        <div class="gp-plan-offer-box mt-3" data-offer-countdown="<?= htmlspecialchars($ofertaFin) ?>">
+                        <div class="gp-plan-offer-box mt-4" data-offer-countdown="<?= htmlspecialchars($ofertaFin) ?>">
                             <strong><?= htmlspecialchars($ofertaMotivo !== '' ? $ofertaMotivo : 'Oferta limitada') ?></strong>
-                            <span class="d-block small">Disponible para comprar hasta: <?= htmlspecialchars(substr($ofertaFin, 0, 16)) ?></span>
-                            <span class="d-block small" data-offer-countdown-label>Calculando tiempo restante...</span>
+                            <span class="block text-sm">Disponible para comprar hasta: <?= htmlspecialchars(substr($ofertaFin, 0, 16)) ?></span>
+                            <span class="block text-sm" data-offer-countdown-label>Calculando tiempo restante...</span>
                         </div>
                     <?php endif; ?>
                 </header>
 
-                <div class="gp-plan-comparison small flex-grow-1">
+                <div class="gp-plan-comparison text-sm grow">
                     <div><span>Duración</span><strong><?= $durMeses > 0 ? $durMeses . ' mes(es)' : 'no definida' ?></strong></div>
                     <div><span>Clases/semana</span><strong><?= $clasesPorSemana > 0 ? 'hasta ' . $clasesPorSemana : 'sin límite explícito' ?></strong></div>
                     <div><span>Fisioterapia</span><strong><?= $conFisio ? 'incluida' : 'no incluida' ?></strong></div>
                 </div>
 
-                <ul class="gp-plan-features list-unstyled small my-4">
+                <ul class="gp-plan-features list-none ps-0 text-sm my-6">
                     <li><span class="gp-plan-ico" aria-hidden="true"></span> Reserva plaza en actividades desde la app web.</li>
                     <li><span class="gp-plan-ico" aria-hidden="true"></span> Atención en recepción y cambios tramitados en el centro.</li>
                 </ul>
 
                 <?php if ($bloqueadoPorOtroPlan): ?>
-                    <div class="d-grid gap-2">
+                    <div class="grid gap-2">
                         <button type="button" class="btn btn-outline-secondary" disabled>Plan activo en tu cuenta</button>
-                        <span class="text-center small text-muted">Para cambiar, cancelar o darte de baja debes contactar con recepción.</span>
+                        <span class="text-center text-sm text-slate-500">Para cambiar, cancelar o darte de baja debes contactar con recepción.</span>
                     </div>
                 <?php elseif (!$esCliente): ?>
-                    <div class="d-grid gap-2 mt-auto">
-                        <a href="<?= htmlspecialchars(url('/login')) ?>" class="btn btn-primary fw-semibold">Inicia sesión para contratar</a>
+                    <div class="grid gap-2 mt-auto">
+                        <a href="<?= htmlspecialchars(url('/login')) ?>" class="btn btn-primary font-semibold">Inicia sesión para contratar</a>
                     </div>
                 <?php elseif ($esActual): ?>
-                    <button type="button" class="btn btn-success fw-semibold w-100" disabled>Tu suscripción vigente</button>
-                    <p class="small text-muted text-center mb-0 mt-2">Vence el <?= !empty($planActivo['fecha_fin']) ? htmlspecialchars(substr((string) $planActivo['fecha_fin'], 0, 16)) : 'día indicado por el centro' ?>.</p>
+                    <button type="button" class="btn btn-success font-semibold w-full" disabled>Tu suscripción vigente</button>
+                    <p class="text-sm text-slate-500 text-center mb-0 mt-2">Vence el <?= !empty($planActivo['fecha_fin']) ? htmlspecialchars(substr((string) $planActivo['fecha_fin'], 0, 16)) : 'día indicado por el centro' ?>.</p>
                 <?php else: ?>
-                    <button type="button" class="btn btn-dark fw-semibold w-100"
+                    <button type="button" class="btn btn-dark font-semibold w-full"
                             <?= $puedePagar ? '' : 'disabled title="No disponible"' ?>
                             data-sub-id="<?= $sid ?>">
                         <?= $puedePagar ? 'Contratar este plan' : 'No disponible' ?>
@@ -155,18 +160,18 @@ $planesComparativa = $planActivo && $idPlanActual !== null
         <p class="alert alert-secondary text-center">No hay planes publicados por el momento.</p>
     <?php endif; ?>
 
-    <div class="row justify-content-center mt-5">
-        <div class="col-lg-6">
+    <div class="justify-center mt-12 flex flex-wrap -mx-3">
+        <div class="w-full lg:w-1/2 max-w-full shrink-0 px-3">
             <div id="payment-wrap" class="gp-pay-box card border-0 shadow-lg" style="display: none;">
-                <div class="card-body p-4 p-lg-5">
-                    <h3 class="h6 text-uppercase text-muted letter-spacing mb-3">Completa el pago con Stripe</h3>
+                <div class="card-body p-6 lg:p-12">
+                    <h3 class="text-base uppercase text-slate-500 tracking-wide mb-4">Completa el pago con Stripe</h3>
                     <form id="payment-form">
                         <div id="payment-element"></div>
-                        <button type="submit" id="submit" class="btn btn-success btn-lg w-100 mt-3">Pagar ahora</button>
+                        <button type="submit" id="submit" class="btn btn-success btn-lg w-full mt-4">Pagar ahora</button>
                     </form>
                 </div>
             </div>
-            <p id="error-message" class="text-danger text-center small mt-3 mb-0"></p>
+            <p id="error-message" class="text-red-600 text-center text-sm mt-4 mb-0"></p>
         </div>
     </div>
 </div>

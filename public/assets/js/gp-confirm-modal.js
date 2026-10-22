@@ -1,5 +1,5 @@
 /**
- * Modal Bootstrap genérico para confirmar enlaces y envíos de formulario.
+ * Modal genérico de Spartum UI para confirmar enlaces y envíos de formulario.
  *
  * Formularios: añade data-gp-confirm (+ data opcionales) al <form>. El primer envío
  * abre el modal; tras confirmar se reenvía (submit programático sin bucle infinito).
@@ -9,7 +9,7 @@
 (function () {
     'use strict';
 
-    var BP = typeof bootstrap !== 'undefined' ? bootstrap : null;
+    var UI = typeof SpartumUI !== 'undefined' ? SpartumUI : null;
 
     function getModalEl() {
         return document.getElementById('gpGlobalConfirmModal');
@@ -17,11 +17,11 @@
 
     function getInstance() {
         var el = getModalEl();
-        if (!el || !BP || !BP.Modal) {
+        if (!el || !UI || !UI.Modal) {
             return null;
         }
 
-        return BP.Modal.getOrCreateInstance(el);
+        return UI.Modal.getOrCreateInstance(el);
     }
 
     /**

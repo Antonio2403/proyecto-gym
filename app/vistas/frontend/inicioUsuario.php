@@ -1,4 +1,4 @@
-<div class="container py-5">
+<div class="mx-auto w-full max-w-[1320px] lg:max-w-[1024px] xl:max-w-7xl px-3 py-12">
     <?php if (!empty($_GET['success'])): ?>
         <div class="alert alert-success"><?= htmlspecialchars((string) $_GET['success']) ?></div>
     <?php endif; ?>
@@ -7,39 +7,51 @@
     <?php endif; ?>
     <div class="gp-page-header">
         <span class="gp-badge mb-2">Tu cuenta</span>
-        <h1 class="h2 mb-0">Hola, <?= htmlspecialchars($_SESSION['nombre'] ?? 'usuario') ?></h1>
+        <h1 class="text-[2rem] mb-0">Hola, <?= htmlspecialchars($_SESSION['nombre'] ?? 'usuario') ?></h1>
     </div>
 
-    <div class="row g-4">
-        <div class="col-md-6 col-lg-4">
-            <div class="gp-stat-card h-100">
+    <div class="flex flex-wrap -mx-3 -mt-6">
+        <div class="w-full md:w-1/2 lg:w-1/3 max-w-full shrink-0 px-3 mt-6">
+            <div class="gp-stat-card h-full">
+                <div class="gp-photo-frame mb-4" style="height: 9rem;">
+                    <img class="gp-photo" src="<?= htmlspecialchars(asset('img/pixabay/equipo.jpg')) ?>"
+                         width="1280" height="853" alt="Clase colectiva en el gimnasio">
+                </div>
                 <div class="gp-icon">📅</div>
-                <h3 class="h5 mb-2">Horario</h3>
-                <p class="text-muted small mb-3">Consulta actividades y apunta tu plaza.</p>
+                <h3 class="text-xl mb-2">Horario</h3>
+                <p class="text-slate-500 text-sm mb-4">Consulta actividades y apunta tu plaza.</p>
                 <a href="<?= htmlspecialchars(url('/usuario/actividades')) ?>" class="btn btn-primary btn-sm">Ir al horario</a>
             </div>
         </div>
-        <div class="col-md-6 col-lg-4">
-            <div class="gp-stat-card h-100">
+        <div class="w-full md:w-1/2 lg:w-1/3 max-w-full shrink-0 px-3 mt-6">
+            <div class="gp-stat-card h-full">
+                <div class="gp-photo-frame mb-4" style="height: 9rem;">
+                    <img class="gp-photo" src="<?= htmlspecialchars(asset('img/pixabay/mancuernas.jpg')) ?>"
+                         width="1280" height="853" alt="Rack de mancuernas de la sala de fuerza">
+                </div>
                 <div class="gp-icon">💳</div>
-                <h3 class="h5 mb-2">Suscripción</h3>
-                <p class="text-muted small mb-3">Renueva o cambia tu plan cuando quieras.</p>
+                <h3 class="text-xl mb-2">Suscripción</h3>
+                <p class="text-slate-500 text-sm mb-4">Renueva o cambia tu plan cuando quieras.</p>
                 <a href="<?= htmlspecialchars(url('/pago')) ?>" class="btn btn-primary btn-sm">Ver planes</a>
             </div>
         </div>
-        <div class="col-md-6 col-lg-4">
-            <div class="gp-stat-card h-100">
+        <div class="w-full md:w-1/2 lg:w-1/3 max-w-full shrink-0 px-3 mt-6">
+            <div class="gp-stat-card h-full">
+                <div class="gp-photo-frame mb-4" style="height: 9rem;">
+                    <img class="gp-photo" src="<?= htmlspecialchars(asset('img/pixabay/fisio.jpg')) ?>"
+                         width="1280" height="853" alt="Sesión de fisioterapia y recuperación">
+                </div>
                 <div class="gp-icon">🩺</div>
-                <h3 class="h5 mb-2">Fisioterapia</h3>
-                <p class="text-muted small mb-3">Citas incluidas en planes con fisioterapia.</p>
+                <h3 class="text-xl mb-2">Fisioterapia</h3>
+                <p class="text-slate-500 text-sm mb-4">Citas incluidas en planes con fisioterapia.</p>
                 <a href="<?= htmlspecialchars(url('/usuario/fisio')) ?>" class="btn btn-primary btn-sm">Ir a fisioterapia</a>
             </div>
         </div>
-        <div class="col-md-6 col-lg-4">
-            <div class="gp-stat-card h-100">
+        <div class="w-full md:w-1/2 lg:w-1/3 max-w-full shrink-0 px-3 mt-6">
+            <div class="gp-stat-card h-full">
                 <div class="gp-icon">⚙️</div>
-                <h3 class="h5 mb-2">Sesión</h3>
-                <p class="text-muted small mb-3">Cierra sesión en este dispositivo.</p>
+                <h3 class="text-xl mb-2">Sesión</h3>
+                <p class="text-slate-500 text-sm mb-4">Cierra sesión en este dispositivo.</p>
                 <a href="<?= htmlspecialchars(url('/logout')) ?>" class="btn btn-outline-light btn-sm"
                    data-gp-confirm
                    data-gp-confirm-title="Cerrar sesión"

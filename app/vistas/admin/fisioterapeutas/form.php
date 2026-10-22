@@ -7,7 +7,7 @@ $gpFormSubtitle = 'Alta o edición de ficha profesional. Máximo 100 caracteres 
 $gpFormBadge = 'Fisioterapeutas';
 require dirname(__DIR__, 2) . '/layouts/partials/gp_form_panel_start.php';
 ?>
-                <p class="gp-form-required-legend text-muted small mb-3">Los campos con <span class="text-danger fw-bold" aria-hidden="true">*</span> son obligatorios.</p>
+                <p class="gp-form-required-legend text-slate-500 text-sm mb-4">Los campos con <span class="text-red-600 font-bold" aria-hidden="true">*</span> son obligatorios.</p>
                 <form
                     <?php if ($editando): ?>
                         action="<?= htmlspecialchars(url('/admin/fisioterapeutas/editar')) ?>"
@@ -37,7 +37,7 @@ require dirname(__DIR__, 2) . '/layouts/partials/gp_form_panel_start.php';
                             <label for="especialidad" class="form-label">Especialidad</label>
                             <input id="especialidad" type="text" name="especialidad" class="form-control" maxlength="100"
                                    value="<?= $editando ? htmlspecialchars((string) ($fisio['especialidad'] ?? '')) : '' ?>">
-                            <p class="form-text small mb-0">Ej. rehabilitación deportiva, fisiología, etc.</p>
+                            <p class="form-text text-sm mb-0">Ej. rehabilitación deportiva, fisiología, etc.</p>
                         </div>
                         <div class="gp-form-span-2">
                             <label for="usuario_email" class="form-label">Email de acceso al panel (opcional)</label>
@@ -45,7 +45,7 @@ require dirname(__DIR__, 2) . '/layouts/partials/gp_form_panel_start.php';
                                    maxlength="255" autocomplete="off"
                                    placeholder="ej. fisio@gym.com"
                                    value="<?= htmlspecialchars((string) ($usuario_email ?? '')) ?>">
-                            <p class="form-text small mb-0">
+                            <p class="form-text text-sm mb-0">
                                 Debe ser un usuario ya registrado (misma tabla de usuarios que el login principal), no socio, monitor ni admin.
                                 Vacío = sin acceso al panel de fisioterapeuta o desvincular al editar.
                             </p>

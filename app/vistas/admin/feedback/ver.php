@@ -1,9 +1,9 @@
-<div class="content-wrapper py-3">
-    <div class="container-fluid mt-4">
+<div class="content-wrapper py-4">
+    <div class="relative w-full px-3 mt-6">
         <header class="gp-page-header">
             <div class="gp-page-header__title">
-                <h3 class="h4 mb-1 text-dark">Mensajes de contacto</h3>
-                <p class="text-muted small">Consulta y responde al feedback recibido desde la web.</p>
+                <h3 class="text-2xl mb-1 text-slate-800">Mensajes de contacto</h3>
+                <p class="text-slate-500 text-sm">Consulta y responde al feedback recibido desde la web.</p>
             </div>
         </header>
 
@@ -15,37 +15,37 @@
             data-url-del-prefix="<?= htmlspecialchars(url('/admin/feedback/eliminar/')) ?>"
             data-url-responder-prefix="<?= htmlspecialchars(url('/admin/feedback/responder/')) ?>">
 
-            <form class="gp-admin-grid-filters row g-2 align-items-end mb-3" data-grid-filters novalidate>
-                <div class="col-lg-4">
-                    <label class="form-label small text-muted mb-0">Buscar global</label>
+            <form class="gp-admin-grid-filters items-end mb-4 flex flex-wrap -mx-1 -mt-2" data-grid-filters novalidate>
+                <div class="w-full lg:w-1/3 max-w-full shrink-0 px-1 mt-2">
+                    <label class="form-label text-sm text-slate-500 mb-0">Buscar global</label>
                     <input type="search" class="form-control form-control-sm" name="q" autocomplete="off"
                            placeholder="Nombre, email, asunto, texto…">
                 </div>
-                <div class="col-md-4">
-                    <label class="form-label small text-muted mb-0">Nombre</label>
+                <div class="w-full md:w-1/3 max-w-full shrink-0 px-1 mt-2">
+                    <label class="form-label text-sm text-slate-500 mb-0">Nombre</label>
                     <input type="text" class="form-control form-control-sm" name="nombre" autocomplete="off">
                 </div>
-                <div class="col-md-4">
-                    <label class="form-label small text-muted mb-0">Email</label>
+                <div class="w-full md:w-1/3 max-w-full shrink-0 px-1 mt-2">
+                    <label class="form-label text-sm text-slate-500 mb-0">Email</label>
                     <input type="text" class="form-control form-control-sm" name="email" autocomplete="off">
                 </div>
-                <div class="col-md-6">
-                    <label class="form-label small text-muted mb-0">Asunto contiene</label>
+                <div class="w-full md:w-1/2 max-w-full shrink-0 px-1 mt-2">
+                    <label class="form-label text-sm text-slate-500 mb-0">Asunto contiene</label>
                     <input type="text" class="form-control form-control-sm" name="asunto" autocomplete="off">
                 </div>
-                <div class="col-md-6 col-lg-3">
-                    <label class="form-label small text-muted mb-0">Desde fecha</label>
+                <div class="w-full md:w-1/2 lg:w-1/4 max-w-full shrink-0 px-1 mt-2">
+                    <label class="form-label text-sm text-slate-500 mb-0">Desde fecha</label>
                     <input type="date" class="form-control form-control-sm" name="fecha_desde">
                 </div>
-                <div class="col-md-6 col-lg-3">
-                    <label class="form-label small text-muted mb-0">Hasta fecha</label>
+                <div class="w-full md:w-1/2 lg:w-1/4 max-w-full shrink-0 px-1 mt-2">
+                    <label class="form-label text-sm text-slate-500 mb-0">Hasta fecha</label>
                     <input type="date" class="form-control form-control-sm" name="fecha_hasta">
                 </div>
-                <div class="col-12 d-flex flex-wrap gap-2 mt-2">
+                <div class="flex flex-wrap gap-2 mt-2 w-full max-w-full shrink-0 px-1">
                     <button type="submit" class="btn btn-primary btn-sm">Buscar</button>
                     <button type="button" class="btn btn-outline-secondary btn-sm" data-grid-reset>Limpiar</button>
-                    <div class="ms-lg-auto d-flex align-items-center gap-2">
-                        <label class="small text-muted mb-0">Por página</label>
+                    <div class="lg:ms-auto flex items-center gap-2">
+                        <label class="text-sm text-slate-500 mb-0">Por página</label>
                         <select class="form-select form-select-sm" data-grid-per-page style="width: auto;">
                             <option value="10" selected>10</option>
                             <option value="15">15</option>
@@ -55,8 +55,8 @@
                 </div>
             </form>
 
-            <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-2">
-                <small class="text-muted" data-grid-status>&nbsp;</small>
+            <div class="flex justify-between items-center flex-wrap gap-2 mb-2">
+                <small class="text-slate-500" data-grid-status>&nbsp;</small>
                 <div data-grid-pagination></div>
             </div>
 
@@ -69,11 +69,11 @@
                             <th>Email</th>
                             <th>Asunto</th>
                             <th>Mensaje</th>
-                            <th class="text-end">Acciones</th>
+                            <th class="text-right">Acciones</th>
                         </tr>
                     </thead>
                     <tbody data-grid-body>
-                        <tr><td colspan="7" class="text-muted py-4">Cargando…</td></tr>
+                        <tr><td colspan="7" class="text-slate-500 py-6">Cargando…</td></tr>
                     </tbody>
                 </table>
             </div>

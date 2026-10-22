@@ -1,10 +1,10 @@
-<div class="container py-5">
-    <div class="row justify-content-center">
-        <div class="col-lg-7">
-            <header class="gp-page-header text-center text-lg-start">
+<div class="mx-auto w-full max-w-[1320px] lg:max-w-[1024px] xl:max-w-7xl px-3 py-12">
+    <div class="items-start justify-center flex flex-wrap -mx-3 -mt-6">
+        <div class="w-full lg:w-7/12 max-w-full shrink-0 px-3 mt-6">
+            <header class="gp-page-header text-center lg:text-left">
                 <span class="gp-badge">Escríbenos</span>
-                <h1 class="h2 mt-3 mb-2">Contacto</h1>
-                <p class="text-muted mb-0">Dudas, sugerencias o empresas. Respondemos lo antes posible.</p>
+                <h1 class="text-[2rem] mt-4 mb-2">Contacto</h1>
+                <p class="text-slate-500 mb-0">Dudas, sugerencias o empresas. Respondemos lo antes posible.</p>
             </header>
 
             <?php if (!empty($_GET['success'])): ?>
@@ -15,29 +15,35 @@
             <?php endif; ?>
 
             <div class="card border-0">
-                <div class="card-body p-4 p-lg-5">
+                <div class="card-body p-6 lg:p-12">
                     <form method="post" action="<?= htmlspecialchars(url('/contacto/enviar')) ?>" class="needs-validation" novalidate data-gp-validate="contact"
                           data-gp-confirm data-gp-confirm-title="Enviar mensaje" data-gp-confirm-body="¿Enviar este mensaje al equipo de Spartum?" data-gp-confirm-ok="Enviar">
-                        <p class="gp-form-required-legend mb-3">Campos marcados con <span class="text-danger fw-bold" aria-hidden="true">*</span> son obligatorios.</p>
-                        <div class="mb-3">
+                        <p class="gp-form-required-legend mb-4">Campos marcados con <span class="text-red-600 font-bold" aria-hidden="true">*</span> son obligatorios.</p>
+                        <div class="mb-4">
                             <label class="form-label gp-label-required" for="nombre">Nombre</label>
                             <input class="form-control form-control-lg" type="text" id="nombre" name="nombre" required maxlength="150">
                         </div>
-                        <div class="mb-3">
+                        <div class="mb-4">
                             <label class="form-label gp-label-required" for="email">Email</label>
                             <input class="form-control form-control-lg" type="email" id="email" name="email" required maxlength="255">
                         </div>
-                        <div class="mb-3">
+                        <div class="mb-4">
                             <label class="form-label gp-label-required" for="asunto">Asunto</label>
                             <input class="form-control form-control-lg" type="text" id="asunto" name="asunto" required maxlength="255">
                         </div>
-                        <div class="mb-4">
+                        <div class="mb-6">
                             <label class="form-label gp-label-required" for="mensaje">Mensaje</label>
                             <textarea class="form-control" id="mensaje" name="mensaje" rows="6" required maxlength="8000"></textarea>
                         </div>
-                        <button type="submit" class="btn btn-primary btn-lg w-100">Enviar mensaje</button>
+                        <button type="submit" class="btn btn-primary btn-lg w-full">Enviar mensaje</button>
                     </form>
                 </div>
+            </div>
+        </div>
+        <div class="w-full lg:w-5/12 max-w-full shrink-0 px-3 mt-6">
+            <div class="gp-photo-frame gp-photo-frame--side">
+                <img class="gp-photo" src="<?= htmlspecialchars(asset('img/pixabay/pesas.jpg')) ?>"
+                     width="1280" height="853" alt="Entrenamiento con mancuerna en un banco del gimnasio">
             </div>
         </div>
     </div>

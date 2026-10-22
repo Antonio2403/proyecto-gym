@@ -11,10 +11,6 @@
     min-height: 68px;
 }
 
-.gp-admin-topnav .container-fluid {
-    position: relative;
-}
-
 .gp-admin-topnav .navbar-brand {
     font-family: var(--gp-display, "Outfit", sans-serif);
     font-weight: 800;

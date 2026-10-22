@@ -4,23 +4,23 @@ $lista = $solicitudes ?? [];
 $badgeEstado = static function (string $est): string {
     switch (strtoupper($est)) {
         case 'P':
-            return 'text-bg-warning text-dark';
+            return 'bg-yellow-400 text-slate-800';
         case 'A':
-            return 'text-bg-success';
+            return 'bg-green-600 text-white';
         case 'R':
-            return 'text-bg-danger';
+            return 'bg-red-600 text-white';
         default:
-            return 'text-bg-secondary';
+            return 'bg-slate-500 text-white';
     }
 };
 ?>
 <div class="content-wrapper">
-    <div class="container-fluid gp-monitor-requests">
-        <div class="gp-admin-card-panel mb-4 border-0 shadow-sm">
-            <div class="d-flex flex-column flex-lg-row justify-content-between align-items-start gap-3">
+    <div class="relative w-full px-3 gp-monitor-requests">
+        <div class="gp-admin-card-panel mb-6 border-0 shadow-sm">
+            <div class="flex flex-col lg:flex-row justify-between items-start gap-4">
                 <div>
-                    <h1 class="h3 mb-2">Mis solicitudes</h1>
-                    <p class="text-muted mb-0">
+                    <h1 class="text-[1.75rem] mb-2">Mis solicitudes</h1>
+                    <p class="text-slate-500 mb-0">
                         Historial de peticiones que has enviado a administración.
                     </p>
                 </div>
@@ -39,35 +39,35 @@ $badgeEstado = static function (string $est): string {
         </div>
 
         <?php if (!empty($lista)): ?>
-            <div class="row g-3">
+            <div class="flex flex-wrap -mx-2 -mt-4">
                 <?php foreach ($lista as $s):
                     $est = strtoupper((string) ($s['estado'] ?? ''));
                     $meta = Solicitud::metaEstado($est);
                     ?>
-                    <div class="col-12 col-xl-6">
-                        <div class="gp-admin-card-panel h-100 border-0 shadow-sm gp-monitor-request-card">
-                            <div class="d-flex flex-wrap align-items-center gap-2 mb-2">
+                    <div class="w-full xl:w-1/2 max-w-full shrink-0 px-2 mt-4">
+                        <div class="gp-admin-card-panel h-full border-0 shadow-sm gp-monitor-request-card">
+                            <div class="flex flex-wrap items-center gap-2 mb-2">
                                 <span class="badge <?= htmlspecialchars($badgeEstado($est)) ?>"><?= htmlspecialchars($meta['label']) ?></span>
-                                <span class="small text-muted ms-auto text-nowrap">
+                                <span class="text-sm text-slate-500 ms-auto text-nowrap">
                                     <i class="far fa-clock me-1 opacity-75" aria-hidden="true"></i><?= htmlspecialchars((string) ($s['fecha_creacion'] ?? ''), ENT_QUOTES, 'UTF-8') ?>
                                 </span>
                             </div>
-                            <h2 class="h6 text-dark mb-2">
-                                <i class="fas fa-tag me-1 text-primary opacity-75" aria-hidden="true"></i><?= htmlspecialchars((string) ($s['tipo'] ?? '—'), ENT_QUOTES, 'UTF-8') ?>
+                            <h2 class="text-base text-slate-800 mb-2">
+                                <i class="fas fa-tag me-1 text-spartum-orange opacity-75" aria-hidden="true"></i><?= htmlspecialchars((string) ($s['tipo'] ?? '—'), ENT_QUOTES, 'UTF-8') ?>
                             </h2>
                             <?php if (trim((string) ($s['descripcion'] ?? '')) !== ''): ?>
-                                <p class="small text-muted mb-0" style="white-space: pre-wrap;"><?= htmlspecialchars((string) ($s['descripcion'] ?? ''), ENT_QUOTES, 'UTF-8') ?></p>
+                                <p class="text-sm text-slate-500 mb-0" style="white-space: pre-wrap;"><?= htmlspecialchars((string) ($s['descripcion'] ?? ''), ENT_QUOTES, 'UTF-8') ?></p>
                             <?php else: ?>
-                                <p class="small text-muted mb-0">Sin descripción.</p>
+                                <p class="text-sm text-slate-500 mb-0">Sin descripción.</p>
                             <?php endif; ?>
                         </div>
                     </div>
                 <?php endforeach; ?>
             </div>
         <?php else: ?>
-            <div class="gp-admin-card-panel text-center py-5 border-0 shadow-sm">
-                <i class="fas fa-inbox fs-2 text-muted mb-3 d-block opacity-50" aria-hidden="true"></i>
-                <p class="text-muted mb-3">No hay solicitudes hechas por ti.</p>
+            <div class="gp-admin-card-panel text-center py-12 border-0 shadow-sm">
+                <i class="fas fa-inbox text-2xl text-slate-500 mb-4 block opacity-50" aria-hidden="true"></i>
+                <p class="text-slate-500 mb-4">No hay solicitudes hechas por ti.</p>
                 <a href="<?= htmlspecialchars(url('/monitor/formSolicitud')) ?>" class="btn btn-primary btn-sm">Crear la primera</a>
             </div>
         <?php endif; ?>

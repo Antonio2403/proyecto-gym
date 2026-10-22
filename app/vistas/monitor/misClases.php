@@ -28,30 +28,30 @@ $queryBase = static function (array $extra = []) use ($filtros, $perPage): array
 };
 ?>
 <div class="content-wrapper gp-dash">
-    <div class="container-fluid">
-        <header class="gp-dash-hero mb-4">
-            <span class="gp-badge d-inline-block mb-2">Monitor</span>
-            <h1 class="h3 mb-0">Mis clases</h1>
-            <p class="mb-0 mt-2 text-muted">Sesiones con socios inscritos · búsqueda avanzada y paginación.</p>
+    <div class="relative w-full px-3">
+        <header class="gp-dash-hero mb-6">
+            <span class="gp-badge inline-block mb-2">Monitor</span>
+            <h1 class="text-[1.75rem] mb-0">Mis clases</h1>
+            <p class="mb-0 mt-2 text-slate-500">Sesiones con socios inscritos · búsqueda avanzada y paginación.</p>
         </header>
 
-        <div class="card border-0 shadow-sm mb-4">
+        <div class="card border-0 shadow-sm mb-6">
             <div class="card-body">
-                <h2 class="h6 mb-3">Búsqueda avanzada</h2>
-                <form method="get" action="<?= htmlspecialchars(url('/monitor/mis-clases')) ?>" class="row g-2 align-items-end">
-                    <div class="col-lg-4">
-                        <label class="form-label small text-muted mb-0" for="f_q">Buscar global</label>
+                <h2 class="text-base mb-4">Búsqueda avanzada</h2>
+                <form method="get" action="<?= htmlspecialchars(url('/monitor/mis-clases')) ?>" class="items-end flex flex-wrap -mx-1 -mt-2">
+                    <div class="w-full lg:w-1/3 max-w-full shrink-0 px-1 mt-2">
+                        <label class="form-label text-sm text-slate-500 mb-0" for="f_q">Buscar global</label>
                         <input type="search" class="form-control form-control-sm" id="f_q" name="q"
                                value="<?= htmlspecialchars((string) ($filtros['q'] ?? '')) ?>"
                                placeholder="Actividad, sala, socio…" autocomplete="off">
                     </div>
-                    <div class="col-md-4">
-                        <label class="form-label small text-muted mb-0" for="f_actividad">Actividad</label>
+                    <div class="w-full md:w-1/3 max-w-full shrink-0 px-1 mt-2">
+                        <label class="form-label text-sm text-slate-500 mb-0" for="f_actividad">Actividad</label>
                         <input type="text" class="form-control form-control-sm" id="f_actividad" name="actividad"
                                value="<?= htmlspecialchars((string) ($filtros['actividad'] ?? '')) ?>" autocomplete="off">
                     </div>
-                    <div class="col-md-4">
-                        <label class="form-label small text-muted mb-0" for="f_sala">Sala</label>
+                    <div class="w-full md:w-1/3 max-w-full shrink-0 px-1 mt-2">
+                        <label class="form-label text-sm text-slate-500 mb-0" for="f_sala">Sala</label>
                         <select class="form-select form-select-sm" id="f_sala" name="sala">
                             <option value="">Todas</option>
                             <?php foreach ($salasFiltro as $sn): ?>
@@ -61,28 +61,28 @@ $queryBase = static function (array $extra = []) use ($filtros, $perPage): array
                             <?php endforeach; ?>
                         </select>
                     </div>
-                    <div class="col-md-3">
-                        <label class="form-label small text-muted mb-0" for="f_cliente">Socio (nombre)</label>
+                    <div class="w-full md:w-1/4 max-w-full shrink-0 px-1 mt-2">
+                        <label class="form-label text-sm text-slate-500 mb-0" for="f_cliente">Socio (nombre)</label>
                         <input type="text" class="form-control form-control-sm" id="f_cliente" name="cliente"
                                value="<?= htmlspecialchars((string) ($filtros['cliente'] ?? '')) ?>" autocomplete="off">
                     </div>
-                    <div class="col-md-3">
-                        <label class="form-label small text-muted mb-0" for="f_email">Email socio</label>
+                    <div class="w-full md:w-1/4 max-w-full shrink-0 px-1 mt-2">
+                        <label class="form-label text-sm text-slate-500 mb-0" for="f_email">Email socio</label>
                         <input type="text" class="form-control form-control-sm" id="f_email" name="email"
                                value="<?= htmlspecialchars((string) ($filtros['email'] ?? '')) ?>" autocomplete="off">
                     </div>
-                    <div class="col-md-2">
-                        <label class="form-label small text-muted mb-0" for="f_desde">Desde</label>
+                    <div class="w-full md:w-1/6 max-w-full shrink-0 px-1 mt-2">
+                        <label class="form-label text-sm text-slate-500 mb-0" for="f_desde">Desde</label>
                         <input type="date" class="form-control form-control-sm" id="f_desde" name="fecha_desde"
                                value="<?= htmlspecialchars((string) $fechaDesdeVal) ?>">
                     </div>
-                    <div class="col-md-2">
-                        <label class="form-label small text-muted mb-0" for="f_hasta">Hasta</label>
+                    <div class="w-full md:w-1/6 max-w-full shrink-0 px-1 mt-2">
+                        <label class="form-label text-sm text-slate-500 mb-0" for="f_hasta">Hasta</label>
                         <input type="date" class="form-control form-control-sm" id="f_hasta" name="fecha_hasta"
                                value="<?= htmlspecialchars((string) $fechaHastaVal) ?>">
                     </div>
-                    <div class="col-md-2">
-                        <label class="form-label small text-muted mb-0" for="f_dia">Día semana</label>
+                    <div class="w-full md:w-1/6 max-w-full shrink-0 px-1 mt-2">
+                        <label class="form-label text-sm text-slate-500 mb-0" for="f_dia">Día semana</label>
                         <select class="form-select form-select-sm" id="f_dia" name="dia_semana">
                             <?php foreach ($diaOpts as $code => $lbl): ?>
                                 <option value="<?= htmlspecialchars($code) ?>"<?= (($filtros['dia_semana'] ?? '') === $code) ? ' selected' : '' ?>>
@@ -91,15 +91,15 @@ $queryBase = static function (array $extra = []) use ($filtros, $perPage): array
                             <?php endforeach; ?>
                         </select>
                     </div>
-                    <div class="col-md-3">
-                        <label class="form-label small text-muted mb-0" for="f_pp">Por página</label>
+                    <div class="w-full md:w-1/4 max-w-full shrink-0 px-1 mt-2">
+                        <label class="form-label text-sm text-slate-500 mb-0" for="f_pp">Por página</label>
                         <select class="form-select form-select-sm" id="f_pp" name="per_page">
                             <?php foreach ([5, 10, 15, 25] as $n): ?>
                                 <option value="<?= $n ?>"<?= $perPage === $n ? ' selected' : '' ?>><?= $n ?></option>
                             <?php endforeach; ?>
                         </select>
                     </div>
-                    <div class="col-12 d-flex flex-wrap gap-2 mt-2">
+                    <div class="flex flex-wrap gap-2 mt-2 w-full max-w-full shrink-0 px-1">
                         <button type="submit" class="btn btn-primary btn-sm">Buscar</button>
                         <a href="<?= htmlspecialchars(url('/monitor/mis-clases')) ?>" class="btn btn-outline-secondary btn-sm">Limpiar</a>
                     </div>
@@ -107,8 +107,8 @@ $queryBase = static function (array $extra = []) use ($filtros, $perPage): array
             </div>
         </div>
 
-        <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
-            <p class="small text-muted mb-0">
+        <div class="flex justify-between items-center flex-wrap gap-2 mb-4">
+            <p class="text-sm text-slate-500 mb-0">
                 <?php if ($total === 0): ?>
                     0 sesiones encontradas
                 <?php else: ?>
@@ -146,7 +146,7 @@ $queryBase = static function (array $extra = []) use ($filtros, $perPage): array
         <?php if ($sesiones === []): ?>
             <div class="alert alert-secondary">No hay sesiones con inscritos que coincidan con los filtros.</div>
         <?php else: ?>
-            <div class="d-flex flex-column gap-4">
+            <div class="flex flex-col gap-6">
                 <?php foreach ($sesiones as $bloque): ?>
                     <?php
                     $lista = $bloque['inscritos'] ?? [];
@@ -155,10 +155,10 @@ $queryBase = static function (array $extra = []) use ($filtros, $perPage): array
                     ?>
                     <section class="card border-0 shadow-sm">
                         <div class="card-body">
-                            <div class="d-flex flex-wrap justify-content-between align-items-start gap-2 mb-3">
+                            <div class="flex flex-wrap justify-between items-start gap-2 mb-4">
                                 <div>
-                                    <h2 class="h5 mb-1"><?= htmlspecialchars((string) ($bloque['actividad_nombre'] ?? '')) ?></h2>
-                                    <p class="text-muted small mb-0">
+                                    <h2 class="text-xl mb-1"><?= htmlspecialchars((string) ($bloque['actividad_nombre'] ?? '')) ?></h2>
+                                    <p class="text-slate-500 text-sm mb-0">
                                         Sesión <?= $fec !== '' ? htmlspecialchars(date('d/m/Y', strtotime($fec))) : '—' ?>
                                         · <?= $rec ? 'Semanal' : 'Puntual' ?>
                                         · <?= htmlspecialchars((string) ($bloque['hora'] ?? '')) ?>
@@ -167,7 +167,7 @@ $queryBase = static function (array $extra = []) use ($filtros, $perPage): array
                                         <?php endif; ?>
                                     </p>
                                 </div>
-                                <span class="badge bg-primary bg-opacity-10 text-primary-emphasis">
+                                <span class="badge bg-spartum-orange/10 text-spartum-orange">
                                     <?= (int) ($bloque['total_inscritos'] ?? count($lista)) ?> inscrito(s)
                                 </span>
                             </div>
@@ -197,6 +197,6 @@ $queryBase = static function (array $extra = []) use ($filtros, $perPage): array
             </div>
         <?php endif; ?>
 
-        <a href="<?= htmlspecialchars(url('/inicioMonitor')) ?>" class="btn btn-outline-secondary mt-4">Volver al panel</a>
+        <a href="<?= htmlspecialchars(url('/inicioMonitor')) ?>" class="btn btn-outline-secondary mt-6">Volver al panel</a>
     </div>
 </div>

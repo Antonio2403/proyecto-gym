@@ -54,10 +54,10 @@ $nombreSocio = static function (array $c): string {
 $fromIx = $total === 0 ? 0 : ($page - 1) * $perPage + 1;
 $toIx = min($total, $page * $perPage);
 ?>
-<div class="gp-schedule-page py-4 py-lg-5">
-    <div class="container">
+<div class="gp-schedule-page py-6 lg:py-12">
+    <div class="mx-auto w-full max-w-[1320px] lg:max-w-[1024px] xl:max-w-7xl px-3">
         <div class="gp-schedule-panel shadow-sm">
-            <header class="gp-schedule-head text-center py-4 px-3">
+            <header class="gp-schedule-head text-center py-6 px-4">
                 <h1 class="gp-schedule-title mb-0">
                     <?= $solo_confirmadas ? 'Citas confirmadas' : 'Citas asignadas' ?>
                 </h1>
@@ -71,7 +71,7 @@ $toIx = min($total, $page * $perPage);
                 </p>
             </header>
 
-            <div class="px-3 px-md-4 pb-3 d-flex flex-wrap gap-2 justify-content-center">
+            <div class="px-4 md:px-6 pb-4 flex flex-wrap gap-2 justify-center">
                 <a href="<?= htmlspecialchars(url('/fisio')) ?>" class="btn btn-outline-secondary btn-sm">Inicio</a>
                 <?php if ($solo_confirmadas): ?>
                     <a href="<?= htmlspecialchars(url('/fisio/citas')) ?>" class="btn gp-btn-orange btn-sm">Todas las citas</a>
@@ -80,13 +80,13 @@ $toIx = min($total, $page * $perPage);
                 <?php endif; ?>
             </div>
 
-            <div class="px-3 px-md-4 pb-4">
-                <form method="get" action="<?= htmlspecialchars($formAction) ?>" class="gp-light-panel-inner p-3 mb-4">
-                    <p class="small text-muted mb-3 mb-md-2 fw-semibold">Búsqueda avanzada</p>
-                    <div class="row g-3">
+            <div class="px-4 md:px-6 pb-6">
+                <form method="get" action="<?= htmlspecialchars($formAction) ?>" class="gp-light-panel-inner p-4 mb-6">
+                    <p class="text-sm text-slate-500 mb-4 md:mb-2 font-semibold">Búsqueda avanzada</p>
+                    <div class="flex flex-wrap -mx-2 -mt-4">
                         <?php if (!$solo_confirmadas): ?>
-                            <div class="col-md-6 col-lg-3">
-                                <label class="form-label small mb-1" for="f_estado">Estado</label>
+                            <div class="w-full md:w-1/2 lg:w-1/4 max-w-full shrink-0 px-2 mt-4">
+                                <label class="form-label text-sm mb-1" for="f_estado">Estado</label>
                                 <select name="estado" id="f_estado" class="form-select form-select-sm">
                                     <?php $ev = $filtros['estado'] ?? ''; ?>
                                     <option value=""<?= $ev === '' ? ' selected' : '' ?>>Todas</option>
@@ -97,52 +97,52 @@ $toIx = min($total, $page * $perPage);
                                 </select>
                             </div>
                         <?php endif; ?>
-                        <div class="col-md-6 col-lg-3">
-                            <label class="form-label small mb-1" for="f_desde">Fecha desde</label>
+                        <div class="w-full md:w-1/2 lg:w-1/4 max-w-full shrink-0 px-2 mt-4">
+                            <label class="form-label text-sm mb-1" for="f_desde">Fecha desde</label>
                             <input type="date" name="fecha_desde" id="f_desde" class="form-control form-control-sm"
                                    value="<?= htmlspecialchars((string) ($filtros['fecha_desde'] ?? '')) ?>">
                         </div>
-                        <div class="col-md-6 col-lg-3">
-                            <label class="form-label small mb-1" for="f_hasta">Fecha hasta</label>
+                        <div class="w-full md:w-1/2 lg:w-1/4 max-w-full shrink-0 px-2 mt-4">
+                            <label class="form-label text-sm mb-1" for="f_hasta">Fecha hasta</label>
                             <input type="date" name="fecha_hasta" id="f_hasta" class="form-control form-control-sm"
                                    value="<?= htmlspecialchars((string) ($filtros['fecha_hasta'] ?? '')) ?>">
                         </div>
-                        <div class="col-md-6 col-lg-3">
-                            <label class="form-label small mb-1" for="f_pp">Por página</label>
+                        <div class="w-full md:w-1/2 lg:w-1/4 max-w-full shrink-0 px-2 mt-4">
+                            <label class="form-label text-sm mb-1" for="f_pp">Por página</label>
                             <select name="per_page" id="f_pp" class="form-select form-select-sm">
                                 <?php foreach ([10, 20, 50] as $n): ?>
                                     <option value="<?= $n ?>"<?= $perPage === $n ? ' selected' : '' ?>><?= $n ?></option>
                                 <?php endforeach; ?>
                             </select>
                         </div>
-                        <div class="col-lg-6">
-                            <label class="form-label small mb-1" for="f_cli">Socio (nombre, DNI o email)</label>
+                        <div class="w-full lg:w-1/2 max-w-full shrink-0 px-2 mt-4">
+                            <label class="form-label text-sm mb-1" for="f_cli">Socio (nombre, DNI o email)</label>
                             <input type="text" name="cliente" id="f_cli" class="form-control form-control-sm"
                                    placeholder="Ej. Carlos, 12345678Z…"
                                    value="<?= htmlspecialchars((string) ($filtros['cliente'] ?? '')) ?>">
                         </div>
-                        <div class="col-lg-6">
-                            <label class="form-label small mb-1" for="f_mot">Motivo / notas</label>
+                        <div class="w-full lg:w-1/2 max-w-full shrink-0 px-2 mt-4">
+                            <label class="form-label text-sm mb-1" for="f_mot">Motivo / notas</label>
                             <input type="text" name="motivo" id="f_mot" class="form-control form-control-sm"
                                    placeholder="Texto contenido en el motivo…"
                                    value="<?= htmlspecialchars((string) ($filtros['motivo'] ?? '')) ?>">
                         </div>
-                        <div class="col-12">
+                        <div class="w-full max-w-full shrink-0 px-2 mt-4">
                             <div class="form-check">
                                 <?php $sf = ($filtros['solo_futuras'] ?? '') === '1'; ?>
                                 <input class="form-check-input" type="checkbox" value="1" name="solo_futuras"
                                        id="f_fut"<?= $sf ? ' checked' : '' ?>>
-                                <label class="form-check-label small" for="f_fut">Solo citas desde ahora</label>
+                                <label class="form-check-label text-sm" for="f_fut">Solo citas desde ahora</label>
                             </div>
                         </div>
-                        <div class="col-12 d-flex flex-wrap gap-2 pt-2">
-                            <button type="submit" class="btn btn-primary btn-sm px-4">Buscar</button>
+                        <div class="flex flex-wrap gap-2 pt-2 w-full max-w-full shrink-0 px-2 mt-4">
+                            <button type="submit" class="btn btn-primary btn-sm px-6">Buscar</button>
                             <a href="<?= htmlspecialchars($baseUrl) ?>" class="btn btn-outline-secondary btn-sm">Limpiar</a>
                         </div>
                     </div>
                 </form>
 
-                <p class="small text-muted mb-3">
+                <p class="text-sm text-slate-500 mb-4">
                     <?php if ($total > 0): ?>
                         Resultados <?= (int) $fromIx ?>–<?= (int) $toIx ?> de <?= $total ?>.
                     <?php else: ?>
@@ -151,29 +151,29 @@ $toIx = min($total, $page * $perPage);
                 </p>
 
                 <?php if (empty($rows)): ?>
-                    <div class="gp-light-panel-inner p-4 text-muted">No hay citas que coincidan.</div>
+                    <div class="gp-light-panel-inner p-6 text-slate-500">No hay citas que coincidan.</div>
                 <?php else: ?>
-                    <div class="table-responsive rounded-2 overflow-hidden border border-light">
+                    <div class="table-responsive rounded-md overflow-hidden border border-slate-100">
                         <table class="table gp-table-light mb-0 text-center align-middle">
                             <thead>
                                 <tr>
                                     <th>Fecha</th>
                                     <th>Socio</th>
-                                    <th class="text-start">Motivo</th>
+                                    <th class="text-left">Motivo</th>
                                     <th>Estado</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <?php foreach ($rows as $c): ?>
                                     <tr>
-                                        <td class="text-nowrap small"><?= htmlspecialchars(date('d/m/Y H:i', strtotime((string) $c['fecha']))) ?></td>
-                                        <td class="small text-start">
-                                            <span class="fw-medium"><?= htmlspecialchars($nombreSocio($c)) ?></span>
+                                        <td class="text-nowrap text-sm"><?= htmlspecialchars(date('d/m/Y H:i', strtotime((string) $c['fecha']))) ?></td>
+                                        <td class="text-sm text-left">
+                                            <span class="font-medium"><?= htmlspecialchars($nombreSocio($c)) ?></span>
                                             <?php if (!empty($c['cli_email'])): ?>
-                                                <div class="text-muted"><?= htmlspecialchars((string) $c['cli_email']) ?></div>
+                                                <div class="text-slate-500"><?= htmlspecialchars((string) $c['cli_email']) ?></div>
                                             <?php endif; ?>
                                             <?php if (!empty($c['cli_dni']) || !empty($c['cli_telefono'])): ?>
-                                                <div class="text-muted">
+                                                <div class="text-slate-500">
                                                     <?php if (!empty($c['cli_dni'])): ?>
                                                         <?= htmlspecialchars((string) $c['cli_dni']) ?>
                                                     <?php endif; ?>
@@ -184,9 +184,9 @@ $toIx = min($total, $page * $perPage);
                                                 </div>
                                             <?php endif; ?>
                                         </td>
-                                        <td class="text-start small"><?= nl2br(htmlspecialchars((string) ($c['motivo'] ?? ''))) ?></td>
+                                        <td class="text-left text-sm"><?= nl2br(htmlspecialchars((string) ($c['motivo'] ?? ''))) ?></td>
                                         <td>
-                                            <span class="badge rounded-pill bg-secondary">
+                                            <span class="badge rounded-full bg-slate-500">
                                                 <?= htmlspecialchars($estadoEtiqueta($c['estado'] ?? null)) ?>
                                             </span>
                                         </td>
@@ -197,7 +197,7 @@ $toIx = min($total, $page * $perPage);
                     </div>
 
                     <?php if ($totalPages > 1): ?>
-                        <nav class="mt-3 d-flex justify-content-center" aria-label="Paginación">
+                        <nav class="mt-4 flex justify-center" aria-label="Paginación">
                             <ul class="pagination pagination-sm mb-0 flex-wrap">
                                 <li class="page-item<?= $page <= 1 ? ' disabled' : '' ?>">
                                     <a class="page-link" href="<?= $page <= 1 ? '#' : htmlspecialchars($buildPageHref($page - 1)) ?>">Anterior</a>
