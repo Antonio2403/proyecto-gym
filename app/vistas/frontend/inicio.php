@@ -1,7 +1,7 @@
 
 <section class="gp-hero">
     <div class="mx-auto w-full max-w-[1320px] lg:max-w-[1024px] xl:max-w-7xl px-3 relative">
-        <div class="items-center flex flex-wrap -mx-3 -mt-12">
+        <div class="items-start flex flex-wrap -mx-3 -mt-12">
             <div class="w-full lg:w-7/12 max-w-full shrink-0 px-3 mt-12">
                 <span class="gp-badge mb-4">Fitness · Comunidad · Resultados</span>
                 <h1 class="gp-hero-title">
