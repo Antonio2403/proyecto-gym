@@ -2081,6 +2081,13 @@ label.gp-label-required::after {
     color: var(--gp-text);
 }
 
+.gp-current-plan-details__mark {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+}
+
 .gp-plans-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(min(100%, 290px), 1fr));
@@ -2207,10 +2214,10 @@ label.gp-label-required::after {
 
 .gp-plan-features li {
     display: flex;
-    gap: 0.55rem;
+    gap: 0.7rem;
     align-items: flex-start;
-    margin-bottom: 0.65rem;
-    line-height: 1.45;
+    margin-bottom: 0.8rem;
+    line-height: 1.35;
     color: var(--gp-text);
 }
 
@@ -2218,14 +2225,51 @@ label.gp-label-required::after {
     margin-bottom: 0;
 }
 
-.gp-plan-ico {
-    flex-shrink: 0;
-    width: 0.45rem;
-    height: 0.45rem;
-    margin-top: 0.38rem;
+.gp-plan-features li strong {
+    display: block;
+    font-weight: 700;
+}
+
+.gp-plan-features li small {
+    display: block;
+    margin-top: 0.12rem;
+    color: var(--gp-muted);
+    font-size: 0.82rem;
+    line-height: 1.35;
+}
+
+.gp-plan-features li.is-no {
+    color: var(--gp-muted);
+}
+
+.gp-plan-features li.is-no strong {
+    font-weight: 600;
+}
+
+.gp-plan-mark {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.45rem;
+    height: 1.45rem;
+    margin-top: 0.05rem;
+    flex: 0 0 auto;
     border-radius: 50%;
-    background: var(--gp-orange);
-    box-shadow: 0 0 0 3px rgba(196, 92, 40, 0.12);
+}
+
+.gp-plan-mark svg {
+    width: 0.95rem;
+    height: 0.95rem;
+}
+
+.gp-plan-mark--yes {
+    background: rgba(47, 143, 74, 0.14);
+    color: var(--gp-green);
+}
+
+.gp-plan-mark--no {
+    background: rgba(192, 57, 43, 0.12);
+    color: #c0392b;
 }
 
 .gp-pay-box {

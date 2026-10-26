@@ -9,6 +9,32 @@ $stripePk = htmlspecialchars($_ENV['STRIPE_PUBLISHABLE_KEY'] ?? '');
 $planesComparativa = $planActivo && $idPlanActual !== null
     ? array_values(array_filter($subscripciones, static fn($s) => (int) ($s['id'] ?? 0) !== $idPlanActual))
     : $subscripciones;
+
+$gpMarcaPlan = static function (bool $incluido): string {
+    $clase = $incluido ? 'gp-plan-mark gp-plan-mark--yes' : 'gp-plan-mark gp-plan-mark--no';
+    $texto = $incluido ? 'Incluida' : 'No incluida';
+    $trazo = $incluido
+        ? '<path d="M3.2 8.4 6.4 11.6 12.8 4.4" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>'
+        : '<path d="M4.2 4.2 11.8 11.8M11.8 4.2 4.2 11.8" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>';
+
+    return '<span class="' . $clase . '" role="img" aria-label="' . $texto . '"><svg viewBox="0 0 16 16" aria-hidden="true">' . $trazo . '</svg></span>';
+};
+
+$gpFilaPlan = static function (bool $incluido, string $titulo, string $detalle = '') use ($gpMarcaPlan): string {
+    $extra = $detalle !== '' ? '<small>' . htmlspecialchars($detalle, ENT_QUOTES, 'UTF-8') . '</small>' : '';
+
+    return '<li class="' . ($incluido ? 'is-yes' : 'is-no') . '">'
+        . $gpMarcaPlan($incluido)
+        . '<span><strong>' . htmlspecialchars($titulo, ENT_QUOTES, 'UTF-8') . '</strong>' . $extra . '</span></li>';
+};
+
+$gpTextoMeses = static function (int $meses): string {
+    if ($meses <= 0) {
+        return 'Sin duración publicada';
+    }
+
+    return $meses === 1 ? '1 mes' : $meses . ' meses';
+};
 ?>
 
 <div class="mx-auto w-full max-w-[1320px] lg:max-w-[1024px] xl:max-w-7xl px-3 py-12">
@@ -55,7 +81,7 @@ $planesComparativa = $planActivo && $idPlanActual !== null
                         <span><strong>Precio:</strong> <?= isset($planActivo['precio']) ? htmlspecialchars((string) $planActivo['precio']) . ' €' : 'no disponible' ?></span>
                         <span><strong>Duración contratada:</strong> <?= (int) ($planActivo['duracion'] ?? 0) ?> mes(es)</span>
                         <span><strong>Clases/semana:</strong> <?= (int) ($planActivo['numero_clases'] ?? 0) > 0 ? (int) $planActivo['numero_clases'] : 'sin límite explícito' ?></span>
-                        <span><strong>Fisio:</strong> <?= (($planActivo['fisio'] ?? '') === 'S') ? 'incluida' : 'no incluida' ?></span>
+                        <span class="gp-current-plan-details__mark"><strong>Fisioterapia</strong> <?= $gpMarcaPlan((($planActivo['fisio'] ?? '') === 'S')) ?></span>
                         <?php if (($planActivo['plan_catalogo_estado'] ?? 'A') !== 'A'): ?>
                             <span><strong>Catálogo:</strong> ya no disponible para nuevas compras</span>
                         <?php endif; ?>
@@ -88,6 +114,9 @@ $planesComparativa = $planActivo && $idPlanActual !== null
             $clasesPorSemana = (int) ($sub['numero_clases'] ?? 0);
             $durMeses = (int) ($sub['duracion'] ?? 0);
             $conFisio = (($sub['fisio'] ?? '') === 'S');
+            $precioNum = isset($sub['precio']) && $sub['precio'] !== '' ? (float) $sub['precio'] : null;
+            $cuotaMes = ($precioNum !== null && $durMeses > 0) ? $precioNum / $durMeses : null;
+            $textoClases = $clasesPorSemana > 0 ? 'Hasta ' . $clasesPorSemana . ' por semana' : 'Sin tope publicado';
             $esOferta = (int) ($sub['en_oferta'] ?? 0) === 1 && !empty($sub['oferta_fin']);
             $ofertaFin = $esOferta ? (string) $sub['oferta_fin'] : '';
             $ofertaMotivo = trim((string) ($sub['oferta_motivo'] ?? 'Oferta limitada'));
@@ -122,15 +151,19 @@ $planesComparativa = $planActivo && $idPlanActual !== null
                     <?php endif; ?>
                 </header>
 
-                <div class="gp-plan-comparison text-sm grow">
-                    <div><span>Duración</span><strong><?= $durMeses > 0 ? $durMeses . ' mes(es)' : 'no definida' ?></strong></div>
-                    <div><span>Clases/semana</span><strong><?= $clasesPorSemana > 0 ? 'hasta ' . $clasesPorSemana : 'sin límite explícito' ?></strong></div>
-                    <div><span>Fisioterapia</span><strong><?= $conFisio ? 'incluida' : 'no incluida' ?></strong></div>
+                <div class="gp-plan-comparison text-sm">
+                    <div><span>Duración</span><strong><?= htmlspecialchars($gpTextoMeses($durMeses)) ?></strong></div>
+                    <div><span>Clases/semana</span><strong><?= $clasesPorSemana > 0 ? 'hasta ' . $clasesPorSemana : 'sin tope' ?></strong></div>
+                    <div><span>Cuota media</span><strong><?= $cuotaMes !== null ? htmlspecialchars(number_format($cuotaMes, 2, ',', '.') . ' €/mes') : '—' ?></strong></div>
                 </div>
 
-                <ul class="gp-plan-features list-none ps-0 text-sm my-6">
-                    <li><span class="gp-plan-ico" aria-hidden="true"></span> Reserva plaza en actividades desde la app web.</li>
-                    <li><span class="gp-plan-ico" aria-hidden="true"></span> Atención en recepción y cambios tramitados en el centro.</li>
+                <ul class="gp-plan-features list-none ps-0 text-sm my-6 grow">
+                    <?= $gpFilaPlan(true, 'Reserva online', 'Elige la actividad y guarda tu plaza') ?>
+                    <?= $gpFilaPlan(true, 'Horario del centro', 'Ves sala, monitor y día antes de apuntarte') ?>
+                    <?= $gpFilaPlan(true, 'Clases guiadas', $textoClases) ?>
+                    <?= $gpFilaPlan($conFisio, 'Fisioterapia', $conFisio ? 'Puedes pedir cita desde tu cuenta' : '') ?>
+                    <?= $gpFilaPlan(true, 'Pago con Stripe', 'Contratas el plan desde esta página') ?>
+                    <?= $gpFilaPlan(true, 'Recepción', 'Altas, cambios y bajas se tramitan en el centro') ?>
                 </ul>
 
                 <?php if ($bloqueadoPorOtroPlan): ?>
