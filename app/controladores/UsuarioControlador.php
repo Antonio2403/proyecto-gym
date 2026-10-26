@@ -232,7 +232,7 @@ class UsuarioControlador extends Controller
             exit;
         }
 
-        header('Location: ' . url('/login') . '?success=' . rawurlencode('Registro correcto. Revisa tu correo (usa una dirección real) y pulsa el enlace para activar la cuenta; hasta entonces no podrás iniciar sesión.'));
+        header('Location: ' . url('/login') . '?success=' . rawurlencode('Registro correcto. Revisa tu correo y pulsa el enlace para activar la cuenta; hasta entonces no podrás iniciar sesión. Si es Gmail, mira también Spam y Promociones.'));
         exit;
     }
 
