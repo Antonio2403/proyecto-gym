@@ -28,7 +28,6 @@
 </aside>
 <?php endif; ?>
 <script defer src="<?= htmlspecialchars(asset('js/vendor/gsap.min.js')) ?>"></script>
-<script defer src="<?= htmlspecialchars(asset('js/gp-page-transition.js')) ?>"></script>
 <script defer src="<?= htmlspecialchars(asset('js/gp-flash-banner.js')) ?>"></script>
 <script defer src="<?= htmlspecialchars(asset('js/gp-gsap-motion.js')) ?>"></script>
 <script defer src="<?= htmlspecialchars(asset('js/gp-confirm-modal.js')) ?>"></script>
