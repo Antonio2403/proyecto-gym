@@ -1000,17 +1000,18 @@ body::-webkit-scrollbar-corner,
         flex: 0 0 auto;
         width: 100%;
         height: auto;
-        aspect-ratio: 0.73;
+        aspect-ratio: 0.92;
         overflow: hidden;
     }
 
     .gp-hero-poster__photo {
         position: absolute;
-        top: 0;
-        left: -69.6%;
-        width: 217.4%;
-        height: auto;
+        inset: 0;
+        width: 100%;
+        height: 100%;
         max-width: none;
+        object-fit: cover;
+        object-position: center bottom;
     }
 
     .gp-hero-poster__shade {
