@@ -1084,6 +1084,10 @@ body::-webkit-scrollbar-corner,
     object-position: center 18%;
 }
 
+.gp-photo--barra {
+    object-position: center 32%;
+}
+
 .gp-photo-frame--hero {
     height: min(22rem, 64vw);
 }
