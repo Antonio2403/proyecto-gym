@@ -999,15 +999,16 @@ body::-webkit-scrollbar-corner,
         right: auto;
         flex: 0 0 auto;
         width: 100%;
-        height: min(28rem, 118vw);
+        height: auto;
+        aspect-ratio: 0.87;
         overflow: hidden;
     }
 
     .gp-hero-poster__photo {
         position: absolute;
-        top: -24%;
-        left: -86%;
-        width: 227%;
+        top: 0;
+        left: -140%;
+        width: 280%;
         height: auto;
         max-width: none;
     }
