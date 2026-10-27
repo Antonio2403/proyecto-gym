@@ -61,8 +61,8 @@
             </figure>
             <figure class="gp-photo-card">
                 <div class="gp-photo-frame">
-                    <img class="gp-photo" src="<?= htmlspecialchars(asset('img/pixabay/equipo.jpg')) ?>"
-                         width="1280" height="853" alt="Grupo entrenando juntos en el gimnasio">
+                    <img class="gp-photo" src="<?= htmlspecialchars(asset('img/pexels/clases-grupo.jpg')) ?>"
+                         width="1600" height="534" alt="Grupo haciendo ejercicio en una clase">
                 </div>
                 <figcaption>Clases en grupo</figcaption>
             </figure>
