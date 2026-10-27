@@ -875,32 +875,32 @@ body::-webkit-scrollbar-corner,
 .gp-hero-poster__shade {
     position: absolute;
     inset: 0;
-    background: linear-gradient(90deg, #2c3544 0%, #2c3544 42%, rgba(44, 53, 68, 0.88) 56%, rgba(44, 53, 68, 0.28) 70%, rgba(44, 53, 68, 0) 82%);
+    background: linear-gradient(90deg, #2c3544 0%, #2c3544 46%, rgba(44, 53, 68, 0.94) 62%, rgba(44, 53, 68, 0.5) 76%, rgba(44, 53, 68, 0) 90%);
     pointer-events: none;
 }
 
 .gp-hero-poster__copy {
     position: relative;
     z-index: 1;
-    width: min(52rem, 62%);
+    width: min(80rem, 92%);
     padding: clamp(2.25rem, 5vw, 4.5rem) clamp(1.35rem, 3.2vw, 3rem);
 }
 
 .site-body .gp-hero--poster .gp-hero-title {
-    margin-bottom: 1.35rem;
+    margin-bottom: 1.5rem;
     color: #fff;
-    font-size: clamp(3.8rem, 6.6vw, 6.35rem);
+    font-size: clamp(5.2rem, 9.1vw, 9.6rem);
     font-weight: 800;
-    line-height: 0.92;
-    letter-spacing: -0.045em;
+    line-height: 0.9;
+    letter-spacing: -0.05em;
 }
 
 .site-body .gp-hero--poster .gp-hero-lead {
-    max-width: 34rem;
-    margin-bottom: 1.85rem;
+    max-width: 48rem;
+    margin-bottom: 2rem;
     color: rgba(255, 255, 255, 0.92);
-    font-size: clamp(1.2rem, 1.85vw, 1.55rem);
-    line-height: 1.45;
+    font-size: clamp(1.6rem, 2.4vw, 2.2rem);
+    line-height: 1.35;
 }
 
 .gp-hero-poster__actions {
@@ -911,7 +911,8 @@ body::-webkit-scrollbar-corner,
 
 .gp-hero--poster .btn {
     border-radius: 0.8rem;
-    padding-inline: 1.35rem;
+    padding: 1.05rem 1.9rem;
+    font-size: 1.35rem;
     box-shadow: none;
 }
 
@@ -1038,6 +1039,11 @@ body::-webkit-scrollbar-corner,
 
     .gp-hero-poster__actions {
         gap: 0.9rem;
+    }
+
+    .gp-hero--poster .btn {
+        padding: 0.6rem 1.35rem;
+        font-size: 1.05rem;
     }
 
     .gp-hero-poster__points {
