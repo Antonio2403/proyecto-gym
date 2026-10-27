@@ -54,8 +54,8 @@
             </figure>
             <figure class="gp-photo-card">
                 <div class="gp-photo-frame">
-                    <img class="gp-photo" src="<?= htmlspecialchars(asset('img/pixabay/yoga.jpg')) ?>"
-                         width="853" height="1280" alt="Sesión de yoga en una sala luminosa">
+                    <img class="gp-photo" src="<?= htmlspecialchars(asset('img/unsplash/yoga-grupo.jpg')) ?>"
+                         width="1600" height="1067" alt="Grupo de mujeres en una clase de yoga">
                 </div>
                 <figcaption>Yoga y movilidad</figcaption>
             </figure>
