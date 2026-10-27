@@ -18,12 +18,13 @@
     <link rel="stylesheet" href="<?= htmlspecialchars(asset('css/tailwind.css')) ?>">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
           integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer">
-    <link rel="stylesheet" href="<?= htmlspecialchars(asset('css/app-theme.css')) ?>?v=20261027d">
+    <link rel="stylesheet" href="<?= htmlspecialchars(asset('css/app-theme.css')) ?>?v=20261027e">
     <!-- También en la página: si el navegador conserva el CSS anterior, la portada vuelve al diseño viejo. -->
     <style>
         .site-body .btn { border-radius: 999px; }
         .gp-photo-frame { width: 100%; overflow: hidden; }
         .gp-photo { display: block; width: 100%; height: 100%; max-width: none; object-fit: cover; object-position: center; }
+        .gp-photo--pesas { object-position: center 18%; }
         .gp-photo-strip { display: grid; grid-template-columns: 1fr; gap: 1rem; align-items: stretch; }
         .gp-photo-card { min-width: 0; margin: 0; }
         .gp-photo-card .gp-photo-frame { width: 100%; height: 14rem; }

@@ -1080,6 +1080,10 @@ body::-webkit-scrollbar-corner,
     object-position: center;
 }
 
+.gp-photo--pesas {
+    object-position: center 18%;
+}
+
 .gp-photo-frame--hero {
     height: min(22rem, 64vw);
 }

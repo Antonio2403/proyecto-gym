@@ -47,8 +47,8 @@
         <div class="gp-photo-strip">
             <figure class="gp-photo-card">
                 <div class="gp-photo-frame">
-                    <img class="gp-photo" src="<?= htmlspecialchars(asset('img/pixabay/mancuernas.jpg')) ?>"
-                         width="1280" height="853" alt="Mancuernas ordenadas en la zona de pesas">
+                    <img class="gp-photo gp-photo--pesas" src="<?= htmlspecialchars(asset('img/unsplash/zona-pesas.jpg')) ?>"
+                         width="1600" height="1067" alt="Mujer de pie entre las máquinas de la zona de pesas">
                 </div>
                 <figcaption>Zona de pesas</figcaption>
             </figure>
