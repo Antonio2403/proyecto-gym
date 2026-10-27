@@ -18,7 +18,7 @@
     <link rel="stylesheet" href="<?= htmlspecialchars(asset('css/tailwind.css')) ?>">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
           integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer">
-    <link rel="stylesheet" href="<?= htmlspecialchars(asset('css/app-theme.css')) ?>?v=20261026c">
+    <link rel="stylesheet" href="<?= htmlspecialchars(asset('css/app-theme.css')) ?>?v=20261027a">
     <!-- También en la página: si el navegador conserva el CSS anterior, la portada vuelve al diseño viejo. -->
     <style>
         .site-body .btn { border-radius: 999px; }
@@ -29,7 +29,8 @@
         .gp-photo-card .gp-photo-frame { width: 100%; height: 14rem; }
         .gp-hero--poster { display: flex; flex-direction: column; min-height: calc(100svh - 4.25rem); padding: 0; background: #2c3544; border-bottom: 0; overflow: hidden; }
         .gp-hero-poster__stage { position: relative; flex: 1 1 auto; display: flex; align-items: center; min-height: 28rem; background: #2c3544; }
-        .gp-hero-poster__photo { position: absolute; top: 0; right: 0; width: 48%; height: 100%; max-width: none; object-fit: cover; object-position: center 14%; }
+        .gp-hero-poster__frame { position: absolute; top: 0; right: 0; width: 48%; height: 100%; overflow: hidden; }
+        .gp-hero-poster__photo { display: block; width: 100%; height: 100%; max-width: none; object-fit: cover; object-position: center 14%; }
         .gp-hero-poster__shade { position: absolute; inset: 0; background: linear-gradient(90deg, #2c3544 0%, #2c3544 42%, rgba(44, 53, 68, 0.88) 56%, rgba(44, 53, 68, 0.28) 70%, rgba(44, 53, 68, 0) 82%); pointer-events: none; }
         .gp-hero-poster__copy { position: relative; z-index: 1; width: min(52rem, 62%); padding: clamp(2.25rem, 5vw, 4.5rem) clamp(1.35rem, 3.2vw, 3rem); }
         .site-body .gp-hero--poster .gp-hero-title { margin-bottom: 1.35rem; color: #fff; font-size: clamp(3.8rem, 6.6vw, 6.35rem); font-weight: 800; line-height: 0.92; letter-spacing: -0.045em; }
@@ -45,8 +46,10 @@
             .gp-photo-strip { grid-template-columns: repeat(3, minmax(0, 1fr)); }
         }
         @media (max-width: 860px) {
-            .gp-hero-poster__stage { flex-direction: column; align-items: stretch; min-height: 0; }
-            .gp-hero-poster__photo { position: relative; order: 2; width: 100%; height: min(16.5rem, 58vw); }
+            .gp-hero--poster { min-height: 0; }
+            .gp-hero-poster__stage { flex: 0 0 auto; flex-direction: column; align-items: stretch; min-height: 0; }
+            .gp-hero-poster__frame { position: relative; order: 2; top: auto; right: auto; flex: 0 0 auto; width: 100%; height: min(28rem, 118vw); overflow: hidden; }
+            .gp-hero-poster__photo { position: absolute; top: -24%; left: -86%; width: 227%; height: auto; max-width: none; }
             .gp-hero-poster__shade { display: none; }
             .gp-hero-poster__copy { order: 1; width: 100%; padding: 2.6rem 1.4rem 2.6rem; }
             .site-body .gp-hero--poster .gp-hero-title { font-size: clamp(2.95rem, 13vw, 3.85rem); line-height: 1.08; margin-bottom: 1.25rem; }

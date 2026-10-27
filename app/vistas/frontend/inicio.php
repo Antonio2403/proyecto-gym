@@ -1,8 +1,10 @@
 
 <section class="gp-hero gp-hero--poster">
     <div class="gp-hero-poster__stage">
-        <img class="gp-hero-poster__photo" src="<?= htmlspecialchars(asset('img/pexels/hero-capacitacion.jpg')) ?>"
-             width="1600" height="2400" alt="Mujer entrenando con una mancuerna en un gimnasio">
+        <div class="gp-hero-poster__frame">
+            <img class="gp-hero-poster__photo" src="<?= htmlspecialchars(asset('img/pexels/hero-capacitacion.jpg')) ?>"
+                 width="1600" height="2400" alt="Mujer entrenando con una mancuerna en un gimnasio">
+        </div>
         <div class="gp-hero-poster__shade" aria-hidden="true"></div>
         <div class="gp-hero-poster__copy">
             <h1 class="gp-hero-title">
