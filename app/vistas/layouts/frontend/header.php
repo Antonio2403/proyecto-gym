@@ -15,10 +15,10 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..700&family=Outfit:wght@500..800&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" href="<?= htmlspecialchars(asset('css/tailwind.css')) ?>">
+    <link rel="stylesheet" href="<?= htmlspecialchars(asset('css/tailwind.css')) ?>?v=20261029g">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
           integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer">
-    <link rel="stylesheet" href="<?= htmlspecialchars(asset('css/app-theme.css')) ?>?v=20261029f">
+    <link rel="stylesheet" href="<?= htmlspecialchars(asset('css/app-theme.css')) ?>?v=20261029g">
     <!-- También en la página: si el navegador conserva el CSS anterior, la portada vuelve al diseño viejo. -->
     <style>
         .site-body .btn { border-radius: 999px; }
@@ -29,11 +29,11 @@
         .gp-photo-strip { display: grid; grid-template-columns: 1fr; gap: 1rem; align-items: stretch; }
         .gp-photo-card { min-width: 0; margin: 0; }
         .gp-photo-card .gp-photo-frame { width: 100%; height: 14rem; }
-        .gp-hero--poster { display: flex; flex-direction: column; min-height: calc(100svh - 4.25rem); padding: 0; background: #2c3544; border-bottom: 0; overflow: hidden; }
-        .gp-hero-poster__stage { position: relative; flex: 1 1 auto; display: flex; align-items: center; min-height: 28rem; background: #2c3544; }
+        .gp-hero--poster { display: flex; flex-direction: column; min-height: calc(100svh - 4.25rem); padding: 0; background: var(--gp-navy); border-bottom: 0; overflow: hidden; }
+        .gp-hero-poster__stage { position: relative; flex: 1 1 auto; display: flex; align-items: center; min-height: 28rem; background: var(--gp-navy); }
         .gp-hero-poster__frame { position: absolute; top: 0; right: 0; width: 48%; height: 100%; overflow: hidden; }
         .gp-hero-poster__photo { display: block; width: 100%; height: 100%; max-width: none; object-fit: cover; object-position: center 14%; }
-        .gp-hero-poster__shade { position: absolute; inset: 0; background: linear-gradient(90deg, #2c3544 0%, #2c3544 46%, rgba(44, 53, 68, 0.94) 62%, rgba(44, 53, 68, 0.5) 76%, rgba(44, 53, 68, 0) 90%); pointer-events: none; }
+        .gp-hero-poster__shade { position: absolute; inset: 0; background: linear-gradient(90deg, var(--gp-navy) 0%, var(--gp-navy) 46%, color-mix(in srgb, var(--gp-navy) 94%, transparent) 62%, color-mix(in srgb, var(--gp-navy) 50%, transparent) 76%, transparent 90%); pointer-events: none; }
         .gp-hero-poster__copy { position: relative; z-index: 1; width: min(80rem, 92%); padding: clamp(2.25rem, 5vw, 4.5rem) clamp(1.35rem, 3.2vw, 3rem); }
         .site-body .gp-hero--poster .gp-hero-title { margin-bottom: 1.5rem; color: #fff; font-size: clamp(5.2rem, 9.1vw, 9.6rem); font-weight: 800; line-height: 0.9; letter-spacing: -0.05em; }
         .site-body .gp-hero--poster .gp-hero-lead { max-width: 48rem; margin-bottom: 2rem; color: rgba(255, 255, 255, 0.92); font-size: clamp(1.6rem, 2.4vw, 2.2rem); line-height: 1.35; }
@@ -43,8 +43,8 @@
         .gp-hero--poster .btn-outline-light { border: 1px solid rgba(255, 255, 255, 0.85); background: transparent; color: #fff; }
         .gp-hero-poster__strip { background: #fff; }
         .gp-hero-poster__points { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); width: min(100%, 80rem); margin: 0 auto; padding: 1.15rem 1.25rem; list-style: none; text-align: center; }
-        .gp-hero-poster__points li { color: #2c3544; font-weight: 600; }
-        .gp-hero-poster__points a { color: #c45c28; font-weight: 700; text-decoration: none; }
+        .gp-hero-poster__points li { color: var(--gp-navy); font-weight: 600; }
+        .gp-hero-poster__points a { color: var(--gp-orange); font-weight: 700; text-decoration: none; }
         @media (min-width: 768px) {
             .gp-photo-strip { grid-template-columns: repeat(3, minmax(0, 1fr)); }
         }

@@ -16,6 +16,7 @@
     --gp-border-light: #e8ecf2;
     --gp-orange: #c45c28;
     --gp-orange-hover: #a84d21;
+    --gp-orange-bright: #dd6b32;
     --gp-orange-soft: rgba(196, 92, 40, 0.12);
     --gp-teal: #0d9488;
     --gp-teal-soft: rgba(13, 148, 136, 0.12);
@@ -31,22 +32,22 @@
     --gp-font: "DM Sans", system-ui, -apple-system, sans-serif;
     --gp-display: "Outfit", system-ui, sans-serif;
 
-    /* Horario (vars compartidas) */
+    /* Horario: los mismos colores de la paleta */
     --gp-sch-bg: #e4e9f0;
-    --gp-sch-navy: #2c3544;
-    --gp-sch-text: #1e293b;
-    --gp-sch-muted: #64748b;
-    --gp-sch-blue: #3b7dd6;
-    --gp-sch-blue-dark: #2f68b5;
-    --gp-sch-green: #2f8f4a;
-    --gp-sch-green-hover: #267a3e;
-    --gp-sch-orange: #c45c28;
-    --gp-sch-orange-hover: #a84d21;
+    --gp-sch-navy: var(--gp-navy);
+    --gp-sch-text: var(--gp-text);
+    --gp-sch-muted: var(--gp-muted);
+    --gp-sch-blue: var(--gp-blue);
+    --gp-sch-blue-dark: var(--gp-blue-mid);
+    --gp-sch-green: var(--gp-green);
+    --gp-sch-green-hover: var(--gp-green-hover);
+    --gp-sch-orange: var(--gp-orange);
+    --gp-sch-orange-hover: var(--gp-orange-hover);
     --gp-sch-cell-border: #cdd6e4;
 
     /* Scrollbars (solo WebKit/Blink; ver bloque ::-webkit-scrollbar) */
-    --gp-scrollbar-thumb: #c45c28;
-    --gp-scrollbar-thumb-hover: #dd6b32;
+    --gp-scrollbar-thumb: var(--gp-orange);
+    --gp-scrollbar-thumb-hover: var(--gp-orange-bright);
     --gp-scrollbar-track: #1f2937;
 }
 
@@ -246,7 +247,7 @@ body::-webkit-scrollbar-corner,
 
 .site-navbar .gp-navbar-cta:hover,
 .site-navbar .gp-navbar-cta:focus {
-    background: #d96a2f;
+    background: var(--gp-orange-hover);
     color: var(--gp-white) !important;
     transform: translateY(-1px);
     box-shadow: 0 4px 14px rgba(0, 0, 0, 0.16);
@@ -840,7 +841,7 @@ body::-webkit-scrollbar-corner,
     flex-direction: column;
     min-height: calc(100svh - 4.25rem);
     padding: 0;
-    background: #2c3544;
+    background: var(--gp-navy);
     border-bottom: 0;
     overflow: hidden;
 }
@@ -851,7 +852,7 @@ body::-webkit-scrollbar-corner,
     display: flex;
     align-items: center;
     min-height: 28rem;
-    background: #2c3544;
+    background: var(--gp-navy);
 }
 
 .gp-hero-poster__frame {
@@ -875,7 +876,7 @@ body::-webkit-scrollbar-corner,
 .gp-hero-poster__shade {
     position: absolute;
     inset: 0;
-    background: linear-gradient(90deg, #2c3544 0%, #2c3544 46%, rgba(44, 53, 68, 0.94) 62%, rgba(44, 53, 68, 0.5) 76%, rgba(44, 53, 68, 0) 90%);
+    background: linear-gradient(90deg, var(--gp-navy) 0%, var(--gp-navy) 46%, color-mix(in srgb, var(--gp-navy) 94%, transparent) 62%, color-mix(in srgb, var(--gp-navy) 50%, transparent) 76%, transparent 90%);
     pointer-events: none;
 }
 
@@ -957,7 +958,7 @@ body::-webkit-scrollbar-corner,
 }
 
 .gp-hero-poster__points li {
-    color: #2c3544;
+    color: var(--gp-navy);
     font-size: 1.12rem;
     font-weight: 600;
 }
@@ -1647,10 +1648,12 @@ body::-webkit-scrollbar-corner,
     border-color: rgba(255, 255, 255, 0.45) !important;
 }
 
-.gp-schedule-opiniones:hover {
-    color: #ffffff !important;
-    background: rgba(15, 23, 42, 0.55) !important;
-    border-color: rgba(255, 255, 255, 0.55) !important;
+.gp-schedule-opiniones:hover,
+.gp-schedule-act--enrolled-done + .gp-btn-sesion-finalizada + .gp-schedule-opiniones:hover,
+.gp-schedule-act--past ~ .gp-btn-sesion-pasada + .gp-schedule-opiniones:hover {
+    color: var(--gp-white) !important;
+    background: var(--gp-orange) !important;
+    border-color: var(--gp-orange) !important;
 }
 
 .gp-schedule-act-body strong {
@@ -3599,7 +3602,7 @@ label.gp-label-required::after {
     align-items: center;
     gap: 0.85rem;
     padding: 1rem 1.15rem;
-    background: linear-gradient(135deg, var(--gp-navy), #384356);
+    background: linear-gradient(135deg, var(--gp-navy), var(--gp-navy-mid));
     color: #fff;
 }
 
