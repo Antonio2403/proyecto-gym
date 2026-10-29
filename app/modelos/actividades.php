@@ -154,6 +154,42 @@ class Actividad
         return $inicio !== null && time() < $inicio;
     }
 
+    public static function sesionCanceladaPorMinimo(int $actividadId, string $fechaYmd): bool
+    {
+        if ($actividadId <= 0 || !preg_match('/^\d{4}-\d{2}-\d{2}$/', $fechaYmd)) {
+            return false;
+        }
+        $conexion = BasedeDatos::Conectar();
+        $st = $conexion->prepare(
+            'SELECT 1 FROM actividad_sesion_cancelada WHERE actividad_id = ? AND fecha = ? LIMIT 1'
+        );
+        $st->execute([$actividadId, $fechaYmd]);
+
+        return (bool) $st->fetchColumn();
+    }
+
+    /**
+     * @return array<string, int> clave actividadId_Y-m-d => personas que había al cancelar
+     */
+    public static function mapaSesionesCanceladas(string $desdeYmd, string $hastaYmd): array
+    {
+        if (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $desdeYmd) || !preg_match('/^\d{4}-\d{2}-\d{2}$/', $hastaYmd)) {
+            return [];
+        }
+        $conexion = BasedeDatos::Conectar();
+        $st = $conexion->prepare(
+            'SELECT actividad_id, fecha, inscritos FROM actividad_sesion_cancelada WHERE fecha BETWEEN ? AND ?'
+        );
+        $st->execute([$desdeYmd, $hastaYmd]);
+        $map = [];
+        foreach ($st->fetchAll(PDO::FETCH_ASSOC) as $row) {
+            $fecha = substr((string) $row['fecha'], 0, 10);
+            $map[(int) $row['actividad_id'] . '_' . $fecha] = (int) $row['inscritos'];
+        }
+
+        return $map;
+    }
+
     public static function sesionHaFinalizado(array $actividad, string $fechaOcurrenciaYmd): bool
     {
         $inicio = self::inicioSesionTimestamp($actividad, $fechaOcurrenciaYmd);

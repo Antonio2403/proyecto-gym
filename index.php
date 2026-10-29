@@ -44,6 +44,13 @@ if (!empty($_SESSION['usuario_id']) && $sessionTtl > 0) {
 
 require_once __DIR__ . '/app/modelos/usuario.php';
 
+try {
+    require_once __DIR__ . '/core/helpers/actividad_minimo.php';
+    gp_actividad_revisar_minimo_asistencia();
+} catch (Throwable $e) {
+    error_log('[Spartum actividad] revisión de mínimo: ' . $e->getMessage());
+}
+
 if (!empty($_SESSION['usuario_id'])) {
     $bloqueoSesion = Usuario::estadoBloqueo((int) $_SESSION['usuario_id']);
     if (!empty($bloqueoSesion['bloqueado'])) {

@@ -118,6 +118,15 @@ class InscripcionControlador extends Controller
             exit;
         }
 
+        if (Actividad::sesionCanceladaPorMinimo($actividad_id, $fecha_sesion)) {
+            header(
+                'Location: ' . url('/usuario/actividades') . '?error=' . rawurlencode(
+                    'Esta clase se ha cancelado porque no había al menos 5 personas apuntadas.'
+                )
+            );
+            exit;
+        }
+
         if (!Actividad::sesionPermiteInscripcion($actividad, $fecha_sesion)) {
             header(
                 'Location: ' . url('/usuario/actividades') . '?error=' . rawurlencode(

@@ -23,6 +23,7 @@ DROP TABLE IF EXISTS `comentarios`;
 DROP TABLE IF EXISTS `inscripciones`;
 DROP TABLE IF EXISTS `cliente_subscripcion`;
 DROP TABLE IF EXISTS `solicitudes`;
+DROP TABLE IF EXISTS `actividad_sesion_cancelada`;
 DROP TABLE IF EXISTS `actividad_dias`;
 DROP TABLE IF EXISTS `actividades`;
 DROP TABLE IF EXISTS `salas`;
@@ -133,6 +134,15 @@ CREATE TABLE `actividad_dias` (
     `dia_semana` ENUM('L','M','X','J','V','S','D') NOT NULL,
     PRIMARY KEY (`actividad_id`, `dia_semana`),
     CONSTRAINT `fk_actividad_dias_actividad` FOREIGN KEY (`actividad_id`) REFERENCES `actividades` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `actividad_sesion_cancelada` (
+    `actividad_id` INT NOT NULL,
+    `fecha` DATE NOT NULL,
+    `inscritos` INT NOT NULL DEFAULT 0,
+    `minimo` INT NOT NULL DEFAULT 5,
+    `cancelada_en` DATETIME NOT NULL,
+    PRIMARY KEY (`actividad_id`, `fecha`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `inscripciones` (

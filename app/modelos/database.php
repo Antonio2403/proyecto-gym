@@ -87,6 +87,7 @@ class BasedeDatos
                 $conexionDB->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
                 $conexionDB->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
                 self::asegurarColorActividad($conexionDB);
+                self::asegurarCancelacionSesion($conexionDB);
 
                 return $conexionDB;
             }
@@ -404,6 +405,30 @@ class BasedeDatos
         }
     }
 
+    private static $cancelacionSesionLista = false;
+
+    private static function asegurarCancelacionSesion(PDO $db): void
+    {
+        if (self::$cancelacionSesionLista) {
+            return;
+        }
+        try {
+            $db->exec(
+                'CREATE TABLE IF NOT EXISTS actividad_sesion_cancelada (
+                    actividad_id INT NOT NULL,
+                    fecha DATE NOT NULL,
+                    inscritos INT NOT NULL DEFAULT 0,
+                    minimo INT NOT NULL DEFAULT 5,
+                    cancelada_en DATETIME NOT NULL,
+                    PRIMARY KEY (actividad_id, fecha)
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8'
+            );
+            self::$cancelacionSesionLista = true;
+        } catch (\Throwable $e) {
+            error_log('[Spartum BD] cancelacion sesion: ' . $e->getMessage());
+        }
+    }
+
     private static function columnExists(PDO $db, string $table, string $column): bool
     {
         $st = $db->prepare(
@@ -544,6 +569,7 @@ class BasedeDatos
     {
         try {
             self::asegurarColorActividad($db);
+            self::asegurarCancelacionSesion($db);
             if (!self::columnExists($db, 'actividades', 'recurrente')) {
                 $db->exec(
                     'ALTER TABLE actividades ADD COLUMN recurrente TINYINT(1) NOT NULL DEFAULT 1 AFTER plazas'

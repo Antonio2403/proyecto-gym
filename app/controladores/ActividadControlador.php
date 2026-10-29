@@ -82,6 +82,7 @@ class ActividadControlador extends Controller
         }
 
         $sesionReservablePorCelda = Actividad::mapaSesionesReservablesEnSemana($actividades, $weekStart);
+        $sesionesCanceladas = Actividad::mapaSesionesCanceladas($weekStart, $weekEnd);
 
         $usuarioId = (int) ($_SESSION['usuario_id'] ?? 0);
         $rol = (string) ($_SESSION['rol'] ?? '');
@@ -109,6 +110,7 @@ class ActividadControlador extends Controller
             'actividades' => $actividades,
             'inscritos_por_celda' => $inscritosPorCelda,
             'sesion_reservable_por_celda' => $sesionReservablePorCelda,
+            'sesiones_canceladas' => $sesionesCanceladas,
             'semana_offset' => $semana,
             'week_label' => $weekLabel,
             'schedule_week_monday' => $weekStart,
