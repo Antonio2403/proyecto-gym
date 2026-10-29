@@ -13,10 +13,6 @@
     <div class="flex flex-wrap -mx-3 -mt-6">
         <div class="w-full md:w-1/2 lg:w-1/3 max-w-full shrink-0 px-3 mt-6">
             <div class="gp-stat-card h-full">
-                <div class="gp-photo-frame mb-4" style="height: 9rem;">
-                    <img class="gp-photo" src="<?= htmlspecialchars(asset('img/pixabay/equipo.jpg')) ?>"
-                         width="1280" height="853" alt="Clase colectiva en el gimnasio">
-                </div>
                 <div class="gp-icon">📅</div>
                 <h3 class="text-xl mb-2">Horario</h3>
                 <p class="text-slate-500 text-sm mb-4">Consulta actividades y apunta tu plaza.</p>
