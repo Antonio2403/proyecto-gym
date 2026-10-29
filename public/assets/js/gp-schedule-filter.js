@@ -6,7 +6,6 @@
         return;
     }
 
-    var toggle = root.querySelector('[data-gp-class-filter-toggle]');
     var panel = root.querySelector('[data-gp-class-filter-panel]');
     var label = root.querySelector('[data-gp-class-filter-label]');
     var clearBtn = root.querySelector('[data-gp-class-filter-clear]');
@@ -65,20 +64,6 @@
         label.textContent = ids.length + ' clases';
     }
 
-    function setOpen(open) {
-        if (!panel || !toggle) {
-            return;
-        }
-        panel.hidden = !open;
-        toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
-    }
-
-    if (toggle) {
-        toggle.addEventListener('click', function () {
-            setOpen(panel.hidden);
-        });
-    }
-
     Array.prototype.forEach.call(boxes, function (box) {
         box.addEventListener('change', apply);
     });
@@ -91,16 +76,4 @@
             apply();
         });
     }
-
-    document.addEventListener('click', function (event) {
-        if (!root.contains(event.target)) {
-            setOpen(false);
-        }
-    });
-
-    document.addEventListener('keydown', function (event) {
-        if (event.key === 'Escape') {
-            setOpen(false);
-        }
-    });
 })();

@@ -33,7 +33,7 @@ uasort($clasesFiltro, static function (array $a, array $b): int {
 <div class="gp-schedule-page py-6 lg:py-12">
     <div class="relative w-full lg:px-12">
         <div class="gp-schedule-panel shadow-sm">
-            <div class="gp-photo-frame" style="height: 9rem; border-radius: 0; border: 0;">
+            <div class="gp-photo-frame" style="height: 9rem; border: 0;">
                 <img class="gp-photo" src="<?= htmlspecialchars(asset('img/pixabay/equipo.jpg')) ?>"
                      width="1280" height="853" alt="Clase en grupo en la sala del gimnasio">
             </div>
@@ -98,32 +98,11 @@ uasort($clasesFiltro, static function (array $a, array $b): int {
                 </div>
             </div>
 
-            <?php if ($clasesFiltro !== []): ?>
-            <div class="gp-schedule-filter px-4 md:px-6 pb-4" data-gp-class-filter>
-                <label class="gp-schedule-filter__label" id="gp-class-filter-label">Filtrar clases</label>
-                <div class="gp-schedule-filter__control">
-                    <button type="button" class="gp-schedule-filter__btn" data-gp-class-filter-toggle
-                            aria-haspopup="listbox" aria-expanded="false" aria-labelledby="gp-class-filter-label">
-                        <span data-gp-class-filter-label>Todas las clases</span>
-                    </button>
-                    <div class="gp-schedule-filter__panel" data-gp-class-filter-panel hidden role="listbox" aria-multiselectable="true">
-                        <?php foreach ($clasesFiltro as $clase): ?>
-                            <label class="gp-schedule-filter__opt">
-                                <input type="checkbox" value="<?= (int) $clase['id'] ?>" data-nombre="<?= htmlspecialchars($clase['nombre']) ?>">
-                                <span class="gp-schedule-filter__swatch" style="background: <?= htmlspecialchars($clase['color']) ?>"></span>
-                                <span><?= htmlspecialchars($clase['nombre']) ?></span>
-                            </label>
-                        <?php endforeach; ?>
-                        <button type="button" class="gp-schedule-filter__clear" data-gp-class-filter-clear>Quitar filtro</button>
-                    </div>
-                </div>
-                <p class="gp-schedule-filter__hint mb-0">Si marcas varias, ves todas las que hayas elegido.</p>
-            </div>
-            <?php endif; ?>
+            <div class="gp-schedule-layout">
+            <div class="gp-schedule-layout__table">
+            <p class="gp-schedule-filter-empty px-2 md:px-4" data-gp-class-filter-empty hidden>Ninguna clase coincide con lo que has marcado.</p>
 
-            <p class="gp-schedule-filter-empty px-4 md:px-6" data-gp-class-filter-empty hidden>Ninguna clase coincide con lo que has marcado.</p>
-
-            <div class="table-responsive gp-schedule-table-wrap px-2 md:px-6 pb-6">
+            <div class="table-responsive gp-schedule-table-wrap px-2 md:px-4 pb-6">
                 <table class="table table-bordered gp-schedule-grid mb-0 text-center align-middle">
                     <thead>
                         <tr>
@@ -274,6 +253,27 @@ uasort($clasesFiltro, static function (array $a, array $b): int {
                     </tbody>
                 </table>
             </div>
+            </div>
+            <?php if ($clasesFiltro !== []): ?>
+            <aside class="gp-schedule-filter" data-gp-class-filter>
+                <div class="gp-schedule-filter__sticky">
+                <h2 class="gp-schedule-filter__label" id="gp-class-filter-label">Clases</h2>
+                <p class="gp-schedule-filter__hint">Si marcas varias, ves todas las que hayas elegido.</p>
+                <p class="gp-schedule-filter__status" data-gp-class-filter-label>Todas las clases</p>
+                <div class="gp-schedule-filter__panel" data-gp-class-filter-panel role="group" aria-labelledby="gp-class-filter-label">
+                    <?php foreach ($clasesFiltro as $clase): ?>
+                        <label class="gp-schedule-filter__opt">
+                            <input type="checkbox" value="<?= (int) $clase['id'] ?>" data-nombre="<?= htmlspecialchars($clase['nombre']) ?>">
+                            <span class="gp-schedule-filter__swatch" style="background: <?= htmlspecialchars($clase['color']) ?>"></span>
+                            <span><?= htmlspecialchars($clase['nombre']) ?></span>
+                        </label>
+                    <?php endforeach; ?>
+                </div>
+                <button type="button" class="gp-schedule-filter__clear" data-gp-class-filter-clear>Quitar filtro</button>
+                </div>
+            </aside>
+            <?php endif; ?>
+            </div>
         </div>
 
         <p class="text-center mt-4 mb-0">
@@ -350,7 +350,7 @@ uasort($clasesFiltro, static function (array $a, array $b): int {
         });
     });
 </script>
-<script src="<?= htmlspecialchars(asset('js/gp-schedule-filter.js')) ?>?v=20261029a"></script>
+<script src="<?= htmlspecialchars(asset('js/gp-schedule-filter.js')) ?>?v=20261029c"></script>
 
 <?php if (isset($succsessMsg)): ?>
     <div class="modal fade" id="successModal" tabindex="-1" aria-hidden="true">
