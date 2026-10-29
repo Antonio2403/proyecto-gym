@@ -18,6 +18,23 @@ class Actividad
         return $raw;
     }
 
+    /** Texto blanco o oscuro para que se lea sobre el color de la clase. */
+    public static function tintaParaColor(string $hex): string
+    {
+        $hex = self::normalizarColor($hex) ?? '#C45C26';
+        $canal = static function (int $c): float {
+            $s = $c / 255;
+
+            return $s <= 0.03928 ? $s / 12.92 : (($s + 0.055) / 1.055) ** 2.4;
+        };
+        $luma = 0.2126 * $canal(hexdec(substr($hex, 1, 2)))
+            + 0.7152 * $canal(hexdec(substr($hex, 3, 2)))
+            + 0.0722 * $canal(hexdec(substr($hex, 5, 2)));
+        $contrasteBlanco = 1.05 / ($luma + 0.05);
+
+        return $contrasteBlanco >= 4.5 ? '#FFFFFF' : '#1A2330';
+    }
+
     private static function ordenDias(array $dias): array
     {
         $valid = ['L', 'M', 'X', 'J', 'V', 'S', 'D'];
