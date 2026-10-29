@@ -303,6 +303,14 @@
                 var dia = DIAS[r.dia_semana] || r.dia_semana || '';
                 textCell(tr, r.id);
                 textCell(tr, r.nombre);
+                var tdColor = document.createElement('td');
+                var swatch = document.createElement('span');
+                var color = /^#[0-9A-Fa-f]{6}$/.test(String(r.color || '')) ? String(r.color) : '#C45C26';
+                swatch.className = 'gp-act-color-swatch';
+                swatch.style.background = color;
+                swatch.title = color;
+                tdColor.appendChild(swatch);
+                tr.appendChild(tdColor);
                 textCell(tr, truncate(r.descripcion, 120));
                 textCell(tr, r.duracion + ' min');
                 textCell(tr, dia);

@@ -2,6 +2,8 @@
 
 class BasedeDatos
 {
+    private static $colorActividadListo = false;
+
     private static function envString(string $key, string $default = ''): string
     {
         $v = $_ENV[$key] ?? getenv($key);
@@ -84,6 +86,7 @@ class BasedeDatos
                 $conexionDB = new PDO(self::pdoDsn(true), self::dbUser(), self::dbPass());
                 $conexionDB->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
                 $conexionDB->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
+                self::asegurarColorActividad($conexionDB);
 
                 return $conexionDB;
             }
@@ -220,6 +223,7 @@ class BasedeDatos
                 CREATE TABLE IF NOT EXISTS actividades (
                     id INT AUTO_INCREMENT PRIMARY KEY,
                     nombre VARCHAR(100) DEFAULT NULL,
+                    color CHAR(7) NOT NULL DEFAULT '#C45C26',
                     duracion INT DEFAULT NULL,
                     monitor_id INT DEFAULT NULL,
                     sala_id INT DEFAULT NULL,
@@ -371,6 +375,35 @@ class BasedeDatos
         }
     }
 
+    /**
+     * Color de cada clase. Corre también con el auto-setup apagado, para que un pull
+     * añada la columna en la base que ya está en marcha.
+     */
+    private static function asegurarColorActividad(PDO $db): void
+    {
+        if (self::$colorActividadListo) {
+            return;
+        }
+        try {
+            if (self::columnExists($db, 'actividades', 'color')) {
+                self::$colorActividadListo = true;
+
+                return;
+            }
+            $db->exec("ALTER TABLE actividades ADD COLUMN color CHAR(7) NOT NULL DEFAULT '#C45C26' AFTER nombre");
+            $paleta = ['#C45C26', '#2F8F4A', '#2563EB', '#7C3AED', '#DB2777', '#0F766E', '#CA8A04', '#DC2626', '#4F46E5', '#65A30D'];
+            $ids = $db->query('SELECT id FROM actividades ORDER BY id ASC')->fetchAll(PDO::FETCH_COLUMN);
+            $upd = $db->prepare('UPDATE actividades SET color = ? WHERE id = ?');
+            $n = count($paleta);
+            foreach ($ids as $i => $id) {
+                $upd->execute([$paleta[((int) $i) % $n], (int) $id]);
+            }
+            self::$colorActividadListo = true;
+        } catch (\Throwable $e) {
+            error_log('[Spartum BD] color actividad: ' . $e->getMessage());
+        }
+    }
+
     private static function columnExists(PDO $db, string $table, string $column): bool
     {
         $st = $db->prepare(
@@ -510,6 +543,7 @@ class BasedeDatos
     private static function ensureSchemaUpgrades(PDO $db): void
     {
         try {
+            self::asegurarColorActividad($db);
             if (!self::columnExists($db, 'actividades', 'recurrente')) {
                 $db->exec(
                     'ALTER TABLE actividades ADD COLUMN recurrente TINYINT(1) NOT NULL DEFAULT 1 AFTER plazas'

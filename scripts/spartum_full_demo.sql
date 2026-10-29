@@ -112,6 +112,7 @@ CREATE TABLE `solicitudes` (
 CREATE TABLE `actividades` (
     `id` INT AUTO_INCREMENT PRIMARY KEY,
     `nombre` VARCHAR(100) DEFAULT NULL,
+    `color` CHAR(7) NOT NULL DEFAULT '#C45C26',
     `duracion` INT DEFAULT NULL,
     `monitor_id` INT DEFAULT NULL,
     `sala_id` INT DEFAULT NULL,
@@ -302,10 +303,10 @@ INSERT INTO `salas` (`id`, `nombre`, `capacidad`, `disponibilidad`) VALUES
 (2, 'Sala spinning', 15, 'U'),
 (3, 'Sala musculación', 25, 'R');
 
-INSERT INTO `actividades` (`id`, `nombre`, `duracion`, `monitor_id`, `sala_id`, `fecha_inicio`, `fecha_fin`, `dia_semana`, `descripcion`, `plazas`, `recurrente`) VALUES
-(1, 'Spinning matinal', 45, 1, 2, '2026-05-12 08:00:00', '2026-05-12 08:45:00', 'L', 'Sesión cardio en bicicleta.', 15, 1),
-(2, 'HIIT express', 30, 2, 1, '2026-05-13 18:30:00', '2026-05-13 19:00:00', 'X', 'Intervalos de alta intensidad.', 12, 1),
-(3, 'Yoga suave', 60, 1, 1, '2026-05-14 10:00:00', '2026-05-14 11:00:00', 'J', 'Estiramientos y respiración.', 20, 1);
+INSERT INTO `actividades` (`id`, `nombre`, `color`, `duracion`, `monitor_id`, `sala_id`, `fecha_inicio`, `fecha_fin`, `dia_semana`, `descripcion`, `plazas`, `recurrente`) VALUES
+(1, 'Spinning matinal', '#2563EB', 45, 1, 2, '2026-05-12 08:00:00', '2026-05-12 08:45:00', 'L', 'Sesión cardio en bicicleta.', 15, 1),
+(2, 'HIIT express', '#DC2626', 30, 2, 1, '2026-05-13 18:30:00', '2026-05-13 19:00:00', 'X', 'Intervalos de alta intensidad.', 12, 1),
+(3, 'Yoga suave', '#2F8F4A', 60, 1, 1, '2026-05-14 10:00:00', '2026-05-14 11:00:00', 'J', 'Estiramientos y respiración.', 20, 1);
 
 INSERT INTO `actividad_dias` (`actividad_id`, `dia_semana`) VALUES
 (1, 'L'),

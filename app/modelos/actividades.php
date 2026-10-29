@@ -2,6 +2,22 @@
 
 class Actividad
 {
+    /** @return string[] */
+    public static function paletaColores(): array
+    {
+        return ['#C45C26', '#2F8F4A', '#2563EB', '#7C3AED', '#DB2777', '#0F766E', '#CA8A04', '#DC2626', '#4F46E5', '#65A30D'];
+    }
+
+    public static function normalizarColor(string $raw): ?string
+    {
+        $raw = strtoupper(trim($raw));
+        if (!preg_match('/^#[0-9A-F]{6}$/', $raw)) {
+            return null;
+        }
+
+        return $raw;
+    }
+
     private static function ordenDias(array $dias): array
     {
         $valid = ['L', 'M', 'X', 'J', 'V', 'S', 'D'];
@@ -194,9 +210,10 @@ class Actividad
      * @param string[] $diasLetras
      * @return int|false id actividad
      */
-    public static function guardar($nombre, $descripcion, $duracion, $monitor_id, $sala_id, $fecha_inicio, $fecha_fin, $dia_semana, array $diasLetras = [])
+    public static function guardar($nombre, $descripcion, $duracion, $monitor_id, $sala_id, $fecha_inicio, $fecha_fin, $dia_semana, array $diasLetras = [], string $color = '#C45C26')
     {
         $conexion = BasedeDatos::Conectar();
+        $colorOk = self::normalizarColor($color) ?? '#C45C26';
 
         $diasOk = self::ordenDias($diasLetras !== [] ? $diasLetras : [$dia_semana]);
         if ($diasOk === []) {
@@ -206,11 +223,12 @@ class Actividad
 
         $stmt = $conexion->prepare("
         INSERT INTO actividades 
-        (nombre, descripcion, duracion, monitor_id, sala_id, fecha_inicio, fecha_fin, dia_semana)
-        VALUES (:nombre, :descripcion, :duracion, :monitor_id, :sala_id, :fecha_inicio, :fecha_fin, :dia_semana)
+        (nombre, color, descripcion, duracion, monitor_id, sala_id, fecha_inicio, fecha_fin, dia_semana)
+        VALUES (:nombre, :color, :descripcion, :duracion, :monitor_id, :sala_id, :fecha_inicio, :fecha_fin, :dia_semana)
     ");
 
         $stmt->bindValue(':nombre', $nombre);
+        $stmt->bindValue(':color', $colorOk);
         $stmt->bindValue(':descripcion', $descripcion);
         $stmt->bindValue(':duracion', $duracion);
         $stmt->bindValue(':monitor_id', $monitor_id);
@@ -289,7 +307,7 @@ class Actividad
      *
      * @param string[] $diasLetras
      */
-    public static function actualizarHorario(int $id, $nombre, $descripcion, $sala_id, $monitor_id, int $duracion, string $hora_inicio, int $recurrente, array $diasLetras, ?string $fechaPuntualYmd = null): bool
+    public static function actualizarHorario(int $id, $nombre, $descripcion, $sala_id, $monitor_id, int $duracion, string $hora_inicio, int $recurrente, array $diasLetras, ?string $fechaPuntualYmd = null, string $color = '#C45C26'): bool
     {
         $diasLetras = self::ordenDias($diasLetras);
         if ($diasLetras === [] || $duracion < 1 || $duracion > 600) {
@@ -301,15 +319,17 @@ class Actividad
         $fecha_base = $recurrente === 0 ? $fechaPuntualYmd : date('Y-m-d');
         $fecha_inicio = $fecha_base . ' ' . $hora_inicio . ':00';
         $fecha_fin = date('Y-m-d H:i:s', strtotime($fecha_inicio . ' +' . $duracion . ' minutes'));
+        $colorOk = self::normalizarColor($color) ?? '#C45C26';
 
         $conexion = BasedeDatos::Conectar();
         $stmt = $conexion->prepare(
-            'UPDATE actividades SET nombre = :nombre, descripcion = :descripcion, sala_id = :sala_id, monitor_id = :monitor_id,
+            'UPDATE actividades SET nombre = :nombre, color = :color, descripcion = :descripcion, sala_id = :sala_id, monitor_id = :monitor_id,
              duracion = :duracion, fecha_inicio = :fi, fecha_fin = :ff, recurrente = :rec, dia_semana = :dia
              WHERE id = :id'
         );
         $ok = $stmt->execute([
             ':nombre' => $nombre,
+            ':color' => $colorOk,
             ':descripcion' => $descripcion,
             ':sala_id' => $sala_id,
             ':monitor_id' => $monitor_id,

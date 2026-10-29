@@ -32,8 +32,8 @@
 <script defer src="<?= htmlspecialchars(asset('js/gp-gsap-motion.js')) ?>"></script>
 <script defer src="<?= htmlspecialchars(asset('js/gp-confirm-modal.js')) ?>"></script>
 <script defer src="<?= htmlspecialchars(asset('js/gp-form-unsaved.js')) ?>"></script>
-<script defer src="<?= htmlspecialchars(asset('js/admin-datagrid.js')) ?>"></script>
-<script defer src="<?= htmlspecialchars(asset('js/form-validacion.js')) ?>"></script>
+<script defer src="<?= htmlspecialchars(asset('js/admin-datagrid.js')) ?>?v=20261029a"></script>
+<script defer src="<?= htmlspecialchars(asset('js/form-validacion.js')) ?>?v=20261029a"></script>
 <script defer
         src="<?= htmlspecialchars(asset('js/site-preferences.js')) ?>"
         data-session-status-url="<?= htmlspecialchars(url('/sesion/estado')) ?>"

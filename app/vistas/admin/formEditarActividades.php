@@ -31,6 +31,11 @@ require dirname(__DIR__) . '/layouts/partials/gp_form_panel_start.php';
                         <textarea class="form-control" id="descripcion" name="descripcion" rows="3"><?= htmlspecialchars((string) ($act['descripcion'] ?? '')) ?></textarea>
                     </div>
 
+                    <?php
+                    $gpActividadColor = (string) ($act['color'] ?? '#C45C26');
+                    require __DIR__ . '/partials/actividad_color.php';
+                    ?>
+
                     <div class="gp-form-grid gp-form-grid--2">
                         <div>
                             <label for="duracion" class="form-label gp-label-required">Duración (minutos)</label>

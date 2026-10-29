@@ -1516,8 +1516,21 @@ body::-webkit-scrollbar-corner,
     background: #e8ecf4;
 }
 
+.gp-schedule-slot {
+    margin-bottom: 0.5rem;
+}
+
+.gp-schedule-slot:last-child {
+    margin-bottom: 0;
+}
+
 .gp-schedule-act {
-    background: linear-gradient(160deg, var(--gp-sch-blue) 0%, var(--gp-sch-blue-dark) 100%);
+    background: linear-gradient(
+        160deg,
+        color-mix(in srgb, var(--gp-act-color, #c45c26) 38%, var(--gp-sch-blue)) 0%,
+        color-mix(in srgb, var(--gp-act-color, #c45c26) 22%, var(--gp-sch-blue-dark)) 100%
+    );
+    border-left: 6px solid var(--gp-act-color, #c45c26);
     border-radius: 0.55rem;
     padding: 0.55rem 0.7rem;
     box-shadow: 0 2px 8px rgba(59, 125, 214, 0.2);
@@ -1639,6 +1652,169 @@ body::-webkit-scrollbar-corner,
     font-size: 0.8rem;
     line-height: 1.25;
     font-family: var(--gp-display);
+}
+
+.gp-schedule-act-name {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.35rem;
+}
+
+.gp-schedule-act-swatch,
+.gp-act-color-swatch {
+    display: inline-block;
+    width: 0.72rem;
+    height: 0.72rem;
+    margin-top: 0.18rem;
+    border-radius: 999px;
+    flex: 0 0 auto;
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.45);
+}
+
+.gp-act-color-swatch {
+    width: 1.35rem;
+    height: 1.35rem;
+    margin-top: 0;
+    box-shadow: inset 0 0 0 1px rgba(15, 23, 42, 0.18);
+}
+
+.gp-schedule-filter {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.65rem 1rem;
+}
+
+.gp-schedule-filter__label {
+    margin: 0;
+    color: var(--gp-sch-navy);
+    font-weight: 700;
+    font-size: 0.92rem;
+}
+
+.gp-schedule-filter__control {
+    flex: 1 1 16rem;
+    max-width: 24rem;
+}
+
+.gp-schedule-filter__btn {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    min-height: 2.6rem;
+    padding: 0.45rem 2rem 0.45rem 0.85rem;
+    border: 1px solid var(--gp-sch-cell-border);
+    border-radius: 0.65rem;
+    background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='%232c3544' d='M4 6l4 4 4-4'/%3E%3C/svg%3E") right 0.7rem center / 0.85rem no-repeat;
+    color: var(--gp-sch-navy);
+    font-weight: 600;
+    text-align: left;
+}
+
+.gp-schedule-filter__btn[aria-expanded="true"] {
+    border-color: var(--gp-sch-navy);
+}
+
+.gp-schedule-filter__panel {
+    max-height: 16rem;
+    margin-top: 0.4rem;
+    overflow: auto;
+    padding: 0.4rem;
+    border: 1px solid var(--gp-sch-cell-border);
+    border-radius: 0.75rem;
+    background: #fff;
+    box-shadow: 0 8px 20px rgba(30, 41, 59, 0.08);
+}
+
+.gp-schedule-filter__panel[hidden] {
+    display: none !important;
+}
+
+.gp-schedule-filter__opt {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    margin: 0;
+    padding: 0.45rem 0.5rem;
+    border-radius: 0.5rem;
+    color: var(--gp-sch-navy);
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.gp-schedule-filter__opt:hover {
+    background: #f4f6fa;
+}
+
+.gp-schedule-filter__swatch {
+    width: 0.9rem;
+    height: 0.9rem;
+    border-radius: 999px;
+    flex: 0 0 auto;
+    box-shadow: inset 0 0 0 1px rgba(15, 23, 42, 0.18);
+}
+
+.gp-schedule-filter__clear {
+    display: block;
+    width: 100%;
+    margin-top: 0.25rem;
+    padding: 0.4rem 0.5rem;
+    border: 0;
+    border-radius: 0.45rem;
+    background: transparent;
+    color: var(--gp-sch-orange);
+    font-weight: 700;
+    text-align: left;
+}
+
+.gp-schedule-filter__hint,
+.gp-schedule-filter-empty {
+    color: var(--gp-sch-muted);
+    font-size: 0.84rem;
+}
+
+.gp-color-field {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.gp-color-field__picker {
+    width: 3.25rem;
+    height: 2.5rem;
+    padding: 0.15rem;
+    border: 1px solid var(--gp-border, #cbd5e1);
+    border-radius: 0.55rem;
+    background: #fff;
+    cursor: pointer;
+}
+
+.gp-color-field__hex {
+    font-family: ui-monospace, monospace;
+    font-size: 0.9rem;
+    color: #334155;
+}
+
+.gp-color-presets {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-top: 0.65rem;
+}
+
+.gp-color-presets__btn {
+    width: 1.75rem;
+    height: 1.75rem;
+    padding: 0;
+    border: 2px solid transparent;
+    border-radius: 999px;
+    box-shadow: inset 0 0 0 1px rgba(15, 23, 42, 0.18);
+    cursor: pointer;
+}
+
+.gp-color-presets__btn.is-selected {
+    border-color: #1e293b;
 }
 
 .gp-schedule-act-time {

@@ -47,6 +47,15 @@
         return lineas.length ? ' Horario del centro: ' + lineas.join(', ') + '.' : '';
     }
 
+    function validarColorActividad(form) {
+        var color = field(form, 'color');
+        if (!color || !/^#[0-9A-Fa-f]{6}$/.test(trimStr(color.value))) {
+            setValidity(color, 'Elige un color para la clase.');
+            return false;
+        }
+        return true;
+    }
+
     function validarProgramacionActividad(form, recurrenteChecked) {
         var horaEl = field(form, 'hora_inicio');
         var hora = horaEl ? trimStr(horaEl.value) : '';
@@ -124,6 +133,31 @@
         }
         rec.addEventListener('change', sync);
         sync();
+    }
+
+    function bindColorActividad(form) {
+        var input = field(form, 'color');
+        var hex = form.querySelector('[data-gp-color-hex]');
+        if (!input) {
+            return;
+        }
+        function paint() {
+            var value = trimStr(input.value).toUpperCase();
+            if (hex) {
+                hex.textContent = value;
+            }
+            form.querySelectorAll('[data-gp-color-preset]').forEach(function (btn) {
+                btn.classList.toggle('is-selected', trimStr(btn.getAttribute('data-gp-color-preset')).toUpperCase() === value);
+            });
+        }
+        input.addEventListener('input', paint);
+        form.querySelectorAll('[data-gp-color-preset]').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                input.value = btn.getAttribute('data-gp-color-preset') || input.value;
+                paint();
+            });
+        });
+        paint();
     }
 
     function emailOk(val) {
@@ -390,6 +424,7 @@
         clearCustomValidity(form);
         var ok = true;
         ok = requireNonEmpty(form, 'nombre', 'El nombre es obligatorio.') && ok;
+        ok = validarColorActividad(form) && ok;
 
         var dur = field(form, 'duracion');
         var d = dur ? parseInt(dur.value, 10) : NaN;
@@ -433,6 +468,7 @@
         clearCustomValidity(form);
         var ok = true;
         ok = requireNonEmpty(form, 'nombre', 'El nombre es obligatorio.') && ok;
+        ok = validarColorActividad(form) && ok;
 
         var marcados = form.querySelectorAll('input[name="dias_semana[]"]:checked');
         if (!marcados || marcados.length < 1) {
@@ -954,6 +990,7 @@
             attachForm(form, key);
             if (key === 'activityCreate' || key === 'activityEdit') {
                 bindRecurrenteFechaPuntual(form);
+                bindColorActividad(form);
             }
         });
 

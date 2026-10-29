@@ -14,6 +14,21 @@ $esClienteSocio = !empty($es_cliente_socio);
 $cupoResumen = is_array($cupo_resumen_semana ?? null) ? $cupo_resumen_semana : null;
 $inscritoPorSesion = is_array($inscrito_por_sesion ?? null) ? $inscrito_por_sesion : [];
 $puedeMasReservaSemana = !isset($puede_mas_reserva_semana) || $puede_mas_reserva_semana;
+$clasesFiltro = [];
+foreach ($actividades as $actFiltro) {
+    $fid = (int) ($actFiltro['id'] ?? 0);
+    if ($fid <= 0 || isset($clasesFiltro[$fid])) {
+        continue;
+    }
+    $clasesFiltro[$fid] = [
+        'id' => $fid,
+        'nombre' => (string) ($actFiltro['nombre'] ?? 'Clase'),
+        'color' => Actividad::normalizarColor((string) ($actFiltro['color'] ?? '')) ?? '#C45C26',
+    ];
+}
+uasort($clasesFiltro, static function (array $a, array $b): int {
+    return strcasecmp($a['nombre'], $b['nombre']);
+});
 ?>
 <div class="gp-schedule-page py-6 lg:py-12">
     <div class="relative w-full lg:px-12">
@@ -83,6 +98,31 @@ $puedeMasReservaSemana = !isset($puede_mas_reserva_semana) || $puede_mas_reserva
                 </div>
             </div>
 
+            <?php if ($clasesFiltro !== []): ?>
+            <div class="gp-schedule-filter px-4 md:px-6 pb-4" data-gp-class-filter>
+                <label class="gp-schedule-filter__label" id="gp-class-filter-label">Filtrar clases</label>
+                <div class="gp-schedule-filter__control">
+                    <button type="button" class="gp-schedule-filter__btn" data-gp-class-filter-toggle
+                            aria-haspopup="listbox" aria-expanded="false" aria-labelledby="gp-class-filter-label">
+                        <span data-gp-class-filter-label>Todas las clases</span>
+                    </button>
+                    <div class="gp-schedule-filter__panel" data-gp-class-filter-panel hidden role="listbox" aria-multiselectable="true">
+                        <?php foreach ($clasesFiltro as $clase): ?>
+                            <label class="gp-schedule-filter__opt">
+                                <input type="checkbox" value="<?= (int) $clase['id'] ?>" data-nombre="<?= htmlspecialchars($clase['nombre']) ?>">
+                                <span class="gp-schedule-filter__swatch" style="background: <?= htmlspecialchars($clase['color']) ?>"></span>
+                                <span><?= htmlspecialchars($clase['nombre']) ?></span>
+                            </label>
+                        <?php endforeach; ?>
+                        <button type="button" class="gp-schedule-filter__clear" data-gp-class-filter-clear>Quitar filtro</button>
+                    </div>
+                </div>
+                <p class="gp-schedule-filter__hint mb-0">Si marcas varias, ves todas las que hayas elegido.</p>
+            </div>
+            <?php endif; ?>
+
+            <p class="gp-schedule-filter-empty px-4 md:px-6" data-gp-class-filter-empty hidden>Ninguna clase coincide con lo que has marcado.</p>
+
             <div class="table-responsive gp-schedule-table-wrap px-2 md:px-6 pb-6">
                 <table class="table table-bordered gp-schedule-grid mb-0 text-center align-middle">
                     <thead>
@@ -115,6 +155,7 @@ $puedeMasReservaSemana = !isset($puede_mas_reserva_semana) || $puede_mas_reserva
                                                 continue;
                                             }
                                             $actId = (int) $act['id'];
+                                            $colorAct = Actividad::normalizarColor((string) ($act['color'] ?? '')) ?? '#C45C26';
                                             $plazas = max(1, (int) ($act['plazas'] ?? 20));
                                             $fechaCelda = '';
                                             if ($scheduleWeekMonday !== '' && preg_match('/^\d{4}-\d{2}-\d{2}$/', $scheduleWeekMonday) && isset($offsetDiaSemana[$dia])) {
@@ -165,6 +206,7 @@ $puedeMasReservaSemana = !isset($puede_mas_reserva_semana) || $puede_mas_reserva
                                                     ]);
                                                 }
                                         ?>
+                                                <div class="gp-schedule-slot" data-actividad-id="<?= $actId ?>">
                                                 <template id="<?= htmlspecialchars($tplId) ?>">
                                                     <div class="gp-schedule-popover-inner text-left">
                                                         <?php if ($desc !== ''): ?>
@@ -181,14 +223,15 @@ $puedeMasReservaSemana = !isset($puede_mas_reserva_semana) || $puede_mas_reserva
                                                         </ul>
                                                     </div>
                                                 </template>
-                                                <div class="gp-schedule-act mb-2<?= $cupoLleno ? ' gp-schedule-act--full' : '' ?><?= !$sesionReservable ? ' gp-schedule-act--past' : '' ?><?= ($yaInscrito && $sesionFinalizada) ? ' gp-schedule-act--enrolled-done' : '' ?>"
+                                                <div class="gp-schedule-act<?= $cupoLleno ? ' gp-schedule-act--full' : '' ?><?= !$sesionReservable ? ' gp-schedule-act--past' : '' ?><?= ($yaInscrito && $sesionFinalizada) ? ' gp-schedule-act--enrolled-done' : '' ?>"
+                                                     style="--gp-act-color: <?= htmlspecialchars($colorAct) ?>"
                                                      tabindex="0"
                                                      role="button"
                                                      data-gp-popover-id="<?= htmlspecialchars($tplId) ?>"
                                                      data-popover-title="<?= htmlspecialchars((string) $act['nombre']) ?>"
                                                      aria-label="Detalles de la actividad: <?= htmlspecialchars((string) $act['nombre']) ?>">
                                                     <div class="gp-schedule-act-body text-left">
-                                                        <strong class="block text-white"><?= htmlspecialchars((string) $act['nombre']) ?></strong>
+                                                        <strong class="gp-schedule-act-name block text-white"><span class="gp-schedule-act-swatch" style="background: <?= htmlspecialchars($colorAct) ?>"></span><?= htmlspecialchars((string) $act['nombre']) ?></strong>
                                                         <span class="gp-schedule-act-time"><?= htmlspecialchars($horaIni) ?></span>
                                                         <span class="gp-schedule-act-capacity" title="Personas apuntadas / plazas totales"><?= (int) $inscritos ?> / <?= (int) $plazas ?></span>
                                                     </div>
@@ -220,6 +263,7 @@ $puedeMasReservaSemana = !isset($puede_mas_reserva_semana) || $puede_mas_reserva
                                                 <?php if ($urlOpiniones !== ''): ?>
                                                     <a href="<?= htmlspecialchars($urlOpiniones) ?>" class="gp-schedule-opiniones block btn btn-outline-light btn-sm w-full py-1 leading-tight text-sm no-underline">Opiniones</a>
                                                 <?php endif; ?>
+                                                </div>
                                         <?php
                                         endforeach;
                                         ?>
@@ -306,6 +350,7 @@ $puedeMasReservaSemana = !isset($puede_mas_reserva_semana) || $puede_mas_reserva
         });
     });
 </script>
+<script src="<?= htmlspecialchars(asset('js/gp-schedule-filter.js')) ?>?v=20261029a"></script>
 
 <?php if (isset($succsessMsg)): ?>
     <div class="modal fade" id="successModal" tabindex="-1" aria-hidden="true">

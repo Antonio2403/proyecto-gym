@@ -23,6 +23,11 @@ $diaOpts = ['L' => 'Lun', 'M' => 'Mar', 'X' => 'Mié', 'J' => 'Jue', 'V' => 'Vie
                         <textarea class="form-control" name="descripcion" rows="3"></textarea>
                     </div>
 
+                    <?php
+                    $gpActividadColor = '#C45C26';
+                    require __DIR__ . '/partials/actividad_color.php';
+                    ?>
+
                     <div class="gp-form-grid gp-form-grid--2">
                         <div>
                             <label class="form-label gp-label-required">Duración (minutos)</label>
