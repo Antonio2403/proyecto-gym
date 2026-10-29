@@ -214,6 +214,24 @@ body::-webkit-scrollbar-corner,
     color: var(--gp-text);
 }
 
+.site-navbar .gp-dropdown-split {
+    margin: 0.45rem 0.85rem;
+    border: 0;
+    border-top: 1px solid var(--gp-border);
+    opacity: 1;
+}
+
+.site-navbar .dropdown-item.gp-dropdown-leave {
+    color: var(--gp-orange);
+    font-weight: 600;
+}
+
+.site-navbar .dropdown-item.gp-dropdown-leave:hover,
+.site-navbar .dropdown-item.gp-dropdown-leave:focus {
+    background: var(--gp-orange-soft);
+    color: var(--gp-orange-hover);
+}
+
 .site-navbar .dropdown-item.text-danger:hover {
     background: rgba(220, 53, 69, 0.08);
 }

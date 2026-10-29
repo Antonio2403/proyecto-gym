@@ -15,10 +15,10 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..700&family=Outfit:wght@500..800&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" href="<?= htmlspecialchars(asset('css/tailwind.css')) ?>?v=20261029g">
+    <link rel="stylesheet" href="<?= htmlspecialchars(asset('css/tailwind.css')) ?>?v=20261029h">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
           integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer">
-    <link rel="stylesheet" href="<?= htmlspecialchars(asset('css/app-theme.css')) ?>?v=20261029g">
+    <link rel="stylesheet" href="<?= htmlspecialchars(asset('css/app-theme.css')) ?>?v=20261029h">
     <!-- También en la página: si el navegador conserva el CSS anterior, la portada vuelve al diseño viejo. -->
     <style>
         .site-body .btn { border-radius: 999px; }
@@ -215,12 +215,12 @@ $gpNavAvatarImg = 'https://ui-avatars.com/api/?name=' . rawurlencode((string) ($
                             <li>
                                 <a class="dropdown-item" href="<?= htmlspecialchars(url('/pago')) ?>">Suscripciones</a>
                             </li>
-                            <li><hr class="dropdown-divider opacity-25"></li>
+                            <li><hr class="dropdown-divider gp-dropdown-split"></li>
                             <li>
-                                <a class="dropdown-item" href="<?= htmlspecialchars(url('/darse-de-baja')) ?>">Darse de baja</a>
+                                <a class="dropdown-item gp-dropdown-leave" href="<?= htmlspecialchars(url('/darse-de-baja')) ?>">Darse de baja</a>
                             </li>
                             <li>
-                                <a class="dropdown-item text-red-600" href="<?= htmlspecialchars(url('/logout')) ?>">Cerrar sesión</a>
+                                <a class="dropdown-item gp-dropdown-leave" href="<?= htmlspecialchars(url('/logout')) ?>">Cerrar sesión</a>
                             </li>
                         </ul>
                     </li>
