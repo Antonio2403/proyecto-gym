@@ -19,6 +19,82 @@ function gp_mail_env(string $key, string $default = ''): string
     return trim((string) $v);
 }
 
+function gp_mail_dominio(string $email): string
+{
+    $at = strrpos($email, '@');
+    if ($at === false) {
+        return '';
+    }
+
+    return strtolower(substr($email, $at + 1));
+}
+
+function gp_mail_es_gmail(string $email): bool
+{
+    $dominio = gp_mail_dominio($email);
+
+    return $dominio === 'gmail.com' || $dominio === 'googlemail.com';
+}
+
+function gp_mail_host_es_google(string $host): bool
+{
+    $host = strtolower($host);
+
+    return str_contains($host, 'gmail.com')
+        || str_contains($host, 'googlemail.com')
+        || str_contains($host, 'google.com');
+}
+
+/**
+ * Gmail rechaza, sin dejarlo en la bandeja, cualquier mensaje cuyo From sea
+ * @gmail.com si no sale de los servidores de Google. En un hosting el remitente
+ * y el sobre SMTP tienen que ser el buzón con el que se autentica.
+ *
+ * @return array{from: string, reply: string, error: ?string}
+ */
+function gp_mail_elegir_remitente(string $host, string $fromAddr, string $smtpUser, string $replyTo): array
+{
+    require_once __DIR__ . '/form_validacion.php';
+
+    $fromAddr = trim($fromAddr);
+    $smtpUser = trim($smtpUser);
+    $replyTo = trim($replyTo);
+    $userOk = $smtpUser !== '' && fv_email_valido($smtpUser);
+
+    if (!gp_mail_host_es_google($host) && $userOk && strcasecmp($fromAddr, $smtpUser) !== 0) {
+        if (
+            $replyTo === ''
+            && fv_email_valido($fromAddr)
+            && strcasecmp($fromAddr, 'no-reply@localhost') !== 0
+        ) {
+            $replyTo = $fromAddr;
+        }
+        $fromAddr = $smtpUser;
+    }
+
+    if ($fromAddr === '' || strcasecmp($fromAddr, 'no-reply@localhost') === 0) {
+        if ($userOk) {
+            $fromAddr = $smtpUser;
+        } else {
+            return [
+                'from' => '',
+                'reply' => $replyTo,
+                'error' => 'Falta un remitente real. MAIL_FROM_ADDRESS y MAIL_USERNAME tienen que ser el buzón del hosting. Un @gmail.com solo puede ser el remitente si MAIL_HOST es smtp.gmail.com.',
+            ];
+        }
+    }
+
+    if (gp_mail_es_gmail($fromAddr) && !gp_mail_host_es_google($host)) {
+        return [
+            'from' => $fromAddr,
+            'reply' => $replyTo,
+            'error' => 'Gmail no entrega en la bandeja los mensajes que dicen venir de @gmail.com si no salen de Google. Pon en MAIL_USERNAME y MAIL_FROM_ADDRESS el correo creado en el hosting. Tu Gmail es la dirección que recibe, no la que envía.',
+        ];
+    }
+
+    return ['from' => $fromAddr, 'reply' => $replyTo, 'error' => null];
+}
+
 function gp_mail_debug_enabled(): bool
 {
     foreach (['MAIL_MAIL_DEBUG', 'MAIL_SMTP_DEBUG', 'MAIL_DEBUG'] as $k) {
@@ -140,20 +216,29 @@ function gp_mail_send(string $to, string $subject, string $htmlBody, string $tex
         gp_mail_configure_phpmailer($mail);
 
         $fromName = gp_mail_env('MAIL_FROM_NAME', 'Spartum');
-        $fromAddr = gp_mail_env('MAIL_FROM_ADDRESS');
         $smtpUser = gp_mail_env('MAIL_USERNAME');
-        if (($fromAddr === '' || strcasecmp($fromAddr, 'no-reply@localhost') === 0)
-            && $smtpUser !== '' && fv_email_valido($smtpUser)) {
-            $fromAddr = $smtpUser;
+        $remitente = gp_mail_elegir_remitente(
+            $host,
+            gp_mail_env('MAIL_FROM_ADDRESS'),
+            $smtpUser,
+            gp_mail_env('MAIL_REPLY_TO')
+        );
+        if ($remitente['error'] !== null) {
+            $outErrorPublic = $remitente['error'];
+
+            return false;
         }
-        if ($fromAddr === '') {
-            $fromAddr = 'no-reply@localhost';
-        }
+        $fromAddr = $remitente['from'];
         $mail->setFrom($fromAddr, $fromName !== '' ? $fromName : 'Spartum');
-        $reply = gp_mail_env('MAIL_REPLY_TO');
-        if ($reply !== '' && fv_email_valido($reply)) {
+        $mail->Sender = $fromAddr;
+        $dominio = gp_mail_dominio($fromAddr);
+        if ($dominio !== '' && $dominio !== 'localhost') {
+            $mail->Hostname = $dominio;
+        }
+        $reply = $remitente['reply'];
+        if ($reply !== '' && fv_email_valido($reply) && strcasecmp($reply, $fromAddr) !== 0) {
             $mail->addReplyTo($reply);
-        } elseif ($smtpUser !== '' && fv_email_valido($smtpUser)) {
+        } elseif ($smtpUser !== '' && fv_email_valido($smtpUser) && strcasecmp($smtpUser, $fromAddr) !== 0) {
             $mail->addReplyTo($smtpUser);
         }
         $mail->addAddress($to);
