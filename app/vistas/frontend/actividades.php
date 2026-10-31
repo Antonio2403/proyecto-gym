@@ -120,7 +120,11 @@ uasort($clasesFiltro, static function (array $a, array $b): int {
             <p class="gp-schedule-filter-empty px-2 md:px-4" data-gp-class-filter-empty hidden>Ninguna clase coincide con lo que has marcado.</p>
 
             <div class="table-responsive gp-schedule-table-wrap px-2 md:px-4 pb-6">
-                <table class="table table-bordered gp-schedule-grid mb-0 text-center align-middle">
+                <table class="table table-bordered gp-schedule-grid mb-0 text-center">
+                    <colgroup>
+                        <col class="gp-schedule-col-hour">
+                        <col span="7">
+                    </colgroup>
                     <thead>
                         <tr>
                             <th class="gp-schedule-col-hour" scope="col">Hora</th>
@@ -142,7 +146,8 @@ uasort($clasesFiltro, static function (array $a, array $b): int {
                             <tr class="gp-schedule-row">
                                 <th class="gp-schedule-hour-cell font-semibold" scope="flex flex-wrap -mx-3"><?= sprintf('%02d:00', $hora) ?></th>
                                 <?php foreach ($dias as $dia): ?>
-                                    <td class="gp-schedule-cell align-top">
+                                    <td class="gp-schedule-cell">
+                                        <div class="gp-schedule-cell-inner">
                                         <?php
                                         foreach ($actividades as $act):
                                             $diasAct = $act['dias'] ?? [];
@@ -266,6 +271,7 @@ uasort($clasesFiltro, static function (array $a, array $b): int {
                                         <?php
                                         endforeach;
                                         ?>
+                                        </div>
                                     </td>
                                 <?php endforeach; ?>
                             </tr>
