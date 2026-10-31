@@ -64,7 +64,6 @@ body::-webkit-scrollbar,
 .site-main::-webkit-scrollbar,
 .gp-admin-content::-webkit-scrollbar,
 .gp-admin-page::-webkit-scrollbar,
-.table-responsive::-webkit-scrollbar,
 .modal-body::-webkit-scrollbar,
 .offcanvas-body::-webkit-scrollbar {
     width: 14px;
@@ -76,7 +75,6 @@ body::-webkit-scrollbar-track,
 .site-main::-webkit-scrollbar-track,
 .gp-admin-content::-webkit-scrollbar-track,
 .gp-admin-page::-webkit-scrollbar-track,
-.table-responsive::-webkit-scrollbar-track,
 .modal-body::-webkit-scrollbar-track,
 .offcanvas-body::-webkit-scrollbar-track {
     background:
@@ -89,7 +87,6 @@ body::-webkit-scrollbar-thumb,
 .site-main::-webkit-scrollbar-thumb,
 .gp-admin-content::-webkit-scrollbar-thumb,
 .gp-admin-page::-webkit-scrollbar-thumb,
-.table-responsive::-webkit-scrollbar-thumb,
 .modal-body::-webkit-scrollbar-thumb,
 .offcanvas-body::-webkit-scrollbar-thumb {
     background:
@@ -104,7 +101,6 @@ body::-webkit-scrollbar-thumb:hover,
 .site-main::-webkit-scrollbar-thumb:hover,
 .gp-admin-content::-webkit-scrollbar-thumb:hover,
 .gp-admin-page::-webkit-scrollbar-thumb:hover,
-.table-responsive::-webkit-scrollbar-thumb:hover,
 .modal-body::-webkit-scrollbar-thumb:hover,
 .offcanvas-body::-webkit-scrollbar-thumb:hover {
     background:
@@ -116,7 +112,6 @@ body::-webkit-scrollbar-corner,
 .site-main::-webkit-scrollbar-corner,
 .gp-admin-content::-webkit-scrollbar-corner,
 .gp-admin-page::-webkit-scrollbar-corner,
-.table-responsive::-webkit-scrollbar-corner,
 .modal-body::-webkit-scrollbar-corner,
 .offcanvas-body::-webkit-scrollbar-corner {
     background: var(--gp-scrollbar-track);
@@ -3120,8 +3115,30 @@ label.gp-label-required::after {
     max-width: 38rem;
 }
 
-/* Botones compactos en tablas y grids */
+/* Sin barra vertical dentro de la tabla: esa barra descuadraba las columnas. */
+.gp-admin-content .table-responsive {
+    overflow-x: auto;
+    overflow-y: hidden;
+}
+
+.gp-admin-content .table-responsive::-webkit-scrollbar {
+    width: 0;
+    height: 8px;
+}
+
+.gp-admin-content .table-responsive::-webkit-scrollbar-thumb {
+    background: var(--gp-border);
+    border: 0;
+    border-radius: 999px;
+    box-shadow: none;
+}
+
+.gp-admin-content .table-responsive::-webkit-scrollbar-track {
+    background: transparent;
+}
+
 .gp-admin-grid .table,
+.gp-admin-content .table,
 .gp-data-table {
     margin-bottom: 0;
     width: 100%;
@@ -3132,31 +3149,35 @@ label.gp-label-required::after {
     padding: 0.65rem 0.75rem;
 }
 
-.gp-admin-grid .table thead th {
+.gp-admin-grid .table thead th,
+.gp-admin-content .table thead th {
     font-size: 0.72rem;
     text-transform: uppercase;
     letter-spacing: 0.04em;
-    white-space: nowrap;
+    white-space: normal;
+    vertical-align: middle;
 }
 
-.gp-admin-grid .table tbody td {
+.gp-admin-grid .table tbody td,
+.gp-admin-content .table tbody td {
     font-size: 0.875rem;
     line-height: 1.35;
+    vertical-align: middle;
 }
 
 .gp-admin-grid .table thead th.gp-actions-col,
 .gp-admin-grid .table td.gp-actions-cell,
 .gp-data-table thead th.gp-actions-col,
 .gp-data-table td.gp-actions-cell {
-    width: 1%;
-    min-width: 11rem;
+    width: auto;
+    min-width: 9.5rem;
     white-space: nowrap;
     text-align: right;
-    padding-right: 0.85rem !important;
+    padding-right: 0.65rem !important;
 }
 
 .gp-admin-grid .table td.gp-status-cell {
-    white-space: nowrap;
+    white-space: normal;
 }
 
 .gp-actions-stack {
@@ -3166,13 +3187,14 @@ label.gp-label-required::after {
     align-items: center;
     justify-content: flex-end;
     gap: 0.35rem;
-    max-width: 16rem;
+    max-width: none;
+    width: 100%;
 }
 
 .gp-actions-stack--col {
     flex-direction: column;
     align-items: stretch;
-    max-width: 10.5rem;
+    max-width: none;
 }
 
 .gp-actions-stack--col .gp-btn-action {
