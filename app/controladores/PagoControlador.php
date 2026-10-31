@@ -9,6 +9,7 @@ require_once 'vendor/autoload.php';
 require_once 'app/modelos/susbscripcion.php';
 
 require_once 'app/modelos/cliente_subscripcion.php';
+require_once 'core/helpers/pago_metodo.php';
 
 
 
@@ -214,7 +215,10 @@ class PagoControlador extends Controller
         }
 
         try {
-            $intent = \Stripe\PaymentIntent::retrieve($payment_intent_id);
+            $intent = \Stripe\PaymentIntent::retrieve([
+                'id' => $payment_intent_id,
+                'expand' => ['payment_method'],
+            ]);
 
             if ($intent->status !== 'succeeded') {
                 header('Location: ' . url('/pago') . '?error=' . rawurlencode('El pago no aparece como completado.'));
@@ -241,6 +245,22 @@ class PagoControlador extends Controller
             }
 
             $cliente_id = (int) $cliente['id'];
+            $metodoStripe = $intent->payment_method ?? null;
+            if (is_string($metodoStripe) && $metodoStripe !== '') {
+                try {
+                    $metodoStripe = \Stripe\PaymentMethod::retrieve($metodoStripe);
+                } catch (\Throwable $e) {
+                    error_log('[Pago] metodo: ' . $e->getMessage());
+                    $metodoStripe = null;
+                }
+            }
+            $metodoPago = is_object($metodoStripe)
+                ? gp_pago_etiqueta_desde_metodo($metodoStripe)
+                : gp_pago_etiqueta_metodo('');
+            $conexion->prepare('UPDATE clientes SET metodo_pago = ? WHERE id = ?')->execute([
+                substr($metodoPago, 0, 50),
+                $cliente_id,
+            ]);
 
             if (ClienteSubscripcion::obtenerActivaPorUsuarioId((int) $_SESSION['usuario_id']) !== null) {
                 header('Location: ' . url('/pago') . '?info=' . rawurlencode('Ya tenías una suscripción activa; no se ha duplicado el alta.'));
