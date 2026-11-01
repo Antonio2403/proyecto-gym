@@ -53,7 +53,10 @@ class InicioControlador extends Controller {
             exit;
         }
 
-        $this->renderAdmin("admin/inicioAdmin");
+        require_once __DIR__ . '/../modelos/panel_estadisticas.php';
+        $this->renderAdmin('admin/inicioAdmin', [
+            'estadisticas' => PanelEstadisticas::resumenAdmin(),
+        ]);
     }
 
     public function inicioUsuario(){
