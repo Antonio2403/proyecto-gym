@@ -11,6 +11,15 @@
     min-height: 68px;
 }
 
+.gp-admin-topnav > div {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    gap: 0.35rem 0.75rem;
+}
+
 .gp-admin-topnav .navbar-brand {
     font-family: var(--gp-display, "Outfit", sans-serif);
     font-weight: 800;
@@ -39,9 +48,17 @@
     color: #fff;
 }
 
-@media (min-width: 992px) {
+@media (min-width: 1024px) {
+    .gp-admin-topnav > div {
+        flex-wrap: nowrap;
+    }
+
     .gp-admin-topnav .navbar-collapse {
         position: relative;
+        display: flex !important;
+        align-items: center;
+        flex: 1 1 auto;
+        min-width: 0;
         min-height: 42px;
     }
 
