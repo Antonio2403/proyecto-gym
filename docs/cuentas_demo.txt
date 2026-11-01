@@ -1,0 +1,14 @@
+SPARTUM — cuentas de la demo
+============================
+Base de datos: spartum
+
+rol        usuario                  contraseña
+admin      admin1@demo.local        Admin1#Demo2026!
+monitor    monitor1@demo.local      Monitor1#Demo2026!
+monitor    monitor2@demo.local      Monitor2#Demo2026!
+cliente    cliente1@demo.local      Cliente1#Demo2026!
+cliente    cliente2@demo.local      Cliente2#Demo2026!
+cliente    cliente3@demo.local      Cliente3#Demo2026!
+fisio      fisio1@demo.local        Fisio1#Demo2026!
+
+Recargar la demo (borra los datos anteriores): php scripts/import_demo_database.php --force

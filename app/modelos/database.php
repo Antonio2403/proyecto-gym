@@ -169,7 +169,7 @@ class BasedeDatos
                 ) $tbl
             ");
 
-            $adminEmailInicial = self::envString('INITIAL_ADMIN_EMAIL', 'alfonsojaime02@gmail.com');
+            $adminEmailInicial = self::envString('INITIAL_ADMIN_EMAIL', 'admin1@demo.local');
             $adminPasswordInicial = self::envString('INITIAL_ADMIN_PASSWORD', '');
             if ($adminPasswordInicial === '') {
                 $adminPasswordInicial = bin2hex(random_bytes(12)) . 'Aa1!';

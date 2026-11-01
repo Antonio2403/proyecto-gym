@@ -137,32 +137,24 @@ if ($exitCode !== 0) {
     exit(1);
 }
 
-$demoPass = 'Demo#Gym2026Seguro!';
-$adminEmail = 'alfonsojaime02@gmail.com';
-$credFile = dirname(__DIR__) . '/CREDENCIALES_DEMO.txt';
+$credFile = dirname(__DIR__) . '/docs/cuentas_demo.txt';
 $credBody = <<<TXT
-SPARTUM — Credenciales de prueba (demo)
-========================================
-Generado: {date}
+SPARTUM — cuentas de la demo
+============================
 Base de datos: {$dbName}
-Contraseña común para TODAS las cuentas: {$demoPass}
 
-URL login: http://localhost/proyecto-gym/login
+rol        usuario                  contraseña
+admin      admin1@demo.local        Admin1#Demo2026!
+monitor    monitor1@demo.local      Monitor1#Demo2026!
+monitor    monitor2@demo.local      Monitor2#Demo2026!
+cliente    cliente1@demo.local      Cliente1#Demo2026!
+cliente    cliente2@demo.local      Cliente2#Demo2026!
+cliente    cliente3@demo.local      Cliente3#Demo2026!
+fisio      fisio1@demo.local        Fisio1#Demo2026!
 
-ADMIN:     {$adminEmail} / {$demoPass}
-MONITOR 1: monitor1@gym.demo / {$demoPass}
-MONITOR 2: monitor2@gym.demo / {$demoPass}
-CLIENTE 1: cliente1@gym.demo / {$demoPass}
-CLIENTE 2: cliente2@gym.demo / {$demoPass}
-CLIENTE 3: cliente3@gym.demo / {$demoPass}
-FISIO:     fisio@gym.demo / {$demoPass}
-
-Recargar BD demo: php scripts/import_demo_database.php --force
+Recargar la demo (borra los datos anteriores): php scripts/import_demo_database.php --force
 TXT;
-$credBody = str_replace('{date}', date('Y-m-d H:i:s'), $credBody);
 file_put_contents($credFile, $credBody);
 
 echo "Base de datos `{$dbName}` importada desde spartum_full_demo.sql\n";
-echo "Contraseña de todas las cuentas demo: {$demoPass}\n";
-echo "Administrador: {$adminEmail}\n";
-echo "Credenciales guardadas en: {$credFile}\n";
+echo "Cuentas guardadas en: {$credFile}\n";
