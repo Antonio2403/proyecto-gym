@@ -32,6 +32,7 @@
                                         <i class="fas fa-pen me-1" aria-hidden="true"></i> Editar
                                     </a>
                                     <form method="post" action="<?= htmlspecialchars(url('/monitor/salas/eliminar/' . (int) $sala['id'])) ?>"
+                                          data-gp-ajax="refresh"
                                           data-gp-confirm
                                           data-gp-danger="true"
                                           data-gp-confirm-title="Eliminar sala"

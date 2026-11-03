@@ -56,26 +56,33 @@
     }
 
     function submitPost(href, fields) {
-        var form = document.createElement('form');
-        form.method = 'post';
-        form.action = href;
+        var body = new FormData();
         Object.keys(fields || {}).forEach(function (name) {
-            var hidden = document.createElement('input');
-            hidden.type = 'hidden';
-            hidden.name = name;
-            hidden.value = fields[name];
-            form.appendChild(hidden);
+            body.append(name, fields[name]);
         });
         var token = csrfToken();
         if (token) {
-            var inp = document.createElement('input');
-            inp.type = 'hidden';
-            inp.name = 'csrf_token';
-            inp.value = token;
-            form.appendChild(inp);
+            body.append('csrf_token', token);
         }
-        document.body.appendChild(form);
-        form.submit();
+        fetch(href, {
+            method: 'POST',
+            body: body,
+            credentials: 'same-origin',
+            headers: { Accept: 'text/html' },
+        }).then(function (r) {
+            return r.text().then(function (html) {
+                return { url: r.url, html: html };
+            });
+        }).then(function (res) {
+            if (window.gpApplyAdminResult) {
+                window.gpApplyAdminResult(res);
+
+                return;
+            }
+            window.location.href = res.url || href;
+        }).catch(function () {
+            window.location.href = href;
+        });
     }
 
     function actionCls(kind) {
@@ -694,6 +701,10 @@
                 form.reset();
                 load(1);
             });
+        });
+
+        document.addEventListener('gp-admin-refresh', function () {
+            load(currentPage);
         });
 
         load(1);

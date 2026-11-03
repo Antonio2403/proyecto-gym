@@ -136,6 +136,11 @@
                     okLabel: readDs(form, 'gpConfirmOk', 'Sí'),
                     danger: form.getAttribute('data-gp-danger') === 'true',
                     onConfirm: function () {
+                        if (form.getAttribute('data-gp-ajax') === 'refresh' && typeof window.gpAjaxSubmit === 'function') {
+                            window.gpAjaxSubmit(form);
+
+                            return;
+                        }
                         form.__gpConfirmBypass = true;
                         submitFormWithSubmitter(form, ev.submitter);
                     },

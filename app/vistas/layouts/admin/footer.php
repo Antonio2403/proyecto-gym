@@ -4,6 +4,15 @@
 </div><!-- /.gp-admin-page -->
 
 <script src="<?= htmlspecialchars(asset('js/tailwind-ui.js')) ?>"></script>
+<div class="modal fade" id="gpEntityModal" tabindex="-1" aria-hidden="true" aria-labelledby="gpEntityModalTitle">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable gp-entity-dialog">
+        <div class="modal-content">
+            <div class="modal-body gp-entity-modal__body" data-gp-entity-body>
+                <h2 id="gpEntityModalTitle" class="gp-entity-modal__title">Formulario</h2>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="modal fade" id="gpGlobalConfirmModal" tabindex="-1" aria-hidden="true" aria-labelledby="gpGlobalConfirmModalTitle">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content gp-modal-confirm">
@@ -30,10 +39,11 @@
 <script defer src="<?= htmlspecialchars(asset('js/vendor/gsap.min.js')) ?>"></script>
 <script defer src="<?= htmlspecialchars(asset('js/gp-flash-banner.js')) ?>"></script>
 <script defer src="<?= htmlspecialchars(asset('js/gp-gsap-motion.js')) ?>"></script>
-<script defer src="<?= htmlspecialchars(asset('js/gp-confirm-modal.js')) ?>"></script>
+<script defer src="<?= htmlspecialchars(asset('js/gp-confirm-modal.js')) ?>?v=20261103a"></script>
 <script defer src="<?= htmlspecialchars(asset('js/gp-form-unsaved.js')) ?>"></script>
-<script defer src="<?= htmlspecialchars(asset('js/admin-datagrid.js')) ?>?v=20261029a"></script>
-<script defer src="<?= htmlspecialchars(asset('js/form-validacion.js')) ?>?v=20261029a"></script>
+<script defer src="<?= htmlspecialchars(asset('js/admin-datagrid.js')) ?>?v=20261103a"></script>
+<script defer src="<?= htmlspecialchars(asset('js/form-validacion.js')) ?>?v=20261103a"></script>
+<script defer src="<?= htmlspecialchars(asset('js/gp-entity-popup.js')) ?>?v=20261103a"></script>
 <script defer
         src="<?= htmlspecialchars(asset('js/site-preferences.js')) ?>"
         data-session-status-url="<?= htmlspecialchars(url('/sesion/estado')) ?>"

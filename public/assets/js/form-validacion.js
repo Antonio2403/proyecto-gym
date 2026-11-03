@@ -1158,5 +1158,35 @@
             var input = document.getElementById(id);
             wirePasswordStrength(input, listRoot);
         });
+
+        window.gpBindDynamicForm = function (root) {
+            if (!root) {
+                return;
+            }
+            root.querySelectorAll('form[data-gp-validate]').forEach(function (form) {
+                if (!(form instanceof HTMLFormElement)) {
+                    return;
+                }
+                var key = trimStr(form.getAttribute('data-gp-validate'));
+                attachForm(form, key);
+                if (key === 'activityCreate' || key === 'activityEdit') {
+                    bindRecurrenteFechaPuntual(form);
+                    bindColorActividad(form);
+                }
+            });
+            root.querySelectorAll('[data-gp-pass-reveal], [data-gp-pass-reveal-group]').forEach(wirePressHoldReveal);
+            root.querySelectorAll('[data-gp-phone-input]').forEach(wireTelefonoFormatter);
+            root.querySelectorAll('[data-gp-doc-identidad-es]').forEach(wireDocumentoIdentidadEs);
+            root.querySelectorAll('[data-gp-pass-rules-for]').forEach(function (listRoot) {
+                var id = trimStr(listRoot.getAttribute('data-gp-pass-rules-for'));
+                if (!id) {
+                    return;
+                }
+                var input = root.querySelector('#' + (window.CSS && CSS.escape ? CSS.escape(id) : id));
+                if (input) {
+                    wirePasswordStrength(input, listRoot);
+                }
+            });
+        };
     });
 })();
