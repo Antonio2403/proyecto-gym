@@ -111,10 +111,7 @@ class Cliente extends Usuario
                 cs.fecha_fin AS plan_fecha_fin,
                 s.nombre AS plan_nombre';
 
-        $stmt = $conexion->prepare('SELECT COUNT(*) ' . $baseFrom . $where);
-        foreach ($bind as $k => $v) {
-            $stmt->bindValue($k, $v);
-        }
+        $stmt = gp_grid_prepare($conexion, 'SELECT COUNT(*) ' . $baseFrom . $where, $bind);
         $stmt->execute();
         $total = (int) $stmt->fetchColumn();
 
@@ -130,10 +127,7 @@ class Cliente extends Usuario
                AND (cs.fecha_fin IS NULL OR cs.fecha_fin >= NOW())
             LEFT JOIN subscripciones s ON s.id = cs.subscripcion_id
         " . $where . ' ORDER BY c.id DESC LIMIT :lim OFFSET :off';
-        $stmt = $conexion->prepare($sql);
-        foreach ($bind as $k => $v) {
-            $stmt->bindValue($k, $v);
-        }
+        $stmt = gp_grid_prepare($conexion, $sql, $bind);
         $stmt->bindValue(':lim', $perPage, PDO::PARAM_INT);
         $stmt->bindValue(':off', $offset, PDO::PARAM_INT);
         $stmt->execute();

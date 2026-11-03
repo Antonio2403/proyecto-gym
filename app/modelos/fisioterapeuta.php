@@ -131,10 +131,7 @@ class Fisioterapeuta
 
         $where = $conds !== [] ? ' WHERE ' . implode(' AND ', $conds) : '';
 
-        $st = $db->prepare('SELECT COUNT(*) FROM fisioterapeutas' . $where);
-        foreach ($bind as $k => $v) {
-            $st->bindValue($k, $v);
-        }
+        $st = gp_grid_prepare($db, 'SELECT COUNT(*) FROM fisioterapeutas' . $where, $bind);
         $st->execute();
         $total = (int) $st->fetchColumn();
 
@@ -143,10 +140,7 @@ class Fisioterapeuta
         $offset = ($page - 1) * $perPage;
 
         $sql = 'SELECT id, nombre, especialidad FROM fisioterapeutas' . $where . ' ORDER BY nombre ASC LIMIT :lim OFFSET :off';
-        $st = $db->prepare($sql);
-        foreach ($bind as $k => $v) {
-            $st->bindValue($k, $v);
-        }
+        $st = gp_grid_prepare($db, $sql, $bind);
         $st->bindValue(':lim', $perPage, PDO::PARAM_INT);
         $st->bindValue(':off', $offset, PDO::PARAM_INT);
         $st->execute();

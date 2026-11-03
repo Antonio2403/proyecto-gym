@@ -560,10 +560,7 @@ class Actividad
         $where = $conds !== [] ? ' WHERE ' . implode(' AND ', $conds) : '';
         $sel = 'SELECT a.*, s.nombre AS sala_nombre, u.nombre AS monitor_nombre';
 
-        $stmt = $conexion->prepare('SELECT COUNT(*) ' . $baseFrom . $where);
-        foreach ($bind as $k => $v) {
-            $stmt->bindValue($k, $v);
-        }
+        $stmt = gp_grid_prepare($conexion, 'SELECT COUNT(*) ' . $baseFrom . $where, $bind);
         $stmt->execute();
         $total = (int) $stmt->fetchColumn();
 
@@ -572,10 +569,7 @@ class Actividad
         $offset = ($page - 1) * $perPage;
 
         $sql = $sel . $baseFrom . $where . ' ORDER BY a.id DESC LIMIT :lim OFFSET :off';
-        $stmt = $conexion->prepare($sql);
-        foreach ($bind as $k => $v) {
-            $stmt->bindValue($k, $v);
-        }
+        $stmt = gp_grid_prepare($conexion, $sql, $bind);
         $stmt->bindValue(':lim', $perPage, PDO::PARAM_INT);
         $stmt->bindValue(':off', $offset, PDO::PARAM_INT);
         $stmt->execute();

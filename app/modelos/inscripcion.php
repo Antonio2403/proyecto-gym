@@ -386,10 +386,7 @@ class Inscripcion
         $conexion = BasedeDatos::Conectar();
 
         $sqlCount = 'SELECT COUNT(DISTINCT CONCAT(i.actividad_id, \'|\', i.fecha_ocurrencia)) ' . $from . $where;
-        $st = $conexion->prepare($sqlCount);
-        foreach ($bind as $k => $v) {
-            $st->bindValue($k, $v);
-        }
+        $st = gp_grid_prepare($conexion, $sqlCount, $bind);
         $st->execute();
         $total = (int) $st->fetchColumn();
 
@@ -406,10 +403,7 @@ class Inscripcion
             ORDER BY i.fecha_ocurrencia ASC, a.nombre ASC
             LIMIT :lim OFFSET :off';
 
-        $st = $conexion->prepare($sql);
-        foreach ($bind as $k => $v) {
-            $st->bindValue($k, $v);
-        }
+        $st = gp_grid_prepare($conexion, $sql, $bind);
         $st->bindValue(':lim', $perPage, PDO::PARAM_INT);
         $st->bindValue(':off', $offset, PDO::PARAM_INT);
         $st->execute();

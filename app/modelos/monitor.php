@@ -92,10 +92,7 @@ class Monitor extends Usuario
         $where = $conds !== [] ? ' WHERE ' . implode(' AND ', $conds) : '';
         $baseFrom = ' FROM monitores m INNER JOIN usuarios u ON m.usuario_id = u.id ';
 
-        $stmt = $conexion->prepare('SELECT COUNT(*) ' . $baseFrom . $where);
-        foreach ($bind as $k => $v) {
-            $stmt->bindValue($k, $v);
-        }
+        $stmt = gp_grid_prepare($conexion, 'SELECT COUNT(*) ' . $baseFrom . $where, $bind);
         $stmt->execute();
         $total = (int) $stmt->fetchColumn();
 
@@ -106,10 +103,7 @@ class Monitor extends Usuario
         $sql = 'SELECT m.id AS monitor_id, m.especialidad, m.disponibilidad, u.id AS usuario_id, u.DNI, u.nombre, u.apellido1, u.apellido2, u.email, u.telefono '
             . $baseFrom . $where
             . ' ORDER BY m.id DESC LIMIT :lim OFFSET :off';
-        $stmt = $conexion->prepare($sql);
-        foreach ($bind as $k => $v) {
-            $stmt->bindValue($k, $v);
-        }
+        $stmt = gp_grid_prepare($conexion, $sql, $bind);
         $stmt->bindValue(':lim', $perPage, PDO::PARAM_INT);
         $stmt->bindValue(':off', $offset, PDO::PARAM_INT);
         $stmt->execute();

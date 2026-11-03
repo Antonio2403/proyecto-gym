@@ -200,10 +200,7 @@ class Cita
             LEFT JOIN clientes cli ON cli.id = c.cliente_id
             LEFT JOIN usuarios u ON u.id = cli.usuario_id ';
 
-        $st = $db->prepare('SELECT COUNT(DISTINCT c.id) ' . $from . $where);
-        foreach ($bind as $k => $v) {
-            $st->bindValue($k, $v);
-        }
+        $st = gp_grid_prepare($db, 'SELECT COUNT(DISTINCT c.id) ' . $from . $where, $bind);
         $st->execute();
         $total = (int) $st->fetchColumn();
 
@@ -218,10 +215,7 @@ class Cita
             ORDER BY c.fecha DESC
             LIMIT :lim OFFSET :off';
 
-        $st = $db->prepare($sql);
-        foreach ($bind as $k => $v) {
-            $st->bindValue($k, $v);
-        }
+        $st = gp_grid_prepare($db, $sql, $bind);
         $st->bindValue(':lim', $perPage, PDO::PARAM_INT);
         $st->bindValue(':off', $offset, PDO::PARAM_INT);
         $st->execute();

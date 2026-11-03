@@ -64,10 +64,7 @@ class Feedback
 
         $where = $conds !== [] ? ' WHERE ' . implode(' AND ', $conds) : '';
 
-        $st = $db->prepare('SELECT COUNT(*) FROM feedback' . $where);
-        foreach ($bind as $k => $v) {
-            $st->bindValue($k, $v);
-        }
+        $st = gp_grid_prepare($db, 'SELECT COUNT(*) FROM feedback' . $where, $bind);
         $st->execute();
         $total = (int) $st->fetchColumn();
 
@@ -77,10 +74,7 @@ class Feedback
 
         $sql = 'SELECT id, nombre, email, asunto, mensaje, fecha_creacion FROM feedback' . $where
             . ' ORDER BY fecha_creacion DESC LIMIT :lim OFFSET :off';
-        $st = $db->prepare($sql);
-        foreach ($bind as $k => $v) {
-            $st->bindValue($k, $v);
-        }
+        $st = gp_grid_prepare($db, $sql, $bind);
         $st->bindValue(':lim', $perPage, PDO::PARAM_INT);
         $st->bindValue(':off', $offset, PDO::PARAM_INT);
         $st->execute();

@@ -11,6 +11,52 @@ function gp_grid_escape_like(string $value): string
 }
 
 /**
+ * Las preparadas nativas de MySQL no aceptan el mismo nombre dos veces (:q OR :q).
+ * Cada repetición pasa a ser :q__2, :q__3… con el mismo valor.
+ *
+ * @param array<string, mixed> $bind
+ * @return array{0: string, 1: array<string, mixed>}
+ */
+function gp_grid_expand_placeholders(string $sql, array $bind): array
+{
+    $counts = [];
+    $extra = [];
+    $sql = preg_replace_callback(
+        '/:([A-Za-z_][A-Za-z0-9_]*)/',
+        static function (array $m) use (&$counts, &$extra, $bind): string {
+            $name = ':' . $m[1];
+            $counts[$name] = ($counts[$name] ?? 0) + 1;
+            if ($counts[$name] === 1) {
+                return $name;
+            }
+            $alias = $name . '__' . $counts[$name];
+            if (array_key_exists($name, $bind)) {
+                $extra[$alias] = $bind[$name];
+            }
+
+            return $alias;
+        },
+        $sql
+    ) ?? $sql;
+
+    return [$sql, $bind + $extra];
+}
+
+/**
+ * @param array<string, mixed> $bind
+ */
+function gp_grid_prepare(PDO $db, string $sql, array $bind): PDOStatement
+{
+    [$sql, $bind] = gp_grid_expand_placeholders($sql, $bind);
+    $stmt = $db->prepare($sql);
+    foreach ($bind as $k => $v) {
+        $stmt->bindValue($k, $v);
+    }
+
+    return $stmt;
+}
+
+/**
  * LIKE %valor% si el trim no está vacío; si no null.
  */
 function gp_grid_like_contains(?string $value): ?string

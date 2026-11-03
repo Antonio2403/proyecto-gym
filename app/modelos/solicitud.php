@@ -133,10 +133,7 @@ class Solicitud
             ? ' ORDER BY s.fecha_creacion ASC'
             : ' ORDER BY s.fecha_revision DESC, s.fecha_creacion DESC';
 
-        $stmt = $conexion->prepare('SELECT COUNT(*) ' . $baseFrom . $where);
-        foreach ($bind as $k => $v) {
-            $stmt->bindValue($k, $v);
-        }
+        $stmt = gp_grid_prepare($conexion, 'SELECT COUNT(*) ' . $baseFrom . $where, $bind);
         $stmt->execute();
         $total = (int) $stmt->fetchColumn();
 
@@ -146,10 +143,7 @@ class Solicitud
 
         $sel = 'SELECT s.*, u.nombre AS monitor_nombre, u.apellido1 AS monitor_apellido1, u.apellido2 AS monitor_apellido2, u.email AS monitor_email';
         $sql = $sel . $baseFrom . $where . $order . ' LIMIT :lim OFFSET :off';
-        $stmt = $conexion->prepare($sql);
-        foreach ($bind as $k => $v) {
-            $stmt->bindValue($k, $v);
-        }
+        $stmt = gp_grid_prepare($conexion, $sql, $bind);
         $stmt->bindValue(':lim', $perPage, PDO::PARAM_INT);
         $stmt->bindValue(':off', $offset, PDO::PARAM_INT);
         $stmt->execute();

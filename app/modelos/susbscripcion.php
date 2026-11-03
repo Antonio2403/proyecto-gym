@@ -81,10 +81,7 @@ class Subscripcion
         $where = $conds !== [] ? ' WHERE ' . implode(' AND ', $conds) : '';
         $from = ' FROM subscripciones ';
 
-        $stmt = $db->prepare('SELECT COUNT(*) ' . $from . $where);
-        foreach ($bind as $k => $v) {
-            $stmt->bindValue($k, $v);
-        }
+        $stmt = gp_grid_prepare($db, 'SELECT COUNT(*) ' . $from . $where, $bind);
         $stmt->execute();
         $total = (int) $stmt->fetchColumn();
 
@@ -93,10 +90,7 @@ class Subscripcion
         $offset = ($page - 1) * $perPage;
 
         $sql = 'SELECT *' . $from . $where . ' ORDER BY id DESC LIMIT :lim OFFSET :off';
-        $stmt = $db->prepare($sql);
-        foreach ($bind as $k => $v) {
-            $stmt->bindValue($k, $v);
-        }
+        $stmt = gp_grid_prepare($db, $sql, $bind);
         $stmt->bindValue(':lim', $perPage, PDO::PARAM_INT);
         $stmt->bindValue(':off', $offset, PDO::PARAM_INT);
         $stmt->execute();
