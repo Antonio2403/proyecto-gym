@@ -599,16 +599,72 @@
     }
 }
 
-/* Editar / responder dentro de un popup */
+/* Editar / responder dentro de un popup.
+   El cuadro mide lo que ocupa el formulario y no lleva barra interior. */
+#gpEntityModal.modal.show {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    overflow-x: hidden;
+    overflow-y: auto;
+    padding: 0.75rem;
+}
+
 .gp-entity-dialog {
     width: min(56rem, calc(100vw - 1.5rem));
     max-width: min(56rem, calc(100vw - 1.5rem));
+    min-height: 0;
+    height: auto;
+    flex: 0 0 auto;
+    margin: auto;
 }
 
-.gp-entity-modal__body {
+#gpEntityModal .modal-body.gp-entity-modal__body {
+    flex: none;
     padding: 0;
-    max-height: min(82vh, 52rem);
-    overflow: auto;
+    max-height: none;
+    overflow: visible;
+}
+
+#gpEntityModal .gp-form-panel__head {
+    padding: 0.75rem 2.6rem 0.5rem 1.1rem;
+}
+
+#gpEntityModal .gp-form-panel__toolbar {
+    margin-bottom: 0.35rem;
+}
+
+#gpEntityModal .gp-form-panel__body {
+    padding: 0.75rem 1.1rem 0.85rem;
+}
+
+#gpEntityModal textarea.form-control {
+    height: 4.25rem;
+    min-height: 4.25rem;
+}
+
+#gpEntityModal .gp-form-required-legend,
+#gpEntityModal .gp-form-panel__body > p {
+    margin-bottom: 0.55rem;
+}
+
+#gpEntityModal .gp-form-grid {
+    gap: 0.55rem 0.85rem;
+}
+
+#gpEntityModal .gp-form-stack .mb-4 {
+    margin-bottom: 0.65rem;
+}
+
+#gpEntityModal .gp-form-actions {
+    margin-top: 0.45rem;
+    padding-top: 0.55rem;
+}
+
+#gpEntityModal .form-text,
+#gpEntityModal small.text-slate-500 {
+    font-size: 0.75rem;
+    line-height: 1.3;
 }
 
 .gp-entity-modal__title {

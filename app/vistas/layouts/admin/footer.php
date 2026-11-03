@@ -5,7 +5,7 @@
 
 <script src="<?= htmlspecialchars(asset('js/tailwind-ui.js')) ?>"></script>
 <div class="modal fade" id="gpEntityModal" tabindex="-1" aria-hidden="true" aria-labelledby="gpEntityModalTitle">
-    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable gp-entity-dialog">
+    <div class="modal-dialog modal-dialog-centered gp-entity-dialog">
         <div class="modal-content">
             <div class="modal-body gp-entity-modal__body" data-gp-entity-body>
                 <h2 id="gpEntityModalTitle" class="gp-entity-modal__title">Formulario</h2>
