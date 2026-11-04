@@ -15,10 +15,7 @@ $token = (string) ($token ?? '');
                 <input type="hidden" name="token" value="<?= htmlspecialchars($token) ?>">
                 <div class="mb-4">
                     <label class="form-label" for="clave_nueva">Nueva contraseña</label>
-                    <div class="input-group">
-                        <input type="password" class="form-control" id="clave_nueva" name="clave_nueva" required minlength="8" autocomplete="new-password">
-                        <button class="btn btn-outline-secondary" type="button" data-gp-pass-reveal-group="clave_nueva,clave_nueva2" title="Mantén pulsado para ver ambas" aria-label="Mostrar contraseñas mientras mantienes pulsado">Ver</button>
-                    </div>
+                    <input type="password" class="form-control" id="clave_nueva" name="clave_nueva" required minlength="8" autocomplete="new-password">
                     <ul class="gp-pass-rules list-none ps-0 text-sm mt-2 mb-0" data-gp-pass-rules-for="clave_nueva" aria-live="polite">
                         <li class="gp-pass-rule gp-pass-rule--idle mb-1" data-rule="len"><span class="gp-pass-rule-mark" aria-hidden="true"></span> Al menos 8 caracteres</li>
                         <li class="gp-pass-rule gp-pass-rule--idle mb-1" data-rule="upper"><span class="gp-pass-rule-mark" aria-hidden="true"></span> Una letra mayúscula</li>

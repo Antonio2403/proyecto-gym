@@ -302,6 +302,42 @@ body.gp-cookie-open {
     overflow: hidden;
 }
 
+.gp-pass-field {
+    position: relative;
+    display: block;
+    width: 100%;
+}
+
+.gp-pass-field > .form-control {
+    padding-right: 2.75rem;
+}
+
+.gp-pass-toggle {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 2.6rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 0;
+    padding: 0;
+    background: transparent;
+    color: var(--gp-muted, #64748b);
+    cursor: pointer;
+}
+
+.gp-pass-toggle i {
+    font-size: 1.05rem;
+    line-height: 1;
+}
+
+.gp-pass-toggle:hover,
+.gp-pass-toggle:focus-visible {
+    color: var(--gp-navy, #2c3544);
+}
+
 .gp-cookie-consent__accept {
     min-height: 2.75rem;
     touch-action: manipulation;

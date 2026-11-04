@@ -43,11 +43,7 @@
                                 </div>
                                 <div class="mb-4">
                                     <label for="clave_login" class="form-label gp-label-required">Contraseña</label>
-                                    <div class="input-group input-group-lg">
-                                        <input type="password" class="form-control" id="clave_login" name="clave" required autocomplete="current-password">
-                                        <button class="btn btn-outline-secondary" type="button" data-gp-pass-reveal="clave_login" title="Mantén pulsado para ver" aria-label="Mostrar contraseña mientras mantienes pulsado">Ver</button>
-                                    </div>
-                                    <p class="form-text text-sm text-slate-500 mb-0">Mantén pulsado «Ver» para mostrar la contraseña un instante.</p>
+                                    <input type="password" class="form-control form-control-lg" id="clave_login" name="clave" required autocomplete="current-password">
                                 </div>
                                 <button type="submit" class="btn btn-primary btn-lg w-full">Entrar</button>
                                 <p class="text-center mt-4 mb-0 text-sm">
@@ -90,16 +86,13 @@
                                         <fieldset class="border-0 p-0 m-0">
                                             <legend class="form-label gp-label-required mb-2">Contraseña</legend>
                                             <div class="items-end gp-reg-pass-row flex flex-wrap -mx-1 -mt-2">
-                                                <div class="w-full lg:w-5/12 max-w-full shrink-0 px-1 mt-2">
+                                                <div class="w-full lg:w-1/2 max-w-full shrink-0 px-1 mt-2">
                                                     <label class="sr-only" for="clave">Contraseña</label>
                                                     <input type="password" class="form-control form-control-lg" id="clave" name="clave" required minlength="8" autocomplete="new-password" placeholder="Nueva contraseña">
                                                 </div>
-                                                <div class="w-full lg:w-5/12 max-w-full shrink-0 px-1 mt-2">
+                                                <div class="w-full lg:w-1/2 max-w-full shrink-0 px-1 mt-2">
                                                     <label class="sr-only" for="clave_confirmar">Confirmar contraseña</label>
                                                     <input type="password" class="form-control form-control-lg" id="clave_confirmar" name="clave_confirmar" required minlength="8" autocomplete="new-password" placeholder="Repite la contraseña">
-                                                </div>
-                                                <div class="w-full lg:w-1/6 max-w-full shrink-0 px-1 mt-2">
-                                                    <button class="btn btn-outline-secondary btn-lg w-full text-nowrap" type="button" data-gp-pass-reveal-group="clave,clave_confirmar" title="Mantén pulsado para ver ambas" aria-label="Mostrar contraseñas mientras mantienes pulsado">Ver</button>
                                                 </div>
                                             </div>
                                             <ul class="gp-pass-rules list-none ps-0 text-sm mt-4 mb-0" data-gp-pass-rules-for="clave" aria-live="polite">

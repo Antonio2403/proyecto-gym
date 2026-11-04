@@ -994,64 +994,43 @@
             }
         });
 
-        function collectRevealIds(btn) {
-            var ids = [];
-            var singleId = btn.getAttribute('data-gp-pass-reveal');
-            var groupRaw = btn.getAttribute('data-gp-pass-reveal-group');
-            if (singleId && trimStr(singleId)) ids.push(trimStr(singleId));
-            if (groupRaw) {
-                groupRaw.split(',').forEach(function (s) {
-                    var id = trimStr(s);
-                    if (id && ids.indexOf(id) === -1) ids.push(id);
-                });
-            }
-            return ids;
+        function paintPassToggle(btn, visible) {
+            btn.setAttribute('aria-pressed', visible ? 'true' : 'false');
+            btn.setAttribute('aria-label', visible ? 'Ocultar contraseña' : 'Mostrar contraseña');
+            btn.innerHTML = '<i class="fas ' + (visible ? 'fa-eye' : 'fa-eye-slash') + '" aria-hidden="true"></i>';
         }
 
-        function wirePressHoldReveal(btn) {
-            var ids = collectRevealIds(btn);
-            if (ids.length === 0) return;
-            function els() {
-                return ids.map(function (id) { return document.getElementById(id); }).filter(function (el) {
-                    return el && 'type' in el;
-                });
-            }
-            function showPlain(show) {
-                els().forEach(function (el) {
-                    el.type = show ? 'text' : 'password';
-                });
-            }
-            function pe(e) {
-                if (e) e.preventDefault();
-            }
-            function start(e) {
-                pe(e);
-                showPlain(true);
-            }
-            function end() {
-                showPlain(false);
-            }
-            btn.addEventListener('mousedown', start);
-            btn.addEventListener('touchstart', start, { passive: false });
-            btn.addEventListener('mouseup', end);
-            btn.addEventListener('mouseleave', end);
-            btn.addEventListener('touchend', end);
-            btn.addEventListener('touchcancel', end);
-            btn.addEventListener('keydown', function (e) {
-                if (e.key === ' ' || e.key === 'Enter') {
-                    pe(e);
-                    showPlain(true);
+        function wirePasswordFields(root) {
+            var scope = root || document;
+            scope.querySelectorAll('input[type="password"], .gp-pass-field input').forEach(function (input) {
+                if (!input || input.dataset.gpPassReady === '1') {
+                    return;
                 }
+                if (input.type !== 'password' && input.type !== 'text') {
+                    return;
+                }
+                input.dataset.gpPassReady = '1';
+                var wrap = document.createElement('span');
+                wrap.className = 'gp-pass-field';
+                input.parentNode.insertBefore(wrap, input);
+                wrap.appendChild(input);
+                var btn = document.createElement('button');
+                btn.type = 'button';
+                btn.className = 'gp-pass-toggle';
+                paintPassToggle(btn, false);
+                btn.addEventListener('click', function () {
+                    var visible = input.type === 'password';
+                    input.type = visible ? 'text' : 'password';
+                    paintPassToggle(btn, visible);
+                });
+                wrap.appendChild(btn);
             });
-            btn.addEventListener('keyup', function (e) {
-                if (e.key === ' ' || e.key === 'Enter') end();
+            scope.querySelectorAll('[data-gp-pass-reveal], [data-gp-pass-reveal-group]').forEach(function (oldBtn) {
+                oldBtn.remove();
             });
-            btn.addEventListener('blur', end);
         }
 
-        document.querySelectorAll('[data-gp-pass-reveal], [data-gp-pass-reveal-group]').forEach(function (btn) {
-            wirePressHoldReveal(btn);
-        });
+        wirePasswordFields(document);
 
         function wireTelefonoFormatter(input) {
             if (!input) return;
@@ -1174,7 +1153,7 @@
                     bindColorActividad(form);
                 }
             });
-            root.querySelectorAll('[data-gp-pass-reveal], [data-gp-pass-reveal-group]').forEach(wirePressHoldReveal);
+            wirePasswordFields(root);
             root.querySelectorAll('[data-gp-phone-input]').forEach(wireTelefonoFormatter);
             root.querySelectorAll('[data-gp-doc-identidad-es]').forEach(wireDocumentoIdentidadEs);
             root.querySelectorAll('[data-gp-pass-rules-for]').forEach(function (listRoot) {

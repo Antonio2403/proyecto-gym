@@ -45,10 +45,7 @@
                                 </div>
                                 <div class="w-full md:w-1/2 max-w-full shrink-0 px-2 mt-4">
                                     <label for="clave" class="form-label">Nueva contraseña</label>
-                                    <div class="input-group">
-                                        <input type="password" class="form-control" id="clave" name="clave" autocomplete="new-password" minlength="8">
-                                        <button class="btn btn-outline-secondary" type="button" data-gp-pass-reveal-group="clave,clave_confirmar" aria-label="Mostrar u ocultar contraseñas">Ver</button>
-                                    </div>
+                                    <input type="password" class="form-control" id="clave" name="clave" autocomplete="new-password" minlength="8">
                                     <small class="text-slate-500">Déjalo vacío si no quieres cambiarla. Si la cambias: mín. 8 caracteres con mayúsculas, minúsculas, número y símbolo.</small>
                                 </div>
                                 <div class="w-full md:w-1/2 max-w-full shrink-0 px-2 mt-4">

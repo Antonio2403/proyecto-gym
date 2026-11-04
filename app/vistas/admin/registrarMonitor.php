@@ -37,10 +37,7 @@ require dirname(__DIR__) . '/layouts/partials/gp_form_panel_start.php';
                         </div>
                         <div>
                             <label for="clave" class="form-label gp-label-required">Contraseña</label>
-                            <div class="input-group">
-                                <input type="password" class="form-control" id="clave" name="clave" required minlength="8" autocomplete="new-password">
-                                <button class="btn btn-outline-secondary" type="button" data-gp-pass-reveal-group="clave,clave_confirmar" aria-label="Mostrar u ocultar contraseñas">Ver</button>
-                            </div>
+                            <input type="password" class="form-control" id="clave" name="clave" required minlength="8" autocomplete="new-password">
                             <small class="text-slate-500">Mín. 8 caracteres con mayúsculas, minúsculas, número y símbolo.</small>
                         </div>
                         <div>
