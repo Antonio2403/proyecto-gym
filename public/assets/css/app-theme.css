@@ -156,6 +156,7 @@ body::-webkit-scrollbar-corner,
     padding-bottom: 0.65rem;
     box-shadow: var(--gp-shadow-xs);
     min-height: 68px;
+    z-index: 1040;
 }
 
 .site-navbar > div {
@@ -340,7 +341,100 @@ body::-webkit-scrollbar-corner,
     }
 }
 
-@media (min-width: 992px) {
+@media (max-width: 1023.98px) {
+    .site-navbar > div {
+        flex-wrap: nowrap;
+        gap: 0.7rem;
+    }
+
+    .site-navbar .navbar-collapse,
+    .site-navbar .navbar-collapse:not(.show) {
+        position: fixed;
+        top: 4.25rem;
+        left: 0;
+        bottom: 0;
+        z-index: 1030;
+        display: flex !important;
+        flex-direction: column;
+        align-items: stretch;
+        justify-content: flex-start;
+        width: min(19rem, 86vw);
+        margin: 0;
+        padding: 0.85rem 0.75rem 1.5rem;
+        background: var(--gp-navy);
+        border-right: 1px solid rgba(255, 255, 255, 0.08);
+        box-shadow: 16px 0 36px rgba(0, 0, 0, 0.32);
+        overflow: auto;
+        transform: translateX(-105%);
+        transition: transform 0.28s ease;
+        pointer-events: none;
+    }
+
+    .site-navbar .navbar-collapse.show {
+        transform: translateX(0);
+        pointer-events: auto;
+    }
+
+    .site-navbar .navbar-nav {
+        width: 100%;
+        align-items: stretch;
+    }
+
+    .site-navbar .nav-link {
+        display: block;
+        padding: 0.8rem 0.9rem !important;
+        font-size: 1.02rem;
+    }
+
+    .site-navbar .gp-navbar-cta {
+        margin: 0.45rem 0.9rem 0;
+        align-self: flex-start;
+    }
+
+    .site-navbar .navbar-collapse .dropdown-menu {
+        position: static;
+        display: block;
+        min-width: 0;
+        margin: 0;
+        padding: 0 0 0.35rem 0.85rem;
+        background: transparent;
+        border: 0;
+        box-shadow: none;
+    }
+
+    .site-navbar .navbar-collapse .dropdown-item {
+        color: rgba(255, 255, 255, 0.82);
+    }
+
+    .site-navbar .navbar-collapse .dropdown-item:hover,
+    .site-navbar .navbar-collapse .dropdown-item:focus {
+        background: rgba(255, 255, 255, 0.08);
+        color: #fff;
+    }
+
+    .gp-nav-backdrop {
+        position: fixed;
+        top: 4.25rem;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        z-index: 1025;
+        border: 0;
+        padding: 0;
+        background: rgba(15, 23, 42, 0.46);
+        cursor: pointer;
+    }
+
+    .gp-nav-backdrop[hidden] {
+        display: none !important;
+    }
+
+    body.gp-nav-open {
+        overflow: hidden;
+    }
+}
+
+@media (min-width: 1024px) {
     .site-navbar > div {
         flex-wrap: nowrap;
     }
@@ -352,6 +446,8 @@ body::-webkit-scrollbar-corner,
         flex: 1 1 auto;
         min-width: 0;
         min-height: 42px;
+        transform: none;
+        pointer-events: auto;
     }
 
     .site-navbar .navbar-nav.mx-auto {
@@ -362,6 +458,10 @@ body::-webkit-scrollbar-corner,
         max-width: none;
         flex: 1 1 auto;
         justify-content: center;
+    }
+
+    .gp-nav-backdrop {
+        display: none !important;
     }
 }
 

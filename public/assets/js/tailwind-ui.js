@@ -176,8 +176,39 @@
         });
     }
 
+    function setSiteNav(open) {
+        var panel = document.getElementById('navbarNav');
+        if (!panel) {
+            return;
+        }
+        panel.classList.toggle('show', open);
+        var button = document.querySelector('.site-navbar [data-gp-target="#navbarNav"]');
+        if (button) {
+            button.setAttribute('aria-expanded', open ? 'true' : 'false');
+        }
+        var backdrop = document.querySelector('[data-gp-nav-backdrop]');
+        if (backdrop) {
+            backdrop.hidden = !open;
+        }
+        document.body.classList.toggle('gp-nav-open', open);
+    }
+
     function bindDelegatedControls() {
         document.addEventListener('click', function (event) {
+            if (event.target.closest('[data-gp-nav-backdrop]')) {
+                setSiteNav(false);
+                return;
+            }
+
+            var drawerLink = event.target.closest('#navbarNav a');
+            if (
+                drawerLink
+                && !drawerLink.hasAttribute('data-gp-toggle')
+                && window.matchMedia('(max-width: 1023.98px)').matches
+            ) {
+                setSiteNav(false);
+            }
+
             var dismiss = event.target.closest('[data-gp-dismiss="modal"]');
             if (dismiss) {
                 var modal = dismiss.closest('.modal');
@@ -200,6 +231,10 @@
                 event.preventDefault();
                 var selector = collapse.getAttribute('data-gp-target') || collapse.getAttribute('href');
                 var panel = selector ? document.querySelector(selector) : null;
+                if (panel && panel.id === 'navbarNav') {
+                    setSiteNav(!panel.classList.contains('show'));
+                    return;
+                }
                 if (panel) {
                     var open = panel.classList.toggle('show');
                     if (!panel.classList.contains('navbar-collapse')) {
@@ -230,6 +265,11 @@
             if (event.key !== 'Escape') {
                 return;
             }
+            var drawer = document.getElementById('navbarNav');
+            if (drawer && drawer.classList.contains('show') && window.matchMedia('(max-width: 1023.98px)').matches) {
+                setSiteNav(false);
+                return;
+            }
             var openModal = document.querySelector('.modal.show');
             if (openModal) {
                 var instance = Modal.getOrCreateInstance(openModal);
@@ -252,6 +292,12 @@
             }
         });
     }
+
+    window.addEventListener('resize', function () {
+        if (window.matchMedia('(min-width: 1024px)').matches) {
+            setSiteNav(false);
+        }
+    });
 
     function initialise() {
         document.querySelectorAll('.modal').forEach(function (element) {
