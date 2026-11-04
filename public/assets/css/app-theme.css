@@ -284,10 +284,24 @@ body::-webkit-scrollbar-corner,
     border-radius: var(--gp-radius-sm);
     box-shadow: var(--gp-shadow-card);
     padding: 1rem;
-    transform: translateY(0);
-    opacity: 1;
-    transition: transform 0.38s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.28s ease;
-    will-change: transform, opacity;
+}
+
+html.gp-cookies-ok .gp-cookie-consent {
+    display: none !important;
+}
+
+.gp-cookie-consent__accept {
+    min-height: 2.75rem;
+    touch-action: manipulation;
+}
+
+@media (max-width: 640px) {
+    .gp-cookie-consent {
+        left: 0.75rem;
+        right: 0.75rem;
+        width: auto;
+        bottom: calc(4.75rem + env(safe-area-inset-bottom, 0px));
+    }
 }
 
 .gp-cookie-consent--closing {

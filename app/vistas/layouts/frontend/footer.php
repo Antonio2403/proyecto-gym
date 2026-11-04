@@ -91,13 +91,7 @@ $gpDireccion = gp_horario_centro_direccion();
 </div>
 </div>
 
-<?php if (($_COOKIE['gp_cookie_consent'] ?? '') !== 'accepted'): ?>
-<aside class="gp-cookie-consent" data-gp-cookie-consent data-cookie-url="<?= htmlspecialchars(url('/cookies/aceptar')) ?>">
-    <h2 class="text-base mb-2">Cookies de Spartum</h2>
-    <p class="text-sm text-slate-500 mb-4">Usamos cookies técnicas para mantener tu sesión y recordar esta preferencia.</p>
-    <button type="button" class="btn btn-primary btn-sm w-full" data-gp-cookie-accept>Aceptar cookies</button>
-</aside>
-<?php endif; ?>
+<?php require __DIR__ . '/../partials/gp_cookie_consent.php'; ?>
 
 <script src="<?= htmlspecialchars(asset('js/tailwind-ui.js')) ?>?v=20261104a"></script>
 <script defer src="<?= htmlspecialchars(asset('js/vendor/gsap.min.js')) ?>"></script>
@@ -107,7 +101,7 @@ $gpDireccion = gp_horario_centro_direccion();
 <script defer src="<?= htmlspecialchars(asset('js/gp-form-unsaved.js')) ?>"></script>
 <script defer src="<?= htmlspecialchars(asset('js/form-validacion.js')) ?>?v=20261029a"></script>
 <script defer
-        src="<?= htmlspecialchars(asset('js/site-preferences.js')) ?>"
+        src="<?= htmlspecialchars(asset('js/site-preferences.js')) ?>?v=20261104c"
         data-session-status-url="<?= htmlspecialchars(url('/sesion/estado')) ?>"
         data-login-url="<?= htmlspecialchars(url('/login')) ?>"
         data-cerrar-inactividad-url="<?= htmlspecialchars(url('/sesion/cerrar-inactividad')) ?>"></script>

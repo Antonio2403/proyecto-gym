@@ -21,10 +21,12 @@ class InicioControlador extends Controller {
             return;
         }
 
+        $https = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off')
+            || (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https');
         setcookie('gp_cookie_consent', 'accepted', [
             'expires' => time() + 365 * 86400,
-            'path' => app_base_path() ?: '/',
-            'secure' => (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off'),
+            'path' => '/',
+            'secure' => $https,
             'httponly' => false,
             'samesite' => 'Lax',
         ]);

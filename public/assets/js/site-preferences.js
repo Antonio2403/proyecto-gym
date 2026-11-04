@@ -231,42 +231,7 @@
     }
 
     document.addEventListener('DOMContentLoaded', function () {
-        var box = document.querySelector('[data-gp-cookie-consent]');
-        var btn = document.querySelector('[data-gp-cookie-accept]');
         startSessionWatcher();
         startStrictIdleLogout();
-        if (!box || !btn) {
-            return;
-        }
-
-        function closeConsent() {
-            box.classList.add('gp-cookie-consent--closing');
-            window.setTimeout(function () {
-                box.hidden = true;
-            }, 380);
-        }
-
-        function rememberLocally() {
-            var secure = window.location.protocol === 'https:' ? '; Secure' : '';
-            document.cookie = 'gp_cookie_consent=accepted; Max-Age=31536000; Path=/; SameSite=Lax' + secure;
-            try {
-                window.localStorage.setItem('gp_cookie_consent', 'accepted');
-            } catch (_) {
-            }
-        }
-
-        btn.addEventListener('click', function () {
-            var csrfToken = csrfFromMeta();
-            btn.disabled = true;
-            rememberLocally();
-            closeConsent();
-
-            fetch(String(box.getAttribute('data-cookie-url') || '/cookies/aceptar'), {
-                method: 'POST',
-                headers: { 'X-CSRF-Token': csrfToken },
-                credentials: 'same-origin',
-            }).catch(function () {
-            });
-        });
     });
 })();
