@@ -1174,8 +1174,8 @@ body::-webkit-scrollbar-corner,
 .site-body:not(.gp-admin-body-root) .btn-outline-light:not(.gp-btn-plain):not(:has(i)):not([data-gp-pass-reveal]):not([data-gp-pass-reveal-group])::before,
 .site-body:not(.gp-admin-body-root) .btn-outline-secondary:not(.gp-btn-plain):not(:has(i)):not([data-gp-pass-reveal]):not([data-gp-pass-reveal-group])::before {
     content: "";
-    width: 1em;
-    height: 1em;
+    width: 1.5em;
+    height: 0.62em;
     flex: 0 0 auto;
     background: currentColor;
     -webkit-mask: url("../img/favicon-mark.svg") center / contain no-repeat;
