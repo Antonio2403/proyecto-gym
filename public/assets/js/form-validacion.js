@@ -244,7 +244,7 @@
 
     function claveFuerteOk(raw) {
         var s = trimStr(raw);
-        if (s.length < 16) return false;
+        if (s.length < 8) return false;
         if (!/[A-Z]/.test(s)) return false;
         if (!/[a-z]/.test(s)) return false;
         if (!/[0-9]/.test(s)) return false;
@@ -340,7 +340,7 @@
         var pw = field(form, 'clave');
         var pw2 = field(form, 'clave_confirmar');
         if (pw && trimStr(pw.value) && !claveFuerteOk(pw.value)) {
-            pw.setCustomValidity('La contraseña debe tener al menos 16 caracteres e incluir mayúsculas, minúsculas, números y símbolos.');
+            pw.setCustomValidity('La contraseña debe tener al menos 8 caracteres e incluir mayúsculas, minúsculas, números y símbolos.');
             ok = false;
         }
         if (pw && pw2 && trimStr(pw.value) !== trimStr(pw2.value)) {
@@ -381,7 +381,7 @@
         var pw2 = field(form, 'clave_confirmar');
         var pv = trimStr(pw ? pw.value : '');
         if (pw && pv.length > 0 && !claveFuerteOk(pv)) {
-            pw.setCustomValidity('La nueva contraseña debe tener al menos 16 caracteres e incluir mayúsculas, minúsculas, números y símbolos.');
+            pw.setCustomValidity('La nueva contraseña debe tener al menos 8 caracteres e incluir mayúsculas, minúsculas, números y símbolos.');
             ok = false;
         }
         if (pw && pw2 && pv.length > 0 && trimStr(pw2.value) !== pv) {
@@ -536,7 +536,7 @@
         var pw = field(form, 'clave');
         var pw2 = field(form, 'clave_confirmar');
         if (pw && !claveFuerteOk(pw.value)) {
-            pw.setCustomValidity('La contraseña debe tener al menos 16 caracteres e incluir mayúsculas, minúsculas, números y símbolos.');
+            pw.setCustomValidity('La contraseña debe tener al menos 8 caracteres e incluir mayúsculas, minúsculas, números y símbolos.');
             ok = false;
         }
         if (pw && pw2 && trimStr(pw.value) !== trimStr(pw2.value)) {
@@ -580,7 +580,7 @@
         var pw2 = field(form, 'clave_confirmar');
         var pv = pw ? trimStr(pw.value) : '';
         if (pw && pv.length > 0 && !claveFuerteOk(pv)) {
-            pw.setCustomValidity('La contraseña debe tener al menos 16 caracteres e incluir mayúsculas, minúsculas, números y símbolos.');
+            pw.setCustomValidity('La contraseña debe tener al menos 8 caracteres e incluir mayúsculas, minúsculas, números y símbolos.');
             ok = false;
         }
         if (pw && pw2 && pv.length > 0 && trimStr(pw2.value) !== pv) {
@@ -1113,7 +1113,7 @@
 
         function evalClaveFuerteParts(s) {
             return {
-                len: s.length >= 16,
+                len: s.length >= 8,
                 upper: /[A-Z]/.test(s),
                 lower: /[a-z]/.test(s),
                 num: /[0-9]/.test(s),

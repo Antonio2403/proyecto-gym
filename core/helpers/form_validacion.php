@@ -83,11 +83,11 @@ function fv_clave_registro_valida(string $clave): bool
 }
 
 /**
- * Política fuerte: ≥16 caracteres, mayúscula, minúscula, dígito y símbolo.
+ * Política fuerte: ≥8 caracteres, mayúscula, minúscula, dígito y símbolo.
  */
 function fv_clave_fuerte(string $clave): bool
 {
-    if (strlen($clave) < 16) {
+    if (strlen($clave) < 8) {
         return false;
     }
     if (preg_match('/[A-Z]/', $clave) !== 1) {

@@ -577,7 +577,7 @@ class RecuperarContrasenaControlador extends Controller
             header(
                 'Location: ' . url('/restablecer-contrasena') . '?' . http_build_query(['token' => $token])
                     . '&error=' . rawurlencode(
-                        'La contraseña debe tener al menos 16 caracteres e incluir mayúsculas, minúsculas, números y símbolos'
+                        'La contraseña debe tener al menos 8 caracteres e incluir mayúsculas, minúsculas, números y símbolos'
                     )
             );
             exit;

@@ -14,7 +14,7 @@
             </div>
             <div class="card-body px-0 pt-0">
                 <p class="text-slate-500 text-sm">
-                    Los usuarios deben usar contraseñas de al menos 16 caracteres con mayúsculas, minúsculas, números y símbolos.
+                    Los usuarios deben usar contraseñas de al menos 8 caracteres con mayúsculas, minúsculas, números y símbolos.
                     Se les pedirá renovar la contraseña tras el número de días indicado (0 = sin caducidad por antigüedad).
                     El tiempo de <strong>inactividad</strong> cierra la sesión en el navegador y muestra un aviso para volver a entrar.
                     La variable de entorno <code>SESSION_IDLE_TIMEOUT_SECONDS</code>, si existe, tiene prioridad sobre el valor del panel.

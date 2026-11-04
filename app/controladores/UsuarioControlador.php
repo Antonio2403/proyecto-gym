@@ -132,7 +132,7 @@ class UsuarioControlador extends Controller
         if (!fv_clave_registro_valida($clave)) {
             header(
                 'Location: ' . url('/login') . '?error=' . rawurlencode(
-                    'La contraseña debe tener al menos 16 caracteres e incluir mayúsculas, minúsculas, números y símbolos'
+                    'La contraseña debe tener al menos 8 caracteres e incluir mayúsculas, minúsculas, números y símbolos'
                 )
             );
             exit;
@@ -364,7 +364,7 @@ class UsuarioControlador extends Controller
             if (!fv_clave_registro_valida($clave)) {
                 header(
                     'Location: ' . url('/cuenta/perfil') . '?error=' . rawurlencode(
-                        'La nueva contraseña debe tener al menos 16 caracteres e incluir mayúsculas, minúsculas, números y símbolos'
+                        'La nueva contraseña debe tener al menos 8 caracteres e incluir mayúsculas, minúsculas, números y símbolos'
                     )
                 );
                 exit;
@@ -459,7 +459,7 @@ class UsuarioControlador extends Controller
             if (!fv_clave_registro_valida($clave)) {
                 header(
                     'Location: ' . url('/clientes/editar') . '?error=' . rawurlencode(
-                        'La nueva contraseña debe tener al menos 16 caracteres e incluir mayúsculas, minúsculas, números y símbolos'
+                        'La nueva contraseña debe tener al menos 8 caracteres e incluir mayúsculas, minúsculas, números y símbolos'
                     )
                 );
                 exit;

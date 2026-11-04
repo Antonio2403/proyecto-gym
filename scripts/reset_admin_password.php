@@ -9,7 +9,7 @@ declare(strict_types=1);
  *   php scripts/reset_admin_password.php 'TuNuevaClaveMuySegura!123'
  *   php scripts/reset_admin_password.php --email admin@gym.com 'TuNuevaClaveMuySegura!123'
  *
- * Requisitos de la nueva clave: iguales que en la web (≥16 caracteres, mayúsculas, minúsculas, número, símbolo).
+ * Requisitos de la nueva clave: iguales que en la web (≥8 caracteres, mayúsculas, minúsculas, número, símbolo).
  */
 
 chdir(dirname(__DIR__));

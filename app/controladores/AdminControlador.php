@@ -169,7 +169,7 @@ class AdminControlador extends Controller
             if (!fv_clave_registro_valida($clave)) {
                 header(
                     'Location: ' . url('/admin/verMonitores') . '?error=' . rawurlencode(
-                        'La contraseña debe tener al menos 16 caracteres e incluir mayúsculas, minúsculas, números y símbolos'
+                        'La contraseña debe tener al menos 8 caracteres e incluir mayúsculas, minúsculas, números y símbolos'
                     )
                 );
                 exit;
@@ -242,7 +242,7 @@ class AdminControlador extends Controller
         if (!fv_clave_registro_valida($clave)) {
             header(
                 'Location: ' . url('/admin/registrarMonitor') . '?error=' . rawurlencode(
-                    'La contraseña debe tener al menos 16 caracteres e incluir mayúsculas, minúsculas, números y símbolos'
+                    'La contraseña debe tener al menos 8 caracteres e incluir mayúsculas, minúsculas, números y símbolos'
                 )
             );
             exit;

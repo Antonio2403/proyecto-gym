@@ -92,18 +92,18 @@
                                             <div class="items-end gp-reg-pass-row flex flex-wrap -mx-1 -mt-2">
                                                 <div class="w-full lg:w-5/12 max-w-full shrink-0 px-1 mt-2">
                                                     <label class="sr-only" for="clave">Contraseña</label>
-                                                    <input type="password" class="form-control form-control-lg" id="clave" name="clave" required minlength="16" autocomplete="new-password" placeholder="Nueva contraseña">
+                                                    <input type="password" class="form-control form-control-lg" id="clave" name="clave" required minlength="8" autocomplete="new-password" placeholder="Nueva contraseña">
                                                 </div>
                                                 <div class="w-full lg:w-5/12 max-w-full shrink-0 px-1 mt-2">
                                                     <label class="sr-only" for="clave_confirmar">Confirmar contraseña</label>
-                                                    <input type="password" class="form-control form-control-lg" id="clave_confirmar" name="clave_confirmar" required minlength="16" autocomplete="new-password" placeholder="Repite la contraseña">
+                                                    <input type="password" class="form-control form-control-lg" id="clave_confirmar" name="clave_confirmar" required minlength="8" autocomplete="new-password" placeholder="Repite la contraseña">
                                                 </div>
                                                 <div class="w-full lg:w-1/6 max-w-full shrink-0 px-1 mt-2">
                                                     <button class="btn btn-outline-secondary btn-lg w-full text-nowrap" type="button" data-gp-pass-reveal-group="clave,clave_confirmar" title="Mantén pulsado para ver ambas" aria-label="Mostrar contraseñas mientras mantienes pulsado">Ver</button>
                                                 </div>
                                             </div>
                                             <ul class="gp-pass-rules list-none ps-0 text-sm mt-4 mb-0" data-gp-pass-rules-for="clave" aria-live="polite">
-                                                <li class="gp-pass-rule gp-pass-rule--idle mb-1" data-rule="len"><span class="gp-pass-rule-mark" aria-hidden="true"></span> Al menos 16 caracteres</li>
+                                                <li class="gp-pass-rule gp-pass-rule--idle mb-1" data-rule="len"><span class="gp-pass-rule-mark" aria-hidden="true"></span> Al menos 8 caracteres</li>
                                                 <li class="gp-pass-rule gp-pass-rule--idle mb-1" data-rule="upper"><span class="gp-pass-rule-mark" aria-hidden="true"></span> Una letra mayúscula</li>
                                                 <li class="gp-pass-rule gp-pass-rule--idle mb-1" data-rule="lower"><span class="gp-pass-rule-mark" aria-hidden="true"></span> Una letra minúscula</li>
                                                 <li class="gp-pass-rule gp-pass-rule--idle mb-1" data-rule="num"><span class="gp-pass-rule-mark" aria-hidden="true"></span> Un número</li>

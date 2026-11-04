@@ -47,7 +47,7 @@ class CambioClaveControlador extends Controller
         if (!fv_clave_fuerte($nueva)) {
             header(
                 'Location: ' . url('/cuenta/cambiar-clave') . '?error=' . rawurlencode(
-                    'La nueva contraseña debe tener al menos 16 caracteres e incluir mayúsculas, minúsculas, números y símbolos'
+                    'La nueva contraseña debe tener al menos 8 caracteres e incluir mayúsculas, minúsculas, números y símbolos'
                 )
             );
             exit;
