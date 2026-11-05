@@ -112,12 +112,14 @@ uasort($clasesFiltro, static function (array $a, array $b): int {
                         </label>
                     <?php endforeach; ?>
                 </div>
-                <button type="button" class="gp-schedule-filter__clear" data-gp-class-filter-clear>Quitar filtro</button>
+                <button type="button" class="gp-schedule-filter__clear" data-gp-class-filter-clear><span class="gp-schedule-filter__clear-long">Quitar filtro</span><span class="gp-schedule-filter__clear-short">Todas</span></button>
                 </div>
             </aside>
             <?php endif; ?>
             <div class="gp-schedule-layout__table">
             <p class="gp-schedule-filter-empty px-2 md:px-4" data-gp-class-filter-empty hidden>Ninguna clase coincide con lo que has marcado.</p>
+
+            <?php require __DIR__ . '/partials/horario_movil.php'; ?>
 
             <div class="table-responsive gp-schedule-table-wrap px-2 md:px-4 pb-6">
                 <table class="table table-bordered gp-schedule-grid mb-0 text-center">
