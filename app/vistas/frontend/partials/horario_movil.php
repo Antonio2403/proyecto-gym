@@ -133,14 +133,12 @@ $gpDiaInicial = $gpHoyLetra !== '' ? $gpHoyLetra : 'L';
                             <a href="<?= htmlspecialchars($s['urlOpiniones']) ?>" class="btn btn-sm gp-btn-comentar">Comentar</a>
                         <?php elseif ($s['yaInscrito']): ?>
                             <span class="gp-day-row__pill">Inscrito</span>
-                        <?php elseif ($s['sinPlan']): ?>
-                            <span class="gp-day-row__pill">Requiere plan</span>
                         <?php elseif ($s['limiteSemanalAgotado']): ?>
-                            <span class="gp-day-row__pill">Límite semanal</span>
-                        <?php elseif (!$s['sesionReservable']): ?>
-                            <span class="gp-day-row__pill">Pasada</span>
-                        <?php elseif ($s['cupoLleno'] || $s['bloqueadoHorario']): ?>
-                            <span class="gp-day-row__pill">Completo</span>
+                            <button type="button" class="btn btn-sm gp-btn-apuntarse" disabled>Apuntarse</button>
+                        <?php elseif (!$s['sesionReservable'] || $s['bloqueadoHorario']): ?>
+                            <button type="button" class="btn btn-sm gp-btn-apuntarse" disabled>Apuntarse</button>
+                        <?php elseif ($s['cupoLleno']): ?>
+                            <button type="button" class="btn btn-sm gp-btn-apuntarse" disabled>Completo</button>
                         <?php else: ?>
                             <form method="post" action="<?= htmlspecialchars(url('/usuario/inscripciones/apuntarse')) ?>"
                                   data-gp-confirm
@@ -151,6 +149,9 @@ $gpDiaInicial = $gpHoyLetra !== '' ? $gpHoyLetra : 'L';
                                 <input type="hidden" name="fecha_sesion" value="<?= htmlspecialchars($s['fechaSesionReserva']) ?>">
                                 <button type="submit" class="btn btn-sm gp-btn-apuntarse">Apuntarse</button>
                             </form>
+                        <?php endif; ?>
+                        <?php if (!$s['sesionCancelada'] && $s['urlOpiniones'] !== '' && !($s['estuvoEnSesion'] && $s['sesionFinalizada'])): ?>
+                            <a href="<?= htmlspecialchars($s['urlOpiniones']) ?>" class="gp-day-row__opiniones">Opiniones</a>
                         <?php endif; ?>
                     </div>
                 </article>

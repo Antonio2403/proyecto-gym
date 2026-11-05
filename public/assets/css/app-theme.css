@@ -2026,7 +2026,8 @@ body.gp-cookie-open {
 }
 
 @media (max-width: 1023.98px) {
-    .gp-schedule-table-wrap {
+    .gp-schedule-table-wrap,
+    .gp-schedule-filter {
         display: none;
     }
 
@@ -2172,8 +2173,8 @@ body.gp-cookie-open {
 
     .gp-day-row {
         display: grid;
-        grid-template-columns: 3.35rem minmax(0, 1fr) auto;
-        gap: 0.75rem;
+        grid-template-columns: 3.35rem minmax(0, 1fr);
+        gap: 0.35rem 0.75rem;
         align-items: center;
         margin: 0 0 0.7rem;
         padding: 0.75rem 0.8rem;
@@ -2214,6 +2215,14 @@ body.gp-cookie-open {
         font-weight: 800;
     }
 
+    .gp-day-row__actions {
+        grid-column: 2;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.45rem;
+        margin-top: 0.35rem;
+    }
+
     .gp-day-row__pill {
         display: inline-flex;
         align-items: center;
@@ -2227,11 +2236,20 @@ body.gp-cookie-open {
     }
 
     .gp-day-row .gp-btn-comentar,
-    .gp-day-row .gp-btn-apuntarse {
-        padding: 0.4rem 0.7rem;
+    .gp-day-row .gp-btn-apuntarse,
+    .gp-day-row__opiniones {
+        padding: 0.4rem 0.75rem;
         border-radius: 999px;
         font-size: 0.75rem;
+        font-weight: 700;
         white-space: nowrap;
+        text-decoration: none;
+    }
+
+    .gp-day-row__opiniones {
+        border: 1px solid var(--gp-navy);
+        background: #fff;
+        color: var(--gp-navy);
     }
 }
 
