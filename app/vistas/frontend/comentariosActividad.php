@@ -16,8 +16,7 @@ $qBase = [
         <span class="gp-badge mb-2">Sesión</span>
         <h1 class="text-[1.75rem] mb-2">Comentarios</h1>
         <p class="text-slate-500 mb-0">
-            <?= htmlspecialchars($actividad['nombre'] ?? '') ?> —
-            <strong><?= htmlspecialchars($fechaKey) ?></strong>
+            <?= htmlspecialchars($actividad['nombre'] ?? '') ?>. Los comentarios de esta actividad se ven también las semanas siguientes.
         </p>
     </header>
 
@@ -88,7 +87,12 @@ $qBase = [
             <li class="list-group-item px-6 py-4">
                 <div class="text-sm text-slate-500 mb-2">
                     <?= htmlspecialchars(trim(($c['autor_nombre'] ?? '') . ' ' . ($c['autor_apellido1'] ?? ''))) ?>
-                    · <?= htmlspecialchars((string) ($c['fecha'] ?? '')) ?>
+                    <?php
+                    $fecSesion = trim((string) ($c['fecha_ocurrencia'] ?? ''));
+                    if (preg_match('/^\d{4}-\d{2}-\d{2}/', $fecSesion)) {
+                        echo ' · sesión del ' . htmlspecialchars(date('d/m/Y', strtotime($fecSesion)));
+                    }
+                    ?>
                 </div>
                 <div class="wrap-anywhere" style="white-space: pre-wrap;"><?= htmlspecialchars((string) ($c['texto'] ?? '')) ?></div>
             </li>

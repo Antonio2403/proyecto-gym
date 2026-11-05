@@ -114,21 +114,22 @@ class Comentario
         return $out;
     }
 
+    /** Cuenta todos los comentarios de la actividad, de cualquier semana. */
     public static function contarPorSesion(int $actividadId, string $fechaOcurrenciaYmd): int
     {
         $conexion = BasedeDatos::Conectar();
         $stmt = $conexion->prepare('
             SELECT COUNT(*) FROM comentarios
-            WHERE actividad_id = :actividad_id AND fecha_ocurrencia = :fecha_ocurrencia
+            WHERE actividad_id = :actividad_id
         ');
         $stmt->bindValue(':actividad_id', $actividadId, PDO::PARAM_INT);
-        $stmt->bindValue(':fecha_ocurrencia', $fechaOcurrenciaYmd);
         $stmt->execute();
 
         return (int) $stmt->fetchColumn();
     }
 
     /**
+     * Lista los comentarios de la actividad, también los de otras semanas.
      * @param string $orden 'asc' = más antiguo primero, 'desc' = más reciente primero
      *
      * @return array{rows: array<int, array>, total: int, page: int, per_page: int, total_pages: int, orden: string}
@@ -162,13 +163,11 @@ class Comentario
             INNER JOIN clientes cl ON c.cliente_id = cl.id
             INNER JOIN usuarios u ON cl.usuario_id = u.id
             WHERE c.actividad_id = :actividad_id
-            AND c.fecha_ocurrencia = :fecha_ocurrencia
             ORDER BY {$orderBy}
             LIMIT :lim OFFSET :off
         ";
         $stmt = $conexion->prepare($sql);
         $stmt->bindValue(':actividad_id', $actividadId, PDO::PARAM_INT);
-        $stmt->bindValue(':fecha_ocurrencia', $fechaOcurrenciaYmd);
         $stmt->bindValue(':lim', $perPage, PDO::PARAM_INT);
         $stmt->bindValue(':off', $offset, PDO::PARAM_INT);
         $stmt->execute();
