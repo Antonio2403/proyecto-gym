@@ -21,7 +21,7 @@
             class="gp-admin-grid gp-admin-card-panel"
             data-gp-admin-grid="actividades"
             data-endpoint="<?= htmlspecialchars(url('/admin/ajax/actividades')) ?>"
-            data-colspan="11"
+            data-colspan="10"
             data-url-edit-prefix="<?= htmlspecialchars(url('/admin/actividades/editar/')) ?>"
             data-url-del-prefix="<?= htmlspecialchars(url('/admin/actividades/eliminar/')) ?>">
 
@@ -100,7 +100,6 @@
                         <tr>
                             <th>ID</th>
                             <th>Nombre</th>
-                            <th>Color</th>
                             <th>Descripción</th>
                             <th>Duración</th>
                             <th>Día</th>
@@ -112,7 +111,7 @@
                         </tr>
                     </thead>
                     <tbody data-grid-body>
-                        <tr><td colspan="11" class="text-slate-500 py-6">Cargando…</td></tr>
+                        <tr><td colspan="10" class="text-slate-500 py-6">Cargando…</td></tr>
                     </tbody>
                 </table>
             </div>

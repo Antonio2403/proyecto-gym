@@ -91,6 +91,7 @@ CREATE TABLE `clientes` (
 CREATE TABLE `salas` (
     `id` INT AUTO_INCREMENT PRIMARY KEY,
     `nombre` VARCHAR(100) DEFAULT NULL,
+    `color` CHAR(7) NOT NULL DEFAULT '#C45C26',
     `capacidad` INT DEFAULT NULL,
     `disponibilidad` ENUM('L','U','R') DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -305,10 +306,10 @@ INSERT INTO `clientes` (`id`, `usuario_id`, `metodo_pago`) VALUES
 INSERT INTO `fisioterapeutas` (`id`, `nombre`, `especialidad`, `usuario_id`) VALUES
 (1, 'fisio1', 'especialidad1', 7);
 
-INSERT INTO `salas` (`id`, `nombre`, `capacidad`, `disponibilidad`) VALUES
-(1, 'sala1', 20, 'L'),
-(2, 'sala2', 15, 'U'),
-(3, 'sala3', 25, 'R');
+INSERT INTO `salas` (`id`, `nombre`, `color`, `capacidad`, `disponibilidad`) VALUES
+(1, 'sala1', '#C45C26', 20, 'L'),
+(2, 'sala2', '#2F8F4A', 15, 'U'),
+(3, 'sala3', '#2563EB', 25, 'R');
 
 INSERT INTO `actividades` (`id`, `nombre`, `color`, `duracion`, `monitor_id`, `sala_id`, `fecha_inicio`, `fecha_fin`, `dia_semana`, `descripcion`, `plazas`, `recurrente`) VALUES
 (1, 'actividad1', '#2563EB', 45, 1, 2, '2026-05-12 08:00:00', '2026-05-12 08:45:00', 'L', 'descripcion1', 15, 1),

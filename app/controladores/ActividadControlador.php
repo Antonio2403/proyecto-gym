@@ -183,9 +183,8 @@ class ActividadControlador extends Controller
         $monitor_id = (int) ($_POST['monitor_id'] ?? 0);
         $recurrente = isset($_POST['recurrente']) ? 1 : 0;
         $fechaPuntual = trim((string) ($_POST['fecha_actividad'] ?? ''));
-        $color = Actividad::normalizarColor((string) ($_POST['color'] ?? ''));
 
-        if ($nombre === '' || $hora_inicio === '' || $color === null || ($recurrente === 1 && $diasSel === [])) {
+        if ($nombre === '' || $hora_inicio === '' || ($recurrente === 1 && $diasSel === [])) {
             header('Location: ' . url('/admin/actividades/crear') . '?error=1');
             return;
         }
@@ -226,8 +225,7 @@ class ActividadControlador extends Controller
             $fecha_inicio,
             $fecha_fin,
             $primero,
-            $diasSel,
-            $color
+            $diasSel
         );
         if ($newId !== false) {
             if ($recurrente === 0) {
@@ -270,9 +268,8 @@ class ActividadControlador extends Controller
         }
         $diasValidos = ['L', 'M', 'X', 'J', 'V', 'S', 'D'];
         $diasSel = array_values(array_intersect($diasValidos, array_map('strtoupper', array_map('strval', $rawDias))));
-        $color = Actividad::normalizarColor((string) ($_POST['color'] ?? ''));
 
-        if ($nombre === '' || $color === null || $sala_id <= 0 || $monitor_id <= 0 || $hora_inicio === '' || ($recurrente === 1 && $diasSel === []) || $duracion < 1) {
+        if ($nombre === '' || $sala_id <= 0 || $monitor_id <= 0 || $hora_inicio === '' || ($recurrente === 1 && $diasSel === []) || $duracion < 1) {
             header('Location: ' . url('/admin/actividades/editar/' . $postId) . '?error=1');
             exit;
         }
@@ -330,7 +327,7 @@ class ActividadControlador extends Controller
             $recurrente,
             $diasSel,
             $recurrente === 0 ? $fechaPuntual : null,
-            $color
+            (string) ($actividadAntes['color'] ?? '#C45C26')
         )) {
             header('Location: ' . url('/admin/actividades/editar/' . $postId) . '?error=1');
             exit;

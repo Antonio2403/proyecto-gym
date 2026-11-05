@@ -32,13 +32,14 @@ Class SalaControlador extends Controller
         $nombre = trim((string) ($_POST['nombre'] ?? ''));
         $capacidad = (int) ($_POST['capacidad'] ?? 0);
         $disponibilidad = trim((string) ($_POST['disponibilidad'] ?? ''));
+        $color = Actividad::normalizarColor((string) ($_POST['color'] ?? ''));
 
-        if ($nombre === '' || $capacidad < 1 || $capacidad > 10000 || $disponibilidad === '') {
+        if ($nombre === '' || $color === null || $capacidad < 1 || $capacidad > 10000 || $disponibilidad === '') {
             header('Location: ' . url('/monitor/salas/crear') . '?error=1');
             exit;
         }
 
-        if (Sala::crear($nombre, $capacidad, $disponibilidad)) {
+        if (Sala::crear($nombre, $capacidad, $disponibilidad, $color)) {
             header('Location: ' . url('/monitor/verSalas'));
             exit;
         }
@@ -91,13 +92,14 @@ Class SalaControlador extends Controller
         $nombre = trim((string) ($_POST['nombre'] ?? ''));
         $capacidad = (int) ($_POST['capacidad'] ?? 0);
         $disponibilidad = trim((string) ($_POST['disponibilidad'] ?? ''));
+        $color = Actividad::normalizarColor((string) ($_POST['color'] ?? ''));
 
-        if ($nombre === '' || $capacidad < 1 || $capacidad > 10000 || $disponibilidad === '') {
+        if ($nombre === '' || $color === null || $capacidad < 1 || $capacidad > 10000 || $disponibilidad === '') {
             header('Location: ' . url('/monitor/salas/editar/' . $id) . '?error=1');
             exit;
         }
 
-        if (Sala::actualizar($id, $nombre, $capacidad, $disponibilidad)) {
+        if (Sala::actualizar($id, $nombre, $capacidad, $disponibilidad, $color)) {
             header('Location: ' . url('/monitor/verSalas'));
             exit;
         }

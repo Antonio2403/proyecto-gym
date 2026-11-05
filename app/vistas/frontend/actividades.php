@@ -24,7 +24,7 @@ foreach ($actividades as $actFiltro) {
     $clasesFiltro[$fid] = [
         'id' => $fid,
         'nombre' => (string) ($actFiltro['nombre'] ?? 'Clase'),
-        'color' => Actividad::normalizarColor((string) ($actFiltro['color'] ?? '')) ?? '#C45C26',
+        'color' => Actividad::normalizarColor((string) ($actFiltro['sala_color'] ?? '')) ?? '#C45C26',
     ];
 }
 uasort($clasesFiltro, static function (array $a, array $b): int {
@@ -156,7 +156,7 @@ uasort($clasesFiltro, static function (array $a, array $b): int {
                                                 continue;
                                             }
                                             $actId = (int) $act['id'];
-                                            $colorAct = Actividad::normalizarColor((string) ($act['color'] ?? '')) ?? '#C45C26';
+                                            $colorAct = Actividad::normalizarColor((string) ($act['sala_color'] ?? '')) ?? '#C45C26';
                                             $plazas = max(1, (int) ($act['plazas'] ?? 20));
                                             $fechaCelda = '';
                                             if ($scheduleWeekMonday !== '' && preg_match('/^\d{4}-\d{2}-\d{2}$/', $scheduleWeekMonday) && isset($offsetDiaSemana[$dia])) {
@@ -220,7 +220,7 @@ uasort($clasesFiltro, static function (array $a, array $b): int {
                                                             <?php endif; ?>
                                                             <li><span class="text-slate-500">Horario</span><br><strong><?= htmlspecialchars($horaIni) ?></strong><?= $duracion > 0 ? ' · ' . (int) $duracion . ' min' : '' ?></li>
                                                             <li><span class="text-slate-500">Monitor</span><br><strong><?= htmlspecialchars($monitorNombre !== '' ? $monitorNombre : 'Sin asignar') ?></strong></li>
-                                                            <li><span class="text-slate-500">Sala</span><br><strong><?= htmlspecialchars($salaNombre !== '' ? $salaNombre : '—') ?></strong></li>
+                                                            <li><span class="text-slate-500">Sala</span><br><strong><span class="gp-schedule-act-swatch" style="background: <?= htmlspecialchars($colorAct) ?>"></span><?= htmlspecialchars($salaNombre !== '' ? $salaNombre : '—') ?></strong></li>
                                                             <li><span class="text-slate-500">Ocupación</span><br><strong><?= $sesionCancelada ? 'Cancelada · ' . (int) ($sesionesCanceladas[$cellKey] ?? $inscritos) . ' de 5' : ((int) $inscritos . ' / ' . (int) $plazas) ?></strong><?= $sesionCancelada ? '' : ' personas' ?></li>
                                                         </ul>
                                                     </div>

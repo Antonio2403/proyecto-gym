@@ -18,7 +18,10 @@
                     <div class="w-full md:w-1/2 xl:w-1/3 max-w-full shrink-0 px-2 mt-4">
                         <article class="card gp-sala-card h-full border-0 shadow-sm">
                             <div class="card-body">
-                                <h2 class="text-xl card-title mb-2"><?= htmlspecialchars($sala['nombre']) ?></h2>
+                                <h2 class="text-xl card-title mb-2 flex items-center gap-2">
+                                    <span class="gp-act-color-swatch" style="background: <?= htmlspecialchars(Actividad::normalizarColor((string) ($sala['color'] ?? '')) ?? '#C45C26') ?>" aria-hidden="true"></span>
+                                    <?= htmlspecialchars($sala['nombre']) ?>
+                                </h2>
                                 <ul class="list-none ps-0 text-sm text-slate-500 mb-0">
                                     <li class="mb-1"><strong class="text-slate-800">Capacidad:</strong> <?= htmlspecialchars((string) $sala['capacidad']) ?></li>
                                     <li class="mb-1"><strong class="text-slate-800">Disponibilidad:</strong> <?= htmlspecialchars((string) $sala['disponibilidad']) ?></li>

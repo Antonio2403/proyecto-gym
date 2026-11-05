@@ -87,6 +87,7 @@ class BasedeDatos
                 $conexionDB->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
                 $conexionDB->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
                 self::asegurarColorActividad($conexionDB);
+                self::asegurarColorSala($conexionDB);
                 self::asegurarCancelacionSesion($conexionDB);
                 self::asegurarMitadClasesPlanes($conexionDB);
 
@@ -199,6 +200,7 @@ class BasedeDatos
                 CREATE TABLE IF NOT EXISTS salas (
                     id INT AUTO_INCREMENT PRIMARY KEY,
                     nombre VARCHAR(100) DEFAULT NULL,
+                    color CHAR(7) NOT NULL DEFAULT '#C45C26',
                     capacidad INT DEFAULT NULL,
                     disponibilidad ENUM('L','U','R') DEFAULT NULL
                 ) $tbl
@@ -405,6 +407,36 @@ class BasedeDatos
             self::$colorActividadListo = true;
         } catch (\Throwable $e) {
             error_log('[Spartum BD] color actividad: ' . $e->getMessage());
+        }
+    }
+
+    private static $colorSalaListo = false;
+
+    /**
+     * El color del horario sale de la sala. Corre también con el auto-setup apagado.
+     */
+    private static function asegurarColorSala(PDO $db): void
+    {
+        if (self::$colorSalaListo) {
+            return;
+        }
+        try {
+            if (self::columnExists($db, 'salas', 'color')) {
+                self::$colorSalaListo = true;
+
+                return;
+            }
+            $db->exec("ALTER TABLE salas ADD COLUMN color CHAR(7) NOT NULL DEFAULT '#C45C26' AFTER nombre");
+            $paleta = ['#C45C26', '#2F8F4A', '#2563EB', '#7C3AED', '#DB2777', '#0F766E', '#CA8A04', '#DC2626', '#4F46E5', '#65A30D'];
+            $ids = $db->query('SELECT id FROM salas ORDER BY id ASC')->fetchAll(PDO::FETCH_COLUMN);
+            $upd = $db->prepare('UPDATE salas SET color = ? WHERE id = ?');
+            $n = count($paleta);
+            foreach ($ids as $i => $id) {
+                $upd->execute([$paleta[((int) $i) % $n], (int) $id]);
+            }
+            self::$colorSalaListo = true;
+        } catch (\Throwable $e) {
+            error_log('[Spartum BD] color sala: ' . $e->getMessage());
         }
     }
 

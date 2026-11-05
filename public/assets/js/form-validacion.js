@@ -50,7 +50,7 @@
     function validarColorActividad(form) {
         var color = field(form, 'color');
         if (!color || !/^#[0-9A-Fa-f]{6}$/.test(trimStr(color.value))) {
-            setValidity(color, 'Elige un color para la clase.');
+            setValidity(color, 'Elige un color para la sala.');
             return false;
         }
         return true;
@@ -424,7 +424,6 @@
         clearCustomValidity(form);
         var ok = true;
         ok = requireNonEmpty(form, 'nombre', 'El nombre es obligatorio.') && ok;
-        ok = validarColorActividad(form) && ok;
 
         var dur = field(form, 'duracion');
         var d = dur ? parseInt(dur.value, 10) : NaN;
@@ -468,7 +467,6 @@
         clearCustomValidity(form);
         var ok = true;
         ok = requireNonEmpty(form, 'nombre', 'El nombre es obligatorio.') && ok;
-        ok = validarColorActividad(form) && ok;
 
         var marcados = form.querySelectorAll('input[name="dias_semana[]"]:checked');
         if (!marcados || marcados.length < 1) {
@@ -787,6 +785,8 @@
             ok = false;
         }
 
+        ok = validarColorActividad(form) && ok;
+
         return ok;
     };
 
@@ -803,6 +803,7 @@
         }
 
         ok = requireNonEmpty(form, 'disponibilidad', 'La disponibilidad es obligatoria.') && ok;
+        ok = validarColorActividad(form) && ok;
 
         return ok;
     };
@@ -990,6 +991,8 @@
             attachForm(form, key);
             if (key === 'activityCreate' || key === 'activityEdit') {
                 bindRecurrenteFechaPuntual(form);
+            }
+            if (key === 'salaCreate' || key === 'salaEdit') {
                 bindColorActividad(form);
             }
         });
@@ -1150,6 +1153,8 @@
                 attachForm(form, key);
                 if (key === 'activityCreate' || key === 'activityEdit') {
                     bindRecurrenteFechaPuntual(form);
+                }
+                if (key === 'salaCreate' || key === 'salaEdit') {
                     bindColorActividad(form);
                 }
             });

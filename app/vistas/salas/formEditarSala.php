@@ -32,6 +32,10 @@ $dispVal = (string) ($sala['disponibilidad'] ?? '');
                             </select>
                         </div>
                     </div>
+                    <?php
+                    $gpActividadColor = (string) ($sala['color'] ?? '#C45C26');
+                    require dirname(__DIR__) . '/admin/partials/actividad_color.php';
+                    ?>
                     <div class="gp-form-actions">
                         <button type="submit" class="btn btn-primary">
                             <i class="fas fa-save me-1" aria-hidden="true"></i> Guardar cambios

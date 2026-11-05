@@ -27,6 +27,10 @@ require dirname(__DIR__) . '/layouts/partials/gp_form_panel_start.php';
                             </select>
                         </div>
                     </div>
+                    <?php
+                    $gpActividadColor = '#C45C26';
+                    require dirname(__DIR__) . '/admin/partials/actividad_color.php';
+                    ?>
                     <div class="gp-form-actions">
                         <button type="submit" class="btn btn-primary">
                             <i class="fas fa-plus me-1" aria-hidden="true"></i> Crear sala

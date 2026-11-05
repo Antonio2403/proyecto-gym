@@ -3,9 +3,9 @@ $gpActividadColor = Actividad::normalizarColor((string) ($gpActividadColor ?? ''
 $gpActividadPaleta = Actividad::paletaColores();
 ?>
 <div class="mb-4">
-    <label class="form-label gp-label-required" for="actividad_color">Color de la clase</label>
+    <label class="form-label gp-label-required" for="sala_color">Color de la sala</label>
     <div class="gp-color-field">
-        <input type="color" class="gp-color-field__picker" id="actividad_color" name="color" value="<?= htmlspecialchars($gpActividadColor) ?>" required>
+        <input type="color" class="gp-color-field__picker" id="sala_color" name="color" value="<?= htmlspecialchars($gpActividadColor) ?>" required>
         <span class="gp-color-field__hex" data-gp-color-hex><?= htmlspecialchars($gpActividadColor) ?></span>
     </div>
     <div class="gp-color-presets" role="group" aria-label="Colores sugeridos">
@@ -17,5 +17,5 @@ $gpActividadPaleta = Actividad::paletaColores();
                     aria-label="Usar el color <?= htmlspecialchars($hex) ?>"></button>
         <?php endforeach; ?>
     </div>
-    <p class="form-text text-sm text-slate-500 mb-0">Este color identifica la clase en el horario.</p>
+    <p class="form-text text-sm text-slate-500 mb-0">Este color identifica la sala en el horario. Las clases de esta sala lo llevan al lado del nombre.</p>
 </div>

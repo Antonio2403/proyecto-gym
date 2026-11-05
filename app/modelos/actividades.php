@@ -388,7 +388,7 @@ class Actividad
         $conexion = BasedeDatos::Conectar();
 
         $stmt = $conexion->query("
-            SELECT a.*, s.nombre AS sala_nombre, u.nombre AS monitor_nombre
+            SELECT a.*, s.nombre AS sala_nombre, s.color AS sala_color, u.nombre AS monitor_nombre
             FROM actividades a
             LEFT JOIN salas s ON a.sala_id = s.id
             LEFT JOIN monitores m ON a.monitor_id = m.id
@@ -406,7 +406,7 @@ class Actividad
 
         $conexion = BasedeDatos::Conectar();
         $stmt = $conexion->prepare(
-            'SELECT a.*, s.nombre AS sala_nombre, u.nombre AS monitor_nombre
+            'SELECT a.*, s.nombre AS sala_nombre, s.color AS sala_color, u.nombre AS monitor_nombre
              FROM actividades a
              LEFT JOIN salas s ON a.sala_id = s.id
              LEFT JOIN monitores m ON a.monitor_id = m.id
@@ -558,7 +558,7 @@ class Actividad
         }
 
         $where = $conds !== [] ? ' WHERE ' . implode(' AND ', $conds) : '';
-        $sel = 'SELECT a.*, s.nombre AS sala_nombre, u.nombre AS monitor_nombre';
+        $sel = 'SELECT a.*, s.nombre AS sala_nombre, s.color AS sala_color, u.nombre AS monitor_nombre';
 
         $stmt = gp_grid_prepare($conexion, 'SELECT COUNT(*) ' . $baseFrom . $where, $bind);
         $stmt->execute();

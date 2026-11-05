@@ -118,7 +118,7 @@ class PanelEstadisticas
             $sesiones += $sesionesClase;
             $inscritosTotal += $inscritos;
             $plazasTotal += $plazasSum;
-            $color = Actividad::normalizarColor((string) ($act['color'] ?? '')) ?? '#C45C26';
+            $color = Actividad::normalizarColor((string) ($act['sala_color'] ?? '')) ?? '#C45C26';
             $porClase[] = [
                 'nombre' => trim((string) ($act['nombre'] ?? '')) !== '' ? trim((string) $act['nombre']) : 'Clase',
                 'color' => $color,
