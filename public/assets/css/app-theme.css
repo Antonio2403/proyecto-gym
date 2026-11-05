@@ -3511,12 +3511,14 @@ label.gp-label-required::after {
     border-color: var(--gp-orange) !important;
 }
 
+.gp-btn-action--go,
 .gp-btn-action--reply {
     color: var(--gp-orange) !important;
     background: #fff !important;
     border: 1px solid var(--gp-orange) !important;
 }
 
+.gp-btn-action--go:hover,
 .gp-btn-action--reply:hover {
     background: var(--gp-orange) !important;
     color: #fff !important;

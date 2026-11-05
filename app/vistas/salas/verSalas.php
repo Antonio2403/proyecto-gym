@@ -25,7 +25,7 @@
                                     <li><strong class="text-slate-800">Materiales:</strong> <?= (int) $sala['nmateriales'] ?></li>
                                 </ul>
                                 <div class="gp-actions-stack">
-                                    <a href="<?= htmlspecialchars(url('/monitor/salas/' . $sala['id'] . '/materiales/')) ?>" class="btn btn-sm gp-btn-action gp-btn-action--reply">
+                                    <a href="<?= htmlspecialchars(url('/monitor/salas/' . $sala['id'] . '/materiales/')) ?>" class="btn btn-sm gp-btn-action gp-btn-action--go">
                                         <i class="fas fa-boxes-stacked me-1" aria-hidden="true"></i> Materiales
                                     </a>
                                     <a href="<?= htmlspecialchars(url('/monitor/salas/editar/' . $sala['id'])) ?>" class="btn btn-sm gp-btn-action gp-btn-action--edit">

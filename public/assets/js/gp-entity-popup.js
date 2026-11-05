@@ -210,7 +210,7 @@
         }).then(function (res) {
             var doc = new DOMParser().parseFromString(res.html, 'text/html');
             if (!doc.querySelector('.gp-form-panel')) {
-                setStatus('No se pudo abrir el formulario.');
+                window.location.href = res.url || url;
 
                 return;
             }
