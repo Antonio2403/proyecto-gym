@@ -185,7 +185,8 @@ uasort($clasesFiltro, static function (array $a, array $b): int {
                                                 $cellKeyIns = ($actId > 0 && $fechaSesionReserva !== '' && preg_match('/^\d{4}-\d{2}-\d{2}$/', $fechaSesionReserva))
                                                     ? ($actId . '_' . $fechaSesionReserva)
                                                     : '';
-                                                $yaInscrito = $tienePlanActivo && $cellKeyIns !== '' && isset($inscritoPorSesion[$cellKeyIns]);
+                                                $estuvoEnSesion = $cellKeyIns !== '' && isset($inscritoPorSesion[$cellKeyIns]);
+                                                $yaInscrito = $tienePlanActivo && $estuvoEnSesion;
                                                 $limiteSemanalAgotado = $tienePlanActivo && !$puedeMasReservaSemana && !$yaInscrito;
                                                 $sinPlan = !$tienePlanActivo;
                                                 $bloqueadoHorario = ($fechaCelda === '' && (int) ($act['recurrente'] ?? 1) === 1);
@@ -225,7 +226,7 @@ uasort($clasesFiltro, static function (array $a, array $b): int {
                                                         </ul>
                                                     </div>
                                                 </template>
-                                                <div class="gp-schedule-act<?= $sesionCancelada ? ' gp-schedule-act--past' : '' ?><?= !$sesionCancelada && $cupoLleno ? ' gp-schedule-act--full' : '' ?><?= !$sesionCancelada && !$sesionReservable ? ' gp-schedule-act--past' : '' ?><?= !$sesionCancelada && ($yaInscrito && $sesionFinalizada) ? ' gp-schedule-act--enrolled-done' : '' ?>"
+                                                <div class="gp-schedule-act<?= $sesionCancelada ? ' gp-schedule-act--past' : '' ?><?= !$sesionCancelada && $cupoLleno ? ' gp-schedule-act--full' : '' ?><?= !$sesionCancelada && !$sesionReservable ? ' gp-schedule-act--past' : '' ?><?= !$sesionCancelada && ($estuvoEnSesion && $sesionFinalizada) ? ' gp-schedule-act--enrolled-done' : '' ?>"
                                                      style="--gp-act-color: <?= htmlspecialchars($colorAct) ?>"
                                                      tabindex="0"
                                                      role="button"
@@ -241,8 +242,8 @@ uasort($clasesFiltro, static function (array $a, array $b): int {
                                                 <?php
                                                 if ($sesionCancelada): ?>
                                                     <button type="button" class="btn btn-sm w-full mb-1 gp-btn-sesion-pasada" disabled title="Menos de 5 personas media hora antes. Se avisó por correo.">Cancelada</button>
-                                                <?php elseif ($yaInscrito && $sesionFinalizada): ?>
-                                                    <button type="button" class="btn btn-sm w-full mb-1 gp-btn-sesion-finalizada" disabled title="Te inscribiste a esta sesión y ya ha terminado">Sesión finalizada</button>
+                                                <?php elseif ($estuvoEnSesion && $sesionFinalizada && $urlOpiniones !== ''): ?>
+                                                    <a href="<?= htmlspecialchars($urlOpiniones) ?>" class="btn btn-sm w-full gp-btn-comentar">Comentar</a>
                                                 <?php elseif ($yaInscrito): ?>
                                                     <button type="button" class="btn btn-sm w-full mb-1 gp-btn-inscrito" disabled title="Ya tienes plaza en esta sesión">Inscrito</button>
                                                 <?php elseif ($sinPlan): ?>
@@ -264,7 +265,7 @@ uasort($clasesFiltro, static function (array $a, array $b): int {
                                                     <button type="submit" class="btn gp-btn-apuntarse btn-sm w-full"><?= $cupoLleno ? 'Completo' : 'Apuntarse' ?></button>
                                                 </form>
                                                 <?php endif; ?>
-                                                <?php if (!$sesionCancelada && $urlOpiniones !== ''): ?>
+                                                <?php if (!$sesionCancelada && $urlOpiniones !== '' && !($estuvoEnSesion && $sesionFinalizada)): ?>
                                                     <a href="<?= htmlspecialchars($urlOpiniones) ?>" class="gp-schedule-opiniones block btn btn-outline-light btn-sm w-full py-1 leading-tight text-sm no-underline">Opiniones</a>
                                                 <?php endif; ?>
                                                 </div>

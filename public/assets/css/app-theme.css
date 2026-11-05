@@ -1714,7 +1714,17 @@ body.gp-cookie-open {
 }
 
 .gp-schedule-slot {
-    margin-bottom: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+    margin-bottom: 0.75rem;
+}
+
+.gp-schedule-slot > .btn,
+.gp-schedule-slot > form,
+.gp-schedule-slot > .gp-schedule-opiniones {
+    margin-top: 0;
+    margin-bottom: 0;
 }
 
 .gp-schedule-slot:last-child {
@@ -1774,10 +1784,10 @@ body.gp-cookie-open {
 }
 
 .gp-schedule-act--enrolled-done {
-    background: linear-gradient(160deg, #0f766e 0%, #115e59 55%, #134e4a 100%);
+    background: linear-gradient(160deg, var(--gp-orange-bright) 0%, var(--gp-orange) 58%, var(--gp-orange-hover) 100%);
     box-shadow:
-        0 2px 10px rgba(15, 118, 110, 0.35),
-        inset 0 0 0 2px rgba(167, 243, 208, 0.55);
+        0 2px 10px rgba(196, 92, 40, 0.35),
+        inset 0 0 0 2px rgba(255, 255, 255, 0.28);
     opacity: 1;
 }
 
@@ -1785,8 +1795,8 @@ body.gp-cookie-open {
 .gp-schedule-act--enrolled-done:focus-visible {
     transform: none;
     box-shadow:
-        0 2px 10px rgba(15, 118, 110, 0.35),
-        inset 0 0 0 2px rgba(167, 243, 208, 0.55);
+        0 2px 10px rgba(196, 92, 40, 0.35),
+        inset 0 0 0 2px rgba(255, 255, 255, 0.28);
 }
 
 .gp-schedule-act--enrolled-done .gp-schedule-act-body strong {
@@ -1795,7 +1805,22 @@ body.gp-cookie-open {
 
 .gp-schedule-act--enrolled-done .gp-schedule-act-time,
 .gp-schedule-act--enrolled-done .gp-schedule-act-capacity {
-    color: #ccfbf1;
+    color: rgba(255, 255, 255, 0.92);
+}
+
+.gp-btn-comentar {
+    border: 1px solid var(--gp-orange) !important;
+    color: #fff !important;
+    background: var(--gp-orange) !important;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+}
+
+.gp-btn-comentar:hover,
+.gp-btn-comentar:focus-visible {
+    color: #fff !important;
+    background: var(--gp-orange-hover) !important;
+    border-color: var(--gp-orange-hover) !important;
 }
 
 .gp-btn-inscrito {
@@ -1827,7 +1852,7 @@ body.gp-cookie-open {
 }
 
 .gp-schedule-opiniones {
-    margin-top: 0.15rem;
+    margin-top: 0;
     font-weight: 600;
     color: #f8fafc !important;
     border-color: rgba(255, 255, 255, 0.35) !important;

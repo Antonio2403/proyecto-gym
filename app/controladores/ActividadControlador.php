@@ -94,6 +94,7 @@ class ActividadControlador extends Controller
         $inscritoMap = [];
         $puedeMasReservaSemana = true;
         if ($clienteId) {
+            $inscritoMap = Inscripcion::mapaInscripcionesClienteEnSemana((int) $clienteId, $weekStart, $weekEnd);
             if ($tienePlan) {
                 $cupoResumen = ClienteSubscripcion::cupoReservasSemana((int) $clienteId, $weekStart);
                 if (($cupoResumen['max_semana'] ?? 0) > 0) {
@@ -101,7 +102,6 @@ class ActividadControlador extends Controller
                 } else {
                     $cupoResumen['restante'] = null;
                 }
-                $inscritoMap = Inscripcion::mapaInscripcionesClienteEnSemana((int) $clienteId, $weekStart, $weekEnd);
                 $puedeMasReservaSemana = ClienteSubscripcion::puedeNuevaReservaEsaSemana((int) $clienteId, $weekStart);
             }
         }
