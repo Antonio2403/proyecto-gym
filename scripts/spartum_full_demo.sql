@@ -321,9 +321,18 @@ INSERT INTO `actividad_dias` (`actividad_id`, `dia_semana`) VALUES
 (3, 'J');
 
 INSERT INTO `subscripciones` (`id`, `nombre`, `precio`, `duracion`, `numero_clases`, `fisio`, `estado`) VALUES
-(1, 'plan1', 29.99, 1, 2, 'N', 'A'),
-(2, 'plan2', 49.99, 2, 4, 'N', 'A'),
-(3, 'plan3', 79.99, 3, 8, 'S', 'A');
+(1, 'plan1', 29.99, 1, 1, 'N', 'A'),
+(2, 'plan2', 49.99, 2, 2, 'N', 'A'),
+(3, 'plan3', 79.99, 3, 4, 'S', 'A');
+
+CREATE TABLE IF NOT EXISTS `gp_ajuste` (
+  `clave` VARCHAR(64) NOT NULL,
+  `aplicado_en` DATETIME NOT NULL,
+  PRIMARY KEY (`clave`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+INSERT INTO `gp_ajuste` (`clave`, `aplicado_en`) VALUES
+('planes_clases_mitad_20261105', NOW());
 
 INSERT INTO `cliente_subscripcion` (`cliente_id`, `subscripcion_id`, `fecha_inicio`, `fecha_fin`, `estado`) VALUES
 (1, 1, '2026-05-01 00:00:00', '2026-06-01 23:59:59', 'A'),

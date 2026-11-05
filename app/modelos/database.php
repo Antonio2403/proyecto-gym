@@ -88,6 +88,7 @@ class BasedeDatos
                 $conexionDB->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
                 self::asegurarColorActividad($conexionDB);
                 self::asegurarCancelacionSesion($conexionDB);
+                self::asegurarMitadClasesPlanes($conexionDB);
 
                 return $conexionDB;
             }
@@ -301,10 +302,12 @@ class BasedeDatos
             $stmtSub = $conexionDB->prepare(
                 "INSERT INTO subscripciones (nombre, precio, duracion, numero_clases, fisio, estado) VALUES (?, ?, ?, ?, ?, ?)"
             );
+            self::asegurarMitadClasesPlanes($conexionDB);
+
             $subscripciones = [
-                ['Normal', 29.99, 1, 2, 'N', 'A'],
-                ['Pro', 49.99, 2, 4, 'N', 'A'],
-                ['MegaPro', 79.99, 3, 8, 'S', 'A'],
+                ['Normal', 29.99, 1, 1, 'N', 'A'],
+                ['Pro', 49.99, 2, 2, 'N', 'A'],
+                ['MegaPro', 79.99, 3, 4, 'S', 'A'],
             ];
             foreach ($subscripciones as $sub) {
                 $stmtCheck->execute([$sub[0]]);
@@ -406,6 +409,48 @@ class BasedeDatos
     }
 
     private static $cancelacionSesionLista = false;
+
+    private static $mitadClasesLista = false;
+
+    /**
+     * Una sola vez: las clases por semana de cada plan pasan a la mitad.
+     * Un plan con 1 clase se queda en 1; 0 sería «sin tope».
+     */
+    private static function asegurarMitadClasesPlanes(PDO $db): void
+    {
+        if (self::$mitadClasesLista) {
+            return;
+        }
+        try {
+            $db->exec(
+                'CREATE TABLE IF NOT EXISTS gp_ajuste (
+                    clave VARCHAR(64) NOT NULL PRIMARY KEY,
+                    aplicado_en DATETIME NOT NULL
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8'
+            );
+            $clave = 'planes_clases_mitad_20261105';
+            $ya = $db->prepare('SELECT 1 FROM gp_ajuste WHERE clave = ? LIMIT 1');
+            $ya->execute([$clave]);
+            if ($ya->fetchColumn()) {
+                self::$mitadClasesLista = true;
+
+                return;
+            }
+            $hay = (int) $db->query('SELECT COUNT(*) FROM subscripciones')->fetchColumn();
+            if ($hay > 0) {
+                $db->exec(
+                    'UPDATE subscripciones
+                     SET numero_clases = FLOOR(numero_clases / 2)
+                     WHERE numero_clases IS NOT NULL AND numero_clases >= 2'
+                );
+            }
+            $ins = $db->prepare('INSERT INTO gp_ajuste (clave, aplicado_en) VALUES (?, NOW())');
+            $ins->execute([$clave]);
+            self::$mitadClasesLista = true;
+        } catch (\Throwable $e) {
+            error_log('[Spartum BD] mitad clases planes: ' . $e->getMessage());
+        }
+    }
 
     private static function asegurarCancelacionSesion(PDO $db): void
     {
