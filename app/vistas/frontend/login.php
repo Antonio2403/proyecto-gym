@@ -6,7 +6,7 @@
         <div class="gp-auth-card gp-auth-card--wide gp-auth-card--landscape">
             <div class="gp-photo-frame mb-4" style="height: 12rem;">
                 <img class="gp-photo gp-photo--barra" src="<?= htmlspecialchars(asset('img/pexels/login-barra.jpg')) ?>"
-                     width="1600" height="1067" alt="Hombre sujetando una barra en el gimnasio">
+                     width="1600" height="1067" alt="Entrenamiento con barra en Spartum, gimnasio en Lepe">
             </div>
             <div class="text-center mb-4 lg:mb-6">
                 <span class="gp-badge">Acceso miembros</span>

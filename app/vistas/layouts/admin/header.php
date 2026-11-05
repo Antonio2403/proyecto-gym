@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <?php require __DIR__ . '/../partials/gp_cookie_boot.php'; ?>
     <title>Spartum · Panel</title>
+    <meta name="robots" content="noindex, nofollow">
     <?php require __DIR__ . '/../partials/favicon.php'; ?>
     <meta name="csrf-token" content="<?= htmlspecialchars(csrf_token(), ENT_QUOTES, 'UTF-8') ?>">
     <?php require __DIR__ . '/../partials/session_idle_meta.php'; ?>

@@ -3,7 +3,7 @@
     <div class="gp-hero-poster__stage">
         <div class="gp-hero-poster__frame">
             <img class="gp-hero-poster__photo" src="<?= htmlspecialchars(asset('img/pexels/hero-capacitacion.jpg')) ?>"
-                 width="1600" height="2400" alt="Mujer entrenando con una mancuerna en un gimnasio">
+                 width="1600" height="2400" alt="Entrenamiento con mancuerna en Spartum, gimnasio en Lepe">
         </div>
         <div class="gp-hero-poster__shade" aria-hidden="true"></div>
         <div class="gp-hero-poster__copy">
@@ -12,6 +12,7 @@
                 <span>Vive mejor.</span>
             </h1>
             <p class="gp-hero-lead">Clases guiadas y un equipo que te empuja.</p>
+            <p class="gp-hero-place">Gimnasio en Lepe (Huelva). Lun–Vie 9:00–21:00 · Sáb 10:00–14:00.</p>
             <div class="gp-hero-poster__actions">
                 <?php if (isset($_SESSION['usuario_id']) && ($_SESSION['rol'] ?? '') === 'admin'): ?>
                     <a href="<?= htmlspecialchars(url('/admin')) ?>" class="btn btn-primary btn-lg gp-btn-plain px-6">Volver al panel</a>
@@ -48,21 +49,21 @@
             <figure class="gp-photo-card">
                 <div class="gp-photo-frame">
                     <img class="gp-photo gp-photo--pesas" src="<?= htmlspecialchars(asset('img/unsplash/zona-pesas.jpg')) ?>"
-                         width="1600" height="1067" alt="Mujer de pie entre las máquinas de la zona de pesas">
+                         width="1600" height="1067" alt="Zona de pesas de Spartum, gimnasio en Lepe">
                 </div>
                 <figcaption>Zona de pesas</figcaption>
             </figure>
             <figure class="gp-photo-card">
                 <div class="gp-photo-frame">
                     <img class="gp-photo" src="<?= htmlspecialchars(asset('img/unsplash/yoga-grupo.jpg')) ?>"
-                         width="1600" height="1067" alt="Grupo de mujeres en una clase de yoga">
+                         width="1600" height="1067" alt="Clase de yoga en Spartum, gimnasio en Lepe">
                 </div>
                 <figcaption>Yoga y movilidad</figcaption>
             </figure>
             <figure class="gp-photo-card">
                 <div class="gp-photo-frame">
                     <img class="gp-photo" src="<?= htmlspecialchars(asset('img/pexels/clases-grupo.jpg')) ?>"
-                         width="1600" height="534" alt="Grupo haciendo ejercicio en una clase">
+                         width="1600" height="534" alt="Clase en grupo en Spartum, gimnasio en Lepe">
                 </div>
                 <figcaption>Clases en grupo</figcaption>
             </figure>

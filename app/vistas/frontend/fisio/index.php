@@ -3,7 +3,7 @@
         <div class="gp-schedule-panel shadow-sm">
             <div class="gp-photo-frame" style="height: 10rem; border-radius: 0; border: 0;">
                 <img class="gp-photo" src="<?= htmlspecialchars(asset('img/pixabay/fisio.jpg')) ?>"
-                     width="1280" height="853" alt="Tratamiento de fisioterapia en camilla">
+                     width="1280" height="853" alt="Fisioterapia en camilla en Spartum, gimnasio en Lepe">
             </div>
             <header class="gp-schedule-head text-center py-6 px-4">
                 <h1 class="gp-schedule-title mb-0">Fisioterapia</h1>

@@ -5,7 +5,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <?php require __DIR__ . '/../partials/gp_cookie_boot.php'; ?>
-    <title>Spartum · Tu ritmo, tu meta</title>
+    <?php
+    require_once dirname(__DIR__, 4) . '/core/helpers/seo.php';
+    $gpSeo = gp_seo_actual();
+    ?>
+    <title><?= htmlspecialchars($gpSeo['title'], ENT_QUOTES, 'UTF-8') ?></title>
+    <meta name="description" content="<?= htmlspecialchars($gpSeo['description'], ENT_QUOTES, 'UTF-8') ?>">
+    <meta name="robots" content="<?= htmlspecialchars($gpSeo['robots'], ENT_QUOTES, 'UTF-8') ?>">
+    <link rel="canonical" href="<?= htmlspecialchars($gpSeo['canonical'], ENT_QUOTES, 'UTF-8') ?>">
+    <meta property="og:locale" content="es_ES">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Spartum">
+    <meta property="og:title" content="<?= htmlspecialchars($gpSeo['title'], ENT_QUOTES, 'UTF-8') ?>">
+    <meta property="og:description" content="<?= htmlspecialchars($gpSeo['description'], ENT_QUOTES, 'UTF-8') ?>">
+    <meta property="og:url" content="<?= htmlspecialchars($gpSeo['canonical'], ENT_QUOTES, 'UTF-8') ?>">
+    <?php if ($gpSeo['robots'] === 'index, follow'): ?>
+    <meta property="og:image" content="<?= htmlspecialchars($gpSeo['image'], ENT_QUOTES, 'UTF-8') ?>">
+    <script type="application/ld+json"><?= gp_seo_json_ld() ?></script>
+    <?php endif; ?>
     <?php require __DIR__ . '/../partials/favicon.php'; ?>
     <meta name="csrf-token" content="<?= htmlspecialchars(csrf_token(), ENT_QUOTES, 'UTF-8') ?>">
     <?php require __DIR__ . '/../partials/session_idle_meta.php'; ?>
@@ -37,7 +54,8 @@
         .gp-hero-poster__shade { position: absolute; inset: 0; background: linear-gradient(90deg, var(--gp-navy) 0%, var(--gp-navy) 46%, color-mix(in srgb, var(--gp-navy) 94%, transparent) 62%, color-mix(in srgb, var(--gp-navy) 50%, transparent) 76%, transparent 90%); pointer-events: none; }
         .gp-hero-poster__copy { position: relative; z-index: 1; width: min(80rem, 92%); padding: clamp(2.25rem, 5vw, 4.5rem) clamp(1.35rem, 3.2vw, 3rem); }
         .site-body .gp-hero--poster .gp-hero-title { margin-bottom: 1.5rem; color: #fff; font-size: clamp(5.2rem, 9.1vw, 9.6rem); font-weight: 800; line-height: 0.9; letter-spacing: -0.05em; }
-        .site-body .gp-hero--poster .gp-hero-lead { max-width: 48rem; margin-bottom: 2rem; color: rgba(255, 255, 255, 0.92); font-size: clamp(1.6rem, 2.4vw, 2.2rem); line-height: 1.35; }
+        .site-body .gp-hero--poster .gp-hero-lead { max-width: 48rem; margin-bottom: 0.85rem; color: rgba(255, 255, 255, 0.92); font-size: clamp(1.6rem, 2.4vw, 2.2rem); line-height: 1.35; }
+        .site-body .gp-hero--poster .gp-hero-place { max-width: 40rem; margin: 0 0 2rem; color: rgba(255, 255, 255, 0.82); font-size: clamp(1.05rem, 1.5vw, 1.25rem); line-height: 1.4; }
         .gp-hero--poster .btn { font-size: 1.35rem; padding: 1.05rem 1.9rem; }
         .gp-hero-poster__actions { display: flex; flex-wrap: wrap; gap: 0.85rem; }
         .gp-hero--poster .btn { border-radius: 0.8rem; }
@@ -57,7 +75,8 @@
             .gp-hero-poster__shade { display: none; }
             .gp-hero-poster__copy { order: 1; width: 100%; padding: 2.6rem 1.4rem 2.6rem; }
             .site-body .gp-hero--poster .gp-hero-title { font-size: clamp(2.95rem, 13vw, 3.85rem); line-height: 1.08; margin-bottom: 1.25rem; }
-            .site-body .gp-hero--poster .gp-hero-lead { font-size: 1.2rem; line-height: 1.5; margin-bottom: 1.5rem; }
+            .site-body .gp-hero--poster .gp-hero-lead { font-size: 1.2rem; line-height: 1.5; margin-bottom: 0.65rem; }
+            .site-body .gp-hero--poster .gp-hero-place { font-size: 1rem; margin-bottom: 1.35rem; }
             .gp-hero--poster .btn { padding: 0.6rem 1.35rem; font-size: 1.05rem; }
             .gp-hero-poster__points { grid-template-columns: 1fr 1fr; gap: 0.95rem 0.65rem; }
         }

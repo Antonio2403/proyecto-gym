@@ -9,6 +9,20 @@ class InicioControlador extends Controller {
         $this->renderFrontend("frontend/inicio");
     }
 
+    public function robots(): void
+    {
+        require_once __DIR__ . '/../../core/helpers/seo.php';
+        header('Content-Type: text/plain; charset=utf-8');
+        echo gp_seo_robots_txt();
+    }
+
+    public function sitemap(): void
+    {
+        require_once __DIR__ . '/../../core/helpers/seo.php';
+        header('Content-Type: application/xml; charset=utf-8');
+        echo gp_seo_sitemap_xml();
+    }
+
     public function quienesSomos()
     {
         $this->renderFrontend('frontend/quienesSomos');

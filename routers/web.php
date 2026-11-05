@@ -27,6 +27,8 @@ function controller($router, $method, $route, $action)
 }
 
 //Inicio
+controller($router, 'get', '/robots.txt', 'InicioControlador@robots');
+controller($router, 'get', '/sitemap.xml', 'InicioControlador@sitemap');
 controller($router, 'get', '/', 'InicioControlador@index');
 controller($router, 'get', '/inicio', 'InicioControlador@index');
 controller($router, 'get', '/quienes-somos', 'InicioControlador@quienesSomos');

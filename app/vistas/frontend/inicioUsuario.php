@@ -23,7 +23,7 @@
             <div class="gp-stat-card h-full">
                 <div class="gp-photo-frame mb-4" style="height: 9rem;">
                     <img class="gp-photo" src="<?= htmlspecialchars(asset('img/pixabay/mancuernas.jpg')) ?>"
-                         width="1280" height="853" alt="Rack de mancuernas de la sala de fuerza">
+                         width="1280" height="853" alt="Rack de mancuernas en Spartum, gimnasio en Lepe">
                 </div>
                 <div class="gp-icon">💳</div>
                 <h3 class="text-xl mb-2">Suscripción</h3>
@@ -35,7 +35,7 @@
             <div class="gp-stat-card h-full">
                 <div class="gp-photo-frame mb-4" style="height: 9rem;">
                     <img class="gp-photo" src="<?= htmlspecialchars(asset('img/pixabay/fisio.jpg')) ?>"
-                         width="1280" height="853" alt="Sesión de fisioterapia y recuperación">
+                         width="1280" height="853" alt="Fisioterapia en Spartum, gimnasio en Lepe">
                 </div>
                 <div class="gp-icon">🩺</div>
                 <h3 class="text-xl mb-2">Fisioterapia</h3>

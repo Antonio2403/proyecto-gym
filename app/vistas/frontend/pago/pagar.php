@@ -58,7 +58,7 @@ $gpTextoMeses = static function (int $meses): string {
 
     <div class="gp-photo-frame gp-photo-frame--wide mb-8 mx-auto" style="max-width: 960px;">
         <img class="gp-photo" src="<?= htmlspecialchars(asset('img/pixabay/mancuernas.jpg')) ?>"
-             width="1280" height="853" alt="Zona de mancuernas del gimnasio">
+             width="1280" height="853" alt="Zona de mancuernas de Spartum, gimnasio en Lepe">
     </div>
 
     <?php if ($planActivo): ?>
