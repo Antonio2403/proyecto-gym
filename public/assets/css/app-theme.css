@@ -3815,6 +3815,108 @@ label.gp-label-required::after {
     transform: translateY(0) scale(1);
 }
 
+/* Móvil: tablas de datos como tarjetas. El horario semanal no entra aquí. */
+@media (max-width: 1023.98px) {
+    .table-responsive:has(table.gp-as-cards) {
+        overflow: visible !important;
+    }
+
+    table.gp-as-cards {
+        display: block;
+        width: 100%;
+        border: 0 !important;
+        background: transparent !important;
+        box-shadow: none !important;
+    }
+
+    table.gp-as-cards > thead {
+        display: none;
+    }
+
+    table.gp-as-cards > tbody {
+        display: flex;
+        flex-direction: column;
+        gap: 0.85rem;
+    }
+
+    table.gp-as-cards > tbody > tr {
+        display: flex;
+        flex-direction: column;
+        margin: 0;
+        padding: 0.95rem 1rem 0.8rem;
+        background: var(--gp-white) !important;
+        border: 1px solid var(--gp-border-light) !important;
+        border-radius: 0.95rem;
+        box-shadow: 0 8px 22px rgba(44, 53, 68, 0.06);
+    }
+
+    table.gp-as-cards > tbody > tr > td {
+        display: block;
+        width: auto !important;
+        min-width: 0 !important;
+        max-width: none !important;
+        padding: 0.42rem 0 !important;
+        border: 0 !important;
+        background: transparent !important;
+        color: var(--gp-text) !important;
+        text-align: left !important;
+        white-space: normal !important;
+        overflow-wrap: anywhere;
+    }
+
+    table.gp-as-cards > tbody > tr > td::before {
+        content: attr(data-label);
+        display: block;
+        margin-bottom: 0.12rem;
+        color: var(--gp-muted);
+        font-family: var(--gp-display);
+        font-size: 0.68rem;
+        font-weight: 700;
+        letter-spacing: 0.05em;
+        line-height: 1.2;
+        text-transform: uppercase;
+        white-space: normal;
+    }
+
+    table.gp-as-cards > tbody > tr > td:not([data-label])::before {
+        content: none;
+        display: none;
+    }
+
+    table.gp-as-cards > tbody > tr > td.gp-card-title {
+        order: -1;
+        padding-top: 0 !important;
+        padding-bottom: 0.7rem !important;
+        margin-bottom: 0.2rem;
+        border-bottom: 1px solid var(--gp-border-light) !important;
+        font-family: var(--gp-display);
+        font-size: 1.08rem;
+        font-weight: 700;
+        line-height: 1.25;
+        color: var(--gp-navy) !important;
+    }
+
+    table.gp-as-cards > tbody > tr > td.gp-card-actions .gp-actions-stack,
+    table.gp-as-cards > tbody > tr > td.gp-card-actions form {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        gap: 0.4rem;
+        width: 100%;
+        margin-top: 0.15rem;
+    }
+
+    table.gp-as-cards > tbody > tr.gp-card-empty {
+        box-shadow: none;
+    }
+
+    table.gp-as-cards > tbody > tr.gp-card-empty > td {
+        padding: 0.85rem 0.25rem !important;
+        text-align: center !important;
+        color: var(--gp-muted) !important;
+    }
+}
+
 .gp-idle-overlay__head {
     display: flex;
     align-items: center;
