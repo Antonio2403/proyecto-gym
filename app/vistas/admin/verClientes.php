@@ -2,14 +2,15 @@
     <div class="relative w-full px-3 mt-6">
         <header class="gp-page-header mb-6">
             <div class="gp-page-header__title">
-                <h2 class="text-2xl mb-1">Clientes registrados</h2>
-                <p class="text-slate-500 text-sm">Consulta, bloqueos y gestión de planes activos.</p>
+                <h2 class="text-2xl mb-1">Usuarios activos</h2>
+                <p class="text-slate-500 text-sm">Cuentas sin baneo. Desde aquí se gestionan el plan y las bajas.</p>
             </div>
         </header>
 
         <div
             class="gp-admin-grid gp-admin-card-panel"
             data-gp-admin-grid="clientes"
+            data-lista="activos"
             data-endpoint="<?= htmlspecialchars(url('/admin/ajax/clientes')) ?>"
             data-colspan="9"
             data-url-cancel-plan="<?= htmlspecialchars(url('/admin/clientes/cancelar-plan')) ?>"
@@ -77,6 +78,58 @@
                     </thead>
                     <tbody data-grid-body>
                         <tr><td colspan="9" class="text-slate-500 py-6">Cargando…</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <header class="gp-page-header mb-6 mt-8">
+            <div class="gp-page-header__title">
+                <h2 class="text-2xl mb-1">Usuarios no activos</h2>
+                <p class="text-slate-500 text-sm">Cuentas baneadas, con el motivo y la opción de desbanear.</p>
+            </div>
+        </header>
+
+        <div
+            class="gp-admin-grid gp-admin-card-panel"
+            data-gp-admin-grid="clientes"
+            data-lista="no_activos"
+            data-endpoint="<?= htmlspecialchars(url('/admin/ajax/clientes')) ?>"
+            data-colspan="8"
+            data-url-unblock="<?= htmlspecialchars(url('/admin/clientes/desbloquear')) ?>">
+
+            <form class="gp-admin-grid-filters items-end mb-4 flex flex-wrap -mx-1 -mt-2" data-grid-filters novalidate>
+                <div class="w-full lg:w-1/2 max-w-full shrink-0 px-1 mt-2">
+                    <label class="form-label text-sm text-slate-500 mb-0">Buscar</label>
+                    <input type="search" class="form-control form-control-sm" name="q" placeholder="Nombre, email, DNI…" autocomplete="off">
+                </div>
+                <div class="flex flex-wrap gap-2 mt-2 w-full max-w-full shrink-0 px-1">
+                    <button type="submit" class="btn btn-primary btn-sm">Buscar</button>
+                    <button type="button" class="btn btn-outline-secondary btn-sm" data-grid-reset>Limpiar</button>
+                </div>
+            </form>
+
+            <div class="flex justify-between items-center flex-wrap gap-2 mb-2">
+                <small class="text-slate-500" data-grid-status>&nbsp;</small>
+                <div data-grid-pagination aria-label="Paginación de usuarios no activos"></div>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-bordered align-middle mb-0 gp-data-table">
+                    <thead>
+                        <tr>
+                            <th>ID cliente</th>
+                            <th>DNI</th>
+                            <th>Nombre</th>
+                            <th>Email</th>
+                            <th>Teléfono</th>
+                            <th>Motivo del baneo</th>
+                            <th>Tipo</th>
+                            <th class="gp-actions-col">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody data-grid-body>
+                        <tr><td colspan="8" class="text-slate-500 py-6">Cargando…</td></tr>
                     </tbody>
                 </table>
             </div>

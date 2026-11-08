@@ -88,12 +88,6 @@ class AdminControlador extends Controller
             exit;
         }
 
-        $bloqueo = Usuario::estadoBloqueo($usuarioId);
-        if (($bloqueo['tipo'] ?? 'N') === 'P') {
-            header('Location: ' . url('/admin/verClientes') . '?error=' . rawurlencode('Una baja permanente no se puede reactivar desde el panel'));
-            exit;
-        }
-
         if (!Usuario::desbloquear($usuarioId)) {
             header('Location: ' . url('/admin/verClientes') . '?error=' . rawurlencode('No se pudo reactivar el usuario'));
             exit;

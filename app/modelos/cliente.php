@@ -89,6 +89,12 @@ class Cliente extends Usuario
             $conds[] = 'IFNULL(c.metodo_pago, \'\') LIKE :f_mp';
             $bind[':f_mp'] = '%' . gp_grid_escape_like($mp) . '%';
         }
+        $lista = gp_grid_str($f['lista'] ?? null);
+        if ($lista === 'activos') {
+            $conds[] = '(u.bloqueo_tipo = \'N\' OR u.bloqueo_tipo IS NULL)';
+        } elseif ($lista === 'no_activos') {
+            $conds[] = 'u.bloqueo_tipo IN (\'T\', \'P\')';
+        }
 
         $where = $conds !== [] ? ' WHERE ' . implode(' AND ', $conds) : '';
         $baseFrom = ' FROM clientes c INNER JOIN usuarios u ON c.usuario_id = u.id ';

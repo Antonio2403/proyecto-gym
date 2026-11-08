@@ -50,7 +50,7 @@ class AdminAjaxControlador extends Controller
     {
         $this->requireAdminJson();
         $p = gp_grid_pagination();
-        $f = $this->filtersFromGet(['q', 'dni', 'nombre', 'email', 'telefono', 'metodo_pago']);
+        $f = $this->filtersFromGet(['q', 'dni', 'nombre', 'email', 'telefono', 'metodo_pago', 'lista']);
         $result = Cliente::buscarPaginado($p['page'], $p['per_page'], $f);
         $this->sendJson(array_merge(['ok' => true], $result));
     }

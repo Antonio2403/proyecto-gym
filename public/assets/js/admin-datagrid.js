@@ -188,6 +188,7 @@
             var cancelPlanUrl = root.getAttribute('data-url-cancel-plan') || '';
             var blockUrl = root.getAttribute('data-url-block') || '';
             var unblockUrl = root.getAttribute('data-url-unblock') || '';
+            var soloNoActivos = root.getAttribute('data-lista') === 'no_activos';
             rows.forEach(function (r) {
                 var tr = document.createElement('tr');
                 textCell(tr, r.cliente_id);
@@ -195,17 +196,30 @@
                 textCell(tr, nombreCliente(r));
                 textCell(tr, r.email);
                 textCell(tr, r.telefono);
+                if (soloNoActivos) {
+                    textCell(tr, r.bloqueo_motivo ? String(r.bloqueo_motivo) : 'Sin motivo indicado');
+                    var tdEstado = document.createElement('td');
+                    tdEstado.className = 'gp-status-cell';
+                    if (r.bloqueo_tipo === 'P') {
+                        tdEstado.appendChild(statusPill('banned', 'Baja permanente'));
+                    } else {
+                        tdEstado.appendChild(statusPill('temp', 'Baja normal'));
+                    }
+                    tr.appendChild(tdEstado);
+                    var actBan = actionsCell();
+                    if (unblockUrl) {
+                        appendAction(actBan.stack, linkBtn(unblockUrl, actionCls('ok'), 'Desbanear', '¿Quitar el baneo y reactivar el acceso de este usuario?', 'post', { cliente_id: r.cliente_id }));
+                    }
+                    tr.appendChild(actBan.td);
+                    frag.appendChild(tr);
+
+                    return;
+                }
                 textCell(tr, r.metodo_pago || '—');
                 textCell(tr, r.plan_nombre ? (r.plan_nombre + (r.plan_fecha_fin ? ' · hasta ' + String(r.plan_fecha_fin).slice(0, 16) : '')) : '—');
                 var tdEstado = document.createElement('td');
                 tdEstado.className = 'gp-status-cell';
-                if (r.bloqueo_tipo === 'P') {
-                    tdEstado.appendChild(statusPill('banned', 'Baja permanente'));
-                } else if (r.bloqueo_tipo === 'T') {
-                    tdEstado.appendChild(statusPill('temp', 'Baja normal'));
-                } else {
-                    tdEstado.appendChild(statusPill('active', 'Activa'));
-                }
+                tdEstado.appendChild(statusPill('active', 'Activa'));
                 tr.appendChild(tdEstado);
 
                 var act = actionsCell(true);
@@ -595,6 +609,12 @@
             if (kind === 'solicitudes') {
                 var est = root.getAttribute('data-solicitud-estado') || 'P';
                 p.set('estado', est);
+            }
+            if (kind === 'clientes') {
+                var lista = root.getAttribute('data-lista');
+                if (lista) {
+                    p.set('lista', lista);
+                }
             }
 
             return p.toString();
