@@ -1867,7 +1867,9 @@ body.gp-cookie-open {
 .gp-schedule-act-name {
     display: flex;
     align-items: flex-start;
+    flex-wrap: wrap;
     gap: 0.35rem;
+    white-space: normal;
 }
 
 .gp-schedule-act-swatch,
@@ -2198,7 +2200,6 @@ body.gp-cookie-open {
         font-size: 1rem;
         font-weight: 800;
         letter-spacing: -0.02em;
-        text-transform: uppercase;
     }
 
     .gp-day-row__meta,

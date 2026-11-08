@@ -121,9 +121,9 @@ $gpDiaInicial = $gpHoyLetra !== '' ? $gpHoyLetra : 'L';
                 <article class="gp-day-row gp-schedule-slot" data-actividad-id="<?= (int) $s['actId'] ?>">
                     <span class="gp-day-row__mark" style="background: <?= htmlspecialchars($s['colorAct']) ?>" aria-hidden="true"></span>
                     <div class="gp-day-row__body">
-                        <h3 class="gp-day-row__title"><?= htmlspecialchars((string) $s['act']['nombre']) ?></h3>
+                        <h3 class="gp-day-row__title"><?= htmlspecialchars(($s['salaNombre'] !== '' ? $s['salaNombre'] . '/' : '') . (string) $s['act']['nombre']) ?></h3>
                         <p class="gp-day-row__meta"><?= htmlspecialchars($s['horaIni']) ?><?= $s['duracion'] > 0 ? ' · ' . (int) $s['duracion'] . ' min' : '' ?></p>
-                        <p class="gp-day-row__who"><?= htmlspecialchars($s['monitorNombre'] !== '' ? $s['monitorNombre'] : 'Sin monitor') ?><?= $s['salaNombre'] !== '' ? ' · ' . htmlspecialchars($s['salaNombre']) : '' ?></p>
+                        <p class="gp-day-row__who"><?= htmlspecialchars($s['monitorNombre'] !== '' ? $s['monitorNombre'] : 'Sin monitor') ?></p>
                         <p class="gp-day-row__status <?= htmlspecialchars($s['estadoClase']) ?>"><?= htmlspecialchars($s['estado']) ?></p>
                     </div>
                     <div class="gp-day-row__actions">

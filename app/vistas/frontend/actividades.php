@@ -236,7 +236,7 @@ uasort($clasesFiltro, static function (array $a, array $b): int {
                                                      data-popover-title="<?= htmlspecialchars((string) $act['nombre']) ?>"
                                                      aria-label="Detalles de la actividad: <?= htmlspecialchars((string) $act['nombre']) ?>">
                                                     <div class="gp-schedule-act-body text-left">
-                                                        <strong class="gp-schedule-act-name block text-white"><span class="gp-schedule-act-swatch" style="background: <?= htmlspecialchars($colorAct) ?>"></span><?= htmlspecialchars((string) $act['nombre']) ?></strong>
+                                                        <strong class="gp-schedule-act-name block text-white"><span class="gp-schedule-act-swatch" style="background: <?= htmlspecialchars($colorAct) ?>"></span><?php if ($salaNombre !== ''): ?><?= htmlspecialchars($salaNombre) ?>/<wbr><?php endif; ?><?= htmlspecialchars((string) $act['nombre']) ?></strong>
                                                         <span class="gp-schedule-act-time"><?= htmlspecialchars($horaIni) ?></span>
                                                         <span class="gp-schedule-act-capacity" title="Personas apuntadas / plazas totales"><?= $sesionCancelada ? 'Cancelada' : ((int) $inscritos . ' / ' . (int) $plazas) ?></span>
                                                     </div>
