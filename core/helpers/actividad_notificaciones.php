@@ -57,8 +57,7 @@ function gp_actividad_notificar_cancelacion(string $nombreActividad, array $insc
         return;
     }
 
-    $link = url('/usuario/actividades');
-    $asunto = 'Actividad cancelada: ' . $nombreActividad;
+    $asunto = 'Clase suspendida';
 
     foreach ($inscritos as $row) {
         $email = trim((string) ($row['email'] ?? ''));
@@ -68,18 +67,17 @@ function gp_actividad_notificar_cancelacion(string $nombreActividad, array $insc
         $nombre = trim((string) ($row['nombre'] ?? 'socio'));
         $sesion = (string) ($row['fecha_ocurrencia'] ?? '');
         $sesionTxt = $sesion !== '' ? ' del ' . date('d/m/Y', strtotime($sesion)) : '';
+        $motivo = 'Se ha quitado del horario.';
 
         $html = '<p>Hola ' . htmlspecialchars($nombre, ENT_QUOTES, 'UTF-8') . ',</p>'
-            . '<p>La actividad <strong>' . htmlspecialchars($nombreActividad, ENT_QUOTES, 'UTF-8') . '</strong>'
-            . ($sesionTxt !== '' ? ' en la que tenías plaza' . htmlspecialchars($sesionTxt, ENT_QUOTES, 'UTF-8') : '')
-            . ' <strong>se ha cancelado</strong>.</p>'
-            . '<p>Tu reserva ya no es válida. Puedes consultar otras clases disponibles y volver a apuntarte.</p>'
-            . '<p><a href="' . htmlspecialchars($link, ENT_QUOTES, 'UTF-8') . '">Ver actividades</a></p>'
+            . '<p>Clase suspendida: <strong>' . htmlspecialchars($nombreActividad, ENT_QUOTES, 'UTF-8') . '</strong>'
+            . htmlspecialchars($sesionTxt, ENT_QUOTES, 'UTF-8') . '.</p>'
+            . '<p>' . htmlspecialchars($motivo, ENT_QUOTES, 'UTF-8') . '</p>'
             . '<p>— Spartum</p>';
 
         $text = "Hola {$nombre},\n\n"
-            . "La actividad «{$nombreActividad}» se ha cancelado. Tu reserva ya no es válida.\n"
-            . "Consulta otras clases: {$link}\n";
+            . "Clase suspendida: {$nombreActividad}{$sesionTxt}.\n"
+            . "{$motivo}\n";
 
         $err = null;
         if (!gp_mail_send($email, $asunto, $html, $text, $err)) {
@@ -102,8 +100,8 @@ function gp_actividad_notificar_minimo_no_alcanzado(
     array $personas
 ): void {
     $cuando = date('d/m/Y', strtotime($fechaYmd)) . ' a las ' . $hora;
-    $link = app_url_absolute('/usuario/actividades');
-    $asunto = 'Clase cancelada por falta de gente: ' . $nombreActividad;
+    $asunto = 'Clase suspendida';
+    $motivo = 'No había suficientes personas apuntadas.';
 
     foreach ($personas as $row) {
         $email = trim((string) ($row['email'] ?? ''));
@@ -112,15 +110,13 @@ function gp_actividad_notificar_minimo_no_alcanzado(
         }
         $nombre = trim((string) ($row['nombre'] ?? 'socio'));
         $html = '<p>Hola ' . htmlspecialchars($nombre, ENT_QUOTES, 'UTF-8') . ',</p>'
-            . '<p>La clase <strong>' . htmlspecialchars($nombreActividad, ENT_QUOTES, 'UTF-8') . '</strong>'
-            . ' del ' . htmlspecialchars($cuando, ENT_QUOTES, 'UTF-8') . ' no llega al mínimo de '
-            . (int) $minimo . ' personas. Había <strong>' . (int) $inscritos . '</strong> apuntadas.</p>'
-            . '<p>Esa sesión queda cancelada. Tu reserva se anula y no cuenta como clase usada.</p>'
-            . '<p><a href="' . htmlspecialchars($link, ENT_QUOTES, 'UTF-8') . '">Ver el horario</a></p>'
+            . '<p>Clase suspendida: <strong>' . htmlspecialchars($nombreActividad, ENT_QUOTES, 'UTF-8') . '</strong>'
+            . ' del ' . htmlspecialchars($cuando, ENT_QUOTES, 'UTF-8') . '.</p>'
+            . '<p>' . htmlspecialchars($motivo, ENT_QUOTES, 'UTF-8') . '</p>'
             . '<p>— Spartum</p>';
         $text = "Hola {$nombre},\n\n"
-            . "La clase «{$nombreActividad}» del {$cuando} se cancela: había {$inscritos} personas y el mínimo es {$minimo}.\n"
-            . "Tu reserva queda anulada. Horario: {$link}\n";
+            . "Clase suspendida: {$nombreActividad} del {$cuando}.\n"
+            . "{$motivo}\n";
         $err = null;
         if (!gp_mail_send($email, $asunto, $html, $text, $err)) {
             error_log('[Spartum actividad] correo mínimo no enviado a ' . $email . ': ' . (string) $err);
