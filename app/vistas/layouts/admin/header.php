@@ -18,11 +18,11 @@
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..700&family=Outfit:wght@500..800&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="<?= htmlspecialchars(asset('css/tailwind.css')) ?>?v=20261029g">
-    <link rel="stylesheet" href="<?= htmlspecialchars(asset('css/app-theme.css')) ?>?v=20261105b">
+    <link rel="stylesheet" href="<?= htmlspecialchars(asset('css/app-theme.css')) ?>?v=20261109b">
     <link rel="stylesheet" href="<?= htmlspecialchars(asset('css/admin-panel-light.css')) ?>?v=20261103e">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
           integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer">
     <?php require __DIR__ . '/../partials/horario_centro_boot.php'; ?>
 </head>
 
-<body class="site-body gp-admin-body-root">
+<body class="site-body gp-admin-body-root" data-gp-rol="<?= htmlspecialchars((string) ($_SESSION['rol'] ?? 'visita'), ENT_QUOTES, 'UTF-8') ?>">

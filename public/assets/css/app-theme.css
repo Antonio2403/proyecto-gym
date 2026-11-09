@@ -4206,6 +4206,99 @@ label.gp-label-required::after {
     padding: 0.85rem 1.15rem 1.1rem;
 }
 
+.gp-tour-launch {
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+}
+
+.gp-tour {
+    position: fixed;
+    inset: 0;
+    z-index: 3000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.25rem;
+    background: rgba(44, 53, 68, 0.62);
+}
+
+.gp-tour[hidden] {
+    display: none;
+}
+
+body.gp-tour-open {
+    overflow: hidden;
+}
+
+.gp-tour__card {
+    width: min(100%, 34rem);
+    padding: 1.5rem 1.4rem 1.15rem;
+    border-radius: 1.1rem;
+    background: #fff;
+    box-shadow: 0 24px 60px rgba(15, 23, 42, 0.28);
+}
+
+.gp-tour__kicker {
+    margin: 0 0 0.4rem;
+    color: var(--gp-orange);
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.gp-tour__title {
+    margin: 0 0 0.7rem;
+    color: var(--gp-navy);
+    font-family: var(--gp-display);
+    font-size: 1.7rem;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+}
+
+.gp-tour__text {
+    margin: 0;
+    color: var(--gp-text);
+    font-size: 1.02rem;
+    line-height: 1.5;
+}
+
+.gp-tour__progress {
+    display: flex;
+    gap: 0.35rem;
+    margin: 1.15rem 0 1rem;
+}
+
+.gp-tour__dot {
+    width: 0.55rem;
+    height: 0.55rem;
+    border-radius: 999px;
+    background: #d7dee7;
+}
+
+.gp-tour__dot.is-on {
+    background: var(--gp-orange);
+}
+
+.gp-tour__actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+}
+
+.gp-tour__close {
+    display: block;
+    margin: 0.85rem 0 0 auto;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: var(--gp-muted);
+    font-size: 0.85rem;
+    font-weight: 700;
+    cursor: pointer;
+}
+
 @media (prefers-reduced-motion: reduce) {
     .gp-flash-banner,
     .gp-flash-banner--hide,
