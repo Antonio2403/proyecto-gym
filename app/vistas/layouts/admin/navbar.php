@@ -47,11 +47,6 @@ $esAdmin = ($rolPanel === 'admin');
                     </li>
                 <?php endif; ?>
                 <li class="nav-item">
-                    <button type="button" class="nav-link gp-tour-launch" data-gp-tour-open>
-                        <i class="fas fa-route" aria-hidden="true"></i> Guía
-                    </button>
-                </li>
-                <li class="nav-item">
                     <a class="btn btn-outline-light btn-sm font-semibold px-4 lg:ms-2"
                        href="<?= htmlspecialchars(url('/logout')) ?>">Salir</a>
                 </li>
