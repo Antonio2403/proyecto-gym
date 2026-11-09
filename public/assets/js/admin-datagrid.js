@@ -168,6 +168,34 @@
         return a;
     }
 
+    function banBtn(url, clienteId) {
+        var a = document.createElement('a');
+        a.href = url;
+        a.className = actionCls('danger');
+        a.textContent = 'Banear';
+        a.addEventListener('click', function (e) {
+            e.preventDefault();
+            var modal = document.getElementById('gpBanMotivoModal');
+            var form = document.getElementById('gpBanMotivoForm');
+            if (!modal || !form || !window.SpartumUI || !SpartumUI.Modal) {
+                var motivo = window.prompt('Motivo del baneo');
+                if (motivo && String(motivo).trim() !== '') {
+                    submitPost(url, { cliente_id: String(clienteId), tipo: 'P', motivo: String(motivo).trim() });
+                }
+                return;
+            }
+            form.reset();
+            form.setAttribute('data-cliente-id', String(clienteId));
+            form.setAttribute('data-action', url);
+            SpartumUI.Modal.getOrCreateInstance(modal).show();
+            var campo = form.querySelector('[name="motivo"]');
+            if (campo) {
+                window.setTimeout(function () { campo.focus(); }, 40);
+            }
+        });
+        return a;
+    }
+
     function buildRows(kind, rows, root) {
         var frag = document.createDocumentFragment();
 
@@ -207,8 +235,10 @@
                     }
                     tr.appendChild(tdEstado);
                     var actBan = actionsCell();
-                    if (unblockUrl) {
+                    if (unblockUrl && r.bloqueo_tipo === 'P') {
                         appendAction(actBan.stack, linkBtn(unblockUrl, actionCls('ok'), 'Desbanear', '¿Quitar el baneo y reactivar el acceso de este usuario?', 'post', { cliente_id: r.cliente_id }));
+                    } else if (unblockUrl) {
+                        appendAction(actBan.stack, linkBtn(unblockUrl, actionCls('ok'), 'Dar alta', '¿Dar de alta de nuevo a este usuario?', 'post', { cliente_id: r.cliente_id }));
                     }
                     tr.appendChild(actBan.td);
                     frag.appendChild(tr);
@@ -239,7 +269,7 @@
                         'post',
                         { cliente_id: r.cliente_id, tipo: 'T' }
                     ));
-                    appendAction(act.stack, linkBtn(blockUrl, actionCls('danger'), 'Banear', '¿Dar de baja permanentemente este usuario? Se cancelará también su plan activo.', 'post', { cliente_id: r.cliente_id, tipo: 'P' }));
+                    appendAction(act.stack, banBtn(blockUrl, r.cliente_id));
                 }
                 tr.appendChild(act.td);
                 frag.appendChild(tr);

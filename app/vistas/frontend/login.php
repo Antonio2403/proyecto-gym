@@ -50,6 +50,36 @@
                                     <a href="<?= htmlspecialchars(url('/ticket')) ?>">Crear ticket de gestión de cuenta</a>
                                 </p>
                             </form>
+                            <?php if (($_GET['baneado'] ?? '') === '1'): ?>
+                                <?php $gpBanMotivoLogin = trim((string) ($_GET['motivo'] ?? '')); ?>
+                                <div class="modal fade" id="gpBanLoginModal" tabindex="-1" aria-hidden="true" aria-labelledby="gpBanLoginTitle">
+                                    <div class="modal-dialog modal-dialog-centered">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="gpBanLoginTitle">Estás baneado</h5>
+                                                <button type="button" class="btn-close" data-gp-dismiss="modal" aria-label="Cerrar"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <p class="mb-0">No puedes entrar en esta cuenta.</p>
+                                                <?php if ($gpBanMotivoLogin !== ''): ?>
+                                                    <p class="mt-3 mb-0"><strong>Motivo:</strong> <?= htmlspecialchars($gpBanMotivoLogin, ENT_QUOTES, 'UTF-8') ?></p>
+                                                <?php endif; ?>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-primary" data-gp-dismiss="modal">Entendido</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <script>
+                                document.addEventListener('DOMContentLoaded', function () {
+                                    var el = document.getElementById('gpBanLoginModal');
+                                    if (el && window.SpartumUI && SpartumUI.Modal) {
+                                        SpartumUI.Modal.getOrCreateInstance(el).show();
+                                    }
+                                });
+                                </script>
+                            <?php endif; ?>
                         </div>
 
                         <div class="tab-pane fade" id="registro" role="tabpanel">

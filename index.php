@@ -71,7 +71,7 @@ if (!empty($_SESSION['usuario_id'])) {
                 'forced_logout' => true,
                 'logout_kind' => $bloqueoSesion['tipo'] === 'P' ? 'baja_permanente' : 'baja_cuenta',
                 'message' => $bloqueoSesion['tipo'] === 'P'
-                    ? 'Tu cuenta ha sido dada de baja permanentemente. Se ha cerrado la sesión.'
+                    ? 'Estás baneado.' . (trim((string) ($bloqueoSesion['motivo'] ?? '')) !== '' ? ' Motivo: ' . trim((string) $bloqueoSesion['motivo']) : '')
                     : 'Tu cuenta ha sido dada de baja. Se ha cerrado la sesión.',
             ], JSON_UNESCAPED_UNICODE);
             exit;

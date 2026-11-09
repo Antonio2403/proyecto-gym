@@ -59,7 +59,15 @@ class AdminControlador extends Controller
         }
 
         $hasta = null;
-        $motivo = $tipo === 'P' ? 'Baja permanente desde administración' : 'Baja normal solicitada en recepción';
+        if ($tipo === 'P') {
+            $motivo = trim((string) ($_POST['motivo'] ?? ''));
+            if ($motivo === '' || mb_strlen($motivo) > 255) {
+                header('Location: ' . url('/admin/verClientes') . '?error=' . rawurlencode('Escribe el motivo del baneo (máximo 255 caracteres).'));
+                exit;
+            }
+        } else {
+            $motivo = 'Baja normal solicitada en recepción';
+        }
 
         if (!Usuario::bloquear($usuarioId, $tipo, $hasta, $motivo)) {
             header('Location: ' . url('/admin/verClientes') . '?error=' . rawurlencode('No se pudo aplicar la baja al usuario'));

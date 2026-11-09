@@ -40,10 +40,11 @@ class LoginControlador extends Controller
 
         $bloqueo = Usuario::estadoBloqueo((int) $usuario->getId());
         if (!empty($bloqueo['bloqueado'])) {
-            $msg = $bloqueo['tipo'] === 'T'
-                ? 'Tu cuenta está dada de baja. Crea un ticket de gestión y acude a recepción para que te faciliten el código de reactivación.'
-                : 'Tu cuenta está dada de baja permanentemente. Contacta con recepción.';
-            header('Location: ' . url('/login') . '?error=' . rawurlencode($msg));
+            if (($bloqueo['tipo'] ?? '') === 'P') {
+                header('Location: ' . url('/login') . '?baneado=1&motivo=' . rawurlencode(trim((string) ($bloqueo['motivo'] ?? ''))));
+                exit;
+            }
+            header('Location: ' . url('/login') . '?error=' . rawurlencode('Tu cuenta está dada de baja. Crea un ticket de gestión y acude a recepción para que te faciliten el código de reactivación.'));
             exit;
         }
 
@@ -180,7 +181,7 @@ class LoginControlador extends Controller
                 'forced_logout' => true,
                 'logout_kind' => $bloqueo['tipo'] === 'P' ? 'baja_permanente' : 'baja_cuenta',
                 'message' => $bloqueo['tipo'] === 'P'
-                    ? 'Tu cuenta ha sido dada de baja permanentemente. Se ha cerrado la sesión.'
+                    ? 'Estás baneado.' . (trim((string) ($bloqueo['motivo'] ?? '')) !== '' ? ' Motivo: ' . trim((string) $bloqueo['motivo']) : '')
                     : 'Tu cuenta ha sido dada de baja. Se ha cerrado la sesión.',
             ], JSON_UNESCAPED_UNICODE);
             return;

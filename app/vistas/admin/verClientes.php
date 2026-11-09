@@ -136,3 +136,72 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="gpBanMotivoModal" tabindex="-1" aria-hidden="true" aria-labelledby="gpBanMotivoTitle">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <form id="gpBanMotivoForm">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="gpBanMotivoTitle">Banear usuario</h5>
+                    <button type="button" class="btn-close" data-gp-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body">
+                    <label class="form-label gp-label-required" for="gpBanMotivo">Motivo del baneo</label>
+                    <textarea class="form-control" id="gpBanMotivo" name="motivo" rows="4" maxlength="255" required placeholder="Escribe por qué se banea esta cuenta"></textarea>
+                    <p class="form-text text-sm text-slate-500 mb-0">Este texto lo verá la persona si intenta entrar.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-gp-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-danger">Banear</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    var form = document.getElementById('gpBanMotivoForm');
+    var modal = document.getElementById('gpBanMotivoModal');
+    if (!form || !modal) {
+        return;
+    }
+    form.addEventListener('submit', function (ev) {
+        ev.preventDefault();
+        var motivo = String((form.querySelector('[name="motivo"]') || {}).value || '').trim();
+        if (motivo === '') {
+            return;
+        }
+        var url = form.getAttribute('data-action') || '';
+        var clienteId = form.getAttribute('data-cliente-id') || '';
+        if (!url || !clienteId) {
+            return;
+        }
+        if (window.SpartumUI && SpartumUI.Modal) {
+            var inst = SpartumUI.Modal.getOrCreateInstance(modal);
+            if (inst) {
+                inst.hide();
+            }
+        }
+        var body = new FormData();
+        body.append('cliente_id', clienteId);
+        body.append('tipo', 'P');
+        body.append('motivo', motivo);
+        var token = document.querySelector('meta[name="csrf-token"]');
+        if (token) {
+            body.append('csrf_token', token.getAttribute('content') || '');
+        }
+        fetch(url, { method: 'POST', body: body, credentials: 'same-origin', headers: { Accept: 'text/html' } })
+            .then(function (r) { return r.text().then(function (html) { return { url: r.url, html: html }; }); })
+            .then(function (res) {
+                if (window.gpApplyAdminResult) {
+                    window.gpApplyAdminResult(res);
+                    return;
+                }
+                window.location.href = res.url || url;
+            })
+            .catch(function () {
+                window.location.href = url;
+            });
+    });
+});
+</script>
