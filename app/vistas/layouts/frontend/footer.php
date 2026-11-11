@@ -11,7 +11,9 @@ $gpDireccion = gp_horario_centro_direccion();
     <div class="mx-auto w-full max-w-[1320px] lg:max-w-[1024px] xl:max-w-7xl px-3">
         <div class="flex flex-wrap -mx-3 -mt-6">
             <div class="w-full md:w-1/3 lg:w-1/4 max-w-full shrink-0 px-3 mt-6">
-                <div class="footer-brand mb-2">Spartum</div>
+                <div class="footer-brand mb-2">
+                    <img src="<?= htmlspecialchars(asset('img/logo-spartum.png')) ?>" alt="Spartum Gym" width="220" height="80">
+                </div>
                 <p class="text-white/60 text-sm mb-2">Entrena con método. Reserva clases, gestiona tu suscripción y sigue tu progreso en un solo lugar.</p>
                 <p class="text-white/40 text-xs mb-0">Fotografías de <a href="https://pixabay.com/" rel="noopener noreferrer">Pixabay</a>, <a href="https://www.pexels.com/" rel="noopener noreferrer">Pexels</a> y <a href="https://unsplash.com/" rel="noopener noreferrer">Unsplash</a>.</p>
             </div>

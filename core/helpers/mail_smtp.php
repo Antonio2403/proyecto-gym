@@ -109,6 +109,21 @@ function gp_mail_configure_phpmailer(PHPMailer $mail): void
 }
 
 /**
+ * Cabecera con el logo. La imagen va dentro del propio correo (cid), no hace falta subirla a otro sitio.
+ */
+function gp_mail_html_con_logo(string $html): string
+{
+    $bloque = '<p style="margin:0 0 18px;"><img src="cid:spartum-logo" alt="Spartum Gym" width="260" style="display:block;width:260px;max-width:100%;height:auto;border:0;"></p>';
+    if (preg_match('/<body\b[^>]*>/i', $html, $coincidencia, PREG_OFFSET_CAPTURE) === 1) {
+        $fin = $coincidencia[0][1] + strlen($coincidencia[0][0]);
+
+        return substr($html, 0, $fin) . $bloque . substr($html, $fin);
+    }
+
+    return $bloque . $html;
+}
+
+/**
  * Envía HTML + texto alternativo.
  *
  * @param string|null $outErrorPublic texto seguro para mostrar al usuario
@@ -160,6 +175,11 @@ function gp_mail_send(string $to, string $subject, string $htmlBody, string $tex
         $mail->isHTML(true);
         $mail->CharSet = 'UTF-8';
         $mail->Subject = $subject;
+        $logo = dirname(__DIR__, 2) . '/public/assets/img/logo-spartum.png';
+        if (is_file($logo)) {
+            $mail->addEmbeddedImage($logo, 'spartum-logo', 'spartum.png');
+            $htmlBody = gp_mail_html_con_logo($htmlBody);
+        }
         $mail->Body = $htmlBody;
         $mail->AltBody = $textBody;
         $mail->send();
