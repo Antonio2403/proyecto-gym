@@ -95,7 +95,7 @@ $gpDireccion = gp_horario_centro_direccion();
 
 <?php require __DIR__ . '/../partials/gp_cookie_consent.php'; ?>
 
-<script src="<?= htmlspecialchars(asset('js/tailwind-ui.js')) ?>?v=20261104a"></script>
+<script src="<?= htmlspecialchars(asset('js/tailwind-ui.js')) ?>?v=20261112a"></script>
 <script defer src="<?= htmlspecialchars(asset('js/vendor/gsap.min.js')) ?>"></script>
 <script defer src="<?= htmlspecialchars(asset('js/gp-flash-banner.js')) ?>"></script>
 <script defer src="<?= htmlspecialchars(asset('js/gp-gsap-motion.js')) ?>"></script>

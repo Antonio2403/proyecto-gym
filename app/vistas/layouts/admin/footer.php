@@ -3,7 +3,7 @@
     </div><!-- /.container-fluid -->
 </div><!-- /.gp-admin-page -->
 
-<script src="<?= htmlspecialchars(asset('js/tailwind-ui.js')) ?>"></script>
+<script src="<?= htmlspecialchars(asset('js/tailwind-ui.js')) ?>?v=20261112a"></script>
 <div class="modal fade" id="gpEntityModal" tabindex="-1" aria-hidden="true" aria-labelledby="gpEntityModalTitle">
     <div class="modal-dialog modal-dialog-centered gp-entity-dialog">
         <div class="modal-content">

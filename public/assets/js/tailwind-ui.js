@@ -176,16 +176,22 @@
         });
     }
 
-    function setSiteNav(open) {
-        var panel = document.getElementById('navbarNav');
+    function setDrawer(panelId, open) {
+        var panel = document.getElementById(panelId);
         if (!panel) {
             return;
         }
         panel.classList.toggle('show', open);
-        var button = document.querySelector('.site-navbar [data-gp-target="#navbarNav"]');
+        var button = document.querySelector('[data-gp-target="#' + panelId + '"]');
         if (button) {
             button.setAttribute('aria-expanded', open ? 'true' : 'false');
         }
+    }
+
+    function setSiteNav(open) {
+        ['navbarNav', 'adminTopNav'].forEach(function (panelId) {
+            setDrawer(panelId, open);
+        });
         var backdrop = document.querySelector('[data-gp-nav-backdrop]');
         if (backdrop) {
             backdrop.hidden = !open;
@@ -200,7 +206,7 @@
                 return;
             }
 
-            var drawerLink = event.target.closest('#navbarNav a');
+            var drawerLink = event.target.closest('#navbarNav a, #adminTopNav a');
             if (
                 drawerLink
                 && !drawerLink.hasAttribute('data-gp-toggle')
@@ -231,7 +237,7 @@
                 event.preventDefault();
                 var selector = collapse.getAttribute('data-gp-target') || collapse.getAttribute('href');
                 var panel = selector ? document.querySelector(selector) : null;
-                if (panel && panel.id === 'navbarNav') {
+                if (panel && (panel.id === 'navbarNav' || panel.id === 'adminTopNav')) {
                     setSiteNav(!panel.classList.contains('show'));
                     return;
                 }
@@ -265,8 +271,8 @@
             if (event.key !== 'Escape') {
                 return;
             }
-            var drawer = document.getElementById('navbarNav');
-            if (drawer && drawer.classList.contains('show') && window.matchMedia('(max-width: 1023.98px)').matches) {
+            var drawer = document.querySelector('#navbarNav.show, #adminTopNav.show');
+            if (drawer && window.matchMedia('(max-width: 1023.98px)').matches) {
                 setSiteNav(false);
                 return;
             }
