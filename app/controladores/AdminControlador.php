@@ -318,17 +318,17 @@ class AdminControlador extends Controller
         $estado = (string) ($_POST['estado'] ?? '');
 
         if ($id <= 0 || !in_array($estado, ['A', 'R'], true)) {
-            header('Location: ' . url('/admin/verSolicitudes') . '?error=' . rawurlencode('Solicitud no válida'));
+            header('Location: ' . url('/admin/verSolicitudes') . '?error=' . rawurlencode('Reporte no válido'));
             exit;
         }
 
         if (Solicitud::cambiarEstado($id, $estado, $id_admin)) {
-            $msg = $estado === 'A' ? 'Solicitud aprobada' : 'Solicitud rechazada';
+            $msg = $estado === 'A' ? 'Reporte aprobado' : 'Reporte rechazado';
             header('Location: ' . url('/admin/verSolicitudes') . '?success=' . rawurlencode($msg));
             exit;
         }
 
-        header('Location: ' . url('/admin/verSolicitudes') . '?error=' . rawurlencode('No se pudo actualizar la solicitud'));
+        header('Location: ' . url('/admin/verSolicitudes') . '?error=' . rawurlencode('No se pudo actualizar el reporte'));
         exit;
     }
 

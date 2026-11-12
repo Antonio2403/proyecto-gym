@@ -29,8 +29,8 @@
             </a>
             <a href="<?= htmlspecialchars(url('/admin/verSolicitudes')) ?>" class="gp-bento-tile gp-motion-item">
                 <span class="gp-bento-tile__icon" aria-hidden="true"><i class="fas fa-envelope"></i></span>
-                <span class="gp-bento-tile__label">Solicitudes</span>
-                <span class="gp-bento-tile__desc">Peticiones de monitores</span>
+                <span class="gp-bento-tile__label">Reportes</span>
+                <span class="gp-bento-tile__desc">Revisar y consultar por año o mes</span>
             </a>
             <a href="<?= htmlspecialchars(url('/admin/recuperacion-cuenta')) ?>" class="gp-bento-tile gp-motion-item">
                 <span class="gp-bento-tile__icon" aria-hidden="true"><i class="fas fa-ticket"></i></span>

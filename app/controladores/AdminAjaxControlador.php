@@ -112,7 +112,12 @@ class AdminAjaxControlador extends Controller
         $this->requireAdminJson();
         $p = gp_grid_pagination();
         $estado = strtoupper(trim((string) ($_GET['estado'] ?? 'P')));
-        $f = $this->filtersFromGet(['q', 'tipo', 'monitor', 'fecha_desde', 'fecha_hasta']);
+        $f = $this->filtersFromGet(['q', 'tipo', 'monitor', 'anio', 'mes', 'recientes']);
+        $recientes = (int) ($f['recientes'] ?? 0);
+        if ($recientes > 0) {
+            $p['page'] = 1;
+            $p['per_page'] = min(10, max(1, $recientes));
+        }
         $result = Solicitud::buscarPaginado($estado, $p['page'], $p['per_page'], $f);
         $this->sendJson(array_merge(['ok' => true, 'estado' => $estado], $result));
     }

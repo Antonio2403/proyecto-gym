@@ -205,7 +205,7 @@
             var td0 = document.createElement('td');
             td0.colSpan = colspan;
             td0.className = 'text-center text-slate-500 py-6';
-            td0.textContent = 'Sin resultados con los filtros actuales.';
+            td0.textContent = root.getAttribute('data-empty') || 'Sin resultados con los filtros actuales.';
             tr0.appendChild(td0);
             frag.appendChild(tr0);
 
@@ -489,8 +489,8 @@
                     btnR.addEventListener('click', function () {
                         if (typeof window.gpConfirm === 'function') {
                             window.gpConfirm({
-                                title: 'Rechazar solicitud',
-                                body: '¿Rechazar esta solicitud del monitor?',
+                                title: 'Rechazar reporte',
+                                body: '¿Rechazar este reporte del monitor?',
                                 danger: true,
                                 okLabel: 'Rechazar',
                                 onConfirm: function () {
@@ -500,7 +500,7 @@
 
                             return;
                         }
-                        if (window.confirm('¿Rechazar esta solicitud del monitor?')) {
+                        if (window.confirm('¿Rechazar este reporte del monitor?')) {
                             submitPost(aprUrl, { id: String(r.id), estado: 'R' });
                         }
                     });
@@ -643,6 +643,12 @@
             if (kind === 'solicitudes') {
                 var est = root.getAttribute('data-solicitud-estado') || 'P';
                 p.set('estado', est);
+                var recientes = root.getAttribute('data-solo-recientes');
+                if (recientes) {
+                    p.set('recientes', recientes);
+                    p.set('per_page', recientes);
+                    p.set('page', '1');
+                }
             }
             if (kind === 'clientes') {
                 var lista = root.getAttribute('data-lista');
@@ -720,6 +726,20 @@
             load(1);
         }, 400);
 
+        var mesFiltro = form.querySelector('[name="mes"]');
+        var anioFiltro = form.querySelector('[name="anio"]');
+        function syncPeriodo() {
+            if (!mesFiltro || !anioFiltro) {
+                return;
+            }
+            var mesElegido = String(mesFiltro.value || '') !== '';
+            anioFiltro.disabled = mesElegido;
+        }
+        syncPeriodo();
+        if (mesFiltro) {
+            mesFiltro.addEventListener('change', syncPeriodo);
+        }
+
         form.addEventListener('submit', function (e) {
             e.preventDefault();
             load(1);
@@ -745,6 +765,7 @@
             btn.addEventListener('click', function (e) {
                 e.preventDefault();
                 form.reset();
+                syncPeriodo();
                 load(1);
             });
         });

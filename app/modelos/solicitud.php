@@ -82,23 +82,61 @@ class Solicitud
     }
 
     /**
-     * @param array{q?: string|null, tipo?: string|null, monitor?: string|null, fecha_desde?: string|null, fecha_hasta?: string|null} $f
+     * Años con reportes, incluyendo el año en curso.
+     *
+     * @return array<int, int>
+     */
+    public static function aniosDisponibles(): array
+    {
+        $conexion = BasedeDatos::Conectar();
+        $rows = $conexion->query('SELECT DISTINCT YEAR(fecha_creacion) AS anio FROM solicitudes WHERE fecha_creacion IS NOT NULL ORDER BY anio DESC');
+        $anios = [];
+        if ($rows) {
+            foreach ($rows->fetchAll(PDO::FETCH_COLUMN) as $anio) {
+                $n = (int) $anio;
+                if ($n > 0) {
+                    $anios[] = $n;
+                }
+            }
+        }
+        $actual = (int) date('Y');
+        if (!in_array($actual, $anios, true)) {
+            $anios[] = $actual;
+        }
+        rsort($anios);
+
+        return $anios;
+    }
+
+    /**
+     * @param array{q?: string|null, tipo?: string|null, monitor?: string|null, anio?: string|null, mes?: string|null, recientes?: string|null} $f
      *
      * @return array{rows: array<int, array<string,mixed>>, total: int, page: int, per_page: int, total_pages: int}
      */
     public static function buscarPaginado(string $estado, int $page, int $perPage, array $f): array
     {
         $estado = strtoupper(trim($estado));
-        if (!in_array($estado, ['P', 'A', 'R'], true)) {
+        $todos = $estado === 'T';
+        if (!$todos && !in_array($estado, ['P', 'A', 'R'], true)) {
             $estado = 'P';
         }
 
+        $recientes = (int) ($f['recientes'] ?? 0);
         $page = max(1, $page);
-        $perPage = min(50, max(5, $perPage));
+        if ($recientes > 0) {
+            $perPage = min(10, max(1, $recientes));
+            $page = 1;
+        } else {
+            $perPage = min(50, max(5, $perPage));
+        }
 
         $conexion = BasedeDatos::Conectar();
-        $bind = [':est' => $estado];
-        $conds = ['s.estado = :est'];
+        $bind = [];
+        $conds = [];
+        if (!$todos) {
+            $conds[] = 's.estado = :est';
+            $bind[':est'] = $estado;
+        }
 
         $qLike = gp_grid_like_contains(gp_grid_str($f['q'] ?? null));
         if ($qLike !== null) {
@@ -113,25 +151,31 @@ class Solicitud
             $conds[] = '(u.nombre LIKE :mon OR u.apellido1 LIKE :mon OR IFNULL(u.apellido2, \'\') LIKE :mon OR u.email LIKE :mon)';
             $bind[':mon'] = $mon;
         }
-        $fd = gp_grid_date_opt($f['fecha_desde'] ?? null);
-        if ($fd !== null) {
-            $conds[] = 'DATE(s.fecha_creacion) >= :fd';
-            $bind[':fd'] = $fd;
-        }
-        $fh = gp_grid_date_opt($f['fecha_hasta'] ?? null);
-        if ($fh !== null) {
-            $conds[] = 'DATE(s.fecha_creacion) <= :fh';
-            $bind[':fh'] = $fh;
+        if ($recientes <= 0) {
+            $mes = (int) ($f['mes'] ?? 0);
+            $anio = (int) ($f['anio'] ?? 0);
+            if ($mes >= 1 && $mes <= 12) {
+                $conds[] = 'MONTH(s.fecha_creacion) = :mes';
+                $bind[':mes'] = $mes;
+            } else {
+                if ($anio < 2000 || $anio > 2100) {
+                    $anio = (int) date('Y');
+                }
+                $conds[] = 'YEAR(s.fecha_creacion) = :anio';
+                $bind[':anio'] = $anio;
+            }
         }
 
         $baseFrom = ' FROM solicitudes s
             INNER JOIN monitores m ON s.monitor_id = m.id
             INNER JOIN usuarios u ON m.usuario_id = u.id ';
 
-        $where = ' WHERE ' . implode(' AND ', $conds);
-        $order = $estado === 'P'
-            ? ' ORDER BY s.fecha_creacion ASC'
-            : ' ORDER BY s.fecha_revision DESC, s.fecha_creacion DESC';
+        $where = $conds !== [] ? ' WHERE ' . implode(' AND ', $conds) : '';
+        $order = ($recientes > 0 || $todos)
+            ? ' ORDER BY s.fecha_creacion DESC'
+            : ($estado === 'P'
+                ? ' ORDER BY s.fecha_creacion DESC'
+                : ' ORDER BY s.fecha_revision DESC, s.fecha_creacion DESC');
 
         $stmt = gp_grid_prepare($conexion, 'SELECT COUNT(*) ' . $baseFrom . $where, $bind);
         $stmt->execute();

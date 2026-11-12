@@ -3,11 +3,11 @@
 
         <header class="gp-page-header">
             <div class="gp-page-header__title">
-                <h2 class="text-2xl mb-1">Solicitudes aprobadas</h2>
+                <h2 class="text-2xl mb-1">Reportes aprobados</h2>
             </div>
             <div class="gp-view-toolbar">
                 <a href="<?= htmlspecialchars(url('/admin/verSolicitudes')) ?>" class="btn btn-outline-secondary btn-sm">
-                    <i class="fas fa-arrow-left me-1" aria-hidden="true"></i> Pendientes
+                    <i class="fas fa-arrow-left me-1" aria-hidden="true"></i> Reportes
                 </a>
             </div>
         </header>
@@ -33,14 +33,7 @@
                     <label class="form-label text-sm text-slate-500 mb-0">Monitor</label>
                     <input type="text" name="monitor" class="form-control form-control-sm" autocomplete="off">
                 </div>
-                <div class="w-full md:w-1/2 lg:w-1/6 max-w-full shrink-0 px-1 mt-2">
-                    <label class="form-label text-sm text-slate-500 mb-0">Desde</label>
-                    <input type="date" name="fecha_desde" class="form-control form-control-sm">
-                </div>
-                <div class="w-full md:w-1/2 lg:w-1/6 max-w-full shrink-0 px-1 mt-2">
-                    <label class="form-label text-sm text-slate-500 mb-0">Hasta</label>
-                    <input type="date" name="fecha_hasta" class="form-control form-control-sm">
-                </div>
+                <?php $gpPeriodoPrefix = 'gpReporteAprobados'; require __DIR__ . '/partials/reportes_periodo.php'; ?>
                 <div class="flex flex-wrap gap-2 mt-2 w-full max-w-full shrink-0 px-1">
                     <button type="submit" class="btn btn-primary btn-sm">Buscar</button>
                     <button type="button" class="btn btn-outline-secondary btn-sm" data-grid-reset>Limpiar</button>

@@ -207,11 +207,11 @@
                 var val = String(sub.value || '').toUpperCase();
 
                 gpConfirm({
-                    title: val === 'A' ? 'Aprobar solicitud' : 'Rechazar solicitud',
+                    title: val === 'A' ? 'Aprobar reporte' : 'Rechazar reporte',
                     body:
                         val === 'A'
-                            ? '¿Aprobar esta solicitud del monitor?'
-                            : '¿Rechazar esta solicitud del monitor?',
+                            ? '¿Aprobar este reporte del monitor?'
+                            : '¿Rechazar este reporte del monitor?',
                     okLabel: val === 'A' ? 'Sí, aprobar' : 'Sí, rechazar',
                     danger: val === 'R',
                     onConfirm: function () {
