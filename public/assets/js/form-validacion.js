@@ -827,7 +827,7 @@
     handlers.monitorSolicitud = function (form) {
         clearCustomValidity(form);
         var ok = true;
-        ok = requireNonEmpty(form, 'tipo', 'El tipo de solicitud es obligatorio.') && ok;
+        ok = requireNonEmpty(form, 'tipo', 'El tipo de reporte es obligatorio.') && ok;
 
         var t = field(form, 'tipo');
         if (t && trimStr(t.value).length > 120) {

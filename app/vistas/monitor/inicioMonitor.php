@@ -5,7 +5,7 @@
             <h1 class="text-[1.75rem] mb-0">Panel de monitor</h1>
             <p class="mb-0 mt-2">
                 Hola, <?= htmlspecialchars($_SESSION['nombre'] ?? 'Monitor') ?>.
-                Accesos rápidos a solicitudes y salas del centro.
+                Accesos rápidos a tus reportes y a las salas del centro.
             </p>
         </header>
 
@@ -15,11 +15,6 @@
                 <span class="gp-bento-tile__label">Mis clases</span>
                 <span class="gp-bento-tile__desc">Alumnos inscritos en tus sesiones</span>
             </a>
-            <a href="<?= htmlspecialchars(url('/monitor/verMonitorSolicitudes')) ?>" class="gp-bento-tile gp-motion-item">
-                <span class="gp-bento-tile__icon" aria-hidden="true"><i class="fas fa-envelope-open"></i></span>
-                <span class="gp-bento-tile__label">Solicitudes centro</span>
-                <span class="gp-bento-tile__desc">Revisar peticiones del equipo</span>
-            </a>
             <a href="<?= htmlspecialchars(url('/monitor/verSalas')) ?>" class="gp-bento-tile gp-motion-item">
                 <span class="gp-bento-tile__icon" aria-hidden="true"><i class="fas fa-dumbbell"></i></span>
                 <span class="gp-bento-tile__label">Salas</span>
@@ -27,13 +22,13 @@
             </a>
             <a href="<?= htmlspecialchars(url('/monitor/formSolicitud')) ?>" class="gp-bento-tile gp-motion-item">
                 <span class="gp-bento-tile__icon" aria-hidden="true"><i class="fas fa-plus-circle"></i></span>
-                <span class="gp-bento-tile__label">Nueva solicitud</span>
-                <span class="gp-bento-tile__desc">Enviar petición al centro</span>
+                <span class="gp-bento-tile__label">Reportes</span>
+                <span class="gp-bento-tile__desc">Crear un reporte nuevo</span>
             </a>
             <a href="<?= htmlspecialchars(url('/monitor/verMisSolicitudes')) ?>" class="gp-bento-tile gp-motion-item">
                 <span class="gp-bento-tile__icon" aria-hidden="true"><i class="fas fa-list"></i></span>
-                <span class="gp-bento-tile__label">Mis solicitudes</span>
-                <span class="gp-bento-tile__desc">Estado de tus envíos</span>
+                <span class="gp-bento-tile__label">Tus reportes</span>
+                <span class="gp-bento-tile__desc">Solo los que has enviado tú</span>
             </a>
         </nav>
     </div>

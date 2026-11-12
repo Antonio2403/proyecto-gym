@@ -19,17 +19,14 @@ $badgeEstado = static function (string $est): string {
         <div class="gp-admin-card-panel mb-6 border-0 shadow-sm">
             <div class="flex flex-col lg:flex-row justify-between items-start gap-4">
                 <div>
-                    <h1 class="text-[1.75rem] mb-2">Mis solicitudes</h1>
+                    <h1 class="text-[1.75rem] mb-2">Tus reportes</h1>
                     <p class="text-slate-500 mb-0">
-                        Historial de peticiones que has enviado a administración.
+                        Solo los reportes que has enviado tú. El resto del equipo no aparece aquí.
                     </p>
                 </div>
                 <div class="gp-view-toolbar">
                     <a href="<?= htmlspecialchars(url('/monitor/formSolicitud')) ?>" class="btn btn-primary btn-sm">
-                        <i class="fas fa-plus-circle me-1" aria-hidden="true"></i> Nueva solicitud
-                    </a>
-                    <a href="<?= htmlspecialchars(url('/monitor/verMonitorSolicitudes')) ?>" class="btn btn-outline-secondary btn-sm">
-                        <i class="fas fa-envelope-open me-1" aria-hidden="true"></i> Solicitudes del centro
+                        <i class="fas fa-plus-circle me-1" aria-hidden="true"></i> Nuevo reporte
                     </a>
                     <a href="<?= htmlspecialchars(url('/inicioMonitor')) ?>" class="btn btn-outline-secondary btn-sm">
                         <i class="fas fa-home me-1" aria-hidden="true"></i> Inicio monitor
@@ -37,6 +34,13 @@ $badgeEstado = static function (string $est): string {
                 </div>
             </div>
         </div>
+
+        <?php if (!empty($_GET['success'])): ?>
+            <div class="alert alert-success"><?= htmlspecialchars((string) $_GET['success']) ?></div>
+        <?php endif; ?>
+        <?php if (!empty($_GET['error'])): ?>
+            <div class="alert alert-danger"><?= htmlspecialchars((string) $_GET['error']) ?></div>
+        <?php endif; ?>
 
         <?php if (!empty($lista)): ?>
             <div class="flex flex-wrap -mx-2 -mt-4">
@@ -67,7 +71,7 @@ $badgeEstado = static function (string $est): string {
         <?php else: ?>
             <div class="gp-admin-card-panel text-center py-12 border-0 shadow-sm">
                 <i class="fas fa-inbox text-2xl text-slate-500 mb-4 block opacity-50" aria-hidden="true"></i>
-                <p class="text-slate-500 mb-4">No hay solicitudes hechas por ti.</p>
+                <p class="text-slate-500 mb-4">Todavía no has enviado ningún reporte.</p>
                 <a href="<?= htmlspecialchars(url('/monitor/formSolicitud')) ?>" class="btn btn-primary btn-sm">Crear la primera</a>
             </div>
         <?php endif; ?>

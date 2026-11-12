@@ -102,7 +102,7 @@ $gpDireccion = gp_horario_centro_direccion();
 <script defer src="<?= htmlspecialchars(asset('js/gp-confirm-modal.js')) ?>"></script>
 <script defer src="<?= htmlspecialchars(asset('js/gp-form-unsaved.js')) ?>"></script>
 <script defer src="<?= htmlspecialchars(asset('js/gp-table-cards.js')) ?>?v=20261105a"></script>
-<script defer src="<?= htmlspecialchars(asset('js/form-validacion.js')) ?>?v=20261105c"></script>
+<script defer src="<?= htmlspecialchars(asset('js/form-validacion.js')) ?>?v=20261112e"></script>
 <script defer
         src="<?= htmlspecialchars(asset('js/site-preferences.js')) ?>?v=20261104c"
         data-session-status-url="<?= htmlspecialchars(url('/sesion/estado')) ?>"

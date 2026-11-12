@@ -19,14 +19,8 @@ class MonitorControlador extends Controller
     public function verMonitorSolicitudes()
     {
         $this->requireMonitor();
-        $pendientes = Solicitud::obtenerPendientes();
-        $aprobadas = array_slice(Solicitud::obtenerAprobadas(), 0, 12);
-        $rechazadas = array_slice(Solicitud::obtenerRechazadas(), 0, 12);
-        $this->renderAdmin('monitor/verMonitorSolicitudes', [
-            'pendientes' => $pendientes,
-            'aprobadas' => $aprobadas,
-            'rechazadas' => $rechazadas,
-        ]);
+        header('Location: ' . url('/monitor/verMisSolicitudes'));
+        exit;
     }
 
     public function verMisSolicitudes()
@@ -97,7 +91,7 @@ class MonitorControlador extends Controller
             $descripcion = trim($_POST['descripcion'] ?? '');
 
             if ($tipo === '') {
-                header('Location: ' . url('/monitor/formSolicitud') . '?error=' . urlencode('El tipo de solicitud es obligatorio'));
+                header('Location: ' . url('/monitor/formSolicitud') . '?error=' . urlencode('El tipo de reporte es obligatorio'));
                 exit;
             }
 
@@ -119,11 +113,11 @@ class MonitorControlador extends Controller
 
             $descGuardar = $descripcion !== '' ? $descripcion : null;
             if (Solicitud::crear($monitorTablaId, $tipo, $descGuardar)) {
-                header('Location: ' . url('/monitor/verMisSolicitudes') . '?success=' . urlencode('Solicitud enviada correctamente.'));
+                header('Location: ' . url('/monitor/verMisSolicitudes') . '?success=' . urlencode('Reporte enviado correctamente.'));
                 exit;
             }
 
-            header('Location: ' . url('/monitor/formSolicitud') . '?error=' . urlencode('No se pudo registrar la solicitud.'));
+            header('Location: ' . url('/monitor/formSolicitud') . '?error=' . urlencode('No se pudo registrar el reporte.'));
             exit;
         }
     }
