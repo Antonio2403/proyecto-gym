@@ -5,7 +5,7 @@ $esAdmin = ($rolPanel === 'admin');
 <nav class="navbar navbar-expand-lg gp-admin-topnav gp-vt-chrome sticky top-0 z-[1020]">
     <div class="relative w-full px-4 lg:px-6">
         <a class="navbar-brand text-white" href="<?= htmlspecialchars(url('/inicio')) ?>">
-            <img src="<?= htmlspecialchars(asset('img/logo-spartum.png')) ?>" alt="Spartum Gym" width="220" height="80">
+            <img src="<?= htmlspecialchars(asset('img/logo-spartum.png')) ?>?v=20261112a" alt="Spartum Gym" width="220" height="80">
         </a>
 
         <button class="navbar-toggler border-0 shadow-none" type="button" data-gp-toggle="collapse"

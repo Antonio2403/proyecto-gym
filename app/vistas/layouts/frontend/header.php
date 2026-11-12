@@ -106,7 +106,7 @@ $gpNavAvatarImg = 'https://ui-avatars.com/api/?name=' . rawurlencode((string) ($
         </button>
 
         <a class="navbar-brand" href="<?= htmlspecialchars($gpNavbarBrandHref) ?>">
-            <img src="<?= htmlspecialchars(asset('img/logo-spartum.png')) ?>" alt="Spartum Gym" width="220" height="80">
+            <img src="<?= htmlspecialchars(asset('img/logo-spartum.png')) ?>?v=20261112a" alt="Spartum Gym" width="220" height="80">
         </a>
 
         <div class="collapse navbar-collapse" id="navbarNav">
