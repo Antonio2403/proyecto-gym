@@ -608,11 +608,15 @@
             return;
         }
 
-        var form = root.querySelector('[data-grid-filters]');
+        var formId = root.getAttribute('data-filters-id');
+        var form = formId ? document.getElementById(formId) : null;
+        if (!form) {
+            form = root.querySelector('[data-grid-filters]');
+        }
         var tbody = root.querySelector('[data-grid-body]');
         var pager = root.querySelector('[data-grid-pagination]');
         var status = root.querySelector('[data-grid-status]');
-        var selPer = root.querySelector('[data-grid-per-page]');
+        var selPer = form ? form.querySelector('[data-grid-per-page]') : null;
 
         if (!form || !tbody || !pager) {
             return;
@@ -737,7 +741,7 @@
             });
         }
 
-        root.querySelectorAll('[data-grid-reset]').forEach(function (btn) {
+        form.querySelectorAll('[data-grid-reset]').forEach(function (btn) {
             btn.addEventListener('click', function (e) {
                 e.preventDefault();
                 form.reset();

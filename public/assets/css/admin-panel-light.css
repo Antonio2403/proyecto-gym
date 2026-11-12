@@ -134,6 +134,11 @@
     }
 }
 
+.gp-clientes-switch {
+    max-width: 28rem;
+    margin-bottom: 1.15rem;
+}
+
 .gp-admin-page {
     flex: 1;
     background: var(--gp-page, #eef1f6);

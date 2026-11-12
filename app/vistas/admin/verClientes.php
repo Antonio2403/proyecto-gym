@@ -1,60 +1,77 @@
 <div class="content-wrapper">
     <div class="relative w-full px-3 mt-6">
-        <header class="gp-page-header mb-6">
+        <header class="gp-page-header mb-4">
             <div class="gp-page-header__title">
-                <h2 class="text-2xl mb-1">Usuarios activos</h2>
-                <p class="text-slate-500 text-sm">Cuentas sin baneo. Desde aquí se gestionan el plan y las bajas.</p>
+                <h2 class="text-2xl mb-1">Clientes</h2>
+                <p class="text-slate-500 text-sm mb-0" id="gpClientesLead">Cuentas sin baneo. Desde aquí se gestionan el plan y las bajas.</p>
             </div>
         </header>
 
+        <div class="gp-clientes-switch gp-auth-switch" id="gpClientesSwitch" role="tablist" aria-label="Tipo de clientes">
+            <span class="gp-auth-switch-thumb" aria-hidden="true"></span>
+            <button class="gp-auth-switch-btn active" type="button" role="tab" id="gpClientesTabActivos" aria-selected="true" aria-controls="gpClientesActivos" data-lista="activos">
+                <span class="gp-auth-switch-icon" aria-hidden="true"><i class="fas fa-user-check"></i></span>
+                <span>Activos</span>
+            </button>
+            <button class="gp-auth-switch-btn" type="button" role="tab" id="gpClientesTabNoActivos" aria-selected="false" aria-controls="gpClientesNoActivos" data-lista="no_activos">
+                <span class="gp-auth-switch-icon" aria-hidden="true"><i class="fas fa-user-slash"></i></span>
+                <span>No activos</span>
+            </button>
+        </div>
+
+        <form id="gpClientesFilters" class="gp-admin-grid-filters items-end mb-4 flex flex-wrap -mx-1 -mt-2" data-grid-filters novalidate>
+            <div class="w-full lg:w-5/12 max-w-full shrink-0 px-1 mt-2">
+                <label class="form-label text-sm text-slate-500 mb-0" for="gpClientesQ">Buscar</label>
+                <input type="search" class="form-control form-control-sm" id="gpClientesQ" name="q" placeholder="Nombre, email, DNI…" autocomplete="off">
+            </div>
+            <div class="w-full md:w-1/4 max-w-full shrink-0 px-1 mt-2">
+                <label class="form-label text-sm text-slate-500 mb-0" for="gpClientesDni">DNI</label>
+                <input type="text" class="form-control form-control-sm font-mono gp-doc-identidad-input" id="gpClientesDni" name="dni" maxlength="9" autocomplete="off" inputmode="text" placeholder="12345678A" data-gp-doc-identidad-es>
+            </div>
+            <div class="w-full md:w-1/3 max-w-full shrink-0 px-1 mt-2">
+                <label class="form-label text-sm text-slate-500 mb-0" for="gpClientesEmail">Email</label>
+                <input type="text" class="form-control form-control-sm" id="gpClientesEmail" name="email" autocomplete="off">
+            </div>
+            <div class="w-full md:w-1/3 max-w-full shrink-0 px-1 mt-2">
+                <label class="form-label text-sm text-slate-500 mb-0" for="gpClientesNombre">Nombre o apellidos</label>
+                <input type="text" class="form-control form-control-sm" id="gpClientesNombre" name="nombre" autocomplete="off">
+            </div>
+            <div class="w-full md:w-1/3 max-w-full shrink-0 px-1 mt-2">
+                <label class="form-label text-sm text-slate-500 mb-0" for="gpClientesTelefono">Teléfono</label>
+                <input type="text" class="form-control form-control-sm" id="gpClientesTelefono" name="telefono" autocomplete="off">
+            </div>
+            <div class="w-full md:w-1/3 max-w-full shrink-0 px-1 mt-2">
+                <label class="form-label text-sm text-slate-500 mb-0" for="gpClientesPago">Método de pago</label>
+                <input type="text" class="form-control form-control-sm" id="gpClientesPago" name="metodo_pago" placeholder="Ej. tarjeta" autocomplete="off">
+            </div>
+            <div class="flex flex-wrap gap-2 mt-2 w-full lg:w-full max-w-full shrink-0 px-1">
+                <button type="submit" class="btn btn-primary btn-sm">Buscar</button>
+                <button type="button" class="btn btn-outline-secondary btn-sm" data-grid-reset>Limpiar</button>
+                <div class="lg:ms-auto flex items-center gap-2">
+                    <label class="text-sm text-slate-500 mb-0" for="gpClientesPerPage">Por página</label>
+                    <select class="form-select form-select-sm" id="gpClientesPerPage" data-grid-per-page style="width: auto;">
+                        <option value="10" selected>10</option>
+                        <option value="15">15</option>
+                        <option value="25">25</option>
+                    </select>
+                </div>
+            </div>
+        </form>
+
         <div
             class="gp-admin-grid gp-admin-card-panel"
+            id="gpClientesActivos"
+            role="tabpanel"
+            aria-labelledby="gpClientesTabActivos"
+            data-clientes-panel
             data-gp-admin-grid="clientes"
             data-lista="activos"
+            data-filters-id="gpClientesFilters"
             data-endpoint="<?= htmlspecialchars(url('/admin/ajax/clientes')) ?>"
             data-colspan="9"
             data-url-cancel-plan="<?= htmlspecialchars(url('/admin/clientes/cancelar-plan')) ?>"
             data-url-block="<?= htmlspecialchars(url('/admin/clientes/bloquear')) ?>"
             data-url-unblock="<?= htmlspecialchars(url('/admin/clientes/desbloquear')) ?>">
-
-            <form class="gp-admin-grid-filters items-end mb-4 flex flex-wrap -mx-1 -mt-2" data-grid-filters novalidate>
-                <div class="w-full lg:w-5/12 max-w-full shrink-0 px-1 mt-2">
-                    <label class="form-label text-sm text-slate-500 mb-0">Buscar global</label>
-                    <input type="search" class="form-control form-control-sm" name="q" placeholder="Nombre, email, DNI…" autocomplete="off">
-                </div>
-                <div class="w-full md:w-1/4 max-w-full shrink-0 px-1 mt-2">
-                    <label class="form-label text-sm text-slate-500 mb-0">DNI</label>
-                    <input type="text" class="form-control form-control-sm font-mono gp-doc-identidad-input" name="dni" maxlength="9" autocomplete="off" inputmode="text" placeholder="12345678A" data-gp-doc-identidad-es>
-                </div>
-                <div class="w-full md:w-1/3 max-w-full shrink-0 px-1 mt-2">
-                    <label class="form-label text-sm text-slate-500 mb-0">Email</label>
-                    <input type="text" class="form-control form-control-sm" name="email" autocomplete="off">
-                </div>
-                <div class="w-full md:w-1/3 max-w-full shrink-0 px-1 mt-2">
-                    <label class="form-label text-sm text-slate-500 mb-0">Nombre o apellidos</label>
-                    <input type="text" class="form-control form-control-sm" name="nombre" autocomplete="off">
-                </div>
-                <div class="w-full md:w-1/3 max-w-full shrink-0 px-1 mt-2">
-                    <label class="form-label text-sm text-slate-500 mb-0">Teléfono</label>
-                    <input type="text" class="form-control form-control-sm" name="telefono" autocomplete="off">
-                </div>
-                <div class="w-full md:w-1/3 max-w-full shrink-0 px-1 mt-2">
-                    <label class="form-label text-sm text-slate-500 mb-0">Método de pago</label>
-                    <input type="text" class="form-control form-control-sm" name="metodo_pago" placeholder="Ej. tarjeta" autocomplete="off">
-                </div>
-                <div class="flex flex-wrap gap-2 mt-2 w-full lg:w-full max-w-full shrink-0 px-1">
-                    <button type="submit" class="btn btn-primary btn-sm">Buscar</button>
-                    <button type="button" class="btn btn-outline-secondary btn-sm" data-grid-reset>Limpiar</button>
-                    <div class="lg:ms-auto flex items-center gap-2">
-                        <label class="text-sm text-slate-500 mb-0">Por página</label>
-                        <select class="form-select form-select-sm" data-grid-per-page style="width: auto;">
-                            <option value="10" selected>10</option>
-                            <option value="15">15</option>
-                            <option value="25">25</option>
-                        </select>
-                    </div>
-                </div>
-            </form>
 
             <div class="flex justify-between items-center flex-wrap gap-2 mb-2">
                 <small class="text-slate-500" data-grid-status>&nbsp;</small>
@@ -83,31 +100,19 @@
             </div>
         </div>
 
-        <header class="gp-page-header mb-6 mt-8">
-            <div class="gp-page-header__title">
-                <h2 class="text-2xl mb-1">Usuarios no activos</h2>
-                <p class="text-slate-500 text-sm">Cuentas baneadas, con el motivo y la opción de desbanear.</p>
-            </div>
-        </header>
-
         <div
             class="gp-admin-grid gp-admin-card-panel"
+            id="gpClientesNoActivos"
+            role="tabpanel"
+            aria-labelledby="gpClientesTabNoActivos"
+            hidden
+            data-clientes-panel
             data-gp-admin-grid="clientes"
             data-lista="no_activos"
+            data-filters-id="gpClientesFilters"
             data-endpoint="<?= htmlspecialchars(url('/admin/ajax/clientes')) ?>"
             data-colspan="8"
             data-url-unblock="<?= htmlspecialchars(url('/admin/clientes/desbloquear')) ?>">
-
-            <form class="gp-admin-grid-filters items-end mb-4 flex flex-wrap -mx-1 -mt-2" data-grid-filters novalidate>
-                <div class="w-full lg:w-1/2 max-w-full shrink-0 px-1 mt-2">
-                    <label class="form-label text-sm text-slate-500 mb-0">Buscar</label>
-                    <input type="search" class="form-control form-control-sm" name="q" placeholder="Nombre, email, DNI…" autocomplete="off">
-                </div>
-                <div class="flex flex-wrap gap-2 mt-2 w-full max-w-full shrink-0 px-1">
-                    <button type="submit" class="btn btn-primary btn-sm">Buscar</button>
-                    <button type="button" class="btn btn-outline-secondary btn-sm" data-grid-reset>Limpiar</button>
-                </div>
-            </form>
 
             <div class="flex justify-between items-center flex-wrap gap-2 mb-2">
                 <small class="text-slate-500" data-grid-status>&nbsp;</small>
@@ -159,6 +164,36 @@
     </div>
 </div>
 <script>
+document.addEventListener('DOMContentLoaded', function () {
+    var bar = document.getElementById('gpClientesSwitch');
+    if (!bar) {
+        return;
+    }
+    var leads = {
+        activos: 'Cuentas sin baneo. Desde aquí se gestionan el plan y las bajas.',
+        no_activos: 'Cuentas baneadas, con el motivo y la opción de desbanear.'
+    };
+    function selectLista(lista) {
+        bar.classList.toggle('gp-auth-switch--slid', lista === 'no_activos');
+        bar.querySelectorAll('[data-lista]').forEach(function (btn) {
+            var on = btn.getAttribute('data-lista') === lista;
+            btn.classList.toggle('active', on);
+            btn.setAttribute('aria-selected', on ? 'true' : 'false');
+        });
+        document.querySelectorAll('[data-clientes-panel]').forEach(function (panel) {
+            panel.hidden = panel.getAttribute('data-lista') !== lista;
+        });
+        var lead = document.getElementById('gpClientesLead');
+        if (lead && leads[lista]) {
+            lead.textContent = leads[lista];
+        }
+    }
+    bar.querySelectorAll('[data-lista]').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            selectLista(btn.getAttribute('data-lista') || 'activos');
+        });
+    });
+});
 document.addEventListener('DOMContentLoaded', function () {
     var form = document.getElementById('gpBanMotivoForm');
     var modal = document.getElementById('gpBanMotivoModal');

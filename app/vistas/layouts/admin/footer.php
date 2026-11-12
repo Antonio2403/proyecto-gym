@@ -36,7 +36,7 @@
 <script defer src="<?= htmlspecialchars(asset('js/gp-confirm-modal.js')) ?>?v=20261103a"></script>
 <script defer src="<?= htmlspecialchars(asset('js/gp-form-unsaved.js')) ?>"></script>
 <script defer src="<?= htmlspecialchars(asset('js/gp-table-cards.js')) ?>?v=20261105a"></script>
-<script defer src="<?= htmlspecialchars(asset('js/admin-datagrid.js')) ?>?v=20261109a"></script>
+<script defer src="<?= htmlspecialchars(asset('js/admin-datagrid.js')) ?>?v=20261112c"></script>
 <script defer src="<?= htmlspecialchars(asset('js/form-validacion.js')) ?>?v=20261105c"></script>
 <script defer src="<?= htmlspecialchars(asset('js/gp-entity-popup.js')) ?>?v=20261105b"></script>
 <script defer
