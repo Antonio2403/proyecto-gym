@@ -232,7 +232,7 @@ $gpNavAvatarImg = 'https://ui-avatars.com/api/?name=' . rawurlencode((string) ($
                                 <li><hr class="dropdown-divider opacity-25"></li>
                             <?php endif; ?>
                             <li>
-                                <a class="dropdown-item" href="<?= htmlspecialchars(url('/clientes/editar')) ?>">Mi perfil</a>
+                                <a class="dropdown-item" href="<?= htmlspecialchars(url('/clientes/editar')) ?>">Cambiar tus datos</a>
                             </li>
                             <li>
                                 <a class="dropdown-item" href="<?= htmlspecialchars(url('/pago')) ?>">Ver tu plan</a>

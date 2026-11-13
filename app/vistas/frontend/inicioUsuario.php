@@ -39,14 +39,14 @@
         <div class="w-full md:w-1/2 max-w-full shrink-0 px-3 mt-6">
             <div class="gp-stat-card h-full">
                 <div class="gp-photo-frame mb-4" style="height: 9rem;">
-                    <img class="gp-photo" src="<?= htmlspecialchars(asset('img/pixabay/pesas.jpg')) ?>"
-                         width="1280" height="853" alt="Entrenamiento con pesas en Spartum, gimnasio en Lepe"
-                         style="object-position: center 40%;">
+                    <img class="gp-photo" src="<?= htmlspecialchars(asset('img/pixabay/yoga.jpg')) ?>"
+                         width="1280" height="853" alt="Entrenamiento en Spartum, gimnasio en Lepe"
+                         style="object-position: center 35%;">
                 </div>
-                <div class="gp-icon">📋</div>
-                <h3 class="text-xl mb-2">Reservas</h3>
-                <p class="text-slate-500 text-sm mb-4">Las clases en las que ya tienes plaza.</p>
-                <a href="<?= htmlspecialchars(url('/usuario/inscripciones/mis-inscripciones')) ?>" class="btn btn-primary btn-sm">Ver tus reservas</a>
+                <div class="gp-icon">✏️</div>
+                <h3 class="text-xl mb-2">Tus datos</h3>
+                <p class="text-slate-500 text-sm mb-4">Nombre, correo, teléfono y contraseña.</p>
+                <a href="<?= htmlspecialchars(url('/clientes/editar')) ?>" class="btn btn-primary btn-sm">Cambiar tus datos</a>
             </div>
         </div>
         <div class="w-full md:w-1/2 max-w-full shrink-0 px-3 mt-6">
