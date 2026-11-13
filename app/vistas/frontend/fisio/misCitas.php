@@ -34,7 +34,7 @@ $estadoEtiqueta = static function (string $e): string {
                     <?php if (!empty($tiene_fisio)): ?>
                         <a href="<?= htmlspecialchars(url('/usuario/fisio/solicitar')) ?>" class="btn gp-btn-orange btn-sm px-4">Nueva cita</a>
                     <?php endif; ?>
-                    <a href="<?= htmlspecialchars(url('/usuario/fisio')) ?>" class="btn btn-outline-secondary btn-sm">Resumen</a>
+                    <a href="<?= htmlspecialchars(url('/usuario/fisio')) ?>" class="btn btn-outline-secondary btn-sm">Volver</a>
                 </div>
             </div>
 
