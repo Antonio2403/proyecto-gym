@@ -104,7 +104,7 @@
                         <p><strong><?= (int) ($stats['citas_confirmadas'] ?? 0) ?></strong><span>confirmadas</span></p>
                     </div>
                     <h3>Fisioterapia</h3>
-                    <p>Citas de esta semana</p>
+                    <p>Solicitadas y confirmadas desde hoy</p>
                 </article>
             </div>
 

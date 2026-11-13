@@ -184,6 +184,7 @@ controller($router, 'post', '/usuario/fisio/cancelar-cita', 'FisioControlador@ca
 
 // Panel fisioterapeuta (cuenta vinculada en admin; rol sesión fisio)
 controller($router, 'get', '/fisio/citas/confirmadas', 'FisioPanelControlador@citasConfirmadas');
+controller($router, 'post', '/fisio/citas/confirmar', 'FisioPanelControlador@confirmarCita');
 controller($router, 'get', '/fisio/citas', 'FisioPanelControlador@citas');
 controller($router, 'get', '/fisio', 'FisioPanelControlador@inicio');
 

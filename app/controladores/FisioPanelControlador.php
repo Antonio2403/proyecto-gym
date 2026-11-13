@@ -73,6 +73,24 @@ class FisioPanelControlador extends Controller
         ]);
     }
 
+    public function confirmarCita()
+    {
+        $fisio = $this->exigirFisioPerfil();
+        if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') {
+            header('Location: ' . url('/fisio/citas'));
+            exit;
+        }
+
+        $citaId = (int) ($_POST['cita_id'] ?? 0);
+        if ($citaId <= 0 || !Cita::confirmarSiSuya($citaId, (int) $fisio['id'])) {
+            header('Location: ' . url('/fisio/citas') . '?error=' . rawurlencode('No se pudo confirmar la cita. Solo se confirman las solicitadas que son tuyas.'));
+            exit;
+        }
+
+        header('Location: ' . url('/fisio/citas') . '?confirmada=1');
+        exit;
+    }
+
     public function citasConfirmadas()
     {
         $fisio = $this->exigirFisioPerfil();

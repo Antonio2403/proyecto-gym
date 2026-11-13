@@ -141,7 +141,7 @@ class PanelEstadisticas
         }
         unset($dia);
 
-        $citas = self::citasSemana($db, $lunes, $lunesSiguiente);
+        $citas = self::citasDesde($db, new DateTimeImmutable('today', $lunes->getTimezone()));
         $planes = self::planesActivos($db);
 
         return [
@@ -230,16 +230,18 @@ class PanelEstadisticas
     }
 
     /**
+     * Solicitadas y confirmadas desde el inicio de hoy, no solo las de esta semana.
+     *
      * @return array{S: int, C: int}
      */
-    private static function citasSemana(PDO $db, DateTimeImmutable $desde, DateTimeImmutable $hasta): array
+    private static function citasDesde(PDO $db, DateTimeImmutable $desde): array
     {
         $st = $db->prepare(
             "SELECT estado, COUNT(*) AS n FROM citas
-             WHERE fecha >= ? AND fecha < ? AND estado IN ('S', 'C')
+             WHERE fecha >= ? AND estado IN ('S', 'C')
              GROUP BY estado"
         );
-        $st->execute([$desde->format('Y-m-d H:i:s'), $hasta->format('Y-m-d H:i:s')]);
+        $st->execute([$desde->format('Y-m-d H:i:s')]);
         $out = ['S' => 0, 'C' => 0];
         foreach ($st->fetchAll(PDO::FETCH_ASSOC) as $row) {
             $estado = (string) ($row['estado'] ?? '');

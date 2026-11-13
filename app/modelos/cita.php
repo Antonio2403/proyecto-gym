@@ -127,6 +127,24 @@ class Cita
     /**
      * Cancela una cita solicitada (S). Devuelve true si hubo fila afectada.
      */
+    /**
+     * El fisioterapeuta confirma una cita suya que sigue solicitada.
+     */
+    public static function confirmarSiSuya(int $citaId, int $fisioId): bool
+    {
+        if ($citaId <= 0 || $fisioId <= 0) {
+            return false;
+        }
+
+        $db = BasedeDatos::Conectar();
+        $st = $db->prepare(
+            "UPDATE citas SET estado = 'C' WHERE id = ? AND fisio_id = ? AND estado = 'S'"
+        );
+        $st->execute([$citaId, $fisioId]);
+
+        return $st->rowCount() > 0;
+    }
+
     public static function cancelarSiSolicitada(int $citaId, int $clienteId): bool
     {
         $db = BasedeDatos::Conectar();

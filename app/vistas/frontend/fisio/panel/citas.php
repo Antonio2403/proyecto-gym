@@ -80,6 +80,15 @@ $toIx = min($total, $page * $perPage);
                 <?php endif; ?>
             </div>
 
+            <div class="px-4 md:px-6 pb-4">
+                <?php if (!empty($_GET['confirmada'])): ?>
+                    <div class="alert alert-success mb-0">Cita confirmada.</div>
+                <?php endif; ?>
+                <?php if (!empty($_GET['error'])): ?>
+                    <div class="alert alert-warning mb-0"><?= htmlspecialchars((string) $_GET['error']) ?></div>
+                <?php endif; ?>
+            </div>
+
             <div class="px-4 md:px-6 pb-6">
                 <form method="get" action="<?= htmlspecialchars($formAction) ?>" class="gp-light-panel-inner p-4 mb-6">
                     <p class="text-sm text-slate-500 mb-4 md:mb-2 font-semibold">Búsqueda avanzada</p>
@@ -161,6 +170,9 @@ $toIx = min($total, $page * $perPage);
                                     <th>Socio</th>
                                     <th class="text-left">Motivo</th>
                                     <th>Estado</th>
+                                    <?php if (!$solo_confirmadas): ?>
+                                        <th>Acciones</th>
+                                    <?php endif; ?>
                                 </tr>
                             </thead>
                             <tbody>
@@ -190,6 +202,23 @@ $toIx = min($total, $page * $perPage);
                                                 <?= htmlspecialchars($estadoEtiqueta($c['estado'] ?? null)) ?>
                                             </span>
                                         </td>
+                                        <?php if (!$solo_confirmadas): ?>
+                                            <td>
+                                                <?php if (($c['estado'] ?? '') === 'S'): ?>
+                                                    <form method="post" action="<?= htmlspecialchars(url('/fisio/citas/confirmar')) ?>" class="inline"
+                                                          data-gp-confirm
+                                                          data-gp-confirm-title="Confirmar cita"
+                                                          data-gp-confirm-body="¿Confirmar esta cita con el socio?"
+                                                          data-gp-confirm-ok="Sí, confirmar">
+                                                        <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(csrf_token(), ENT_QUOTES, 'UTF-8') ?>">
+                                                        <input type="hidden" name="cita_id" value="<?= (int) ($c['id'] ?? 0) ?>">
+                                                        <button type="submit" class="btn btn-sm btn-success gp-btn-plain">Confirmar</button>
+                                                    </form>
+                                                <?php else: ?>
+                                                    <span class="text-slate-500">—</span>
+                                                <?php endif; ?>
+                                            </td>
+                                        <?php endif; ?>
                                     </tr>
                                 <?php endforeach; ?>
                             </tbody>
