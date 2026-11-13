@@ -61,6 +61,12 @@
                     hora.innerHTML = '';
                     var lista = Array.isArray(data.horas) ? data.horas : [];
 
+                    if (data.fuera_de_plan) {
+                        resetHora('Fuera de tu plan');
+                        setHint(data.mensaje || 'Tu plan no cubre esa fecha.', true);
+                        return;
+                    }
+
                     if (!data.ok || lista.length === 0) {
                         var msg = 'Sin huecos libres';
                         if (data.dia_cerrado) {

@@ -46,6 +46,19 @@ class FisioControlador extends Controller
         return $sub;
     }
 
+    private function finPlanFisio(?array $plan): ?DateTimeImmutable
+    {
+        $raw = trim((string) ($plan['fecha_fin'] ?? ''));
+        if ($raw === '') {
+            return null;
+        }
+        try {
+            return new DateTimeImmutable($raw);
+        } catch (Exception) {
+            return null;
+        }
+    }
+
     public function index()
     {
         $clienteId = $this->exigirCliente();
@@ -60,20 +73,24 @@ class FisioControlador extends Controller
     public function formSolicitar()
     {
         $clienteId = $this->exigirCliente();
-        $this->exigirSuscripcionFisio($clienteId);
+        $plan = $this->exigirSuscripcionFisio($clienteId);
+        $finPlan = $this->finPlanFisio($plan);
 
         $fisioterapeutas = Fisioterapeuta::obtenerTodas();
         $this->renderFrontend('frontend/fisio/solicitar', [
             'fisioterapeutas' => $fisioterapeutas,
             'horas_disponibles_url' => url('/usuario/fisio/horas-disponibles'),
             'min_fecha_cita' => date('Y-m-d'),
+            'max_fecha_cita' => $finPlan ? $finPlan->format('Y-m-d') : '',
+            'vigencia_hasta' => $finPlan ? $finPlan->format('d/m/Y H:i') : '',
         ]);
     }
 
     public function horasDisponibles()
     {
         $clienteId = $this->exigirCliente();
-        $this->exigirSuscripcionFisio($clienteId);
+        $plan = $this->exigirSuscripcionFisio($clienteId);
+        $finPlan = $this->finPlanFisio($plan);
 
         header('Content-Type: application/json; charset=utf-8');
 
@@ -90,7 +107,30 @@ class FisioControlador extends Controller
             exit;
         }
 
+        if ($finPlan !== null) {
+            $dia = DateTimeImmutable::createFromFormat('Y-m-d', $fecha);
+            if ($dia instanceof DateTimeImmutable && $dia->setTime(0, 0) > $finPlan) {
+                echo json_encode([
+                    'ok' => false,
+                    'horas' => [],
+                    'fuera_de_plan' => true,
+                    'mensaje' => 'Tu plan está vigente hasta el ' . $finPlan->format('d/m/Y H:i') . '. Elige un día dentro de esa vigencia.',
+                ]);
+                exit;
+            }
+        }
+
         $horas = Cita::horasDisponiblesFisioDia($fisioId, $fecha);
+        if ($finPlan !== null) {
+            $horas = array_values(array_filter(
+                $horas,
+                static function (string $hora) use ($fecha, $finPlan): bool {
+                    $slot = DateTimeImmutable::createFromFormat('Y-m-d H:i', $fecha . ' ' . $hora);
+
+                    return $slot instanceof DateTimeImmutable && $slot <= $finPlan;
+                }
+            ));
+        }
         $diaCerrado = gp_horario_slots_centro_dia($fecha) === [];
 
         echo json_encode([
@@ -105,7 +145,7 @@ class FisioControlador extends Controller
     public function solicitar()
     {
         $clienteId = $this->exigirCliente();
-        $this->exigirSuscripcionFisio($clienteId);
+        $plan = $this->exigirSuscripcionFisio($clienteId);
 
         if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') {
             header('Location: ' . url('/usuario/fisio/solicitar'));
@@ -165,6 +205,16 @@ class FisioControlador extends Controller
         if ($ts < time()) {
             header(
                 'Location: ' . url('/usuario/fisio/solicitar') . '?error=' . rawurlencode('Elige una fecha y hora futuras.')
+            );
+            exit;
+        }
+
+        $finPlan = $this->finPlanFisio($plan);
+        if ($finPlan !== null && $ts > $finPlan->getTimestamp()) {
+            header(
+                'Location: ' . url('/usuario/fisio/solicitar') . '?error=' . rawurlencode(
+                    'Tu plan está vigente hasta el ' . $finPlan->format('d/m/Y H:i') . '. No puedes pedir cita después de esa fecha.'
+                )
             );
             exit;
         }

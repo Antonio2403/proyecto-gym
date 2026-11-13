@@ -2,6 +2,8 @@
 require_once dirname(__DIR__, 4) . '/core/helpers/horario_centro.php';
 $gpHorarioLineas = gp_horario_centro_lineas();
 $minFecha = (string) ($min_fecha_cita ?? date('Y-m-d'));
+$maxFecha = trim((string) ($max_fecha_cita ?? ''));
+$vigenciaHasta = trim((string) ($vigencia_hasta ?? ''));
 $horasUrl = (string) ($horas_disponibles_url ?? url('/usuario/fisio/horas-disponibles'));
 $slotMin = gp_fisio_duracion_consulta_minutos();
 ?>
@@ -57,7 +59,11 @@ $slotMin = gp_fisio_duracion_consulta_minutos();
                                     <div>
                                         <label class="form-label font-semibold text-slate-800 gp-label-required" for="fecha_cita">Fecha</label>
                                         <input type="date" name="fecha_cita" id="fecha_cita" class="form-control" required
-                                               min="<?= htmlspecialchars($minFecha) ?>">
+                                               min="<?= htmlspecialchars($minFecha) ?>"
+                                               <?= $maxFecha !== '' ? 'max="' . htmlspecialchars($maxFecha) . '"' : '' ?>>
+                                        <?php if ($vigenciaHasta !== ''): ?>
+                                            <p class="form-text text-sm text-slate-500 mb-0">Tu plan está vigente hasta el <?= htmlspecialchars($vigenciaHasta) ?>. No puedes pedir cita después.</p>
+                                        <?php endif; ?>
                                     </div>
                                     <div>
                                         <label class="form-label font-semibold text-slate-800 gp-label-required" for="hora_cita">Hora</label>
@@ -84,4 +90,4 @@ $slotMin = gp_fisio_duracion_consulta_minutos();
         </div>
     </div>
 </div>
-<script defer src="<?= htmlspecialchars(asset('js/fisio-citas-slots.js')) ?>"></script>
+<script defer src="<?= htmlspecialchars(asset('js/fisio-citas-slots.js')) ?>?v=20261113a"></script>
