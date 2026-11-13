@@ -11,15 +11,20 @@
     </div>
 
     <div class="flex flex-wrap -mx-3 -mt-6">
-        <div class="w-full md:w-1/2 lg:w-1/3 max-w-full shrink-0 px-3 mt-6">
+        <div class="w-full md:w-1/2 max-w-full shrink-0 px-3 mt-6">
             <div class="gp-stat-card h-full">
+                <div class="gp-photo-frame mb-4" style="height: 9rem;">
+                    <img class="gp-photo" src="<?= htmlspecialchars(asset('img/pexels/clases-grupo.jpg')) ?>"
+                         width="1600" height="1066" alt="Clase en grupo en Spartum, gimnasio en Lepe"
+                         style="object-position: center 30%;">
+                </div>
                 <div class="gp-icon">📅</div>
                 <h3 class="text-xl mb-2">Horario</h3>
                 <p class="text-slate-500 text-sm mb-4">Consulta actividades y apunta tu plaza.</p>
                 <a href="<?= htmlspecialchars(url('/usuario/actividades')) ?>" class="btn btn-primary btn-sm">Ver tu horario</a>
             </div>
         </div>
-        <div class="w-full md:w-1/2 lg:w-1/3 max-w-full shrink-0 px-3 mt-6">
+        <div class="w-full md:w-1/2 max-w-full shrink-0 px-3 mt-6">
             <div class="gp-stat-card h-full">
                 <div class="gp-photo-frame mb-4" style="height: 9rem;">
                     <img class="gp-photo" src="<?= htmlspecialchars(asset('img/pixabay/mancuernas.jpg')) ?>"
@@ -31,7 +36,7 @@
                 <a href="<?= htmlspecialchars(url('/pago')) ?>" class="btn btn-primary btn-sm">Ver tu plan</a>
             </div>
         </div>
-        <div class="w-full md:w-1/2 lg:w-1/3 max-w-full shrink-0 px-3 mt-6">
+        <div class="w-full md:w-1/2 max-w-full shrink-0 px-3 mt-6">
             <div class="gp-stat-card h-full">
                 <div class="gp-photo-frame mb-4" style="height: 9rem;">
                     <img class="gp-photo" src="<?= htmlspecialchars(asset('img/pixabay/fisio.jpg')) ?>"
@@ -43,7 +48,7 @@
                 <a href="<?= htmlspecialchars(url('/usuario/fisio')) ?>" class="btn btn-primary btn-sm">Ver tus citas</a>
             </div>
         </div>
-        <div class="w-full md:w-1/2 lg:w-1/3 max-w-full shrink-0 px-3 mt-6">
+        <div class="w-full md:w-1/2 max-w-full shrink-0 px-3 mt-6">
             <div class="gp-stat-card h-full">
                 <div class="gp-icon">⚙️</div>
                 <h3 class="text-xl mb-2">Sesión</h3>
