@@ -1,5 +1,5 @@
 <?php
-$gpDiasAgenda = ['L' => 'lu', 'M' => 'ma', 'X' => 'mi', 'J' => 'ju', 'V' => 'vi', 'S' => 'sá', 'D' => 'do'];
+$gpDiasAgenda = ['L' => 'lu', 'M' => 'ma', 'X' => 'mi', 'J' => 'ju', 'V' => 'vi', 'S' => 'sá'];
 $gpAgenda = [];
 $gpHoyLetra = '';
 $gpHoyYmd = (new DateTimeImmutable('today'))->format('Y-m-d');

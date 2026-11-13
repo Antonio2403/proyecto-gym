@@ -138,7 +138,7 @@
                 <article class="gp-admin-chart">
                     <header>
                         <h3>Reservas por día</h3>
-                        <p>Inscripciones de lunes a domingo.</p>
+                        <p>Inscripciones de lunes a sábado.</p>
                     </header>
                     <div class="gp-weekbars">
                         <?php foreach ($porDia as $dia): ?>

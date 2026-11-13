@@ -64,7 +64,6 @@
                         <option value="J">Jueves</option>
                         <option value="V">Viernes</option>
                         <option value="S">Sábado</option>
-                        <option value="D">Domingo</option>
                     </select>
                 </div>
                 <div class="w-full md:w-1/2 lg:w-1/4 max-w-full shrink-0 px-1 mt-2">

@@ -75,10 +75,10 @@ class PanelEstadisticas
         $inscripciones = self::mapaInscripciones($db, $desde, $hasta);
         $canceladas = Actividad::mapaSesionesCanceladas($desde, $hasta);
         $codigos = [1 => 'L', 2 => 'M', 3 => 'X', 4 => 'J', 5 => 'V', 6 => 'S', 7 => 'D'];
-        $etiquetas = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'];
+        $etiquetas = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
 
         $porDia = [];
-        for ($i = 0; $i < 7; $i++) {
+        for ($i = 0; $i < 6; $i++) {
             $porDia[] = ['etiqueta' => $etiquetas[$i], 'reservas' => 0, 'alto' => 0];
         }
 
@@ -95,7 +95,7 @@ class PanelEstadisticas
             $inscritos = 0;
             $plazasSum = 0;
             $sesionesClase = 0;
-            for ($i = 0; $i < 7; $i++) {
+            for ($i = 0; $i < 6; $i++) {
                 $dia = $lunes->modify('+' . $i . ' days');
                 $ymd = $dia->format('Y-m-d');
                 $cod = $codigos[(int) $dia->format('N')] ?? '';

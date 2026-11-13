@@ -125,7 +125,7 @@ uasort($clasesFiltro, static function (array $a, array $b): int {
                 <table class="table table-bordered gp-schedule-grid mb-0 text-center">
                     <colgroup>
                         <col class="gp-schedule-col-hour">
-                        <col span="7">
+                        <col span="6">
                     </colgroup>
                     <thead>
                         <tr>
@@ -136,13 +136,12 @@ uasort($clasesFiltro, static function (array $a, array $b): int {
                             <th scope="col">Jue</th>
                             <th scope="col">Vie</th>
                             <th scope="col">Sáb</th>
-                            <th scope="col">Dom</th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php
                         $horas = range(8, 22);
-                        $dias = ['L', 'M', 'X', 'J', 'V', 'S', 'D'];
+                        $dias = ['L', 'M', 'X', 'J', 'V', 'S'];
                         foreach ($horas as $hora):
                         ?>
                             <tr class="gp-schedule-row">

@@ -5,7 +5,7 @@ $page = max(1, (int) ($page ?? 1));
 $perPage = max(5, (int) ($per_page ?? 10));
 $total = max(0, (int) ($total ?? 0));
 $totalPages = max(1, (int) ($total_pages ?? 1));
-$diaOpts = ['' => 'Todos', 'L' => 'Lunes', 'M' => 'Martes', 'X' => 'Miércoles', 'J' => 'Jueves', 'V' => 'Viernes', 'S' => 'Sábado', 'D' => 'Domingo'];
+$diaOpts = ['' => 'Todos', 'L' => 'Lunes', 'M' => 'Martes', 'X' => 'Miércoles', 'J' => 'Jueves', 'V' => 'Viernes', 'S' => 'Sábado'];
 $salasFiltro = is_array($salas_filtro ?? null) ? $salas_filtro : [];
 
 $fechaDesdeVal = $filtros['fecha_desde'] ?? ($fecha_def_desde ?? date('Y-m-d'));
