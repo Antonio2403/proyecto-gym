@@ -9,41 +9,37 @@ $gpDireccion = gp_horario_centro_direccion();
 
 <footer class="site-footer">
     <div class="mx-auto w-full max-w-[1320px] lg:max-w-[1024px] xl:max-w-7xl px-3">
-        <div class="flex flex-wrap -mx-3 -mt-6">
-            <div class="w-full md:w-1/3 lg:w-1/4 max-w-full shrink-0 px-3 mt-6">
+        <div class="flex flex-wrap -mx-3 -mt-3">
+            <div class="w-full md:w-1/3 lg:w-1/4 max-w-full shrink-0 px-3 mt-3">
                 <div class="footer-brand mb-2">
                     <img src="<?= htmlspecialchars(asset('img/logo-spartum.png')) ?>?v=20261112a" alt="Spartum Gym" width="220" height="80">
                 </div>
                 <p class="text-white/60 text-sm mb-2">Entrena con método. Reserva clases, gestiona tu suscripción y sigue tu progreso en un solo lugar.</p>
                 <p class="text-white/40 text-xs mb-0">Fotografías de <a href="https://pixabay.com/" rel="noopener noreferrer">Pixabay</a>, <a href="https://www.pexels.com/" rel="noopener noreferrer">Pexels</a> y <a href="https://unsplash.com/" rel="noopener noreferrer">Unsplash</a>.</p>
             </div>
-            <div class="w-1/2 md:w-1/3 lg:w-1/4 max-w-full shrink-0 px-3 mt-6">
+            <div class="w-1/2 md:w-1/3 lg:w-1/4 max-w-full shrink-0 px-3 mt-3">
                 <div class="footer-col-heading">Explora</div>
                 <ul class="list-none ps-0 text-sm mb-0">
-                    <li class="mb-2"><a href="<?= htmlspecialchars(url('/inicio')) ?>">Inicio</a></li>
-                    <li class="mb-2"><a href="<?= htmlspecialchars(url('/quienes-somos')) ?>">Quiénes somos</a></li>
-                    <li class="mb-2"><a href="<?= htmlspecialchars(url('/contacto')) ?>">Contacto</a></li>
+                    <li><a href="<?= htmlspecialchars(url('/inicio')) ?>">Inicio</a></li>
+                    <li><a href="<?= htmlspecialchars(url('/quienes-somos')) ?>">Quiénes somos</a></li>
+                    <li><a href="<?= htmlspecialchars(url('/contacto')) ?>">Contacto</a></li>
                 </ul>
             </div>
-            <div class="w-1/2 md:w-1/3 lg:w-1/4 max-w-full shrink-0 px-3 mt-6">
+            <div class="w-1/2 md:w-1/3 lg:w-1/4 max-w-full shrink-0 px-3 mt-3">
                 <div class="footer-col-heading">Tu cuenta</div>
                 <ul class="list-none ps-0 text-sm mb-0">
-                    <li class="mb-2"><a href="<?= htmlspecialchars(url('/usuario/actividades')) ?>">Actividades</a></li>
-                    <li class="mb-2"><a href="<?= htmlspecialchars(url('/usuario/inscripciones/mis-inscripciones')) ?>">Mis reservas</a></li>
-                    <li class="mb-2"><a href="<?= htmlspecialchars(url('/pago')) ?>">Planes</a></li>
+                    <li><a href="<?= htmlspecialchars(url('/usuario/actividades')) ?>">Actividades</a></li>
+                    <li><a href="<?= htmlspecialchars(url('/usuario/inscripciones/mis-inscripciones')) ?>">Mis reservas</a></li>
+                    <li><a href="<?= htmlspecialchars(url('/pago')) ?>">Planes</a></li>
                 </ul>
             </div>
-            <div class="w-full md:w-1/3 lg:w-1/4 max-w-full shrink-0 px-3 mt-6">
+            <div class="w-full md:w-1/3 lg:w-1/4 max-w-full shrink-0 px-3 mt-3">
                 <div class="footer-col-heading">Centro</div>
                 <p class="text-white/60 text-sm mb-1">Horario de atención</p>
                 <p class="text-white/60 text-sm mb-2"><?php foreach ($gpHorarioLineas as $i => $linea): ?><?= $i > 0 ? '<br>' : '' ?><?= htmlspecialchars($linea) ?><?php endforeach; ?></p>
                 <p class="text-white/60 text-sm mb-2">Lepe (Huelva)</p>
             </div>
-            <div class="mt-2 w-full max-w-full shrink-0 px-3">
-                <div class="footer-col-heading mb-2">Ubicación</div>
-                <p class="text-white/60 text-sm mb-2">
-                    Dirección exacta: <strong><?= htmlspecialchars($gpDireccion) ?></strong>.
-                </p>
+            <div class="mt-3 w-full max-w-full shrink-0 px-3">
                 <div class="gp-map-card rounded-lg overflow-hidden border border-slate-500/25">
                     <div class="items-stretch flex flex-wrap">
                         <div class="gp-map-embed-wrap w-full md:w-1/2 max-w-full shrink-0">
@@ -55,9 +51,8 @@ $gpDireccion = gp_horario_centro_direccion();
                                     aria-hidden="true"
                                     tabindex="-1"></iframe>
                         </div>
-                        <div class="p-6 flex flex-col justify-center w-full md:w-1/2 max-w-full shrink-0">
-                            <p class="text-sm text-white/70 mb-1">Spartum · Ubicación del centro</p>
-                            <p class="text-base mb-4"><?= htmlspecialchars($gpDireccion) ?></p>
+                        <div class="px-4 py-3 flex flex-col justify-center w-full md:w-1/2 max-w-full shrink-0">
+                            <p class="text-sm text-white/70 mb-1">Spartum · <?= htmlspecialchars($gpDireccion) ?></p>
                             <div>
                                 <a class="btn btn-primary btn-sm"
                                    href="<?= htmlspecialchars($gpMapLink) ?>"
@@ -71,7 +66,7 @@ $gpDireccion = gp_horario_centro_direccion();
                 </div>
             </div>
         </div>
-        <hr class="border-slate-500/25 my-6">
+        <hr class="border-slate-500/25 my-3">
         <p class="footer-copy mb-0 text-center md:text-left">&copy; <?= date('Y') ?> Spartum. Diseñado para rendir.</p>
     </div>
 </footer>
