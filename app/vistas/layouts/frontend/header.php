@@ -142,19 +142,19 @@ $gpNavAvatarImg = 'https://ui-avatars.com/api/?name=' . rawurlencode((string) ($
                 <?php endif; ?>
                 <?php if (isset($_SESSION['usuario_id']) && ($_SESSION['rol'] ?? '') === 'cliente'): ?>
                     <li class="nav-item">
-                        <a class="nav-link" href="<?= htmlspecialchars(url('/inicioUsuario')) ?>">Mi panel</a>
+                        <a class="nav-link" href="<?= htmlspecialchars(url('/inicioUsuario')) ?>">Tu panel</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="<?= htmlspecialchars(url('/usuario/actividades')) ?>">Clases</a>
+                        <a class="nav-link" href="<?= htmlspecialchars(url('/usuario/actividades')) ?>">Ver tu horario</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="<?= htmlspecialchars(url('/usuario/inscripciones/mis-inscripciones')) ?>">Mis reservas</a>
+                        <a class="nav-link" href="<?= htmlspecialchars(url('/usuario/inscripciones/mis-inscripciones')) ?>">Ver tus reservas</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="<?= htmlspecialchars(url('/pago')) ?>">Planes</a>
+                        <a class="nav-link" href="<?= htmlspecialchars(url('/pago')) ?>">Ver tu plan</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="<?= htmlspecialchars(url('/usuario/fisio')) ?>">Fisioterapia</a>
+                        <a class="nav-link" href="<?= htmlspecialchars(url('/usuario/fisio')) ?>">Ver tus citas</a>
                     </li>
                 <?php endif; ?>
             </ul>
@@ -235,7 +235,7 @@ $gpNavAvatarImg = 'https://ui-avatars.com/api/?name=' . rawurlencode((string) ($
                                 <a class="dropdown-item" href="<?= htmlspecialchars(url('/clientes/editar')) ?>">Mi perfil</a>
                             </li>
                             <li>
-                                <a class="dropdown-item" href="<?= htmlspecialchars(url('/pago')) ?>">Suscripciones</a>
+                                <a class="dropdown-item" href="<?= htmlspecialchars(url('/pago')) ?>">Ver tu plan</a>
                             </li>
                             <li><hr class="dropdown-divider gp-dropdown-split"></li>
                             <li>

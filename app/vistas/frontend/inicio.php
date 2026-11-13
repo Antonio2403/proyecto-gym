@@ -24,8 +24,8 @@
                     <a href="<?= htmlspecialchars(url('/fisio')) ?>" class="btn btn-primary btn-lg gp-btn-plain px-6">Panel fisio</a>
                     <a href="<?= htmlspecialchars(url('/fisio/citas')) ?>" class="btn btn-outline-light btn-lg gp-btn-plain px-6">Citas</a>
                 <?php elseif (isset($_SESSION['usuario_id'])): ?>
-                    <a href="<?= htmlspecialchars(url('/usuario/actividades')) ?>" class="btn btn-primary btn-lg gp-btn-plain px-6">Ver horario</a>
-                    <a href="<?= htmlspecialchars(url('/pago')) ?>" class="btn btn-outline-light btn-lg gp-btn-plain px-6">Mi plan</a>
+                    <a href="<?= htmlspecialchars(url('/usuario/actividades')) ?>" class="btn btn-primary btn-lg gp-btn-plain px-6">Ver tu horario</a>
+                    <a href="<?= htmlspecialchars(url('/pago')) ?>" class="btn btn-outline-light btn-lg gp-btn-plain px-6">Ver tu plan</a>
                 <?php else: ?>
                     <a href="<?= htmlspecialchars(url('/login')) ?>" class="btn btn-primary btn-lg gp-btn-plain px-6">Crear cuenta</a>
                     <a href="<?= htmlspecialchars(url('/quienes-somos')) ?>" class="btn btn-outline-light btn-lg gp-btn-plain px-6">Conócenos</a>

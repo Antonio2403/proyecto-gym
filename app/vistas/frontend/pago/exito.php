@@ -8,7 +8,7 @@
                 Tu suscripción se ha activado correctamente. Ya puedes reservar actividades y disfrutar del gimnasio.
             </p>
             <div class="flex flex-col sm:flex-row gap-2 justify-center">
-                <a href="<?= htmlspecialchars(url('/usuario/actividades')) ?>" class="btn btn-primary">Ver actividades</a>
+                <a href="<?= htmlspecialchars(url('/usuario/actividades')) ?>" class="btn btn-primary">Ver tu horario</a>
                 <a href="<?= htmlspecialchars(url('/inicio')) ?>" class="btn btn-outline-light">Volver al inicio</a>
             </div>
         </div>

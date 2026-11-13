@@ -16,7 +16,7 @@
                 <div class="gp-icon">📅</div>
                 <h3 class="text-xl mb-2">Horario</h3>
                 <p class="text-slate-500 text-sm mb-4">Consulta actividades y apunta tu plaza.</p>
-                <a href="<?= htmlspecialchars(url('/usuario/actividades')) ?>" class="btn btn-primary btn-sm">Ir al horario</a>
+                <a href="<?= htmlspecialchars(url('/usuario/actividades')) ?>" class="btn btn-primary btn-sm">Ver tu horario</a>
             </div>
         </div>
         <div class="w-full md:w-1/2 lg:w-1/3 max-w-full shrink-0 px-3 mt-6">
@@ -28,7 +28,7 @@
                 <div class="gp-icon">💳</div>
                 <h3 class="text-xl mb-2">Suscripción</h3>
                 <p class="text-slate-500 text-sm mb-4">Renueva o cambia tu plan cuando quieras.</p>
-                <a href="<?= htmlspecialchars(url('/pago')) ?>" class="btn btn-primary btn-sm">Ver planes</a>
+                <a href="<?= htmlspecialchars(url('/pago')) ?>" class="btn btn-primary btn-sm">Ver tu plan</a>
             </div>
         </div>
         <div class="w-full md:w-1/2 lg:w-1/3 max-w-full shrink-0 px-3 mt-6">
@@ -40,7 +40,7 @@
                 <div class="gp-icon">🩺</div>
                 <h3 class="text-xl mb-2">Fisioterapia</h3>
                 <p class="text-slate-500 text-sm mb-4">Citas incluidas en planes con fisioterapia.</p>
-                <a href="<?= htmlspecialchars(url('/usuario/fisio')) ?>" class="btn btn-primary btn-sm">Ir a fisioterapia</a>
+                <a href="<?= htmlspecialchars(url('/usuario/fisio')) ?>" class="btn btn-primary btn-sm">Ver tus citas</a>
             </div>
         </div>
         <div class="w-full md:w-1/2 lg:w-1/3 max-w-full shrink-0 px-3 mt-6">
