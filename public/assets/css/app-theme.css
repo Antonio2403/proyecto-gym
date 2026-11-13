@@ -1024,7 +1024,7 @@ body.gp-cookie-open {
     position: absolute;
     top: 0;
     right: 0;
-    width: 48%;
+    width: 70%;
     height: 100%;
     overflow: hidden;
 }
@@ -1041,7 +1041,7 @@ body.gp-cookie-open {
 .gp-hero-poster__shade {
     position: absolute;
     inset: 0;
-    background: linear-gradient(90deg, var(--gp-navy) 0%, var(--gp-navy) 46%, color-mix(in srgb, var(--gp-navy) 94%, transparent) 62%, color-mix(in srgb, var(--gp-navy) 50%, transparent) 76%, transparent 90%);
+    background: linear-gradient(90deg, var(--gp-navy) 0%, var(--gp-navy) 30%, color-mix(in srgb, var(--gp-navy) 42%, transparent) 40%, transparent 52%);
     pointer-events: none;
 }
 
