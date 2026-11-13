@@ -1336,6 +1336,104 @@ body.gp-cookie-open {
     color: var(--gp-text);
 }
 
+.gp-contact-page {
+    max-width: 70rem;
+}
+
+.gp-contact-head {
+    max-width: 40rem;
+    margin: 0 auto 2rem;
+}
+
+.gp-contact-layout {
+    display: grid;
+    gap: 1.25rem;
+    align-items: stretch;
+}
+
+.gp-contact-form-card {
+    height: 100%;
+    border-color: var(--gp-border-light) !important;
+    box-shadow: var(--gp-shadow-sm);
+}
+
+.gp-contact-visual {
+    position: relative;
+    min-height: 24rem;
+    overflow: hidden;
+    border: 1px solid rgba(44, 53, 68, 0.14);
+    border-radius: var(--gp-radius);
+    background: var(--gp-navy);
+    box-shadow: var(--gp-shadow-sm);
+    color: #fff;
+}
+
+.gp-contact-visual > img {
+    position: absolute;
+    inset: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+.gp-contact-visual__shade {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, transparent 30%, rgba(20, 27, 38, 0.92) 100%);
+}
+
+.gp-contact-visual__content {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1;
+    padding: 1.5rem;
+}
+
+.gp-contact-visual__eyebrow {
+    display: block;
+    margin-bottom: 0.45rem;
+    color: #f1b18d;
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+.site-body .gp-contact-visual h2 {
+    margin: 0 0 0.45rem;
+    color: #fff;
+    font-size: 1.5rem;
+}
+
+.gp-contact-visual p {
+    margin: 0;
+    color: rgba(255, 255, 255, 0.82);
+    font-size: 0.9rem;
+}
+
+.gp-contact-visual__hours {
+    margin-top: 0.3rem !important;
+}
+
+.gp-contact-visual .btn {
+    margin-top: 1rem;
+}
+
+@media (min-width: 1024px) {
+    .gp-contact-layout {
+        grid-template-columns: minmax(0, 1.08fr) minmax(20rem, 0.92fr);
+        gap: 1.5rem;
+    }
+
+    .gp-contact-visual {
+        min-height: 100%;
+    }
+}
+
 .gp-auth-shell {
     min-height: calc(100vh - 200px);
     display: flex;

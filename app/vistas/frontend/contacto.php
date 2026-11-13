@@ -1,12 +1,19 @@
-<div class="mx-auto w-full max-w-[1320px] lg:max-w-[1024px] xl:max-w-7xl px-3 py-12">
-    <div class="items-start justify-center flex flex-wrap -mx-3 -mt-6">
-        <div class="w-full lg:w-7/12 max-w-full shrink-0 px-3 mt-6">
-            <header class="gp-page-header text-center lg:text-left">
-                <span class="gp-badge">Escríbenos</span>
-                <h1 class="text-[2rem] mt-4 mb-2">Contacto</h1>
-                <p class="text-slate-500 mb-0">Dudas, sugerencias o empresas. Respondemos lo antes posible.</p>
-            </header>
+<?php
+require_once dirname(__DIR__, 3) . '/core/helpers/horario_centro.php';
+$gpContactoHorario = gp_horario_centro_lineas();
+$gpContactoDireccion = gp_horario_centro_direccion();
+$gpContactoMapa = gp_horario_centro_maps_link_url();
+?>
 
+<div class="gp-contact-page mx-auto w-full px-4 py-10 lg:py-12">
+    <header class="gp-contact-head text-center">
+        <span class="gp-badge">Escríbenos</span>
+        <h1 class="text-[2rem] mt-4 mb-2">Hablemos</h1>
+        <p class="text-slate-500 mb-0">Cuéntanos qué necesitas. El equipo de Spartum te responderá lo antes posible.</p>
+    </header>
+
+    <div class="gp-contact-layout">
+        <div>
             <?php if (!empty($_GET['success'])): ?>
                 <div class="alert alert-success"><?= htmlspecialchars($_GET['success']) ?></div>
             <?php endif; ?>
@@ -14,8 +21,8 @@
                 <div class="alert alert-danger"><?= htmlspecialchars($_GET['error']) ?></div>
             <?php endif; ?>
 
-            <div class="card border-0">
-                <div class="card-body p-6 lg:p-12">
+            <div class="card gp-contact-form-card">
+                <div class="card-body p-6 lg:p-8">
                     <form method="post" action="<?= htmlspecialchars(url('/contacto/enviar')) ?>" class="needs-validation" novalidate data-gp-validate="contact"
                           data-gp-confirm data-gp-confirm-title="Enviar mensaje" data-gp-confirm-body="¿Enviar este mensaje al equipo de Spartum?" data-gp-confirm-ok="Enviar">
                         <p class="gp-form-required-legend mb-4">Campos marcados con <span class="text-red-600 font-bold" aria-hidden="true">*</span> son obligatorios.</p>
@@ -40,11 +47,24 @@
                 </div>
             </div>
         </div>
-        <div class="w-full lg:w-5/12 max-w-full shrink-0 px-3 mt-6">
-            <div class="gp-photo-frame gp-photo-frame--side">
-                <img class="gp-photo" src="<?= htmlspecialchars(asset('img/pexels/entrenador-fuerza.jpg')) ?>"
-                     width="1600" height="1067" alt="Entrenadora supervisando un ejercicio de fuerza">
+
+        <aside class="gp-contact-visual">
+            <img src="<?= htmlspecialchars(asset('img/pexels/entrenador-fuerza.jpg')) ?>"
+                 width="1600" height="1067" alt="Entrenadora supervisando un ejercicio de fuerza">
+            <div class="gp-contact-visual__shade" aria-hidden="true"></div>
+            <div class="gp-contact-visual__content">
+                <span class="gp-contact-visual__eyebrow">Ven a conocernos</span>
+                <h2>Tu gimnasio en Lepe</h2>
+                <p><?= htmlspecialchars($gpContactoDireccion) ?></p>
+                <p class="gp-contact-visual__hours">
+                    <?php foreach ($gpContactoHorario as $i => $linea): ?>
+                        <?= $i > 0 ? '<br>' : '' ?><?= htmlspecialchars($linea) ?>
+                    <?php endforeach; ?>
+                </p>
+                <a class="btn btn-light btn-sm" href="<?= htmlspecialchars($gpContactoMapa) ?>" target="_blank" rel="noopener">
+                    Cómo llegar
+                </a>
             </div>
-        </div>
+        </aside>
     </div>
 </div>
