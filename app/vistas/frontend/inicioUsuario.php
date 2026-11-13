@@ -39,6 +39,19 @@
         <div class="w-full md:w-1/2 max-w-full shrink-0 px-3 mt-6">
             <div class="gp-stat-card h-full">
                 <div class="gp-photo-frame mb-4" style="height: 9rem;">
+                    <img class="gp-photo" src="<?= htmlspecialchars(asset('img/pixabay/pesas.jpg')) ?>"
+                         width="1280" height="853" alt="Entrenamiento con pesas en Spartum, gimnasio en Lepe"
+                         style="object-position: center 40%;">
+                </div>
+                <div class="gp-icon">📋</div>
+                <h3 class="text-xl mb-2">Reservas</h3>
+                <p class="text-slate-500 text-sm mb-4">Las clases en las que ya tienes plaza.</p>
+                <a href="<?= htmlspecialchars(url('/usuario/inscripciones/mis-inscripciones')) ?>" class="btn btn-primary btn-sm">Ver tus reservas</a>
+            </div>
+        </div>
+        <div class="w-full md:w-1/2 max-w-full shrink-0 px-3 mt-6">
+            <div class="gp-stat-card h-full">
+                <div class="gp-photo-frame mb-4" style="height: 9rem;">
                     <img class="gp-photo" src="<?= htmlspecialchars(asset('img/pixabay/fisio.jpg')) ?>"
                          width="1280" height="853" alt="Fisioterapia en Spartum, gimnasio en Lepe">
                 </div>
@@ -46,18 +59,6 @@
                 <h3 class="text-xl mb-2">Fisioterapia</h3>
                 <p class="text-slate-500 text-sm mb-4">Citas incluidas en planes con fisioterapia.</p>
                 <a href="<?= htmlspecialchars(url('/usuario/fisio')) ?>" class="btn btn-primary btn-sm">Ver tus citas</a>
-            </div>
-        </div>
-        <div class="w-full md:w-1/2 max-w-full shrink-0 px-3 mt-6">
-            <div class="gp-stat-card h-full">
-                <div class="gp-icon">⚙️</div>
-                <h3 class="text-xl mb-2">Sesión</h3>
-                <p class="text-slate-500 text-sm mb-4">Cierra sesión en este dispositivo.</p>
-                <a href="<?= htmlspecialchars(url('/logout')) ?>" class="btn btn-outline-light btn-sm"
-                   data-gp-confirm
-                   data-gp-confirm-title="Cerrar sesión"
-                   data-gp-confirm-body="¿Salir de tu cuenta en este dispositivo?"
-                   data-gp-confirm-ok="Sí, salir">Salir</a>
             </div>
         </div>
     </div>
