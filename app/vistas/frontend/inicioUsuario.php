@@ -14,8 +14,8 @@
         <div class="w-full md:w-1/2 max-w-full shrink-0 px-3 mt-6">
             <div class="gp-stat-card h-full">
                 <div class="gp-photo-frame mb-4" style="height: 9rem;">
-                    <img class="gp-photo" src="<?= htmlspecialchars(asset('img/pexels/clases-grupo.jpg')) ?>"
-                         width="1600" height="1066" alt="Clase en grupo en Spartum, gimnasio en Lepe"
+                    <img class="gp-photo" src="<?= htmlspecialchars(asset('img/pexels/clase-colectiva.jpg')) ?>"
+                         width="1600" height="1068" alt="Entrenador dirigiendo una clase colectiva"
                          style="object-position: center 30%;">
                 </div>
                 <div class="gp-icon" aria-hidden="true"><i class="fa-solid fa-calendar-days"></i></div>
@@ -27,8 +27,8 @@
         <div class="w-full md:w-1/2 max-w-full shrink-0 px-3 mt-6">
             <div class="gp-stat-card h-full">
                 <div class="gp-photo-frame mb-4" style="height: 9rem;">
-                    <img class="gp-photo" src="<?= htmlspecialchars(asset('img/pixabay/mancuernas.jpg')) ?>"
-                         width="1280" height="853" alt="Rack de mancuernas en Spartum, gimnasio en Lepe">
+                    <img class="gp-photo gp-photo--pesas" src="<?= htmlspecialchars(asset('img/unsplash/zona-pesas.jpg')) ?>"
+                         width="1600" height="1067" alt="Zona de entrenamiento con mancuernas">
                 </div>
                 <div class="gp-icon" aria-hidden="true"><i class="fa-solid fa-credit-card"></i></div>
                 <h3 class="text-xl mb-2">Suscripción</h3>
@@ -39,9 +39,8 @@
         <div class="w-full md:w-1/2 max-w-full shrink-0 px-3 mt-6">
             <div class="gp-stat-card h-full">
                 <div class="gp-photo-frame mb-4" style="height: 9rem;">
-                    <img class="gp-photo" src="<?= htmlspecialchars(asset('img/pixabay/yoga.jpg')) ?>"
-                         width="1280" height="853" alt="Entrenamiento en Spartum, gimnasio en Lepe"
-                         style="object-position: center 35%;">
+                    <img class="gp-photo" src="<?= htmlspecialchars(asset('img/pexels/entrenador-fuerza.jpg')) ?>"
+                         width="1600" height="1067" alt="Entrenadora supervisando un ejercicio de fuerza">
                 </div>
                 <div class="gp-icon" aria-hidden="true"><i class="fa-solid fa-pen-to-square"></i></div>
                 <h3 class="text-xl mb-2">Tus datos</h3>
@@ -52,8 +51,8 @@
         <div class="w-full md:w-1/2 max-w-full shrink-0 px-3 mt-6">
             <div class="gp-stat-card h-full">
                 <div class="gp-photo-frame mb-4" style="height: 9rem;">
-                    <img class="gp-photo" src="<?= htmlspecialchars(asset('img/pixabay/fisio.jpg')) ?>"
-                         width="1280" height="853" alt="Fisioterapia en Spartum, gimnasio en Lepe">
+                    <img class="gp-photo" src="<?= htmlspecialchars(asset('img/pixabay/fisioterapia-deportiva.jpg')) ?>"
+                         width="1280" height="853" alt="Profesional realizando una valoración de fisioterapia deportiva">
                 </div>
                 <div class="gp-icon" aria-hidden="true"><i class="fa-solid fa-stethoscope"></i></div>
                 <h3 class="text-xl mb-2">Fisioterapia</h3>

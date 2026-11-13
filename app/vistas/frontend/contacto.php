@@ -42,8 +42,8 @@
         </div>
         <div class="w-full lg:w-5/12 max-w-full shrink-0 px-3 mt-6">
             <div class="gp-photo-frame gp-photo-frame--side">
-                <img class="gp-photo" src="<?= htmlspecialchars(asset('img/pixabay/pesas.jpg')) ?>"
-                     width="1280" height="853" alt="Entrenamiento con mancuerna en Spartum, gimnasio en Lepe">
+                <img class="gp-photo" src="<?= htmlspecialchars(asset('img/pexels/entrenador-fuerza.jpg')) ?>"
+                     width="1600" height="1067" alt="Entrenadora supervisando un ejercicio de fuerza">
             </div>
         </div>
     </div>

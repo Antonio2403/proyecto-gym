@@ -991,7 +991,7 @@ body.gp-cookie-open {
     height: 100%;
     max-width: none;
     object-fit: cover;
-    object-position: center 74%;
+    object-position: center 56%;
 }
 
 .gp-hero-poster__shade {
@@ -1142,7 +1142,7 @@ body.gp-cookie-open {
         height: 100%;
         max-width: none;
         object-fit: cover;
-        object-position: center bottom;
+        object-position: center 58%;
     }
 
     .gp-hero-poster__shade {

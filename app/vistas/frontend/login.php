@@ -5,8 +5,8 @@
     <div class="mx-auto w-full max-w-[1320px] lg:max-w-[1024px] xl:max-w-7xl gp-auth-page-wrap gp-auth-page-wrap--xl px-4">
         <div class="gp-auth-card gp-auth-card--wide gp-auth-card--landscape">
             <div class="gp-photo-frame mb-4" style="height: 12rem;">
-                <img class="gp-photo gp-photo--barra" src="<?= htmlspecialchars(asset('img/pexels/login-barra.jpg')) ?>"
-                     width="1600" height="1067" alt="Entrenamiento con barra en Spartum, gimnasio en Lepe">
+                <img class="gp-photo gp-photo--barra" src="<?= htmlspecialchars(asset('img/pexels/entrenamiento-personal.jpg')) ?>"
+                     width="1600" height="1067" alt="Entrenadora acompañando un ejercicio de press de banca">
             </div>
             <div class="text-center mb-4 lg:mb-6">
                 <span class="gp-badge">Acceso miembros</span>

@@ -2,8 +2,8 @@
     <div class="mx-auto w-full max-w-[1320px] lg:max-w-[1024px] xl:max-w-7xl px-3">
         <div class="gp-schedule-panel shadow-sm">
             <div class="gp-photo-frame" style="height: 10rem; border-radius: 0; border: 0;">
-                <img class="gp-photo" src="<?= htmlspecialchars(asset('img/pixabay/fisio.jpg')) ?>"
-                     width="1280" height="853" alt="Fisioterapia en camilla en Spartum, gimnasio en Lepe">
+                <img class="gp-photo" src="<?= htmlspecialchars(asset('img/pixabay/fisioterapia-deportiva.jpg')) ?>"
+                     width="1280" height="853" alt="Profesional realizando una valoración de fisioterapia deportiva">
             </div>
             <header class="gp-schedule-head text-center py-6 px-4">
                 <h1 class="gp-schedule-title mb-0">Fisioterapia</h1>
