@@ -10,21 +10,21 @@
             <div class="flex flex-wrap -mx-2 -mt-4">
                 <div class="w-full sm:w-1/2 max-w-full shrink-0 px-2 mt-4">
                     <div class="gp-stat-card h-full">
-                        <div class="gp-icon">📍</div>
+                        <div class="gp-icon" aria-hidden="true"><i class="fa-solid fa-location-dot"></i></div>
                         <h3 class="text-base mb-2">Instalaciones</h3>
                         <p class="text-slate-500 text-sm mb-0">Zonas de fuerza, cardio y salas para clase colectiva.</p>
                     </div>
                 </div>
                 <div class="w-full sm:w-1/2 max-w-full shrink-0 px-2 mt-4">
                     <div class="gp-stat-card h-full">
-                        <div class="gp-icon">🎯</div>
+                        <div class="gp-icon" aria-hidden="true"><i class="fa-solid fa-bullseye"></i></div>
                         <h3 class="text-base mb-2">Enfoque</h3>
                         <p class="text-slate-500 text-sm mb-0">Planes claros y seguimiento para cada nivel.</p>
                     </div>
                 </div>
                 <div class="w-full max-w-full shrink-0 px-2 mt-4">
                     <div class="gp-stat-card">
-                        <div class="gp-icon">🔥</div>
+                        <div class="gp-icon" aria-hidden="true"><i class="fa-solid fa-fire-flame-curved"></i></div>
                         <h3 class="text-base mb-2">Energía</h3>
                         <p class="text-slate-500 text-sm mb-0">Sesiones exigentes pero seguras, con monitores que corrigen y motivan.</p>
                     </div>

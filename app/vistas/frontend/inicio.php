@@ -27,8 +27,8 @@
                     <a href="<?= htmlspecialchars(url('/usuario/actividades')) ?>" class="btn btn-primary btn-lg gp-btn-plain px-6">Ver tu horario</a>
                     <a href="<?= htmlspecialchars(url('/pago')) ?>" class="btn btn-outline-light btn-lg gp-btn-plain px-6">Ver tu plan</a>
                 <?php else: ?>
-                    <a href="<?= htmlspecialchars(url('/login')) ?>" class="btn btn-primary btn-lg gp-btn-plain px-6">Crear cuenta</a>
-                    <a href="<?= htmlspecialchars(url('/quienes-somos')) ?>" class="btn btn-outline-light btn-lg gp-btn-plain px-6">Conócenos</a>
+                    <a href="<?= htmlspecialchars(url('/pago')) ?>" class="btn btn-primary btn-lg gp-btn-plain px-6">Ver planes</a>
+                    <a href="<?= htmlspecialchars(url('/usuario/actividades')) ?>" class="btn btn-outline-light btn-lg gp-btn-plain px-6">Explorar horario</a>
                 <?php endif; ?>
             </div>
         </div>
@@ -80,21 +80,21 @@
         <div class="flex flex-wrap -mx-3 -mt-6">
             <div class="w-full md:w-1/3 max-w-full shrink-0 px-3 mt-6">
                 <div class="gp-stat-card">
-                    <div class="gp-icon">🏋️</div>
+                    <div class="gp-icon" aria-hidden="true"><i class="fa-solid fa-dumbbell"></i></div>
                     <h3 class="text-xl mb-2">Clases con sentido</h3>
                     <p class="text-slate-500 text-sm mb-0">Reserva tu plaza, revisa el monitor y mantén el ritmo semanal sin líos.</p>
                 </div>
             </div>
             <div class="w-full md:w-1/3 max-w-full shrink-0 px-3 mt-6">
                 <div class="gp-stat-card">
-                    <div class="gp-icon">⚡</div>
+                    <div class="gp-icon" aria-hidden="true"><i class="fa-solid fa-bolt"></i></div>
                     <h3 class="text-xl mb-2">Planes claros</h3>
                     <p class="text-slate-500 text-sm mb-0">Elige suscripción en segundos y renueva cuando te convenga.</p>
                 </div>
             </div>
             <div class="w-full md:w-1/3 max-w-full shrink-0 px-3 mt-6">
                 <div class="gp-stat-card">
-                    <div class="gp-icon">🤝</div>
+                    <div class="gp-icon" aria-hidden="true"><i class="fa-solid fa-people-group"></i></div>
                     <h3 class="text-xl mb-2">Equipo conectado</h3>
                     <p class="text-slate-500 text-sm mb-0">Administración y monitores coordinados para que todo fluya.</p>
                 </div>

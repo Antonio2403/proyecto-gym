@@ -98,7 +98,7 @@
                                         <label for="apellido1" class="form-label gp-label-required">Primer apellido</label>
                                         <input type="text" class="form-control form-control-lg" id="apellido1" name="apellido1" required>
                                     </div>
-                                    <div class="w-1/2 max-w-full shrink-0 px-2 lg:px-3 mt-4">
+                                    <div class="w-full md:w-1/2 max-w-full shrink-0 px-2 lg:px-3 mt-4">
                                         <label for="apellido2" class="form-label">Segundo apellido</label>
                                         <input type="text" class="form-control form-control-lg" id="apellido2" name="apellido2">
                                     </div>
@@ -107,7 +107,7 @@
                                         <input type="email" class="form-control form-control-lg" id="email" name="email" required autocomplete="email">
                                         <p class="form-text text-sm text-slate-500 mb-0">Correo real: allí recibirás el enlace para activar la cuenta.</p>
                                     </div>
-                                    <div class="w-1/2 max-w-full shrink-0 px-2 lg:px-3 mt-4">
+                                    <div class="w-full md:w-1/2 max-w-full shrink-0 px-2 lg:px-3 mt-4">
                                         <label for="telefono" class="form-label">Teléfono</label>
                                         <input type="text" class="form-control form-control-lg" id="telefono" name="telefono" inputmode="numeric" autocomplete="tel" placeholder="612 34 56 78" maxlength="12" pattern="[0-9]{3} [0-9]{2} [0-9]{2} [0-9]{2}" data-gp-phone-input>
                                         <p class="form-text text-sm text-slate-500 mb-0">Opcional. 9 dígitos; se formatea como 612 34 56 78.</p>
@@ -169,5 +169,10 @@ document.addEventListener('DOMContentLoaded', function () {
             syncSwitchFromTrigger(e.target);
         });
     });
+
+    if (new URLSearchParams(window.location.search).get('modo') === 'registro') {
+        var registroTab = document.getElementById('registro-tab');
+        if (registroTab) registroTab.click();
+    }
 });
 </script>

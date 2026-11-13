@@ -36,51 +36,7 @@
     <link rel="stylesheet" href="<?= htmlspecialchars(asset('css/tailwind.css')) ?>?v=20261029h">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
           integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer">
-    <link rel="stylesheet" href="<?= htmlspecialchars(asset('css/app-theme.css')) ?>?v=20261113d">
-    <!-- También en la página: si el navegador conserva el CSS anterior, la portada vuelve al diseño viejo. -->
-    <style>
-        .site-body .btn { border-radius: 999px; }
-        .gp-photo-frame { width: 100%; overflow: hidden; }
-        .gp-photo { display: block; width: 100%; height: 100%; max-width: none; object-fit: cover; object-position: center; }
-        .gp-photo--pesas { object-position: center 18%; }
-        .gp-photo--barra { object-position: center 40%; }
-        .gp-photo-strip { display: grid; grid-template-columns: 1fr; gap: 1rem; align-items: stretch; }
-        .gp-photo-card { min-width: 0; margin: 0; }
-        .gp-photo-card .gp-photo-frame { width: 100%; height: 14rem; }
-        .gp-hero--poster { display: flex; flex-direction: column; min-height: calc(100svh - 4.25rem); padding: 0; background: var(--gp-navy); border-bottom: 0; overflow: hidden; }
-        .gp-hero-poster__stage { position: relative; flex: 1 1 auto; display: flex; align-items: center; min-height: 28rem; background: var(--gp-navy); }
-        .gp-hero-poster__frame { position: absolute; top: 0; right: 0; width: 70%; height: 100%; overflow: hidden; }
-        .gp-hero-poster__photo { display: block; width: 100%; height: 100%; max-width: none; object-fit: cover; object-position: center 74%; }
-        .gp-hero-poster__shade { position: absolute; inset: 0; background: linear-gradient(90deg, var(--gp-navy) 0%, var(--gp-navy) 30%, color-mix(in srgb, var(--gp-navy) 42%, transparent) 40%, transparent 52%); pointer-events: none; }
-        .gp-hero-poster__copy { position: relative; z-index: 1; width: min(80rem, 92%); padding: clamp(2.25rem, 5vw, 4.5rem) clamp(1.35rem, 3.2vw, 3rem); }
-        .site-body .gp-hero--poster .gp-hero-title { margin-bottom: 1.5rem; color: #fff; font-size: clamp(5.2rem, 9.1vw, 9.6rem); font-weight: 800; line-height: 0.9; letter-spacing: -0.05em; }
-        .site-body .gp-hero--poster .gp-hero-lead { max-width: 48rem; margin-bottom: 0.85rem; color: rgba(255, 255, 255, 0.92); font-size: clamp(1.6rem, 2.4vw, 2.2rem); line-height: 1.35; }
-        .site-body .gp-hero--poster .gp-hero-place { max-width: 40rem; margin: 0 0 2rem; color: rgba(255, 255, 255, 0.82); font-size: clamp(1.05rem, 1.5vw, 1.25rem); line-height: 1.4; }
-        .gp-hero--poster .btn { font-size: 1.35rem; padding: 1.05rem 1.9rem; }
-        .gp-hero-poster__actions { display: flex; flex-wrap: wrap; gap: 0.85rem; }
-        .gp-hero--poster .btn { border-radius: 0.8rem; }
-        .gp-hero--poster .btn-outline-light { border: 1px solid rgba(255, 255, 255, 0.85); background: transparent; color: #fff; }
-        .gp-hero-poster__strip { background: #fff; }
-        .gp-hero-poster__points { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); width: min(100%, 80rem); margin: 0 auto; padding: 1.15rem 1.25rem; list-style: none; text-align: center; }
-        .gp-hero-poster__points li { color: var(--gp-navy); font-weight: 600; }
-        .gp-hero-poster__points a { color: var(--gp-orange); font-weight: 700; text-decoration: none; }
-        @media (min-width: 768px) {
-            .gp-photo-strip { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-        }
-        @media (max-width: 860px) {
-            .gp-hero--poster { min-height: 0; }
-            .gp-hero-poster__stage { flex: 0 0 auto; flex-direction: column; align-items: stretch; min-height: 0; }
-            .gp-hero-poster__frame { position: relative; order: 2; top: auto; right: auto; flex: 0 0 auto; width: 100%; height: auto; aspect-ratio: 0.92; overflow: hidden; }
-            .gp-hero-poster__photo { position: absolute; inset: 0; width: 100%; height: 100%; max-width: none; object-fit: cover; object-position: center bottom; }
-            .gp-hero-poster__shade { display: none; }
-            .gp-hero-poster__copy { order: 1; width: 100%; padding: 2.6rem 1.4rem 2.6rem; }
-            .site-body .gp-hero--poster .gp-hero-title { font-size: clamp(2.95rem, 13vw, 3.85rem); line-height: 1.08; margin-bottom: 1.25rem; }
-            .site-body .gp-hero--poster .gp-hero-lead { font-size: 1.2rem; line-height: 1.5; margin-bottom: 0.65rem; }
-            .site-body .gp-hero--poster .gp-hero-place { font-size: 1rem; margin-bottom: 1.35rem; }
-            .gp-hero--poster .btn { padding: 0.6rem 1.35rem; font-size: 1.05rem; }
-            .gp-hero-poster__points { grid-template-columns: 1fr 1fr; gap: 0.95rem 0.65rem; }
-        }
-    </style>
+    <link rel="stylesheet" href="<?= htmlspecialchars(asset('css/app-theme.css')) ?>?v=20261113e">
     <?php require __DIR__ . '/../partials/horario_centro_boot.php'; ?>
 </head>
 
@@ -95,6 +51,8 @@ if (isset($_SESSION['usuario_id']) && (string) ($_SESSION['rol'] ?? '') === 'cli
 
 $gpNavbarBrandHref = url('/inicio');
 $gpNavAvatarImg = 'https://ui-avatars.com/api/?name=' . rawurlencode((string) ($_SESSION['nombre'] ?? 'U')) . '&background=c45c28&color=fff&rounded=true&size=32';
+$gpCurrentPath = strtok((string) ($_SERVER['REQUEST_URI'] ?? '/'), '?') ?: '/';
+$gpNavCurrent = static fn(string $path): bool => $gpCurrentPath === url($path);
 ?>
 
 <nav class="navbar navbar-dark navbar-expand-lg site-navbar gp-vt-chrome sticky top-0 z-[1020]">
@@ -113,15 +71,21 @@ $gpNavAvatarImg = 'https://ui-avatars.com/api/?name=' . rawurlencode((string) ($
             <ul class="navbar-nav mx-auto lg:items-center lg:gap-1">
                 <?php if (!isset($_SESSION['usuario_id'])): ?>
                     <li class="nav-item">
-                        <a class="nav-link" href="<?= htmlspecialchars(url('/login')) ?>">Entrar</a>
+                        <a class="nav-link<?= $gpNavCurrent('/usuario/actividades') ? ' active' : '' ?>"
+                           <?= $gpNavCurrent('/usuario/actividades') ? 'aria-current="page"' : '' ?>
+                           href="<?= htmlspecialchars(url('/usuario/actividades')) ?>">Horario</a>
                     </li>
                 <?php endif; ?>
 
                 <li class="nav-item">
-                    <a class="nav-link" href="<?= htmlspecialchars(url('/contacto')) ?>">Contacto</a>
+                    <a class="nav-link<?= $gpNavCurrent('/quienes-somos') ? ' active' : '' ?>"
+                       <?= $gpNavCurrent('/quienes-somos') ? 'aria-current="page"' : '' ?>
+                       href="<?= htmlspecialchars(url('/quienes-somos')) ?>">Quiénes somos</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="<?= htmlspecialchars(url('/quienes-somos')) ?>">Quiénes somos</a>
+                    <a class="nav-link<?= $gpNavCurrent('/contacto') ? ' active' : '' ?>"
+                       <?= $gpNavCurrent('/contacto') ? 'aria-current="page"' : '' ?>
+                       href="<?= htmlspecialchars(url('/contacto')) ?>">Contacto</a>
                 </li>
 
                 <?php if (isset($_SESSION['usuario_id']) && ($_SESSION['rol'] ?? '') === 'fisio'): ?>
@@ -248,8 +212,13 @@ $gpNavAvatarImg = 'https://ui-avatars.com/api/?name=' . rawurlencode((string) ($
                     </li>
                 <?php endif; ?>
                 <?php if (!isset($_SESSION['usuario_id'])): ?>
+                    <li class="nav-item">
+                        <a class="nav-link<?= $gpNavCurrent('/login') ? ' active' : '' ?>"
+                           <?= $gpNavCurrent('/login') ? 'aria-current="page"' : '' ?>
+                           href="<?= htmlspecialchars(url('/login')) ?>">Entrar</a>
+                    </li>
                     <li class="nav-item flex items-center">
-                        <a href="<?= htmlspecialchars(url('/pago')) ?>" class="btn gp-navbar-cta">Planes</a>
+                        <a href="<?= htmlspecialchars(url('/login')) ?>?modo=registro" class="btn gp-navbar-cta">Hazte socio</a>
                     </li>
                 <?php endif; ?>
             </ul>
