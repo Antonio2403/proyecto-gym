@@ -45,76 +45,10 @@
     --gp-sch-orange-hover: var(--gp-orange-hover);
     --gp-sch-cell-border: #cdd6e4;
 
-    /* Scrollbars (solo WebKit/Blink; ver bloque ::-webkit-scrollbar) */
-    --gp-scrollbar-thumb: var(--gp-orange);
-    --gp-scrollbar-thumb-hover: var(--gp-orange-bright);
-    --gp-scrollbar-track: #1f2937;
 }
 
-/*
- * Barra de desplazamiento personalizada solo en WebKit/Blink (Chrome, Edge, Safari).
- * Firefox (Gecko) no usa ::-webkit-scrollbar; no aplicamos scrollbar-width/color para no forzar su barra nativa.
- */
 html {
     scroll-behavior: smooth;
-}
-
-html::-webkit-scrollbar,
-body::-webkit-scrollbar,
-.site-main::-webkit-scrollbar,
-.gp-admin-content::-webkit-scrollbar,
-.gp-admin-page::-webkit-scrollbar,
-.modal-body::-webkit-scrollbar,
-.offcanvas-body::-webkit-scrollbar {
-    width: 14px;
-    height: 14px;
-}
-
-html::-webkit-scrollbar-track,
-body::-webkit-scrollbar-track,
-.site-main::-webkit-scrollbar-track,
-.gp-admin-content::-webkit-scrollbar-track,
-.gp-admin-page::-webkit-scrollbar-track,
-.modal-body::-webkit-scrollbar-track,
-.offcanvas-body::-webkit-scrollbar-track {
-    background:
-        linear-gradient(180deg, rgba(44, 53, 68, 0.92), rgba(31, 41, 55, 0.96));
-    border-radius: 999px;
-}
-
-html::-webkit-scrollbar-thumb,
-body::-webkit-scrollbar-thumb,
-.site-main::-webkit-scrollbar-thumb,
-.gp-admin-content::-webkit-scrollbar-thumb,
-.gp-admin-page::-webkit-scrollbar-thumb,
-.modal-body::-webkit-scrollbar-thumb,
-.offcanvas-body::-webkit-scrollbar-thumb {
-    background:
-        linear-gradient(180deg, var(--gp-orange), var(--gp-orange-hover));
-    border: 3px solid var(--gp-scrollbar-track);
-    border-radius: 999px;
-    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.08), 0 4px 12px rgba(196, 92, 40, 0.28);
-}
-
-html::-webkit-scrollbar-thumb:hover,
-body::-webkit-scrollbar-thumb:hover,
-.site-main::-webkit-scrollbar-thumb:hover,
-.gp-admin-content::-webkit-scrollbar-thumb:hover,
-.gp-admin-page::-webkit-scrollbar-thumb:hover,
-.modal-body::-webkit-scrollbar-thumb:hover,
-.offcanvas-body::-webkit-scrollbar-thumb:hover {
-    background:
-        linear-gradient(180deg, var(--gp-scrollbar-thumb-hover), var(--gp-orange));
-}
-
-html::-webkit-scrollbar-corner,
-body::-webkit-scrollbar-corner,
-.site-main::-webkit-scrollbar-corner,
-.gp-admin-content::-webkit-scrollbar-corner,
-.gp-admin-page::-webkit-scrollbar-corner,
-.modal-body::-webkit-scrollbar-corner,
-.offcanvas-body::-webkit-scrollbar-corner {
-    background: var(--gp-scrollbar-track);
 }
 
 .site-body {
@@ -203,6 +137,12 @@ body::-webkit-scrollbar-corner,
 .site-navbar .nav-link:focus {
     color: var(--gp-white) !important;
     background: rgba(255, 255, 255, 0.08);
+}
+
+.site-navbar .nav-link.active,
+.site-navbar .nav-link[aria-current="page"] {
+    color: var(--gp-white) !important;
+    background: rgba(255, 255, 255, 0.1);
 }
 
 .site-navbar .dropdown-menu {
@@ -568,8 +508,16 @@ body.gp-cookie-open {
 
 .site-footer .text-muted,
 .site-footer .footer-copy {
-    color: rgba(255, 255, 255, 0.55) !important;
+    color: rgba(255, 255, 255, 0.7) !important;
     font-size: 0.875rem;
+}
+
+.site-footer .text-white\/60 {
+    color: rgba(255, 255, 255, 0.72);
+}
+
+.site-footer .text-white\/40 {
+    color: rgba(255, 255, 255, 0.62);
 }
 
 .site-footer hr {
@@ -583,7 +531,7 @@ body.gp-cookie-open {
 .gp-admin-page .btn {
     font-family: var(--gp-font);
     font-weight: 600;
-    border-radius: 999px;
+    border-radius: var(--gp-radius-sm);
     padding: 0.45rem 1.1rem;
     line-height: 1.35;
     box-shadow: none;
@@ -1012,7 +960,7 @@ body.gp-cookie-open {
 .gp-hero--poster {
     display: flex;
     flex-direction: column;
-    min-height: calc(100svh - 4.25rem);
+    min-height: min(47rem, calc(82svh - 4.25rem));
     padding: 0;
     background: var(--gp-navy);
     border-bottom: 0;
@@ -1063,7 +1011,7 @@ body.gp-cookie-open {
 .site-body .gp-hero--poster .gp-hero-title {
     margin-bottom: 1.5rem;
     color: #fff;
-    font-size: clamp(5.2rem, 9.1vw, 9.6rem);
+    font-size: clamp(4.35rem, 7.3vw, 7.25rem);
     font-weight: 800;
     line-height: 0.9;
     letter-spacing: -0.05em;
@@ -1092,7 +1040,7 @@ body.gp-cookie-open {
 }
 
 .gp-hero--poster .btn {
-    border-radius: 0.8rem;
+    border-radius: var(--gp-radius-sm);
     padding: 1.05rem 1.9rem;
     font-size: 1.35rem;
     box-shadow: none;
@@ -1183,7 +1131,7 @@ body.gp-cookie-open {
         flex: 0 0 auto;
         width: 100%;
         height: auto;
-        aspect-ratio: 0.92;
+        aspect-ratio: 1.18;
         overflow: hidden;
     }
 
@@ -1204,7 +1152,7 @@ body.gp-cookie-open {
     .gp-hero-poster__copy {
         order: 1;
         width: 100%;
-        padding: 2.6rem 1.4rem 2.6rem;
+        padding: 2.15rem 1.4rem 2.2rem;
     }
 
     .site-body .gp-hero--poster .gp-hero-title {
@@ -1238,21 +1186,6 @@ body.gp-cookie-open {
         gap: 0.95rem 0.65rem;
         padding: 1.25rem 1rem 1.4rem;
     }
-}
-
-.site-body:not(.gp-admin-body-root) .btn-primary:not(.gp-btn-plain):not(:has(i)):not([data-gp-pass-reveal]):not([data-gp-pass-reveal-group])::before,
-.site-body:not(.gp-admin-body-root) .btn-success:not(.gp-btn-plain):not(:has(i)):not([data-gp-pass-reveal]):not([data-gp-pass-reveal-group])::before,
-.site-body:not(.gp-admin-body-root) .btn-danger:not(.gp-btn-plain):not(:has(i)):not([data-gp-pass-reveal]):not([data-gp-pass-reveal-group])::before,
-.site-body:not(.gp-admin-body-root) .gp-btn-orange:not(.gp-btn-plain):not(:has(i)):not([data-gp-pass-reveal]):not([data-gp-pass-reveal-group])::before,
-.site-body:not(.gp-admin-body-root) .btn-outline-light:not(.gp-btn-plain):not(:has(i)):not([data-gp-pass-reveal]):not([data-gp-pass-reveal-group])::before,
-.site-body:not(.gp-admin-body-root) .btn-outline-secondary:not(.gp-btn-plain):not(:has(i)):not([data-gp-pass-reveal]):not([data-gp-pass-reveal-group])::before {
-    content: "";
-    width: 1.5em;
-    height: 0.62em;
-    flex: 0 0 auto;
-    background: currentColor;
-    -webkit-mask: url("../img/favicon-mark.svg") center / contain no-repeat;
-    mask: url("../img/favicon-mark.svg") center / contain no-repeat;
 }
 
 .gp-photo-frame {
@@ -1386,14 +1319,15 @@ body.gp-cookie-open {
 .gp-stat-card .gp-icon {
     width: 44px;
     height: 44px;
-    border-radius: 12px;
+    border-radius: var(--gp-radius-sm);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.25rem;
+    font-size: 1.05rem;
     margin-bottom: 1rem;
-    background: var(--gp-page-subtle);
-    border: 1px solid var(--gp-border-light);
+    background: var(--gp-orange-soft);
+    border: 1px solid rgba(196, 92, 40, 0.2);
+    color: var(--gp-orange);
 }
 
 .gp-section-title {

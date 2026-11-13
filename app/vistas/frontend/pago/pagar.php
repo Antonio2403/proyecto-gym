@@ -127,7 +127,7 @@ $gpTextoMeses = static function (int $meses): string {
             <article class="gp-plan-card<?=
                 $esActual ? ' gp-plan-card--current' : ''
                 ?><?=
-                ($bloqueadoPorOtroPlan || (!$esCliente && !$esActual) || (!$comprable && !$esActual)) ? ' gp-plan-card--muted' : ''
+                (!$comprable && !$esActual) ? ' gp-plan-card--muted' : ''
                 ?>">
                 <?php if ($esActual): ?>
                     <span class="gp-plan-ribbon"><span class="me-1">✓</span> Tu plan</span>
