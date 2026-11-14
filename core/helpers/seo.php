@@ -78,7 +78,7 @@ function gp_seo_actual(): array
         'description' => $ficha['description'],
         'robots' => $indexable ? 'index, follow' : 'noindex, nofollow',
         'canonical' => app_url_absolute($canonicalPath),
-        'image' => app_url_absolute(asset('img/pexels/hero-capacitacion.jpg')),
+        'image' => app_url_absolute('/public/assets/img/pexels/hero-spartum-2026.jpg'),
     ];
 }
 
@@ -89,16 +89,20 @@ function gp_seo_json_ld(): string
         return '';
     }
 
-    $datos = [
-        '@context' => 'https://schema.org',
-        '@type' => 'ExerciseGym',
-        'name' => 'Spartum',
+    $businessId = app_url_absolute('/') . '#centro';
+    $websiteId = app_url_absolute('/') . '#website';
+    $business = [
+        '@type' => ['HealthClub', 'ExerciseGym'],
+        '@id' => $businessId,
+        'name' => gp_centro_nombre(),
         'description' => gp_seo_publicas()['/']['description'],
         'url' => app_url_absolute('/'),
         'image' => $seo['image'],
+        'hasMap' => gp_horario_centro_maps_link_url(),
         'address' => [
             '@type' => 'PostalAddress',
             'streetAddress' => 'Calle Camelia Nº 16',
+            'postalCode' => gp_centro_codigo_postal(),
             'addressLocality' => 'Lepe',
             'addressRegion' => 'Huelva',
             'addressCountry' => 'ES',
@@ -115,6 +119,40 @@ function gp_seo_json_ld(): string
                 'dayOfWeek' => 'Saturday',
                 'opens' => '10:00',
                 'closes' => '14:00',
+            ],
+        ],
+    ];
+    if (gp_centro_telefono() !== '') {
+        $business['telephone'] = gp_centro_telefono();
+    }
+    if (gp_centro_email() !== '') {
+        $business['email'] = gp_centro_email();
+    }
+    if (gp_centro_redes() !== []) {
+        $business['sameAs'] = gp_centro_redes();
+    }
+
+    $datos = [
+        '@context' => 'https://schema.org',
+        '@graph' => [
+            $business,
+            [
+                '@type' => 'WebSite',
+                '@id' => $websiteId,
+                'name' => gp_centro_nombre(),
+                'url' => app_url_absolute('/'),
+                'inLanguage' => 'es-ES',
+                'publisher' => ['@id' => $businessId],
+            ],
+            [
+                '@type' => 'WebPage',
+                '@id' => $seo['canonical'] . '#webpage',
+                'name' => $seo['title'],
+                'description' => $seo['description'],
+                'url' => $seo['canonical'],
+                'inLanguage' => 'es-ES',
+                'isPartOf' => ['@id' => $websiteId],
+                'about' => ['@id' => $businessId],
             ],
         ],
     ];
@@ -162,11 +200,19 @@ function gp_seo_robots_txt(): string
 
 function gp_seo_sitemap_xml(): string
 {
-    $urls = ['/', '/quienes-somos', '/contacto', '/pago'];
+    $urls = array_keys(gp_seo_publicas());
+    $lastModified = gmdate('Y-m-d', max(
+        filemtime(__DIR__ . '/../../app/vistas/frontend/inicio.php') ?: 0,
+        filemtime(__FILE__) ?: 0
+    ));
     $xml = '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
     $xml .= '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' . "\n";
     foreach ($urls as $path) {
-        $xml .= '  <url><loc>' . htmlspecialchars(app_url_absolute($path), ENT_XML1) . '</loc></url>' . "\n";
+        $priority = $path === '/' ? '1.0' : '0.7';
+        $frequency = $path === '/' ? 'weekly' : 'monthly';
+        $xml .= '  <url><loc>' . htmlspecialchars(app_url_absolute($path), ENT_XML1)
+            . '</loc><lastmod>' . $lastModified . '</lastmod><changefreq>' . $frequency
+            . '</changefreq><priority>' . $priority . '</priority></url>' . "\n";
     }
     $xml .= '</urlset>' . "\n";
 

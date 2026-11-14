@@ -20,7 +20,7 @@ $gpDireccion = gp_horario_centro_direccion();
             <div class="w-1/2 md:w-1/3 lg:w-1/4 max-w-full shrink-0 px-3 mt-3">
                 <div class="footer-col-heading">Explora</div>
                 <ul class="list-none ps-0 text-sm mb-0">
-                    <li><a href="<?= htmlspecialchars(url('/inicio')) ?>">Inicio</a></li>
+                    <li><a href="<?= htmlspecialchars(url('/')) ?>">Inicio</a></li>
                     <li><a href="<?= htmlspecialchars(url('/quienes-somos')) ?>">Quiénes somos</a></li>
                     <li><a href="<?= htmlspecialchars(url('/contacto')) ?>">Contacto</a></li>
                 </ul>

@@ -236,6 +236,37 @@ function gp_horario_centro_direccion(): string
     return 'Calle Camelia Nº 16, Lepe (Huelva)';
 }
 
+function gp_centro_nombre(): string
+{
+    return 'Spartum';
+}
+
+function gp_centro_codigo_postal(): string
+{
+    return '21440';
+}
+
+function gp_centro_telefono(): string
+{
+    return trim((string) ($_ENV['CENTER_PHONE'] ?? getenv('CENTER_PHONE') ?: ''));
+}
+
+function gp_centro_email(): string
+{
+    return trim((string) ($_ENV['CENTER_EMAIL'] ?? getenv('CENTER_EMAIL') ?: ''));
+}
+
+/** @return string[] */
+function gp_centro_redes(): array
+{
+    $raw = trim((string) ($_ENV['CENTER_SOCIAL_URLS'] ?? getenv('CENTER_SOCIAL_URLS') ?: ''));
+    if ($raw === '') {
+        return [];
+    }
+
+    return array_values(array_filter(array_map('trim', explode(',', $raw)), static fn(string $url): bool => filter_var($url, FILTER_VALIDATE_URL) !== false));
+}
+
 function gp_horario_centro_maps_query(): string
 {
     return 'Calle Camelia Nº 16, Lepe, Huelva';
