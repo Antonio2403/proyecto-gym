@@ -229,4 +229,29 @@ class Cliente extends Usuario
 
         return $resultado ? $resultado['id'] : null;
     }
+
+    /**
+     * @return array{cliente_id: int, email: string}|null
+     */
+    public static function perfilReservaPorUsuarioId(int $usuarioId): ?array
+    {
+        $conexion = BasedeDatos::Conectar();
+        $stmt = $conexion->prepare(
+            'SELECT c.id AS cliente_id, u.email
+             FROM clientes c
+             INNER JOIN usuarios u ON u.id = c.usuario_id
+             WHERE u.id = ?
+             LIMIT 1'
+        );
+        $stmt->execute([$usuarioId]);
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        if (!$row) {
+            return null;
+        }
+
+        return [
+            'cliente_id' => (int) $row['cliente_id'],
+            'email' => (string) ($row['email'] ?? ''),
+        ];
+    }
 }
