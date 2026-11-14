@@ -1,0 +1,124 @@
+{
+  "img/pexels/hero-spartum-2026.jpg": {
+    "width": 1800,
+    "variants": {
+      "avif": {
+        "480": "img/pexels/hero-spartum-2026-480.avif",
+        "960": "img/pexels/hero-spartum-2026-960.avif",
+        "1600": "img/pexels/hero-spartum-2026-1600.avif",
+        "1800": "img/pexels/hero-spartum-2026-1800.avif"
+      },
+      "webp": {
+        "480": "img/pexels/hero-spartum-2026-480.webp",
+        "960": "img/pexels/hero-spartum-2026-960.webp",
+        "1600": "img/pexels/hero-spartum-2026-1600.webp",
+        "1800": "img/pexels/hero-spartum-2026-1800.webp"
+      }
+    }
+  },
+  "img/unsplash/zona-pesas.jpg": {
+    "width": 1600,
+    "variants": {
+      "avif": {
+        "480": "img/unsplash/zona-pesas-480.avif",
+        "960": "img/unsplash/zona-pesas-960.avif",
+        "1600": "img/unsplash/zona-pesas-1600.avif"
+      },
+      "webp": {
+        "480": "img/unsplash/zona-pesas-480.webp",
+        "960": "img/unsplash/zona-pesas-960.webp",
+        "1600": "img/unsplash/zona-pesas-1600.webp"
+      }
+    }
+  },
+  "img/unsplash/yoga-grupo.jpg": {
+    "width": 1600,
+    "variants": {
+      "avif": {
+        "480": "img/unsplash/yoga-grupo-480.avif",
+        "960": "img/unsplash/yoga-grupo-960.avif",
+        "1600": "img/unsplash/yoga-grupo-1600.avif"
+      },
+      "webp": {
+        "480": "img/unsplash/yoga-grupo-480.webp",
+        "960": "img/unsplash/yoga-grupo-960.webp",
+        "1600": "img/unsplash/yoga-grupo-1600.webp"
+      }
+    }
+  },
+  "img/pexels/clase-colectiva.jpg": {
+    "width": 1600,
+    "variants": {
+      "avif": {
+        "480": "img/pexels/clase-colectiva-480.avif",
+        "960": "img/pexels/clase-colectiva-960.avif",
+        "1600": "img/pexels/clase-colectiva-1600.avif"
+      },
+      "webp": {
+        "480": "img/pexels/clase-colectiva-480.webp",
+        "960": "img/pexels/clase-colectiva-960.webp",
+        "1600": "img/pexels/clase-colectiva-1600.webp"
+      }
+    }
+  },
+  "img/pexels/entrenamiento-personal.jpg": {
+    "width": 1600,
+    "variants": {
+      "avif": {
+        "480": "img/pexels/entrenamiento-personal-480.avif",
+        "960": "img/pexels/entrenamiento-personal-960.avif",
+        "1600": "img/pexels/entrenamiento-personal-1600.avif"
+      },
+      "webp": {
+        "480": "img/pexels/entrenamiento-personal-480.webp",
+        "960": "img/pexels/entrenamiento-personal-960.webp",
+        "1600": "img/pexels/entrenamiento-personal-1600.webp"
+      }
+    }
+  },
+  "img/pexels/entrenador-fuerza.jpg": {
+    "width": 1600,
+    "variants": {
+      "avif": {
+        "480": "img/pexels/entrenador-fuerza-480.avif",
+        "960": "img/pexels/entrenador-fuerza-960.avif",
+        "1600": "img/pexels/entrenador-fuerza-1600.avif"
+      },
+      "webp": {
+        "480": "img/pexels/entrenador-fuerza-480.webp",
+        "960": "img/pexels/entrenador-fuerza-960.webp",
+        "1600": "img/pexels/entrenador-fuerza-1600.webp"
+      }
+    }
+  },
+  "img/pexels/gimnasio-moderno.jpg": {
+    "width": 1600,
+    "variants": {
+      "avif": {
+        "480": "img/pexels/gimnasio-moderno-480.avif",
+        "960": "img/pexels/gimnasio-moderno-960.avif",
+        "1600": "img/pexels/gimnasio-moderno-1600.avif"
+      },
+      "webp": {
+        "480": "img/pexels/gimnasio-moderno-480.webp",
+        "960": "img/pexels/gimnasio-moderno-960.webp",
+        "1600": "img/pexels/gimnasio-moderno-1600.webp"
+      }
+    }
+  },
+  "img/pixabay/fisioterapia-deportiva.jpg": {
+    "width": 1280,
+    "variants": {
+      "avif": {
+        "480": "img/pixabay/fisioterapia-deportiva-480.avif",
+        "960": "img/pixabay/fisioterapia-deportiva-960.avif",
+        "1280": "img/pixabay/fisioterapia-deportiva-1280.avif"
+      },
+      "webp": {
+        "480": "img/pixabay/fisioterapia-deportiva-480.webp",
+        "960": "img/pixabay/fisioterapia-deportiva-960.webp",
+        "1280": "img/pixabay/fisioterapia-deportiva-1280.webp"
+      }
+    }
+  }
+}

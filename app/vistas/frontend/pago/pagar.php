@@ -57,8 +57,13 @@ $gpTextoMeses = static function (int $meses): string {
     </header>
 
     <div class="gp-photo-frame gp-photo-frame--wide mb-8 mx-auto" style="max-width: 960px;">
-        <img class="gp-photo" src="<?= htmlspecialchars(asset('img/pexels/gimnasio-moderno.jpg')) ?>"
-             width="1600" height="1067" alt="Sala de entrenamiento funcional con equipamiento moderno">
+        <?= gp_responsive_picture('img/pexels/gimnasio-moderno.jpg', [
+            'class' => 'gp-photo',
+            'width' => 1600,
+            'height' => 1067,
+            'alt' => 'Sala de entrenamiento funcional con equipamiento moderno',
+            'sizes' => '(max-width: 960px) 100vw, 960px',
+        ]) ?>
     </div>
 
     <?php if ($planActivo): ?>

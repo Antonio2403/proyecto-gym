@@ -5,8 +5,10 @@
   "private": true,
   "scripts": {
     "build:css": "tailwindcss -i ./resources/css/tailwind.css -o ./public/assets/css/tailwind.css --minify",
+    "build:images": "node ./scripts/optimize-content-images.mjs",
+    "build": "npm run build:css && npm run build:images",
     "watch:css": "tailwindcss -i ./resources/css/tailwind.css -o ./public/assets/css/tailwind.css --watch",
-    "test": "npm run build:css"
+    "test": "npm run build"
   },
   "repository": {
     "type": "git",
@@ -21,6 +23,7 @@
   "homepage": "https://github.com/Antonio2403/proyecto-gym#readme",
   "devDependencies": {
     "@tailwindcss/cli": "4.3.0",
+    "sharp": "^0.35.5",
     "tailwindcss": "4.3.0"
   }
 }

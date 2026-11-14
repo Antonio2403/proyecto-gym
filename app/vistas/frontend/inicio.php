@@ -2,8 +2,14 @@
 <section class="gp-hero gp-hero--poster">
     <div class="gp-hero-poster__stage">
         <div class="gp-hero-poster__frame">
-            <img class="gp-hero-poster__photo" src="<?= htmlspecialchars(asset('img/pexels/hero-spartum-2026.jpg')) ?>"
-                 width="1800" height="1342" alt="Deportista entrenando fuerza en una máquina de gimnasio">
+            <?= gp_responsive_picture('img/pexels/hero-spartum-2026.jpg', [
+                'class' => 'gp-hero-poster__photo',
+                'width' => 1800,
+                'height' => 1342,
+                'alt' => 'Deportista entrenando fuerza en una máquina de gimnasio',
+                'sizes' => '(max-width: 860px) 100vw, 70vw',
+                'priority' => true,
+            ]) ?>
         </div>
         <div class="gp-hero-poster__shade" aria-hidden="true"></div>
         <div class="gp-hero-poster__copy">
@@ -48,22 +54,37 @@
         <div class="gp-photo-strip">
             <figure class="gp-photo-card">
                 <div class="gp-photo-frame">
-                    <img class="gp-photo gp-photo--pesas" src="<?= htmlspecialchars(asset('img/unsplash/zona-pesas.jpg')) ?>"
-                         width="1600" height="1067" alt="Zona de pesas con mancuernas y bancos de entrenamiento">
+                    <?= gp_responsive_picture('img/unsplash/zona-pesas.jpg', [
+                        'class' => 'gp-photo gp-photo--pesas',
+                        'width' => 1600,
+                        'height' => 1067,
+                        'alt' => 'Zona de pesas con mancuernas y bancos de entrenamiento',
+                        'sizes' => '(max-width: 767px) 100vw, 33vw',
+                    ]) ?>
                 </div>
                 <figcaption>Zona de pesas</figcaption>
             </figure>
             <figure class="gp-photo-card">
                 <div class="gp-photo-frame">
-                    <img class="gp-photo" src="<?= htmlspecialchars(asset('img/unsplash/yoga-grupo.jpg')) ?>"
-                         width="1600" height="1067" alt="Grupo practicando movilidad sobre esterillas">
+                    <?= gp_responsive_picture('img/unsplash/yoga-grupo.jpg', [
+                        'class' => 'gp-photo',
+                        'width' => 1600,
+                        'height' => 1067,
+                        'alt' => 'Grupo practicando movilidad sobre esterillas',
+                        'sizes' => '(max-width: 767px) 100vw, 33vw',
+                    ]) ?>
                 </div>
                 <figcaption>Yoga y movilidad</figcaption>
             </figure>
             <figure class="gp-photo-card">
                 <div class="gp-photo-frame">
-                    <img class="gp-photo" src="<?= htmlspecialchars(asset('img/pexels/clase-colectiva.jpg')) ?>"
-                         width="1600" height="1068" alt="Entrenador dirigiendo una clase colectiva">
+                    <?= gp_responsive_picture('img/pexels/clase-colectiva.jpg', [
+                        'class' => 'gp-photo',
+                        'width' => 1600,
+                        'height' => 1068,
+                        'alt' => 'Entrenador dirigiendo una clase colectiva',
+                        'sizes' => '(max-width: 767px) 100vw, 33vw',
+                    ]) ?>
                 </div>
                 <figcaption>Clases en grupo</figcaption>
             </figure>

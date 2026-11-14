@@ -5,8 +5,13 @@
     <div class="mx-auto w-full max-w-[1320px] lg:max-w-[1024px] xl:max-w-7xl gp-auth-page-wrap gp-auth-page-wrap--xl px-4">
         <div class="gp-auth-card gp-auth-card--wide gp-auth-card--landscape">
             <div class="gp-photo-frame mb-4" style="height: 12rem;">
-                <img class="gp-photo gp-photo--barra" src="<?= htmlspecialchars(asset('img/pexels/entrenamiento-personal.jpg')) ?>"
-                     width="1600" height="1067" alt="Entrenadora acompañando un ejercicio de press de banca">
+                <?= gp_responsive_picture('img/pexels/entrenamiento-personal.jpg', [
+                    'class' => 'gp-photo gp-photo--barra',
+                    'width' => 1600,
+                    'height' => 1067,
+                    'alt' => 'Entrenadora acompañando un ejercicio de press de banca',
+                    'sizes' => '(max-width: 1040px) 100vw, 1040px',
+                ]) ?>
             </div>
             <div class="text-center mb-4 lg:mb-6">
                 <span class="gp-badge">Acceso miembros</span>

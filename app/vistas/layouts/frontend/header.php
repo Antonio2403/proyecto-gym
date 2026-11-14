@@ -7,6 +7,7 @@
     <?php require __DIR__ . '/../partials/gp_cookie_boot.php'; ?>
     <?php
     require_once dirname(__DIR__, 4) . '/core/helpers/seo.php';
+    require_once dirname(__DIR__, 4) . '/core/helpers/media.php';
     $gpSeo = gp_seo_actual();
     ?>
     <title><?= htmlspecialchars($gpSeo['title'], ENT_QUOTES, 'UTF-8') ?></title>
@@ -21,6 +22,12 @@
     <meta property="og:url" content="<?= htmlspecialchars($gpSeo['canonical'], ENT_QUOTES, 'UTF-8') ?>">
     <?php if ($gpSeo['robots'] === 'index, follow'): ?>
     <meta property="og:image" content="<?= htmlspecialchars($gpSeo['image'], ENT_QUOTES, 'UTF-8') ?>">
+    <meta property="og:image:width" content="1800">
+    <meta property="og:image:height" content="1342">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="<?= htmlspecialchars($gpSeo['title'], ENT_QUOTES, 'UTF-8') ?>">
+    <meta name="twitter:description" content="<?= htmlspecialchars($gpSeo['description'], ENT_QUOTES, 'UTF-8') ?>">
+    <meta name="twitter:image" content="<?= htmlspecialchars($gpSeo['image'], ENT_QUOTES, 'UTF-8') ?>">
     <script type="application/ld+json"><?= gp_seo_json_ld() ?></script>
     <?php endif; ?>
     <?php require __DIR__ . '/../partials/favicon.php'; ?>
@@ -36,7 +43,7 @@
     <link rel="stylesheet" href="<?= htmlspecialchars(asset('css/tailwind.css')) ?>?v=20261029h">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
           integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer">
-    <link rel="stylesheet" href="<?= htmlspecialchars(asset('css/app-theme.css')) ?>?v=20261113f">
+    <link rel="stylesheet" href="<?= htmlspecialchars(asset('css/app-theme.css')) ?>?v=20261114a">
     <?php require __DIR__ . '/../partials/horario_centro_boot.php'; ?>
 </head>
 
@@ -107,6 +114,11 @@ $gpNavCurrent = static fn(string $path): bool => $gpCurrentPath === url($path);
                 <?php if (isset($_SESSION['usuario_id']) && ($_SESSION['rol'] ?? '') === 'cliente'): ?>
                     <li class="nav-item">
                         <a class="nav-link" href="<?= htmlspecialchars(url('/inicioUsuario')) ?>">Tu panel</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link<?= $gpNavCurrent('/usuario/actividad') ? ' active' : '' ?>"
+                           <?= $gpNavCurrent('/usuario/actividad') ? 'aria-current="page"' : '' ?>
+                           href="<?= htmlspecialchars(url('/usuario/actividad')) ?>">Mi actividad</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="<?= htmlspecialchars(url('/usuario/actividades')) ?>">Ver tu horario</a>

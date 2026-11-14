@@ -13,7 +13,7 @@ $gpContactoMapa = gp_horario_centro_maps_link_url();
     </header>
 
     <div class="gp-contact-layout">
-        <div>
+        <div class="gp-contact-form-col">
             <?php if (!empty($_GET['success'])): ?>
                 <div class="alert alert-success"><?= htmlspecialchars($_GET['success']) ?></div>
             <?php endif; ?>
@@ -49,8 +49,12 @@ $gpContactoMapa = gp_horario_centro_maps_link_url();
         </div>
 
         <aside class="gp-contact-visual">
-            <img src="<?= htmlspecialchars(asset('img/pexels/entrenador-fuerza.jpg')) ?>"
-                 width="1600" height="1067" alt="Entrenadora supervisando un ejercicio de fuerza">
+            <?= gp_responsive_picture('img/pexels/entrenador-fuerza.jpg', [
+                'width' => 1600,
+                'height' => 1067,
+                'alt' => 'Entrenadora supervisando un ejercicio de fuerza',
+                'sizes' => '(max-width: 1023px) 100vw, 42vw',
+            ]) ?>
             <div class="gp-contact-visual__shade" aria-hidden="true"></div>
             <div class="gp-contact-visual__content">
                 <span class="gp-contact-visual__eyebrow">Ven a conocernos</span>

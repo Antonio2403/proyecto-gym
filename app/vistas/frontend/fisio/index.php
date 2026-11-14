@@ -2,8 +2,13 @@
     <div class="mx-auto w-full max-w-[1320px] lg:max-w-[1024px] xl:max-w-7xl px-3">
         <div class="gp-schedule-panel shadow-sm">
             <div class="gp-photo-frame" style="height: 10rem; border-radius: 0; border: 0;">
-                <img class="gp-photo" src="<?= htmlspecialchars(asset('img/pixabay/fisioterapia-deportiva.jpg')) ?>"
-                     width="1280" height="853" alt="Profesional realizando una valoración de fisioterapia deportiva">
+                <?= gp_responsive_picture('img/pixabay/fisioterapia-deportiva.jpg', [
+                    'class' => 'gp-photo',
+                    'width' => 1280,
+                    'height' => 853,
+                    'alt' => 'Profesional realizando una valoración de fisioterapia deportiva',
+                    'sizes' => '(max-width: 1320px) 100vw, 1320px',
+                ]) ?>
             </div>
             <header class="gp-schedule-head text-center py-6 px-4">
                 <h1 class="gp-schedule-title mb-0">Fisioterapia</h1>
