@@ -166,6 +166,7 @@ controller($router, 'post', '/admin/actividades/eliminar/(\d+)', 'ActividadContr
 
 //Actividades Usuario
 controller($router, 'get', '/usuario/actividades', 'ActividadControlador@index');
+controller($router, 'get', '/usuario/actividad', 'ActividadUsuarioControlador@historial');
 
 
 //Inscripcion
