@@ -1,6 +1,7 @@
 <?php
 
 require_once __DIR__ . '/vendor/autoload.php';
+require_once __DIR__ . '/core/spartum_autoload.php';
 
 // .env tiene prioridad; si no existe, se usa `env` (mismo formato; útil en clones sin .env).
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__, ['.env', 'env']);

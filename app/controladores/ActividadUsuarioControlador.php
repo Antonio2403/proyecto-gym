@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 require_once 'core/Controller.php';
+require_once __DIR__ . '/../modelos/HistorialActividad.php';
 
 use Spartum\Modelos\HistorialActividad;
 
