@@ -4534,3 +4534,203 @@ label.gp-label-required::after {
         transition: none !important;
     }
 }
+
+.gp-about {
+    padding: 1.75rem 0 3.5rem;
+}
+
+.gp-about__wrap {
+    width: min(1120px, calc(100% - 2rem));
+    margin: 0 auto;
+}
+
+.gp-about-hero {
+    position: relative;
+    overflow: hidden;
+    min-height: 22rem;
+    border-radius: 1.15rem;
+    background: var(--gp-navy);
+}
+
+.gp-about-hero img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 60%;
+}
+
+.gp-about-hero__shade {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(20, 27, 38, 0.08) 35%, rgba(20, 27, 38, 0.78) 100%);
+}
+
+.gp-about-hero__copy {
+    position: absolute;
+    left: 1.5rem;
+    right: 1.5rem;
+    bottom: 1.35rem;
+}
+
+.gp-about-hero__badge {
+    display: inline-flex;
+    margin-bottom: 0.7rem;
+    padding: 0.28rem 0.7rem;
+    border-radius: 999px;
+    background: rgba(20, 27, 38, 0.55);
+    color: #fff;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.gp-about-hero h1 {
+    margin: 0;
+    color: #fff;
+    font-size: clamp(2rem, 4vw, 2.7rem);
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+}
+
+.gp-about-hero h1 span {
+    color: var(--gp-orange-bright);
+}
+
+.gp-about-story {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.75rem;
+    align-items: center;
+    padding: 2rem 0.25rem 1.75rem;
+}
+
+.gp-about-story__copy p {
+    margin: 0 0 0.9rem;
+    max-width: 34rem;
+    color: var(--gp-text-secondary);
+    font-size: 1.02rem;
+    line-height: 1.55;
+}
+
+.gp-about-story__copy p:last-child {
+    margin-bottom: 0;
+}
+
+.gp-about-facts {
+    display: grid;
+    gap: 1.15rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.gp-about-facts li {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.85rem;
+    align-items: start;
+}
+
+.gp-about-facts__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.35rem;
+    height: 2.35rem;
+    border-radius: 999px;
+    background: var(--gp-orange-soft);
+    color: var(--gp-orange);
+    font-size: 0.95rem;
+}
+
+.gp-about-facts h2 {
+    margin: 0 0 0.15rem;
+    color: var(--gp-text);
+    font-size: 1rem;
+}
+
+.gp-about-facts p {
+    margin: 0;
+    color: var(--gp-muted);
+    font-size: 0.92rem;
+    line-height: 1.45;
+}
+
+.gp-about-shots {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.9rem;
+}
+
+.gp-about-shots figure {
+    position: relative;
+    margin: 0;
+    overflow: hidden;
+    border-radius: 0.95rem;
+    background: var(--gp-navy);
+}
+
+.gp-about-shots img {
+    display: block;
+    width: 100%;
+    height: 13rem;
+    object-fit: cover;
+}
+
+.gp-about-shots figcaption {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    margin: 0;
+    padding: 2rem 1rem 0.85rem;
+    background: linear-gradient(180deg, transparent, rgba(20, 27, 38, 0.78));
+    color: #fff;
+    font-weight: 700;
+}
+
+.gp-about-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.7rem;
+    margin-top: 1.35rem;
+}
+
+.gp-about-btn {
+    border: 1px solid var(--gp-border);
+    background: #fff;
+    color: var(--gp-text);
+}
+
+.gp-about-btn:hover,
+.gp-about-btn:focus {
+    border-color: var(--gp-navy);
+    background: #fff;
+    color: var(--gp-navy);
+}
+
+@media (min-width: 768px) {
+    .gp-about-story {
+        grid-template-columns: minmax(0, 1.05fr) minmax(16rem, 0.95fr);
+        gap: 2.5rem;
+    }
+
+    .gp-about-shots {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 640px) {
+    .gp-about-hero {
+        min-height: 18rem;
+    }
+
+    .gp-about-hero__copy {
+        left: 1rem;
+        right: 1rem;
+    }
+}
