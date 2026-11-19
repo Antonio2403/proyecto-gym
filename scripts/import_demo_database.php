@@ -138,23 +138,42 @@ if ($exitCode !== 0) {
 }
 
 $credFile = dirname(__DIR__) . '/docs/cuentas_demo.txt';
-$credBody = <<<TXT
-SPARTUM — cuentas de la demo
-============================
-Base de datos: {$dbName}
-
-rol        usuario                  contraseña
-admin      admin1@demo.local        Admin1#Demo2026!
-monitor    monitor1@demo.local      Monitor1#Demo2026!
-monitor    monitor2@demo.local      Monitor2#Demo2026!
-cliente    cliente1@demo.local      Cliente1#Demo2026!
-cliente    cliente2@demo.local      Cliente2#Demo2026!
-cliente    cliente3@demo.local      Cliente3#Demo2026!
-fisio      fisio1@demo.local        Fisio1#Demo2026!
-
-Recargar la demo (borra los datos anteriores): php scripts/import_demo_database.php --force
-TXT;
-file_put_contents($credFile, $credBody);
+$lineas = [
+    'SPARTUM — cuentas de la demo',
+    '============================',
+    'Base de datos: ' . $dbName,
+    '',
+    'rol        usuario                  contraseña',
+    'admin      admin1@demo.local        Admin1#Demo2026!',
+    'monitor    monitor1@demo.local      Monitor1#Demo2026!',
+    'monitor    monitor2@demo.local      Monitor2#Demo2026!',
+];
+$extra = require __DIR__ . '/demo_cuentas_extra.php';
+$clientesPrevios = [
+    'cliente    cliente1@demo.local      Cliente1#Demo2026!',
+    'cliente    cliente2@demo.local      Cliente2#Demo2026!',
+    'cliente    cliente3@demo.local      Cliente3#Demo2026!',
+];
+$monitoresExtra = [];
+$clientesExtra = [];
+foreach ($extra as $cuenta) {
+    $fila = sprintf('%-10s %-24s %s', $cuenta[0], $cuenta[3], $cuenta[4]);
+    if ($cuenta[0] === 'monitor') {
+        $monitoresExtra[] = $fila;
+    } else {
+        $clientesExtra[] = $fila;
+    }
+}
+$lineas = array_merge($lineas, $monitoresExtra, $clientesPrevios, $clientesExtra, [
+    'fisio      fisio1@demo.local        Fisio1#Demo2026!',
+    'fisio      fisio2@demo.local        Fisio2#Demo2026!',
+    'fisio      fisio3@demo.local        Fisio3#Demo2026!',
+    '',
+    'La clase actividad1 (lunes) queda completa con cliente1 a cliente15.',
+    'Recargar la demo (borra los datos anteriores): php scripts/import_demo_database.php --force',
+    '',
+]);
+file_put_contents($credFile, implode("\n", $lineas));
 
 echo "Base de datos `{$dbName}` importada desde spartum_full_demo.sql\n";
 echo "Cuentas guardadas en: {$credFile}\n";
