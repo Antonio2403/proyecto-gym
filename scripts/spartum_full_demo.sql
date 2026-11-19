@@ -36,6 +36,7 @@ DROP TABLE IF EXISTS `usuarios`;
 DROP TABLE IF EXISTS `feedback`;
 DROP TABLE IF EXISTS `subscripciones`;
 DROP TABLE IF EXISTS `admin_config`;
+DROP TABLE IF EXISTS `gp_ajuste`;
 
 CREATE TABLE `usuarios` (
     `id` INT AUTO_INCREMENT PRIMARY KEY,
@@ -336,9 +337,9 @@ INSERT INTO `gp_ajuste` (`clave`, `aplicado_en`) VALUES
 ('planes_clases_mitad_20261105', NOW());
 
 INSERT INTO `cliente_subscripcion` (`cliente_id`, `subscripcion_id`, `fecha_inicio`, `fecha_fin`, `estado`) VALUES
-(1, 1, '2026-05-01 00:00:00', '2026-06-01 23:59:59', 'A'),
-(2, 2, '2026-05-01 00:00:00', '2026-07-01 23:59:59', 'A'),
-(3, 3, '2026-05-01 00:00:00', '2026-08-01 23:59:59', 'A');
+(1, 1, CURDATE(), DATE_ADD(CURDATE(), INTERVAL 8 MONTH), 'A'),
+(2, 2, CURDATE(), DATE_ADD(CURDATE(), INTERVAL 8 MONTH), 'A'),
+(3, 3, CURDATE(), DATE_ADD(CURDATE(), INTERVAL 8 MONTH), 'A');
 
 INSERT INTO `solicitudes` (`monitor_id`, `admin_id`, `tipo`, `descripcion`, `estado`, `fecha_creacion`, `fecha_revision`) VALUES
 (1, 1, 'tipo1', 'descripcion1', 'P', NOW(), NULL),
@@ -370,5 +371,74 @@ INSERT INTO `materiales` (`sala_id`, `nombre`, `estado`) VALUES
 INSERT INTO `admin_config` (`clave`, `valor`) VALUES
 ('password_rotation_days', '90'),
 ('session_idle_timeout_seconds', '2700');
+
+
+-- Más monitores, clientes y una clase llena (actividad1, lunes de esta semana y de la siguiente).
+INSERT INTO `usuarios` (`id`, `DNI`, `nombre`, `apellido1`, `apellido2`, `email`, `clave`, `telefono`, `password_changed_at`, `email_confirmado`) VALUES
+(8, '10000018D', 'monitor3', 'apellido1', 'apellido2', 'monitor3@demo.local', '$2y$10$SBpVZVmcrDj2scTCGF18vuL.1N9O.kkEP9ZTrak8rOr9PMswRDlvS', '600000018', NOW(), 1),
+(9, '10000019X', 'monitor4', 'apellido1', 'apellido2', 'monitor4@demo.local', '$2y$10$XvgDtciRl4.tLr/ZjM4AsOJgbTGB6Z0BRsOvCWm3lC0Ew.6doC8iq', '600000019', NOW(), 1),
+(10, '10000020B', 'monitor5', 'apellido1', 'apellido2', 'monitor5@demo.local', '$2y$10$MTOcLyVfPKzeBdE7FuvPqe8wQuBmkKgOSh.5nodSmCkVipucQg81i', '600000020', NOW(), 1),
+(11, '10000021N', 'monitor6', 'apellido1', 'apellido2', 'monitor6@demo.local', '$2y$10$xCT0TBtHXqyDVg15s/oWQ.R7zeB88VYN7ht0JosNbvVcME3QCmI8.', '600000021', NOW(), 1),
+(12, '10000022J', 'cliente4', 'apellido1', 'apellido2', 'cliente4@demo.local', '$2y$10$DNwfWpYa2/lQif6sh9iyC.Lt1Tsz/ERtNPUVy/Kh9lFmObHRanFMS', '60010000022', NOW(), 1),
+(13, '10000023Z', 'cliente5', 'apellido1', 'apellido2', 'cliente5@demo.local', '$2y$10$sk9bxmbYO6jZft38bKHc6.0T/9uDTReMlEKCGohsUnNZEjQzq2cRC', '60010000023', NOW(), 1),
+(14, '10000024S', 'cliente6', 'apellido1', 'apellido2', 'cliente6@demo.local', '$2y$10$dL7S7f/E04/QAAvw1rIAPeJ1sXlOsUMngvYOBs3oO95Wt4iF3yuOa', '60010000024', NOW(), 1),
+(15, '10000025Q', 'cliente7', 'apellido1', 'apellido2', 'cliente7@demo.local', '$2y$10$CfiBdfnh/Dt5o6tlJcviF.KjO4RsWYuH3k1lRWUL/cVK5NUOt3L9a', '60010000025', NOW(), 1),
+(16, '10000026V', 'cliente8', 'apellido1', 'apellido2', 'cliente8@demo.local', '$2y$10$wavSpa2PlKK52/pkHEQcNeMUWIrXvAAn4TBoorpSJVsADmlIZDq0e', '60010000026', NOW(), 1),
+(17, '10000027H', 'cliente9', 'apellido1', 'apellido2', 'cliente9@demo.local', '$2y$10$JiIlqjZqDBOu/4j2k22tc.nfVvjymqH2gssKCrFYbhRwEaq./dh1O', '60010000027', NOW(), 1),
+(18, '10000028L', 'cliente10', 'apellido1', 'apellido2', 'cliente10@demo.local', '$2y$10$32iQmit2YtC/lCmo5FteGeLAd4fXTkouZ8d.CojxZFfqHm.V16/qu', '60010000028', NOW(), 1),
+(19, '10000029C', 'cliente11', 'apellido1', 'apellido2', 'cliente11@demo.local', '$2y$10$PXdNiDw6WcwfoIuwu4JQ0eNYu/9AnScfhyU3lhGrR9OGVft16KItm', '60010000029', NOW(), 1),
+(20, '10000030K', 'cliente12', 'apellido1', 'apellido2', 'cliente12@demo.local', '$2y$10$P4Ay1BKFhb2.N.LvAZ1YoOC8BErlWN0qE8GJ9tnhFIQ3WRBhFHlIK', '60010000030', NOW(), 1),
+(21, '10000031E', 'cliente13', 'apellido1', 'apellido2', 'cliente13@demo.local', '$2y$10$gR0sN7Gn4wMcZUgPbdsB5.JEzhl5G51Fk3E8huvZA/ZIi9wTpLcaK', '60010000031', NOW(), 1),
+(22, '10000032T', 'cliente14', 'apellido1', 'apellido2', 'cliente14@demo.local', '$2y$10$rnvPfFzjGyxxP1QCRAXK7O2oHLcmnXa2ewYZXGg/slMPZqbbP5gTa', '60010000032', NOW(), 1),
+(23, '10000033R', 'cliente15', 'apellido1', 'apellido2', 'cliente15@demo.local', '$2y$10$tjLtDXqQ8ND.b1qaq2k.6.QfODnqOFkrLJ9J2K8qXU6vysN9emkA2', '60010000033', NOW(), 1),
+(24, '10000034W', 'cliente16', 'apellido1', 'apellido2', 'cliente16@demo.local', '$2y$10$96KU9I2xGSIRPcDRKnPMGOCS1MkFtkL6xDcQ30g9LZRWFRDzUOzgC', '60010000034', NOW(), 1),
+(25, '10000035A', 'cliente17', 'apellido1', 'apellido2', 'cliente17@demo.local', '$2y$10$cC2JamKRUfm6uSyynN6tI.dJ3Tgw1rUnmuCIkBrP5PBsYlVQDAFEm', '60010000035', NOW(), 1),
+(26, '10000036G', 'cliente18', 'apellido1', 'apellido2', 'cliente18@demo.local', '$2y$10$IrJR2ilHjfQuK6yIBMBiIezZ7nApQK7NchSL/ZQ/SNAcZWDZjqbSK', '60010000036', NOW(), 1);
+
+INSERT INTO `monitores` (`id`, `usuario_id`, `especialidad`, `disponibilidad`) VALUES
+(3, 8, 'fuerza', 'L-S'),
+(4, 9, 'cardio', 'L-S'),
+(5, 10, 'movilidad', 'L-S'),
+(6, 11, 'funcional', 'L-S');
+
+INSERT INTO `clientes` (`id`, `usuario_id`, `metodo_pago`) VALUES
+(4, 12, 'tarjeta'),
+(5, 13, 'tarjeta'),
+(6, 14, 'tarjeta'),
+(7, 15, 'tarjeta'),
+(8, 16, 'tarjeta'),
+(9, 17, 'tarjeta'),
+(10, 18, 'tarjeta'),
+(11, 19, 'tarjeta'),
+(12, 20, 'tarjeta'),
+(13, 21, 'tarjeta'),
+(14, 22, 'tarjeta'),
+(15, 23, 'tarjeta'),
+(16, 24, 'tarjeta'),
+(17, 25, 'tarjeta'),
+(18, 26, 'tarjeta');
+
+INSERT INTO `actividades` (`id`, `nombre`, `color`, `duracion`, `monitor_id`, `sala_id`, `fecha_inicio`, `fecha_fin`, `dia_semana`, `descripcion`, `plazas`, `recurrente`) VALUES
+(4, 'actividad4', '#7C3AED', 45, 3, 1, '2026-11-17 19:00:00', '2026-11-17 19:45:00', 'M', 'descripcion4', 10, 1),
+(5, 'actividad5', '#0F766E', 45, 4, 2, '2026-11-20 09:30:00', '2026-11-20 10:15:00', 'V', 'descripcion5', 10, 1),
+(6, 'actividad6', '#CA8A04', 45, 5, 3, '2026-11-21 11:00:00', '2026-11-21 11:45:00', 'S', 'descripcion6', 8, 1),
+(7, 'actividad7', '#DB2777', 45, 6, 1, '2026-11-19 19:00:00', '2026-11-19 19:45:00', 'J', 'descripcion7', 12, 1);
+
+INSERT INTO `actividad_dias` (`actividad_id`, `dia_semana`) VALUES
+(4, 'M'),
+(5, 'V'),
+(6, 'S'),
+(7, 'J');
+
+INSERT INTO `cliente_subscripcion` (`cliente_id`, `subscripcion_id`, `fecha_inicio`, `fecha_fin`, `estado`)
+SELECT c.id, 3, CURDATE(), DATE_ADD(CURDATE(), INTERVAL 8 MONTH), 'A'
+FROM `clientes` c
+WHERE c.id BETWEEN 4 AND 18;
+
+SET @lunes := DATE_SUB(CURDATE(), INTERVAL WEEKDAY(CURDATE()) DAY);
+INSERT INTO `inscripciones` (`cliente_id`, `actividad_id`, `fecha_ocurrencia`, `asistio`, `fecha_inscripcion`)
+SELECT c.id, 1, @lunes, 'S', NOW() FROM `clientes` c WHERE c.id BETWEEN 1 AND 15;
+INSERT INTO `inscripciones` (`cliente_id`, `actividad_id`, `fecha_ocurrencia`, `asistio`, `fecha_inscripcion`)
+SELECT c.id, 1, DATE_ADD(@lunes, INTERVAL 7 DAY), 'S', NOW() FROM `clientes` c WHERE c.id BETWEEN 1 AND 15;
 
 SET FOREIGN_KEY_CHECKS = 1;

@@ -90,6 +90,7 @@ class BasedeDatos
                 self::asegurarColorSala($conexionDB);
                 self::asegurarCancelacionSesion($conexionDB);
                 self::asegurarMitadClasesPlanes($conexionDB);
+                self::asegurarDatosDemoAmplios($conexionDB);
 
                 return $conexionDB;
             }
@@ -370,6 +371,7 @@ class BasedeDatos
             ");
 
             self::ensureSchemaUpgrades($conexionDB);
+            self::asegurarDatosDemoAmplios($conexionDB);
 
             return $conexionDB;
         } catch (\Throwable $th) {
@@ -443,6 +445,201 @@ class BasedeDatos
     private static $cancelacionSesionLista = false;
 
     private static $mitadClasesLista = false;
+
+    private static $datosDemoAmpliosListos = false;
+
+    /**
+     * Una sola vez: más monitores y clientes de demo, y una clase con todas las plazas ocupadas.
+     */
+    private static function asegurarDatosDemoAmplios(PDO $db): void
+    {
+        if (self::$datosDemoAmpliosListos) {
+            return;
+        }
+        try {
+            $db->exec(
+                'CREATE TABLE IF NOT EXISTS gp_ajuste (
+                    clave VARCHAR(64) NOT NULL PRIMARY KEY,
+                    aplicado_en DATETIME NOT NULL
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8'
+            );
+            $clave = 'demo_amplia_20261119';
+            $ya = $db->prepare('SELECT 1 FROM gp_ajuste WHERE clave = ? LIMIT 1');
+            $ya->execute([$clave]);
+            if ($ya->fetchColumn()) {
+                self::$datosDemoAmpliosListos = true;
+
+                return;
+            }
+
+            $archivo = dirname(__DIR__, 2) . '/scripts/demo_cuentas_extra.php';
+            if (!is_file($archivo)) {
+                return;
+            }
+            $cuentas = require $archivo;
+            if (!is_array($cuentas)) {
+                return;
+            }
+
+            $buscar = $db->prepare('SELECT id FROM usuarios WHERE email = ? LIMIT 1');
+            $crearUsuario = $db->prepare(
+                'INSERT INTO usuarios (DNI, nombre, apellido1, apellido2, email, clave, telefono, password_changed_at, email_confirmado)
+                 VALUES (?, ?, ?, ?, ?, ?, ?, NOW(), 1)'
+            );
+            $crearMonitor = $db->prepare(
+                'INSERT INTO monitores (usuario_id, especialidad, disponibilidad)
+                 SELECT ?, ?, ? FROM DUAL WHERE NOT EXISTS (SELECT 1 FROM monitores WHERE usuario_id = ?)'
+            );
+            $crearCliente = $db->prepare(
+                'INSERT INTO clientes (usuario_id, metodo_pago)
+                 SELECT ?, ? FROM DUAL WHERE NOT EXISTS (SELECT 1 FROM clientes WHERE usuario_id = ?)'
+            );
+
+            foreach ($cuentas as $cuenta) {
+                if (!is_array($cuenta) || count($cuenta) < 7) {
+                    continue;
+                }
+                $rol = (string) $cuenta[0];
+                $numero = (int) $cuenta[1];
+                $buscar->execute([(string) $cuenta[3]]);
+                $usuarioId = $buscar->fetchColumn();
+                if (!$usuarioId) {
+                    $crearUsuario->execute([
+                        (string) $cuenta[2],
+                        $rol . $numero,
+                        'apellido1',
+                        'apellido2',
+                        (string) $cuenta[3],
+                        (string) $cuenta[5],
+                        (string) $cuenta[6],
+                    ]);
+                    $usuarioId = (int) $db->lastInsertId();
+                } else {
+                    $usuarioId = (int) $usuarioId;
+                }
+                if ($rol === 'monitor') {
+                    $crearMonitor->execute([$usuarioId, (string) ($cuenta[7] ?? 'general'), 'L-S', $usuarioId]);
+                } elseif ($rol === 'cliente') {
+                    $crearCliente->execute([$usuarioId, 'tarjeta', $usuarioId]);
+                }
+            }
+
+            $planId = (int) $db->query(
+                "SELECT id FROM subscripciones WHERE estado = 'A' ORDER BY numero_clases DESC, id ASC LIMIT 1"
+            )->fetchColumn();
+            $fin = (new DateTimeImmutable('today'))->modify('+8 months')->format('Y-m-d 23:59:59');
+            if ($planId > 0) {
+                $db->prepare(
+                    'UPDATE cliente_subscripcion cs
+                     INNER JOIN clientes c ON c.id = cs.cliente_id
+                     INNER JOIN usuarios u ON u.id = c.usuario_id
+                     SET cs.fecha_fin = ?, cs.estado = \'A\'
+                     WHERE u.email LIKE \'cliente%@demo.local\''
+                )->execute([$fin]);
+                $db->prepare(
+                    'INSERT INTO cliente_subscripcion (cliente_id, subscripcion_id, fecha_inicio, fecha_fin, estado)
+                     SELECT c.id, ?, NOW(), ?, \'A\'
+                     FROM clientes c
+                     INNER JOIN usuarios u ON u.id = c.usuario_id
+                     WHERE u.email LIKE \'cliente%@demo.local\'
+                       AND NOT EXISTS (
+                           SELECT 1 FROM cliente_subscripcion cs
+                           WHERE cs.cliente_id = c.id AND cs.estado = \'A\' AND cs.fecha_fin >= NOW()
+                       )'
+                )->execute([$planId, $fin]);
+            }
+
+            $salas = $db->query('SELECT id FROM salas ORDER BY id ASC')->fetchAll(PDO::FETCH_COLUMN);
+            $nuevas = [
+                ['actividad4', '#7C3AED', 45, 'monitor3@demo.local', '2026-11-17 19:00:00', '2026-11-17 19:45:00', 'M', 'descripcion4', 10],
+                ['actividad5', '#0F766E', 45, 'monitor4@demo.local', '2026-11-20 09:30:00', '2026-11-20 10:15:00', 'V', 'descripcion5', 10],
+                ['actividad6', '#CA8A04', 45, 'monitor5@demo.local', '2026-11-21 11:00:00', '2026-11-21 11:45:00', 'S', 'descripcion6', 8],
+                ['actividad7', '#DB2777', 45, 'monitor6@demo.local', '2026-11-19 19:00:00', '2026-11-19 19:45:00', 'J', 'descripcion7', 12],
+            ];
+            if ($salas !== []) {
+                $buscarActividad = $db->prepare('SELECT id FROM actividades WHERE nombre = ? LIMIT 1');
+                $buscarMonitor = $db->prepare(
+                    'SELECT m.id FROM monitores m INNER JOIN usuarios u ON u.id = m.usuario_id WHERE u.email = ? LIMIT 1'
+                );
+                $crearActividad = $db->prepare(
+                    'INSERT INTO actividades (nombre, color, duracion, monitor_id, sala_id, fecha_inicio, fecha_fin, dia_semana, descripcion, plazas, recurrente)
+                     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1)'
+                );
+                $crearDia = $db->prepare('INSERT IGNORE INTO actividad_dias (actividad_id, dia_semana) VALUES (?, ?)');
+                foreach ($nuevas as $i => $act) {
+                    $buscarActividad->execute([$act[0]]);
+                    if ($buscarActividad->fetchColumn()) {
+                        continue;
+                    }
+                    $buscarMonitor->execute([$act[3]]);
+                    $monitorId = (int) $buscarMonitor->fetchColumn();
+                    if ($monitorId <= 0) {
+                        continue;
+                    }
+                    $salaId = (int) $salas[$i % count($salas)];
+                    $crearActividad->execute([
+                        $act[0], $act[1], $act[2], $monitorId, $salaId, $act[4], $act[5], $act[6], $act[7], $act[8],
+                    ]);
+                    $crearDia->execute([(int) $db->lastInsertId(), $act[6]]);
+                }
+            }
+
+            $llena = $db->query(
+                "SELECT id, plazas, dia_semana FROM actividades WHERE nombre = 'actividad1' LIMIT 1"
+            )->fetch(PDO::FETCH_ASSOC);
+            if (!$llena && $salas !== []) {
+                $monitorId = (int) $db->query(
+                    "SELECT m.id FROM monitores m INNER JOIN usuarios u ON u.id = m.usuario_id
+                     WHERE u.email LIKE 'monitor%@demo.local' ORDER BY m.id ASC LIMIT 1"
+                )->fetchColumn();
+                if ($monitorId > 0) {
+                    $db->prepare(
+                        'INSERT INTO actividades (nombre, color, duracion, monitor_id, sala_id, fecha_inicio, fecha_fin, dia_semana, descripcion, plazas, recurrente)
+                         VALUES (\'actividad1\', \'#2563EB\', 45, ?, ?, \'2026-11-16 08:00:00\', \'2026-11-16 08:45:00\', \'L\', \'descripcion1\', 15, 1)'
+                    )->execute([$monitorId, (int) $salas[0]]);
+                    $nuevaId = (int) $db->lastInsertId();
+                    $db->prepare('INSERT IGNORE INTO actividad_dias (actividad_id, dia_semana) VALUES (?, \'L\')')->execute([$nuevaId]);
+                    $llena = ['id' => $nuevaId, 'plazas' => 15, 'dia_semana' => 'L'];
+                }
+            }
+            if ($llena) {
+                $plazas = max(1, (int) $llena['plazas']);
+                $clientes = $db->query(
+                    "SELECT c.id FROM clientes c
+                     INNER JOIN usuarios u ON u.id = c.usuario_id
+                     WHERE u.email LIKE 'cliente%@demo.local'
+                     ORDER BY c.id ASC"
+                )->fetchAll(PDO::FETCH_COLUMN);
+                $clientes = array_slice($clientes, 0, $plazas);
+                $desfase = ['L' => 0, 'M' => 1, 'X' => 2, 'J' => 3, 'V' => 4, 'S' => 5, 'D' => 6];
+                $dias = $desfase[(string) $llena['dia_semana']] ?? 0;
+                $lunes = (new DateTimeImmutable('today'))->modify('-' . ((int) date('N') - 1) . ' days');
+                $sesion = $lunes->modify('+' . $dias . ' days');
+                $apuntar = $db->prepare(
+                    'INSERT INTO inscripciones (cliente_id, actividad_id, fecha_ocurrencia, asistio, fecha_inscripcion)
+                     SELECT ?, ?, ?, \'S\', NOW() FROM DUAL
+                     WHERE NOT EXISTS (
+                         SELECT 1 FROM inscripciones
+                         WHERE cliente_id = ? AND actividad_id = ? AND fecha_ocurrencia = ?
+                     )'
+                );
+                foreach ([$sesion, $sesion->modify('+7 days')] as $fecha) {
+                    $ymd = $fecha->format('Y-m-d');
+                    foreach ($clientes as $clienteId) {
+                        $apuntar->execute([
+                            (int) $clienteId, (int) $llena['id'], $ymd,
+                            (int) $clienteId, (int) $llena['id'], $ymd,
+                        ]);
+                    }
+                }
+            }
+
+            $db->prepare('INSERT INTO gp_ajuste (clave, aplicado_en) VALUES (?, NOW())')->execute([$clave]);
+            self::$datosDemoAmpliosListos = true;
+        } catch (\Throwable $e) {
+            error_log('[Spartum BD] datos demo amplios: ' . $e->getMessage());
+        }
+    }
 
     /**
      * Una sola vez: las clases por semana de cada plan pasan a la mitad.
