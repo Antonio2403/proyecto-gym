@@ -16,7 +16,7 @@
 -- Las cuentas que ya existían (admin1, monitor1, monitor2, cliente1-3, fisio1) no se tocan,
 -- salvo alargar el plan de los clientes de demo 8 meses.
 
-SET NAMES utf8;
+SET NAMES utf8mb3 COLLATE utf8mb3_general_ci;
 
 CREATE TABLE IF NOT EXISTS `gp_ajuste` (
   `clave` VARCHAR(64) NOT NULL,
@@ -33,7 +33,7 @@ CREATE TEMPORARY TABLE `tmp_demo_cuentas` (
   `clave` VARCHAR(255) NOT NULL,
   `telefono` VARCHAR(20) NOT NULL,
   `extra` VARCHAR(100) NOT NULL
-) ENGINE=MEMORY;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 INSERT INTO `tmp_demo_cuentas` (`rol`, `nombre`, `dni`, `email`, `clave`, `telefono`, `extra`) VALUES
 ('monitor', 'monitor3', '10000018D', 'monitor3@demo.local', '$2y$10$SBpVZVmcrDj2scTCGF18vuL.1N9O.kkEP9ZTrak8rOr9PMswRDlvS', '600000018', 'fuerza'),
@@ -62,27 +62,29 @@ INSERT INTO `usuarios` (`DNI`, `nombre`, `apellido1`, `apellido2`, `email`, `cla
 SELECT t.dni, t.nombre, 'apellido1', 'apellido2', t.email, t.clave, t.telefono, NOW(), 1
 FROM `tmp_demo_cuentas` t
 WHERE NOT EXISTS (
-    SELECT 1 FROM `usuarios` u WHERE u.email = t.email OR u.DNI = t.dni
+    SELECT 1 FROM `usuarios` u
+    WHERE u.email = t.email COLLATE utf8mb3_general_ci
+       OR u.DNI = t.dni COLLATE utf8mb3_general_ci
 );
 
 INSERT INTO `monitores` (`usuario_id`, `especialidad`, `disponibilidad`)
 SELECT u.id, t.extra, 'L-S'
 FROM `tmp_demo_cuentas` t
-INNER JOIN `usuarios` u ON u.email = t.email
+INNER JOIN `usuarios` u ON u.email = t.email COLLATE utf8mb3_general_ci
 WHERE t.rol = 'monitor'
   AND NOT EXISTS (SELECT 1 FROM `monitores` m WHERE m.usuario_id = u.id);
 
 INSERT INTO `clientes` (`usuario_id`, `metodo_pago`)
 SELECT u.id, 'tarjeta'
 FROM `tmp_demo_cuentas` t
-INNER JOIN `usuarios` u ON u.email = t.email
+INNER JOIN `usuarios` u ON u.email = t.email COLLATE utf8mb3_general_ci
 WHERE t.rol = 'cliente'
   AND NOT EXISTS (SELECT 1 FROM `clientes` c WHERE c.usuario_id = u.id);
 
 INSERT INTO `fisioterapeutas` (`nombre`, `especialidad`, `usuario_id`)
 SELECT t.nombre, t.extra, u.id
 FROM `tmp_demo_cuentas` t
-INNER JOIN `usuarios` u ON u.email = t.email
+INNER JOIN `usuarios` u ON u.email = t.email COLLATE utf8mb3_general_ci
 WHERE t.rol = 'fisio'
   AND NOT EXISTS (SELECT 1 FROM `fisioterapeutas` f WHERE f.usuario_id = u.id);
 
