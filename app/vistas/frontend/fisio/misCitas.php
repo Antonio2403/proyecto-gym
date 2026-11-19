@@ -18,7 +18,7 @@ $estadoEtiqueta = static function (string $e): string {
             </header>
 
             <div class="px-4 md:px-6 pb-4">
-                <?php if (!empty($_GET['success'])): ?>
+                <?php if (!empty($_GET['solicitada'])): ?>
                     <div class="alert alert-success mb-0">Cita solicitada correctamente.</div>
                 <?php endif; ?>
                 <?php if (!empty($_GET['cancelada'])): ?>

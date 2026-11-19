@@ -249,7 +249,7 @@ class FisioControlador extends Controller
         }
 
         if (Cita::crear($clienteId, $fisioId, $fechaMysql, $motivo)) {
-            header('Location: ' . url('/usuario/fisio/mis-citas') . '?success=1');
+            header('Location: ' . url('/usuario/fisio/mis-citas') . '?solicitada=1');
             exit;
         }
 
