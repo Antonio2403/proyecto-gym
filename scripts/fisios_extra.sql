@@ -1,3 +1,6 @@
+-- Solo los dos fisios. Para monitores, clientes, la clase llena y los fisios juntos,
+-- usa scripts/datos_demo_completos.sql.
+--
 -- Spartum: dos fisioterapeutas más.
 -- Se puede ejecutar sobre la base que ya está en marcha. No borra nada
 -- y no duplica si el correo ya existe.
