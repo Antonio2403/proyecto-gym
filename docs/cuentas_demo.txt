@@ -29,6 +29,8 @@ cliente    cliente16@demo.local     Cliente16#Demo2026!
 cliente    cliente17@demo.local     Cliente17#Demo2026!
 cliente    cliente18@demo.local     Cliente18#Demo2026!
 fisio      fisio1@demo.local        Fisio1#Demo2026!
+fisio      fisio2@demo.local        Fisio2#Demo2026!
+fisio      fisio3@demo.local        Fisio3#Demo2026!
 
 La clase actividad1 (lunes) queda completa con cliente1 a cliente15.
 Recargar la demo (borra los datos anteriores): php scripts/import_demo_database.php --force
