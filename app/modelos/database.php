@@ -91,6 +91,7 @@ class BasedeDatos
                 self::asegurarCancelacionSesion($conexionDB);
                 self::asegurarMitadClasesPlanes($conexionDB);
                 self::asegurarDatosDemoAmplios($conexionDB);
+                self::asegurarFisiosDemo($conexionDB);
 
                 return $conexionDB;
             }
@@ -372,6 +373,7 @@ class BasedeDatos
 
             self::ensureSchemaUpgrades($conexionDB);
             self::asegurarDatosDemoAmplios($conexionDB);
+            self::asegurarFisiosDemo($conexionDB);
 
             return $conexionDB;
         } catch (\Throwable $th) {
@@ -447,6 +449,65 @@ class BasedeDatos
     private static $mitadClasesLista = false;
 
     private static $datosDemoAmpliosListos = false;
+
+    private static $fisiosDemoListos = false;
+
+    /**
+     * Una sola vez: fisio2 y fisio3, el mismo alta que scripts/fisios_extra.sql.
+     */
+    private static function asegurarFisiosDemo(PDO $db): void
+    {
+        if (self::$fisiosDemoListos) {
+            return;
+        }
+        try {
+            $db->exec(
+                'CREATE TABLE IF NOT EXISTS gp_ajuste (
+                    clave VARCHAR(64) NOT NULL PRIMARY KEY,
+                    aplicado_en DATETIME NOT NULL
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8'
+            );
+            $clave = 'demo_fisios_20261119';
+            $ya = $db->prepare('SELECT 1 FROM gp_ajuste WHERE clave = ? LIMIT 1');
+            $ya->execute([$clave]);
+            if ($ya->fetchColumn()) {
+                self::$fisiosDemoListos = true;
+
+                return;
+            }
+
+            $altas = [
+                ['10000037M', 'fisio2', 'fisio2@demo.local', '$2y$10$hj4KU1Iqga3JHqdNF6tSTOjONaQc.YKYMrEcUcTk2AKVJeL9HVq8q', '600000037', 'deportiva'],
+                ['10000038Y', 'fisio3', 'fisio3@demo.local', '$2y$10$s9P961uZVEHAmLUaDTyREOZKff0YyTVh.QvieWZPZem6HCLzlg5Eu', '600000038', 'recuperacion'],
+            ];
+            $buscar = $db->prepare('SELECT id FROM usuarios WHERE email = ? LIMIT 1');
+            $crear = $db->prepare(
+                'INSERT INTO usuarios (DNI, nombre, apellido1, apellido2, email, clave, telefono, password_changed_at, email_confirmado)
+                 VALUES (?, ?, \'apellido1\', \'apellido2\', ?, ?, ?, NOW(), 1)'
+            );
+            $ficha = $db->prepare(
+                'INSERT INTO fisioterapeutas (nombre, especialidad, usuario_id)
+                 SELECT ?, ?, ? FROM DUAL
+                 WHERE NOT EXISTS (SELECT 1 FROM fisioterapeutas WHERE usuario_id = ?)'
+            );
+            foreach ($altas as $alta) {
+                $buscar->execute([$alta[2]]);
+                $usuarioId = $buscar->fetchColumn();
+                if (!$usuarioId) {
+                    $crear->execute([$alta[0], $alta[1], $alta[2], $alta[3], $alta[4]]);
+                    $usuarioId = (int) $db->lastInsertId();
+                } else {
+                    $usuarioId = (int) $usuarioId;
+                }
+                $ficha->execute([$alta[1], $alta[5], $usuarioId, $usuarioId]);
+            }
+
+            $db->prepare('INSERT INTO gp_ajuste (clave, aplicado_en) VALUES (?, NOW())')->execute([$clave]);
+            self::$fisiosDemoListos = true;
+        } catch (\Throwable $e) {
+            error_log('[Spartum BD] fisios demo: ' . $e->getMessage());
+        }
+    }
 
     /**
      * Una sola vez: más monitores y clientes de demo, y una clase con todas las plazas ocupadas.

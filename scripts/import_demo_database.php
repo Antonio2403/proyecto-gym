@@ -166,6 +166,8 @@ foreach ($extra as $cuenta) {
 }
 $lineas = array_merge($lineas, $monitoresExtra, $clientesPrevios, $clientesExtra, [
     'fisio      fisio1@demo.local        Fisio1#Demo2026!',
+    'fisio      fisio2@demo.local        Fisio2#Demo2026!',
+    'fisio      fisio3@demo.local        Fisio3#Demo2026!',
     '',
     'La clase actividad1 (lunes) queda completa con cliente1 a cliente15.',
     'Recargar la demo (borra los datos anteriores): php scripts/import_demo_database.php --force',

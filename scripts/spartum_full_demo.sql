@@ -441,4 +441,12 @@ SELECT c.id, 1, @lunes, 'S', NOW() FROM `clientes` c WHERE c.id BETWEEN 1 AND 15
 INSERT INTO `inscripciones` (`cliente_id`, `actividad_id`, `fecha_ocurrencia`, `asistio`, `fecha_inscripcion`)
 SELECT c.id, 1, DATE_ADD(@lunes, INTERVAL 7 DAY), 'S', NOW() FROM `clientes` c WHERE c.id BETWEEN 1 AND 15;
 
+INSERT INTO `usuarios` (`id`, `DNI`, `nombre`, `apellido1`, `apellido2`, `email`, `clave`, `telefono`, `password_changed_at`, `email_confirmado`) VALUES
+(27, '10000037M', 'fisio2', 'apellido1', 'apellido2', 'fisio2@demo.local', '$2y$10$hj4KU1Iqga3JHqdNF6tSTOjONaQc.YKYMrEcUcTk2AKVJeL9HVq8q', '600000037', NOW(), 1),
+(28, '10000038Y', 'fisio3', 'apellido1', 'apellido2', 'fisio3@demo.local', '$2y$10$s9P961uZVEHAmLUaDTyREOZKff0YyTVh.QvieWZPZem6HCLzlg5Eu', '600000038', NOW(), 1);
+
+INSERT INTO `fisioterapeutas` (`id`, `nombre`, `especialidad`, `usuario_id`) VALUES
+(2, 'fisio2', 'deportiva', 27),
+(3, 'fisio3', 'recuperacion', 28);
+
 SET FOREIGN_KEY_CHECKS = 1;
