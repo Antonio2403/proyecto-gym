@@ -3,6 +3,7 @@
 require_once 'app/modelos/inscripcion.php';
 require_once 'app/modelos/actividades.php';
 require_once 'app/modelos/cliente_subscripcion.php';
+require_once 'app/modelos/cliente.php';
 require_once 'core/Controller.php';
 require_once __DIR__ . '/../servicios/ReservaActividadServicio.php';
 

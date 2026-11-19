@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Spartum\Servicios;
 
+require_once dirname(__DIR__) . '/modelos/cliente.php';
+
 final class ReservaActividadServicio
 {
     /**
