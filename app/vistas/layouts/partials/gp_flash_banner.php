@@ -2,7 +2,7 @@
 $gpFlashMessage = null;
 $gpFlashType = null;
 
-if (!empty($_GET['success'])) {
+if (!empty($_GET['success']) && (string) $_GET['success'] !== '1') {
     $gpFlashMessage = (string) $_GET['success'];
     $gpFlashType = 'success';
 } elseif (!empty($_GET['error'])) {
