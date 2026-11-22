@@ -281,6 +281,13 @@ uasort($clasesFiltro, static function (array $a, array $b): int {
                     </tbody>
                 </table>
             </div>
+            <div class="gp-schedule-week-below">
+                <?php if ($semanaOffset === 1): ?>
+                    <a class="btn" href="<?= htmlspecialchars(url('/usuario/actividades') . '?semana=0') ?>">Ver la semana actual</a>
+                <?php else: ?>
+                    <a class="btn" href="<?= htmlspecialchars(url('/usuario/actividades') . '?semana=1') ?>">Ver la semana siguiente</a>
+                <?php endif; ?>
+            </div>
             </div>
             </div>
         </div>

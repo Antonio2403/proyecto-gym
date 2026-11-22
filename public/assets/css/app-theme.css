@@ -1958,6 +1958,27 @@ body.gp-cookie-open {
     box-shadow: var(--gp-shadow-xs);
 }
 
+.gp-schedule-week-below {
+    display: flex;
+    justify-content: center;
+    padding: 0 1rem 1.5rem;
+}
+
+.gp-schedule-week-below .btn {
+    border: 1px solid var(--gp-sch-cell-border);
+    color: var(--gp-sch-text);
+    background: #f1f4f8;
+    font-weight: 600;
+    font-size: 0.875rem;
+    padding: 0.55rem 1.25rem;
+    border-radius: var(--gp-radius-sm);
+}
+
+.gp-schedule-week-below .btn:hover {
+    background: var(--gp-white);
+    color: var(--gp-sch-navy);
+}
+
 .gp-schedule-table-wrap {
     background: var(--gp-sch-bg);
 }
@@ -2348,7 +2369,8 @@ body.gp-cookie-open {
 
 @media (max-width: 1023.98px) {
     .gp-schedule-table-wrap,
-    .gp-schedule-filter {
+    .gp-schedule-filter,
+    .gp-schedule-week-below {
         display: none;
     }
 
