@@ -4734,3 +4734,19 @@ label.gp-label-required::after {
         right: 1rem;
     }
 }
+
+.gp-uso-aviso {
+    display: none;
+    margin: 0.35rem 0 0;
+    color: #b42318;
+    font-size: 0.875rem;
+    font-weight: 600;
+}
+
+.gp-uso-aviso.is-on {
+    display: block;
+}
+
+.form-control.gp-uso-ocupado {
+    border-color: #b42318;
+}
