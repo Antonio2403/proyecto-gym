@@ -151,7 +151,7 @@ $gpTextoMeses = static function (int $meses): string {
                         <div class="gp-plan-offer-box mt-4" data-offer-countdown="<?= htmlspecialchars($ofertaFin) ?>">
                             <strong><?= htmlspecialchars($ofertaMotivo !== '' ? $ofertaMotivo : 'Oferta limitada') ?></strong>
                             <span class="block text-sm">Disponible para comprar hasta: <?= htmlspecialchars(substr($ofertaFin, 0, 16)) ?></span>
-                            <span class="block text-sm" data-offer-countdown-label>Calculando tiempo restante...</span>
+                            <span class="block text-sm" data-offer-countdown-label>Calculando el tiempo restante…</span>
                         </div>
                     <?php endif; ?>
                 </header>
@@ -164,7 +164,7 @@ $gpTextoMeses = static function (int $meses): string {
 
                 <ul class="gp-plan-features list-none ps-0 text-sm my-6 grow">
                     <?= $gpFilaPlan(true, 'Reserva online', 'Elige la actividad y guarda tu plaza') ?>
-                    <?= $gpFilaPlan(true, 'Horario del centro', 'Ves sala, monitor y día antes de apuntarte') ?>
+                    <?= $gpFilaPlan(true, 'Horario del centro', 'Ves la sala, el monitor y el día antes de apuntarte') ?>
                     <?= $gpFilaPlan(true, 'Clases guiadas', $textoClases) ?>
                     <?= $gpFilaPlan($conFisio, 'Fisioterapia', $conFisio ? 'Puedes pedir cita desde tu cuenta' : '') ?>
                     <?= $gpFilaPlan(true, 'Pago con Stripe', 'Contratas el plan desde esta página') ?>

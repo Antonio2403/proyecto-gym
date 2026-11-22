@@ -258,7 +258,7 @@ uasort($clasesFiltro, static function (array $a, array $b): int {
                                                 <form method="post" action="<?= htmlspecialchars(url('/usuario/inscripciones/apuntarse')) ?>" class="mb-1"
                                                       data-gp-confirm
                                                       data-gp-confirm-title="Reservar plaza"
-                                                      data-gp-confirm-body="¿Confirmar tu apuntamiento a esta actividad en el horario mostrado?"
+                                                      data-gp-confirm-body="¿Confirmar tu reserva en esta actividad y en el horario mostrado?"
                                                       data-gp-confirm-ok="Sí, reservar">
                                                     <input type="hidden" name="actividad_id" value="<?= $actId ?>">
                                                     <input type="hidden" name="fecha_sesion" value="<?= htmlspecialchars($fechaSesionReserva) ?>">

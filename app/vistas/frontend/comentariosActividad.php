@@ -16,7 +16,7 @@ $qBase = [
         <span class="gp-badge mb-2">Sesión</span>
         <h1 class="text-[1.75rem] mb-2">Comentarios</h1>
         <p class="text-slate-500 mb-0">
-            <?= htmlspecialchars($actividad['nombre'] ?? '') ?>. Los comentarios de esta actividad se ven también las semanas siguientes.
+            <?= htmlspecialchars($actividad['nombre'] ?? '') ?>. Los comentarios de esta actividad se ven también en las semanas siguientes.
         </p>
     </header>
 
