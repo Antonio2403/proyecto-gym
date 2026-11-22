@@ -84,7 +84,7 @@ class Fisioterapeuta
         $chk = $db->prepare('SELECT id FROM clientes WHERE usuario_id = ? LIMIT 1');
         $chk->execute([$usuarioId]);
         if ($chk->fetchColumn()) {
-            return ['ok' => false, 'error' => 'Ese usuario es socio; use una cuenta distinta para el panel de fisioterapeuta.'];
+            return ['ok' => false, 'error' => 'Ese usuario es socio; usa una cuenta distinta para el panel de fisioterapeuta.'];
         }
 
         $sql = 'SELECT id FROM fisioterapeutas WHERE usuario_id = ?';
