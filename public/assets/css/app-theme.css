@@ -2099,7 +2099,6 @@ body.gp-cookie-open {
     box-shadow: 0 4px 14px rgba(59, 125, 214, 0.35);
 }
 
-.gp-schedule-act--full,
 .gp-schedule-act--past,
 .gp-schedule-act--enrolled-done {
     background: #e7ebf0;
@@ -2108,8 +2107,6 @@ body.gp-cookie-open {
     opacity: 1;
 }
 
-.gp-schedule-act--full:hover,
-.gp-schedule-act--full:focus-visible,
 .gp-schedule-act--past:hover,
 .gp-schedule-act--past:focus-visible,
 .gp-schedule-act--enrolled-done:hover,
@@ -2118,26 +2115,55 @@ body.gp-cookie-open {
     box-shadow: inset 0 0 0 1px #d7dee7;
 }
 
-.gp-schedule-act--full .gp-schedule-act-name,
 .gp-schedule-act--past .gp-schedule-act-name,
 .gp-schedule-act--enrolled-done .gp-schedule-act-name,
-.gp-schedule-act--full .gp-schedule-act-body strong,
 .gp-schedule-act--past .gp-schedule-act-body strong,
 .gp-schedule-act--enrolled-done .gp-schedule-act-body strong {
     color: #2c3544 !important;
 }
 
-.gp-schedule-act--full .gp-schedule-act-time,
 .gp-schedule-act--past .gp-schedule-act-time,
 .gp-schedule-act--enrolled-done .gp-schedule-act-time {
     color: #526074;
 }
 
-.gp-schedule-act--full .gp-schedule-act-capacity,
 .gp-schedule-act--past .gp-schedule-act-capacity,
 .gp-schedule-act--enrolled-done .gp-schedule-act-capacity {
     color: #526074;
     background: rgba(44, 53, 68, 0.08);
+}
+
+.gp-schedule-act--full {
+    background: #2c3544;
+    border-left-color: #c45c26;
+    box-shadow: 0 2px 8px rgba(44, 53, 68, 0.18);
+}
+
+.gp-schedule-act--full:hover,
+.gp-schedule-act--full:focus-visible {
+    transform: none;
+    box-shadow: 0 2px 8px rgba(44, 53, 68, 0.18);
+}
+
+.gp-schedule-act--full .gp-schedule-act-name,
+.gp-schedule-act--full .gp-schedule-act-body strong {
+    color: #fff !important;
+}
+
+.gp-schedule-act--full .gp-schedule-act-time,
+.gp-schedule-act--full .gp-schedule-act-capacity {
+    color: rgba(255, 255, 255, 0.82);
+    background: transparent;
+}
+
+.gp-schedule-act-full {
+    display: block;
+    margin-top: 0.35rem;
+    color: #c45c26;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    font-size: 0.82rem;
+    text-transform: uppercase;
 }
 
 .gp-btn-comentar {
@@ -2561,6 +2587,24 @@ body.gp-cookie-open {
     .gp-day-row__status.is-live {
         color: var(--gp-orange);
         font-weight: 800;
+    }
+
+    .gp-day-row.is-full {
+        background: #2c3544;
+        border-left: 6px solid #c45c26;
+    }
+
+    .gp-day-row.is-full .gp-day-row__title,
+    .gp-day-row.is-full .gp-day-row__meta,
+    .gp-day-row.is-full .gp-day-row__who {
+        color: #fff;
+    }
+
+    .gp-day-row__status.is-full {
+        color: #c45c26;
+        font-weight: 800;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
     }
 
     .gp-day-row__actions {
