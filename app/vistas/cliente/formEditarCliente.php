@@ -25,7 +25,7 @@
                                 </div>
                                 <div class="w-full md:w-1/2 max-w-full shrink-0 px-2 mt-4">
                                     <label for="telefono" class="form-label">Teléfono</label>
-                                    <input type="tel" class="form-control" id="telefono" name="telefono" inputmode="numeric" autocomplete="tel" placeholder="612345678" pattern="[0-9+\s]{9,15}" value="<?= isset($cliente['telefono']) ? htmlspecialchars($cliente['telefono']) : '' ?>">
+                                    <input type="text" class="form-control" id="telefono" name="telefono" inputmode="numeric" autocomplete="tel" placeholder="612 34 56 78" maxlength="12" pattern="[0-9]{3} [0-9]{2} [0-9]{2} [0-9]{2}" data-gp-phone-input value="<?= isset($cliente['telefono']) ? htmlspecialchars($cliente['telefono']) : '' ?>">
                                 </div>
                                 <div class="w-full max-w-full shrink-0 px-2 mt-4">
                                     <label for="nombre" class="form-label gp-label-required">Nombre</label>

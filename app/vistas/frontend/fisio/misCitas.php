@@ -47,7 +47,7 @@ $estadoEtiqueta = static function (string $e): string {
                 <?php endif; ?>
 
                 <?php if (empty($citas)): ?>
-                    <div class="gp-light-panel-inner p-6 text-slate-500">No tienes citas registradas.</div>
+                    <div class="gp-empty">No tienes citas registradas.</div>
                 <?php else: ?>
                     <div class="table-responsive rounded-md overflow-hidden border border-slate-100">
                         <table class="table gp-table-light mb-0 text-center align-middle">

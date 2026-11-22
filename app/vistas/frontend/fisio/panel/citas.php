@@ -160,7 +160,7 @@ $toIx = min($total, $page * $perPage);
                 </p>
 
                 <?php if (empty($rows)): ?>
-                    <div class="gp-light-panel-inner p-6 text-slate-500">No hay citas que coincidan.</div>
+                    <div class="gp-empty">No hay citas que coincidan.</div>
                 <?php else: ?>
                     <div class="table-responsive rounded-md overflow-hidden border border-slate-100">
                         <table class="table gp-table-light mb-0 text-center align-middle">

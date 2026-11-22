@@ -616,21 +616,27 @@ body.gp-cookie-open {
 
 .site-body .btn-success,
 .gp-admin-body-root .btn-success,
-.gp-admin-page .btn-success {
-    --bs-btn-bg: var(--gp-green);
-    --bs-btn-border-color: var(--gp-green);
-    --bs-btn-hover-bg: var(--gp-green-hover);
-    --bs-btn-hover-border-color: var(--gp-green-hover);
-    background: var(--gp-green);
-    border-color: var(--gp-green);
+.gp-admin-page .btn-success,
+.site-body .btn-dark,
+.gp-admin-body-root .btn-dark,
+.gp-admin-page .btn-dark {
+    --bs-btn-bg: var(--gp-orange);
+    --bs-btn-border-color: var(--gp-orange);
+    --bs-btn-hover-bg: var(--gp-orange-hover);
+    --bs-btn-hover-border-color: var(--gp-orange-hover);
+    background: var(--gp-orange);
+    border-color: var(--gp-orange);
     color: #fff;
 }
 
 .site-body .btn-success:hover,
 .gp-admin-body-root .btn-success:hover,
-.gp-admin-page .btn-success:hover {
-    background: var(--gp-green-hover);
-    border-color: var(--gp-green-hover);
+.gp-admin-page .btn-success:hover,
+.site-body .btn-dark:hover,
+.gp-admin-body-root .btn-dark:hover,
+.gp-admin-page .btn-dark:hover {
+    background: var(--gp-orange-hover);
+    border-color: var(--gp-orange-hover);
     color: #fff;
 }
 
@@ -2687,7 +2693,7 @@ body.gp-cookie-open {
 }
 
 .gp-btn-apuntarse {
-    background: var(--gp-sch-green) !important;
+    background: var(--gp-orange) !important;
     color: #fff !important;
     border: none !important;
     font-weight: 600;
@@ -2698,7 +2704,7 @@ body.gp-cookie-open {
 }
 
 .gp-btn-apuntarse:hover {
-    background: var(--gp-sch-green-hover) !important;
+    background: var(--gp-orange-hover) !important;
     color: #fff !important;
 }
 
@@ -4310,21 +4316,46 @@ label.gp-label-required::after {
 }
 
 .gp-flash-banner--success {
-    background: #e8f7ee;
-    border-color: #9ed4b6;
-    color: #1f5f3f;
+    background: #ecfdf3;
+    border-color: #bbf7d0;
+    color: #166534;
 }
 
 .gp-flash-banner--warn {
-    background: #fff6db;
-    border-color: #e8c547;
-    color: #7a4e00;
+    background: #fffbeb;
+    border-color: #fde68a;
+    color: #92400e;
 }
 
 .gp-flash-banner--error {
-    background: #fdecec;
-    border-color: #f0a8a8;
-    color: #7f1d1d;
+    background: #fef2f2;
+    border-color: #fecaca;
+    color: #991b1b;
+}
+
+.badge {
+    background: #2c3544 !important;
+    color: #fff !important;
+    border-radius: 999px !important;
+    border: 0 !important;
+}
+
+.gp-empty {
+    background: #f8fafc;
+    color: #334155;
+    border: 1px solid #e2e8f0;
+    border-radius: 0.5rem;
+    padding: 0.85rem 1rem;
+}
+
+.form-control:not(.form-control-sm) {
+    min-height: 3rem;
+    padding: 0.7rem 0.9rem;
+    font-size: 1.05rem;
+}
+
+textarea.form-control:not(.form-control-sm) {
+    min-height: 7rem;
 }
 
 .gp-flash-banner--hide {

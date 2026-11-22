@@ -195,7 +195,7 @@ $gpTextoMeses = static function (int $meses): string {
     </div>
 
     <?php if (empty($planesComparativa)): ?>
-        <p class="alert alert-secondary text-center">No hay planes publicados por el momento.</p>
+        <p class="gp-empty text-center">No hay planes publicados por el momento.</p>
     <?php endif; ?>
 
     <div class="justify-center mt-12 flex flex-wrap -mx-3">

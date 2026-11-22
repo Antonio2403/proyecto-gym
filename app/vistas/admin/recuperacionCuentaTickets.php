@@ -39,7 +39,7 @@
         <div class="tab-content">
             <div class="tab-pane fade show active" id="pane-pendientes" role="tabpanel">
                 <?php if (empty($tickets_pendientes)): ?>
-                    <div class="gp-ticket-empty text-center text-slate-500 py-12 rounded-lg border border-slate-300 border-dashed">
+                    <div class="gp-empty gp-ticket-empty text-center">
                         <i class="fas fa-ticket fa-2x mb-4 opacity-50"></i>
                         <p class="mb-0">No hay tickets abiertos. Aparecerán aquí cuando un socio cree un ticket desde /ticket.</p>
                     </div>
@@ -140,7 +140,7 @@
 
             <div class="tab-pane fade" id="pane-historial" role="tabpanel">
                 <?php if (empty($tickets_historial)): ?>
-                    <p class="text-slate-500 text-sm">Aún no hay tickets cerrados en el historial reciente.</p>
+                    <p class="gp-empty text-sm">Aún no hay tickets cerrados en el historial reciente.</p>
                 <?php else: ?>
                     <div class="table-responsive gp-admin-card-panel rounded-lg shadow-sm">
                         <table class="table table-sm align-middle mb-0">

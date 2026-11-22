@@ -89,8 +89,7 @@ $labelEstado = static function (string $est): string {
                         </tbody>
                     </table>
                 <?php else: ?>
-                    <div class="p-6 text-center text-slate-500">
-                        <i class="fas fa-check-circle text-xl block mb-2 text-green-700 opacity-75"></i>
+                    <div class="gp-empty text-center">
                         No hay solicitudes pendientes en el centro.
                     </div>
                 <?php endif; ?>

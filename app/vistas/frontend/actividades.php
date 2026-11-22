@@ -61,28 +61,27 @@ uasort($clasesFiltro, static function (array $a, array $b): int {
                     <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-4">
                         <?php if ($esClienteSocio): ?>
                             <?php if ($tienePlanActivo && $cupoResumen && (int) ($cupoResumen['max_semana'] ?? 0) > 0): ?>
-                            <div class="gp-schedule-quota-hint text-center sm:text-left text-sm text-white/50 px-4 py-2 rounded-lg border border-slate-100/25 bg-slate-800/40"
+                            <div class="alert alert-success text-sm mb-0"
                                  role="status"
                                  title="Reservas de esta semana según tu plan activo">
-                                <span class="block text-white/50 uppercase text-sm mb-1" style="letter-spacing: .04em;">Tu plan esta semana</span>
-                                <span class="text-white font-semibold"><?= (int) ($cupoResumen['usado'] ?? 0) ?></span>
-                                <span class="text-white/50"> reservas usadas de </span>
-                                <span class="text-white font-semibold"><?= (int) $cupoResumen['max_semana'] ?></span>
+                                <span class="block uppercase text-sm mb-1" style="letter-spacing: .04em;">Tu plan esta semana</span>
+                                <strong><?= (int) ($cupoResumen['usado'] ?? 0) ?></strong>
+                                reservas usadas de
+                                <strong><?= (int) $cupoResumen['max_semana'] ?></strong>
                                 <?php if (isset($cupoResumen['restante'])): ?>
-                                    <span class="text-white/50"> · te quedan </span>
-                                    <span class="text-yellow-700 font-semibold"><?= (int) $cupoResumen['restante'] ?></span>
+                                    · te quedan <strong><?= (int) $cupoResumen['restante'] ?></strong>
                                 <?php endif; ?>
                             </div>
                             <?php elseif ($tienePlanActivo && $cupoResumen && (int) ($cupoResumen['max_semana'] ?? 0) <= 0): ?>
-                            <div class="gp-schedule-quota-hint text-sm text-white/50 px-4 py-2 rounded-lg border border-slate-100/25 bg-slate-800/40" role="status">
-                                <strong class="text-white">Plan activo:</strong> sin tope fijo de clases por semana en el sistema.
+                            <div class="alert alert-success text-sm mb-0" role="status">
+                                <strong>Plan activo:</strong> sin tope fijo de clases por semana en el sistema.
                             </div>
                             <?php else: ?>
-                            <div class="gp-schedule-quota-hint text-sm px-4 py-2 rounded-lg border border-yellow-400/50 bg-slate-800/50 text-left" role="alert">
-                                <strong class="text-yellow-700">Sin plan activo.</strong>
-                                <span class="text-white/50"> No puedes reservar ni gestionar plazas hasta contratar o renovar en </span>
-                                <a class="text-amber-700 underline font-semibold" href="<?= htmlspecialchars(url('/pago')) ?>">Planes</a>.
-                                <span class="text-white/50 block mt-1 text-sm">Si tenías reservas antiguas, quedan congeladas hasta que vuelvas a tener un plan en vigor.</span>
+                            <div class="alert alert-warning text-sm mb-0 text-left" role="alert">
+                                <strong>Sin plan activo.</strong>
+                                No puedes reservar ni gestionar plazas hasta contratar o renovar en
+                                <a class="font-semibold" href="<?= htmlspecialchars(url('/pago')) ?>">Planes</a>.
+                                <span class="block mt-1">Si tenías reservas antiguas, quedan congeladas hasta que vuelvas a tener un plan en vigor.</span>
                             </div>
                             <?php endif; ?>
                         <?php endif; ?>

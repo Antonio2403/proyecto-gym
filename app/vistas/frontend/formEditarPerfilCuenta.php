@@ -17,7 +17,7 @@ require dirname(__DIR__) . '/layouts/partials/gp_form_panel_start.php';
                         </div>
                         <div>
                             <label for="telefono_staff" class="form-label">Teléfono</label>
-                            <input type="tel" class="form-control" id="telefono_staff" name="telefono" inputmode="numeric" autocomplete="tel" placeholder="612345678" pattern="[0-9+\s]{9,15}" value="<?= isset($perfil['telefono']) ? htmlspecialchars((string) $perfil['telefono']) : '' ?>">
+                            <input type="text" class="form-control" id="telefono_staff" name="telefono" inputmode="numeric" autocomplete="tel" placeholder="612 34 56 78" maxlength="12" pattern="[0-9]{3} [0-9]{2} [0-9]{2} [0-9]{2}" data-gp-phone-input value="<?= isset($perfil['telefono']) ? htmlspecialchars((string) $perfil['telefono']) : '' ?>">
                         </div>
                         <div class="gp-form-span-2">
                             <label for="nombre_staff" class="form-label gp-label-required">Nombre</label>

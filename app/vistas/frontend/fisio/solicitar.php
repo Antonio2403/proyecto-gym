@@ -24,7 +24,7 @@ $slotMin = gp_fisio_duracion_consulta_minutos();
             <div class="px-4 md:px-6 pb-6">
                 <?php if (empty($fisioterapeutas)): ?>
                     <div class="gp-light-panel-inner p-6 mb-4">
-                        <p class="text-slate-500 mb-4 mb-0">Aún no hay fisioterapeutas dados de alta. Contacta con recepción.</p>
+                        <p class="gp-empty mb-0">Aún no hay fisioterapeutas dados de alta. Contacta con recepción.</p>
                     </div>
                     <a href="<?= htmlspecialchars(url('/usuario/fisio')) ?>" class="btn btn-outline-secondary">Volver</a>
                 <?php else: ?>

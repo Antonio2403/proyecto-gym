@@ -98,7 +98,7 @@ $qBase = [
             </li>
         <?php endforeach; ?>
         <?php if (empty($comentarios)): ?>
-            <li class="list-group-item text-slate-500 px-6 py-12 text-center">Aún no hay comentarios.</li>
+            <li class="gp-empty list-none text-center">Aún no hay comentarios.</li>
         <?php endif; ?>
     </ul>
 

@@ -52,7 +52,7 @@
                 <?php endforeach; ?>
             </div>
         <?php else: ?>
-            <div class="alert alert-info border-0 shadow-sm">No hay salas disponibles.</div>
+            <div class="gp-empty">No hay salas disponibles.</div>
         <?php endif; ?>
     </div>
 </div>

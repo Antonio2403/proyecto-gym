@@ -144,7 +144,7 @@ $queryBase = static function (array $extra = []) use ($filtros, $perPage): array
         </div>
 
         <?php if ($sesiones === []): ?>
-            <div class="alert alert-secondary">No hay sesiones con inscritos que coincidan con los filtros.</div>
+            <div class="gp-empty">No hay sesiones con inscritos que coincidan con los filtros.</div>
         <?php else: ?>
             <div class="flex flex-col gap-6">
                 <?php foreach ($sesiones as $bloque): ?>

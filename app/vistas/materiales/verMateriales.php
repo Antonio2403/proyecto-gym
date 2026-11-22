@@ -16,7 +16,7 @@
         </header>
 
         <?php if (empty($materiales)): ?>
-            <div class="alert alert-info border-0 shadow-sm">Aún no hay ningún material en esta sala.</div>
+            <div class="gp-empty">Aún no hay ningún material en esta sala.</div>
         <?php else: ?>
             <div class="gp-admin-card-panel p-0 overflow-hidden">
                 <div class="table-responsive">

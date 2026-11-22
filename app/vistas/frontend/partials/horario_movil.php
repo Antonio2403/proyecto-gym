@@ -116,7 +116,7 @@ $gpDiaInicial = $gpHoyLetra !== '' ? $gpHoyLetra : 'L';
 
     <?php foreach ($gpAgenda as $gpDia): ?>
         <div class="gp-day-panel" data-gp-day-panel="<?= htmlspecialchars($gpDia['letra']) ?>"<?= $gpDia['letra'] === $gpDiaInicial ? '' : ' hidden' ?>>
-            <p class="gp-day-panel__empty">No hay clases este día.</p>
+            <p class="gp-day-panel__empty gp-empty">No hay clases este día.</p>
             <?php foreach ($gpDia['items'] as $s): ?>
                 <article class="gp-day-row gp-schedule-slot" data-actividad-id="<?= (int) $s['actId'] ?>">
                     <span class="gp-day-row__mark" style="background: <?= htmlspecialchars($s['colorAct']) ?>" aria-hidden="true"></span>
