@@ -326,13 +326,19 @@
         ok = requireNonEmpty(form, 'clave_confirmar', 'Confirma la contraseña.') && ok;
 
         var dni = field(form, 'DNI');
-        if (dni && trimStr(dni.value) && !dniNieOk(dni.value)) {
+        if (dni && dni.getAttribute('data-gp-usado') === '1') {
+            dni.setCustomValidity('Este DNI ya está usado.');
+            ok = false;
+        } else if (dni && trimStr(dni.value) && !dniNieOk(dni.value)) {
             dni.setCustomValidity('DNI o NIE no válido.');
             ok = false;
         }
 
         var em = field(form, 'email');
-        if (em && trimStr(em.value) && !emailOk(em.value)) {
+        if (em && em.getAttribute('data-gp-usado') === '1') {
+            em.setCustomValidity('Este correo ya está usado.');
+            ok = false;
+        } else if (em && trimStr(em.value) && !emailOk(em.value)) {
             em.setCustomValidity('Email no válido.');
             ok = false;
         }
@@ -939,11 +945,83 @@
         return ok;
     };
 
+    function wireUsoCuenta(form) {
+        var base = trimStr(form.getAttribute('data-gp-uso-url') || '');
+        if (!base) return;
+
+        var pares = [
+            { name: 'DNI', campo: 'dni', listo: dniNieOk, msg: 'Este DNI ya está usado.' },
+            { name: 'email', campo: 'email', listo: emailOk, msg: 'Este correo ya está usado.' }
+        ];
+
+        pares.forEach(function (par) {
+            var input = field(form, par.name);
+            var aviso = form.querySelector('[data-gp-uso-aviso="' + par.campo + '"]');
+            if (!input) return;
+
+            var seq = 0;
+            var timer = 0;
+
+            function ocultar() {
+                input.removeAttribute('data-gp-usado');
+                input.classList.remove('gp-uso-ocupado');
+                if (aviso) {
+                    aviso.hidden = true;
+                    aviso.classList.remove('is-on');
+                }
+                if (input.validationMessage === par.msg) {
+                    input.setCustomValidity('');
+                }
+            }
+
+            function mostrar() {
+                input.setAttribute('data-gp-usado', '1');
+                input.classList.add('gp-uso-ocupado');
+                input.setCustomValidity(par.msg);
+                if (aviso) {
+                    aviso.hidden = false;
+                    aviso.classList.add('is-on');
+                }
+            }
+
+            function consultar() {
+                var valor = trimStr(input.value);
+                if (!par.listo(valor)) {
+                    ocultar();
+                    return;
+                }
+                var mio = ++seq;
+                var sep = base.indexOf('?') >= 0 ? '&' : '?';
+                var req = base + sep + 'campo=' + encodeURIComponent(par.campo) + '&valor=' + encodeURIComponent(valor);
+                fetch(req, { headers: { Accept: 'application/json' }, credentials: 'same-origin' })
+                    .then(function (res) { return res.json(); })
+                    .then(function (data) {
+                        if (mio !== seq) return;
+                        if (data && data.usado) mostrar();
+                        else ocultar();
+                    })
+                    .catch(function () {
+                        if (mio !== seq) return;
+                    });
+            }
+
+            input.addEventListener('input', function () {
+                ocultar();
+                clearTimeout(timer);
+                timer = setTimeout(consultar, 350);
+            });
+            input.addEventListener('blur', consultar);
+        });
+    }
+
     function attachForm(form, typeKey) {
         var fn = handlers[typeKey];
         if (!fn) return;
 
         wireInputs(form);
+        if (typeKey === 'register') {
+            wireUsoCuenta(form);
+        }
 
         form.addEventListener('submit', function (evt) {
             fn(form);

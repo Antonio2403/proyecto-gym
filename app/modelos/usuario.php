@@ -194,6 +194,45 @@ class Usuario
         }
     }
 
+    public static function dniEnUso(string $raw): bool
+    {
+        if (!fv_documento_identidad_es($raw)) {
+            return false;
+        }
+
+        $conexion = BasedeDatos::Conectar();
+        if (!$conexion) {
+            return false;
+        }
+
+        $stmt = $conexion->prepare(
+            'SELECT 1 FROM usuarios
+             WHERE UPPER(REPLACE(REPLACE(DNI, \' \', \'\'), \'-\', \'\')) = ?
+             LIMIT 1'
+        );
+        $stmt->execute([self::normalizarDocumentoLogin($raw)]);
+
+        return (bool) $stmt->fetchColumn();
+    }
+
+    public static function emailEnUso(string $email): bool
+    {
+        $email = strtolower(trim($email));
+        if (!fv_email_valido($email)) {
+            return false;
+        }
+
+        $conexion = BasedeDatos::Conectar();
+        if (!$conexion) {
+            return false;
+        }
+
+        $stmt = $conexion->prepare('SELECT 1 FROM usuarios WHERE email = ? LIMIT 1');
+        $stmt->execute([$email]);
+
+        return (bool) $stmt->fetchColumn();
+    }
+
     public static function obtenerPorEmail($email)
     {
         $conexion = BasedeDatos::Conectar();
