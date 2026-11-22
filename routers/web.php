@@ -40,6 +40,7 @@ controller($router, 'post', '/cookies/aceptar', 'InicioControlador@aceptarCookie
 
 //Login y registro
 controller($router, 'get', '/login', 'LoginControlador@mostrarLogin');
+controller($router, 'get', '/usuario/comprobar-cuenta', 'UsuarioControlador@comprobarCuenta');
 controller($router, 'post', '/usuario/registrar', 'UsuarioControlador@registrar');
 controller($router, 'get', '/confirmar-cuenta', 'UsuarioControlador@confirmarCuenta');
 controller($router, 'post', '/login', 'LoginControlador@login');

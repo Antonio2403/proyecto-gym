@@ -93,6 +93,25 @@ class UsuarioControlador extends Controller
         exit;
     }
 
+    public function comprobarCuenta(): void
+    {
+        header('Content-Type: application/json; charset=utf-8');
+        $campo = (string) ($_GET['campo'] ?? '');
+        $valor = trim((string) ($_GET['valor'] ?? ''));
+        if ($campo === 'dni') {
+            echo json_encode(['ok' => true, 'usado' => Usuario::dniEnUso($valor)]);
+            exit;
+        }
+        if ($campo === 'email') {
+            echo json_encode(['ok' => true, 'usado' => Usuario::emailEnUso($valor)]);
+            exit;
+        }
+
+        http_response_code(400);
+        echo json_encode(['ok' => false]);
+        exit;
+    }
+
     public function registrar()
     {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {

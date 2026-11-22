@@ -88,12 +88,13 @@
                         </div>
 
                         <div class="tab-pane fade" id="registro" role="tabpanel">
-                            <form action="<?= htmlspecialchars(url('/usuario/registrar')) ?>" method="POST" class="needs-validation" novalidate data-gp-validate="register">
+                            <form action="<?= htmlspecialchars(url('/usuario/registrar')) ?>" method="POST" class="needs-validation" novalidate data-gp-validate="register" data-gp-uso-url="<?= htmlspecialchars(url('/usuario/comprobar-cuenta')) ?>">
                                 <div class="flex flex-wrap -mx-2 lg:-mx-3 -mt-4">
                                     <div class="w-full md:w-1/2 max-w-full shrink-0 px-2 lg:px-3 mt-4">
                                         <label for="DNI" class="form-label gp-label-required">DNI / NIE</label>
                                         <input type="text" class="form-control form-control-lg font-mono gp-doc-identidad-input" id="DNI" name="DNI" required maxlength="9" autocomplete="off" inputmode="text" placeholder="12345678A" data-gp-doc-identidad-es>
                                         <p class="form-text text-sm mb-0">8 números y letra (DNI) o NIE (X/Y/Z + 7 números + letra).</p>
+                                        <p class="gp-uso-aviso" data-gp-uso-aviso="dni" hidden>Este DNI ya está usado.</p>
                                     </div>
                                     <div class="w-full md:w-1/2 max-w-full shrink-0 px-2 lg:px-3 mt-4">
                                         <label for="nombre" class="form-label gp-label-required">Nombre</label>
@@ -111,6 +112,7 @@
                                         <label for="email" class="form-label gp-label-required">Email</label>
                                         <input type="email" class="form-control form-control-lg" id="email" name="email" required autocomplete="email">
                                         <p class="form-text text-sm text-slate-500 mb-0">Correo real: allí recibirás el enlace para activar la cuenta.</p>
+                                        <p class="gp-uso-aviso" data-gp-uso-aviso="email" hidden>Este correo ya está usado.</p>
                                     </div>
                                     <div class="w-full md:w-1/2 max-w-full shrink-0 px-2 lg:px-3 mt-4">
                                         <label for="telefono" class="form-label">Teléfono</label>
