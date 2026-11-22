@@ -227,7 +227,7 @@ uasort($clasesFiltro, static function (array $a, array $b): int {
                                                         </ul>
                                                     </div>
                                                 </template>
-                                                <div class="gp-schedule-act<?= $sesionCancelada ? ' gp-schedule-act--past' : '' ?><?= !$sesionCancelada && $cupoLleno ? ' gp-schedule-act--full' : '' ?><?= !$sesionCancelada && !$sesionReservable ? ' gp-schedule-act--past' : '' ?><?= !$sesionCancelada && ($estuvoEnSesion && $sesionFinalizada) ? ' gp-schedule-act--enrolled-done' : '' ?>"
+                                                <div class="gp-schedule-act<?= $sesionCancelada ? ' gp-schedule-act--past' : '' ?><?= !$sesionCancelada && $cupoLleno && $sesionReservable ? ' gp-schedule-act--full' : '' ?><?= !$sesionCancelada && !$sesionReservable ? ' gp-schedule-act--past' : '' ?><?= !$sesionCancelada && ($estuvoEnSesion && $sesionFinalizada) ? ' gp-schedule-act--enrolled-done' : '' ?>"
                                                      style="--gp-act-color: <?= htmlspecialchars($colorAct) ?>"
                                                      tabindex="0"
                                                      role="button"
@@ -238,6 +238,9 @@ uasort($clasesFiltro, static function (array $a, array $b): int {
                                                         <strong class="gp-schedule-act-name block text-white"><span class="gp-schedule-act-swatch" style="background: <?= htmlspecialchars($colorAct) ?>"></span><?php if ($salaNombre !== ''): ?><?= htmlspecialchars($salaNombre) ?>/<wbr><?php endif; ?><?= htmlspecialchars((string) $act['nombre']) ?></strong>
                                                         <span class="gp-schedule-act-time"><?= htmlspecialchars($horaIni) ?></span>
                                                         <span class="gp-schedule-act-capacity" title="Personas apuntadas / plazas totales"><?= $sesionCancelada ? 'Cancelada' : ((int) $inscritos . ' / ' . (int) $plazas) ?></span>
+                                                        <?php if (!$sesionCancelada && $cupoLleno && $sesionReservable): ?>
+                                                            <span class="gp-schedule-act-full">Completo</span>
+                                                        <?php endif; ?>
                                                     </div>
                                                 </div>
                                                 <?php
@@ -253,9 +256,9 @@ uasort($clasesFiltro, static function (array $a, array $b): int {
                                                     <button type="button" class="btn btn-outline-warning btn-sm w-full mb-1 text-slate-800" disabled title="Has usado todas las reservas de esta semana según tu plan">Límite semanal</button>
                                                 <?php elseif (!$sesionReservable): ?>
                                                     <button type="button" class="btn btn-sm w-full mb-1 gp-btn-sesion-pasada" disabled title="Esta sesión ya ha pasado">Sesión pasada</button>
-                                                <?php elseif ($cupoLleno || $bloqueadoHorario): ?>
-                                                    <button type="button" class="btn gp-btn-apuntarse btn-sm w-full mb-1" disabled><?= $cupoLleno ? 'Completo' : '—' ?></button>
-                                                <?php else: ?>
+                                                <?php elseif ($bloqueadoHorario): ?>
+                                                    <button type="button" class="btn gp-btn-apuntarse btn-sm w-full mb-1" disabled>—</button>
+                                                <?php elseif (!$cupoLleno): ?>
                                                 <form method="post" action="<?= htmlspecialchars(url('/usuario/inscripciones/apuntarse')) ?>" class="mb-1"
                                                       data-gp-confirm
                                                       data-gp-confirm-title="Reservar plaza"

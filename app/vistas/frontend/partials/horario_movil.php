@@ -76,6 +76,9 @@ foreach ($gpDiasAgenda as $gpDiaLetra => $gpDiaCorto) {
         } elseif ($sesionFinalizada || !$sesionReservable) {
             $estado = 'Finalizada';
             $estadoClase = 'is-muted';
+        } elseif ($cupoLleno) {
+            $estado = 'Completo';
+            $estadoClase = 'is-full';
         } else {
             $estado = (int) $inscritos . '/' . (int) $plazas . ' participantes';
             $estadoClase = '';
@@ -118,7 +121,7 @@ $gpDiaInicial = $gpHoyLetra !== '' ? $gpHoyLetra : 'L';
         <div class="gp-day-panel" data-gp-day-panel="<?= htmlspecialchars($gpDia['letra']) ?>"<?= $gpDia['letra'] === $gpDiaInicial ? '' : ' hidden' ?>>
             <p class="gp-day-panel__empty">No hay clases este día.</p>
             <?php foreach ($gpDia['items'] as $s): ?>
-                <article class="gp-day-row gp-schedule-slot" data-actividad-id="<?= (int) $s['actId'] ?>">
+                <article class="gp-day-row gp-schedule-slot<?= ($s['cupoLleno'] && $s['sesionReservable'] && !$s['sesionCancelada']) ? ' is-full' : '' ?>" data-actividad-id="<?= (int) $s['actId'] ?>">
                     <span class="gp-day-row__mark" style="background: <?= htmlspecialchars($s['colorAct']) ?>" aria-hidden="true"></span>
                     <div class="gp-day-row__body">
                         <h3 class="gp-day-row__title"><?= htmlspecialchars(($s['salaNombre'] !== '' ? $s['salaNombre'] . '/' : '') . (string) $s['act']['nombre']) ?></h3>
@@ -138,7 +141,6 @@ $gpDiaInicial = $gpHoyLetra !== '' ? $gpHoyLetra : 'L';
                         <?php elseif (!$s['sesionReservable'] || $s['bloqueadoHorario']): ?>
                             <button type="button" class="btn btn-sm gp-btn-apuntarse" disabled>Apuntarse</button>
                         <?php elseif ($s['cupoLleno']): ?>
-                            <button type="button" class="btn btn-sm gp-btn-apuntarse" disabled>Completo</button>
                         <?php else: ?>
                             <form method="post" action="<?= htmlspecialchars(url('/usuario/inscripciones/apuntarse')) ?>"
                                   data-gp-confirm
