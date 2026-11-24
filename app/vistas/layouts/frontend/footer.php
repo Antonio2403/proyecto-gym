@@ -44,7 +44,7 @@ $gpDireccion = gp_horario_centro_direccion();
                     <div class="items-stretch flex flex-wrap">
                         <div class="gp-map-embed-wrap w-full md:w-1/2 max-w-full shrink-0">
                             <iframe class="gp-map-embed"
-                                    src="<?= htmlspecialchars($gpMapEmbed) ?>"
+                                    data-gp-map-src="<?= htmlspecialchars($gpMapEmbed) ?>"
                                     title="Mapa Spartum — <?= htmlspecialchars($gpDireccion) ?>"
                                     loading="lazy"
                                     referrerpolicy="no-referrer-when-downgrade"
@@ -90,10 +90,22 @@ $gpDireccion = gp_horario_centro_direccion();
 
 <?php require __DIR__ . '/../partials/gp_cookie_consent.php'; ?>
 
+<script>
+(function () {
+    var frame = document.querySelector('[data-gp-map-src]');
+    if (!frame) return;
+    var load = function () {
+        if (!frame.getAttribute('src')) frame.setAttribute('src', frame.getAttribute('data-gp-map-src'));
+    };
+    if (!('IntersectionObserver' in window)) { load(); return; }
+    var io = new IntersectionObserver(function (entries) {
+        if (entries.some(function (e) { return e.isIntersecting; })) { load(); io.disconnect(); }
+    }, { rootMargin: '240px' });
+    io.observe(frame);
+})();
+</script>
 <script src="<?= htmlspecialchars(asset('js/tailwind-ui.js')) ?>?v=20261112a"></script>
-<script defer src="<?= htmlspecialchars(asset('js/vendor/gsap.min.js')) ?>"></script>
 <script defer src="<?= htmlspecialchars(asset('js/gp-flash-banner.js')) ?>"></script>
-<script defer src="<?= htmlspecialchars(asset('js/gp-gsap-motion.js')) ?>"></script>
 <script defer src="<?= htmlspecialchars(asset('js/gp-confirm-modal.js')) ?>"></script>
 <script defer src="<?= htmlspecialchars(asset('js/gp-form-unsaved.js')) ?>"></script>
 <script defer src="<?= htmlspecialchars(asset('js/gp-table-cards.js')) ?>?v=20261105a"></script>

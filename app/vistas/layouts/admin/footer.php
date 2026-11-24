@@ -30,9 +30,7 @@
 </div>
 </div>
 <?php require __DIR__ . '/../partials/gp_cookie_consent.php'; ?>
-<script defer src="<?= htmlspecialchars(asset('js/vendor/gsap.min.js')) ?>"></script>
 <script defer src="<?= htmlspecialchars(asset('js/gp-flash-banner.js')) ?>"></script>
-<script defer src="<?= htmlspecialchars(asset('js/gp-gsap-motion.js')) ?>"></script>
 <script defer src="<?= htmlspecialchars(asset('js/gp-confirm-modal.js')) ?>?v=20261112d"></script>
 <script defer src="<?= htmlspecialchars(asset('js/gp-form-unsaved.js')) ?>"></script>
 <script defer src="<?= htmlspecialchars(asset('js/gp-table-cards.js')) ?>?v=20261105a"></script>

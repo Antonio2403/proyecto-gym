@@ -86,10 +86,13 @@ class BasedeDatos
                 $conexionDB = new PDO(self::pdoDsn(true), self::dbUser(), self::dbPass());
                 $conexionDB->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
                 $conexionDB->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
-                self::asegurarColorActividad($conexionDB);
-                self::asegurarColorSala($conexionDB);
-                self::asegurarCancelacionSesion($conexionDB);
-                self::asegurarMitadClasesPlanes($conexionDB);
+                if (!self::esquemaRapidoListo($conexionDB)) {
+                    self::asegurarColorActividad($conexionDB);
+                    self::asegurarColorSala($conexionDB);
+                    self::asegurarCancelacionSesion($conexionDB);
+                    self::asegurarMitadClasesPlanes($conexionDB);
+                    self::marcarEsquemaRapido($conexionDB);
+                }
                 self::asegurarAccesoCentro($conexionDB);
                 self::asegurarFaltaAsistencia($conexionDB);
                 self::asegurarDatosDemoAmplios($conexionDB);
@@ -701,6 +704,46 @@ class BasedeDatos
             self::$datosDemoAmpliosListos = true;
         } catch (\Throwable $e) {
             error_log('[Spartum BD] datos demo amplios: ' . $e->getMessage());
+        }
+    }
+
+    private static $esquemaRapidoListo = false;
+
+    /**
+     * Tras el primer arranque, cada página solo mira una marca en vez de revisar el esquema.
+     */
+    private static function esquemaRapidoListo(PDO $db): bool
+    {
+        if (self::$esquemaRapidoListo) {
+            return true;
+        }
+        try {
+            $st = $db->prepare('SELECT 1 FROM gp_ajuste WHERE clave = ? LIMIT 1');
+            $st->execute(['esquema_rapido_20261124']);
+            if ($st->fetchColumn()) {
+                self::$esquemaRapidoListo = true;
+                self::$colorActividadListo = true;
+                self::$colorSalaListo = true;
+                self::$cancelacionSesionLista = true;
+                self::$mitadClasesLista = true;
+
+                return true;
+            }
+        } catch (\Throwable $e) {
+            return false;
+        }
+
+        return false;
+    }
+
+    private static function marcarEsquemaRapido(PDO $db): void
+    {
+        try {
+            $db->prepare('INSERT IGNORE INTO gp_ajuste (clave, aplicado_en) VALUES (?, NOW())')
+                ->execute(['esquema_rapido_20261124']);
+            self::$esquemaRapidoListo = true;
+        } catch (\Throwable $e) {
+            error_log('[Spartum BD] esquema rapido: ' . $e->getMessage());
         }
     }
 
