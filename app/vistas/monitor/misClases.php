@@ -27,12 +27,13 @@ $queryBase = static function (array $extra = []) use ($filtros, $perPage): array
     return array_filter($q, static fn ($v): bool => $v !== null && $v !== '');
 };
 ?>
+<?php $faltasMarcadas = is_array($faltas_marcadas ?? null) ? $faltas_marcadas : []; ?>
 <div class="content-wrapper gp-dash">
     <div class="relative w-full px-3">
         <header class="gp-dash-hero mb-6">
             <span class="gp-badge inline-block mb-2">Monitor</span>
             <h1 class="text-[1.75rem] mb-0">Mis clases</h1>
-            <p class="mb-0 mt-2 text-slate-500">Sesiones con socios inscritos · búsqueda avanzada y paginación.</p>
+            <p class="mb-0 mt-2 text-slate-500">Sesiones de la última semana y las próximas. En cada persona puedes poner o quitar la falta.</p>
         </header>
 
         <div class="card border-0 shadow-sm mb-6">
@@ -178,14 +179,30 @@ $queryBase = static function (array $extra = []) use ($filtros, $perPage): array
                                             <th>Nombre</th>
                                             <th>Email</th>
                                             <th>Teléfono</th>
+                                            <th>Falta</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <?php foreach ($lista as $ins): ?>
+                                            <?php
+                                            $insId = (int) ($ins['id'] ?? 0);
+                                            $tieneFalta = isset($faltasMarcadas[$insId]);
+                                            ?>
                                             <tr>
                                                 <td><?= htmlspecialchars(trim((string) ($ins['nombre'] ?? '') . ' ' . (string) ($ins['apellido1'] ?? ''))) ?></td>
                                                 <td><?= htmlspecialchars((string) ($ins['email'] ?? '')) ?></td>
                                                 <td><?= htmlspecialchars((string) ($ins['telefono'] ?? '—')) ?></td>
+                                                <td>
+                                                    <form method="post" action="<?= htmlspecialchars(url('/monitor/falta')) ?>" class="mb-0">
+                                                        <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(csrf_token(), ENT_QUOTES, 'UTF-8') ?>">
+                                                        <input type="hidden" name="inscripcion_id" value="<?= $insId ?>">
+                                                        <input type="hidden" name="accion" value="<?= $tieneFalta ? 'quitar' : 'poner' ?>">
+                                                        <input type="hidden" name="volver" value="<?= htmlspecialchars(http_build_query($queryBase(['page' => $page]))) ?>">
+                                                        <button type="submit" class="btn btn-sm <?= $tieneFalta ? 'btn-outline-secondary' : 'btn-primary' ?>">
+                                                            <?= $tieneFalta ? 'Quitar falta' : 'Poner falta' ?>
+                                                        </button>
+                                                    </form>
+                                                </td>
                                             </tr>
                                         <?php endforeach; ?>
                                     </tbody>

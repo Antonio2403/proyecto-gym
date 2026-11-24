@@ -70,8 +70,10 @@ class InicioControlador extends Controller {
         }
 
         require_once __DIR__ . '/../modelos/panel_estadisticas.php';
+        require_once __DIR__ . '/../modelos/acceso_centro.php';
         $this->renderAdmin('admin/inicioAdmin', [
             'estadisticas' => PanelEstadisticas::resumenAdmin(),
+            'acceso_centro' => AccesoCentro::resumenAdmin(),
         ]);
     }
 
@@ -80,7 +82,20 @@ class InicioControlador extends Controller {
             header('Location: ' . url('/fisio'));
             exit;
         }
-        $this->renderFrontend("frontend/inicioUsuario");
+        $faltas = 0;
+        $dentro = false;
+        if ((string) ($_SESSION['rol'] ?? '') === 'cliente' && !empty($_SESSION['usuario_id'])) {
+            require_once __DIR__ . '/../modelos/falta_asistencia.php';
+            require_once __DIR__ . '/../modelos/acceso_centro.php';
+            $usuarioId = (int) $_SESSION['usuario_id'];
+            $faltas = FaltaAsistencia::contarDeUsuario($usuarioId);
+            $ultimo = AccesoCentro::ultimoDeUsuario($usuarioId);
+            $dentro = $ultimo !== null && $ultimo['tipo'] === 'entrada';
+        }
+        $this->renderFrontend('frontend/inicioUsuario', [
+            'faltas_total' => $faltas,
+            'dentro_centro' => $dentro,
+        ]);
     }
 
     public function inicioMonitor()

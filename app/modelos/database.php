@@ -90,6 +90,8 @@ class BasedeDatos
                 self::asegurarColorSala($conexionDB);
                 self::asegurarCancelacionSesion($conexionDB);
                 self::asegurarMitadClasesPlanes($conexionDB);
+                self::asegurarAccesoCentro($conexionDB);
+                self::asegurarFaltaAsistencia($conexionDB);
 
                 return $conexionDB;
             }
@@ -484,6 +486,57 @@ class BasedeDatos
         }
     }
 
+    private static $accesoCentroListo = false;
+
+    private static $faltaAsistenciaLista = false;
+
+    private static function asegurarAccesoCentro(PDO $db): void
+    {
+        if (self::$accesoCentroListo) {
+            return;
+        }
+        try {
+            $db->exec(
+                'CREATE TABLE IF NOT EXISTS acceso_centro (
+                    id INT AUTO_INCREMENT PRIMARY KEY,
+                    usuario_id INT NOT NULL,
+                    tipo ENUM(\'entrada\',\'salida\') NOT NULL,
+                    token CHAR(32) NOT NULL,
+                    creado_en DATETIME NOT NULL,
+                    UNIQUE KEY uq_acceso_token (token),
+                    KEY idx_acceso_usuario (usuario_id, id)
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8'
+            );
+            self::$accesoCentroListo = true;
+        } catch (\Throwable $e) {
+            error_log('[Spartum BD] acceso centro: ' . $e->getMessage());
+        }
+    }
+
+    private static function asegurarFaltaAsistencia(PDO $db): void
+    {
+        if (self::$faltaAsistenciaLista) {
+            return;
+        }
+        try {
+            $db->exec(
+                'CREATE TABLE IF NOT EXISTS falta_asistencia (
+                    id INT AUTO_INCREMENT PRIMARY KEY,
+                    cliente_id INT NOT NULL,
+                    actividad_id INT NOT NULL,
+                    fecha DATE NOT NULL,
+                    monitor_id INT NOT NULL,
+                    creada_en DATETIME NOT NULL,
+                    UNIQUE KEY uq_falta_sesion (cliente_id, actividad_id, fecha),
+                    KEY idx_falta_monitor (monitor_id)
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8'
+            );
+            self::$faltaAsistenciaLista = true;
+        } catch (\Throwable $e) {
+            error_log('[Spartum BD] falta asistencia: ' . $e->getMessage());
+        }
+    }
+
     private static function asegurarCancelacionSesion(PDO $db): void
     {
         if (self::$cancelacionSesionLista) {
@@ -647,6 +700,8 @@ class BasedeDatos
         try {
             self::asegurarColorActividad($db);
             self::asegurarCancelacionSesion($db);
+            self::asegurarAccesoCentro($db);
+            self::asegurarFaltaAsistencia($db);
             if (!self::columnExists($db, 'actividades', 'recurrente')) {
                 $db->exec(
                     'ALTER TABLE actividades ADD COLUMN recurrente TINYINT(1) NOT NULL DEFAULT 1 AFTER plazas'

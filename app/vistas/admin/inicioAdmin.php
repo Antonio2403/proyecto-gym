@@ -108,6 +108,48 @@
                 </article>
             </div>
 
+            <?php
+            $acceso = is_array($acceso_centro ?? null) ? $acceso_centro : [];
+            $dentroAhora = (int) ($acceso['dentro'] ?? 0);
+            $personasDentro = is_array($acceso['personas'] ?? null) ? $acceso['personas'] : [];
+            ?>
+            <article class="gp-admin-chart gp-admin-dentro">
+                <header>
+                    <h3>Usuarios en el centro</h3>
+                    <p>Una entrada sin salida posterior cuenta como una persona dentro.</p>
+                </header>
+                <p class="gp-admin-kpi__value"><?= $dentroAhora ?></p>
+                <?php
+                $entradasHoy = (int) ($acceso['entradas_hoy'] ?? 0);
+                $salidasHoy = (int) ($acceso['salidas_hoy'] ?? 0);
+                $textoCuentaHoy = static function (int $n, string $uno, string $varios): string {
+                    return ($n === 1 ? '1 ' . $uno : $n . ' ' . $varios);
+                };
+                ?>
+                <p class="text-slate-500 mb-4">
+                    <?= htmlspecialchars($textoCuentaHoy($entradasHoy, 'entrada', 'entradas')) ?> hoy
+                    · <?= htmlspecialchars($textoCuentaHoy($salidasHoy, 'salida', 'salidas')) ?> hoy
+                </p>
+                <?php if ($personasDentro === []): ?>
+                    <p class="gp-admin-chart__empty">Ahora mismo no hay nadie dentro.</p>
+                <?php else: ?>
+                    <ul class="gp-dentro-lista">
+                        <?php foreach ($personasDentro as $persona): ?>
+                            <?php
+                            $desde = (string) ($persona['desde'] ?? '');
+                            $desdeTxt = $desde !== '' ? date('d/m/Y H:i', strtotime($desde)) : '';
+                            ?>
+                            <li>
+                                <strong><?= htmlspecialchars((string) ($persona['nombre'] ?? 'Socio')) ?></strong>
+                                <?php if ($desdeTxt !== ''): ?>
+                                    <span>dentro desde <?= htmlspecialchars($desdeTxt) ?></span>
+                                <?php endif; ?>
+                            </li>
+                        <?php endforeach; ?>
+                    </ul>
+                <?php endif; ?>
+            </article>
+
             <div class="gp-admin-charts">
                 <article class="gp-admin-chart">
                     <header>

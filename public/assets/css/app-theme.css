@@ -4792,3 +4792,21 @@ textarea.form-control:not(.form-control-sm) {
         right: 1rem;
     }
 }
+
+.gp-qr-frame {
+    width: 12.5rem;
+    height: 12.5rem;
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 0.75rem;
+    padding: 0.6rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.gp-qr-frame img,
+.gp-qr-frame canvas {
+    width: 11.25rem;
+    height: 11.25rem;
+}

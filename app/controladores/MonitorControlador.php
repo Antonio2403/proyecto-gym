@@ -5,6 +5,7 @@ require_once 'app/modelos/monitor.php';
 require_once 'app/modelos/solicitud.php';
 require_once 'app/modelos/actividades.php';
 require_once 'app/modelos/inscripcion.php';
+require_once 'app/modelos/falta_asistencia.php';
 
 class MonitorControlador extends Controller
 {
@@ -66,11 +67,18 @@ class MonitorControlador extends Controller
         );
 
         $tz = new DateTimeZone(date_default_timezone_get());
-        $hoy = (new DateTimeImmutable('today', $tz))->format('Y-m-d');
+        $hoy = (new DateTimeImmutable('today', $tz))->modify('-7 days')->format('Y-m-d');
         $defHasta = (new DateTimeImmutable('today', $tz))->modify('+13 days')->format('Y-m-d');
+        $idsInscripcion = [];
+        foreach ($resultado['rows'] as $bloque) {
+            foreach ($bloque['inscritos'] ?? [] as $ins) {
+                $idsInscripcion[] = (int) ($ins['id'] ?? 0);
+            }
+        }
 
         $this->renderAdmin('monitor/misClases', [
             'sesiones' => $resultado['rows'],
+            'faltas_marcadas' => FaltaAsistencia::marcadasPorInscripcion($idsInscripcion),
             'total' => $resultado['total'],
             'page' => $resultado['page'],
             'per_page' => $resultado['per_page'],
@@ -120,5 +128,43 @@ class MonitorControlador extends Controller
             header('Location: ' . url('/monitor/formSolicitud') . '?error=' . urlencode('No se pudo registrar el reporte.'));
             exit;
         }
+    }
+
+    public function marcarFalta(): void
+    {
+        $this->requireMonitor();
+        if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') {
+            header('Location: ' . url('/monitor/mis-clases'));
+            exit;
+        }
+        $monitorTablaId = Monitor::obtenerIdPorUsuarioId((int) $_SESSION['usuario_id']);
+        $volver = $this->volverMisClases();
+        if ($monitorTablaId === null) {
+            header('Location: ' . url('/monitor/mis-clases') . $volver . 'error=' . rawurlencode('No se encontró el perfil de monitor.'));
+            exit;
+        }
+        $inscripcionId = (int) ($_POST['inscripcion_id'] ?? 0);
+        $accion = (string) ($_POST['accion'] ?? '');
+        $resultado = $accion === 'quitar'
+            ? FaltaAsistencia::quitar($inscripcionId, $monitorTablaId)
+            : FaltaAsistencia::poner($inscripcionId, $monitorTablaId);
+        if (!$resultado['ok']) {
+            header('Location: ' . url('/monitor/mis-clases') . $volver . 'error=' . rawurlencode((string) ($resultado['error'] ?? 'No se pudo guardar la falta.')));
+            exit;
+        }
+        $texto = $accion === 'quitar' ? 'Falta quitada.' : 'Falta registrada.';
+        header('Location: ' . url('/monitor/mis-clases') . $volver . 'success=' . rawurlencode($texto));
+        exit;
+    }
+
+    private function volverMisClases(): string
+    {
+        $volver = (string) ($_POST['volver'] ?? '');
+        if ($volver !== '' && preg_match('/^[a-zA-Z0-9&=_.%-]+$/', $volver) !== 1) {
+            $volver = '';
+        }
+        $sep = $volver === '' ? '?' : '?' . $volver . '&';
+
+        return $sep;
     }
 }

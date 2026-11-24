@@ -79,5 +79,48 @@
                 <a href="<?= htmlspecialchars(url('/usuario/fisio')) ?>" class="btn btn-primary btn-sm">Ver tus citas</a>
             </div>
         </div>
+        <div class="w-full md:w-1/2 max-w-full shrink-0 px-3 mt-6">
+            <div class="gp-stat-card h-full">
+                <div class="gp-photo-frame mb-4" style="height: 9rem;">
+                    <?= gp_responsive_picture('img/pexels/gimnasio-moderno.jpg', [
+                        'class' => 'gp-photo',
+                        'width' => 1600,
+                        'height' => 1067,
+                        'alt' => 'Interior del gimnasio',
+                        'sizes' => '(max-width: 767px) 100vw, 50vw',
+                    ]) ?>
+                </div>
+                <div class="gp-icon" aria-hidden="true"><i class="fa-solid fa-qrcode"></i></div>
+                <h3 class="text-xl mb-2">Entrada y salida</h3>
+                <p class="text-slate-500 text-sm mb-4">
+                    <?php if (!empty($dentro_centro)): ?>
+                        Estás dentro. El siguiente código, en el mismo sitio, será de salida.
+                    <?php else: ?>
+                        Genera el código de entrada. El siguiente, en el mismo sitio, será de salida.
+                    <?php endif; ?>
+                </p>
+                <a href="<?= htmlspecialchars(url('/usuario/acceso')) ?>" class="btn btn-primary btn-sm">Generar código</a>
+            </div>
+        </div>
+        <div class="w-full md:w-1/2 max-w-full shrink-0 px-3 mt-6">
+            <div class="gp-stat-card h-full">
+                <div class="gp-photo-frame mb-4" style="height: 9rem;">
+                    <?= gp_responsive_picture('img/pexels/entrenamiento-personal.jpg', [
+                        'class' => 'gp-photo',
+                        'width' => 1600,
+                        'height' => 1067,
+                        'alt' => 'Entrenador con un socio en una sesión',
+                        'sizes' => '(max-width: 767px) 100vw, 50vw',
+                    ]) ?>
+                </div>
+                <div class="gp-icon" aria-hidden="true"><i class="fa-solid fa-user-xmark"></i></div>
+                <h3 class="text-xl mb-2">Faltas de asistencia</h3>
+                <p class="text-slate-500 text-sm mb-4">
+                    <?php $gpFaltasTotal = (int) ($faltas_total ?? 0); ?>
+                    <?= $gpFaltasTotal === 0 ? 'No tienes faltas. El monitor de tu clase las anota aquí.' : ($gpFaltasTotal === 1 ? 'Tienes 1 falta de asistencia.' : 'Tienes ' . $gpFaltasTotal . ' faltas de asistencia.') ?>
+                </p>
+                <a href="<?= htmlspecialchars(url('/usuario/faltas')) ?>" class="btn btn-primary btn-sm">Ver tu registro</a>
+            </div>
+        </div>
     </div>
 </div>

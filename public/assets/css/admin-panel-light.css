@@ -413,6 +413,34 @@
     padding: 1rem 1.1rem 0.95rem;
 }
 
+.gp-admin-dentro {
+    margin-top: 1.25rem;
+}
+
+.gp-dentro-lista {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.45rem;
+}
+
+.gp-dentro-lista li {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem 0.8rem;
+    justify-content: space-between;
+    padding: 0.55rem 0.75rem;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 0.5rem;
+}
+
+.gp-dentro-lista span {
+    color: #64748b;
+    font-size: 0.9rem;
+}
+
 .gp-admin-kpi__value {
     margin: 0;
     font-family: var(--gp-display, "Outfit", sans-serif);

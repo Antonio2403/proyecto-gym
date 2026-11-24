@@ -176,6 +176,7 @@ function gp_seo_robots_txt(): string
         'Disallow: /inicioUsuario',
         'Disallow: /inicioMonitor',
         'Disallow: /usuario/',
+        'Disallow: /acceso/',
         'Disallow: /cuenta/',
         'Disallow: /fisio',
         'Disallow: /monitor/',

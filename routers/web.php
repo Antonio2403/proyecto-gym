@@ -176,6 +176,11 @@ controller($router, 'post', '/usuario/inscripciones/cancelar', 'InscripcionContr
 controller($router, 'get', '/usuario/inscripciones/mis-inscripciones', 'InscripcionControlador@misIncripciones');
 
 // Fisioterapia (clientes; suscripción con fisio = S)
+controller($router, 'get', '/usuario/acceso', 'AccesoCentroControlador@panel');
+controller($router, 'post', '/usuario/acceso', 'AccesoCentroControlador@generar');
+controller($router, 'get', '/acceso/([a-f0-9]{32})', 'AccesoCentroControlador@ver');
+controller($router, 'get', '/usuario/faltas', 'FaltaControlador@registro');
+controller($router, 'post', '/monitor/falta', 'MonitorControlador@marcarFalta');
 controller($router, 'get', '/usuario/fisio', 'FisioControlador@index');
 controller($router, 'get', '/usuario/fisio/solicitar', 'FisioControlador@formSolicitar');
 controller($router, 'get', '/usuario/fisio/horas-disponibles', 'FisioControlador@horasDisponibles');

@@ -316,10 +316,10 @@ class Inscripcion
         $perPage = min(50, max(5, $perPage));
 
         $tz = new DateTimeZone(date_default_timezone_get());
-        $hoy = (new DateTimeImmutable('today', $tz))->format('Y-m-d');
+        $defDesde = (new DateTimeImmutable('today', $tz))->modify('-7 days')->format('Y-m-d');
         $defHasta = (new DateTimeImmutable('today', $tz))->modify('+13 days')->format('Y-m-d');
 
-        $fechaDesde = gp_grid_date_opt($f['fecha_desde'] ?? null) ?? $hoy;
+        $fechaDesde = gp_grid_date_opt($f['fecha_desde'] ?? null) ?? $defDesde;
         $fechaHasta = gp_grid_date_opt($f['fecha_hasta'] ?? null) ?? $defHasta;
         if ($fechaDesde > $fechaHasta) {
             [$fechaDesde, $fechaHasta] = [$fechaHasta, $fechaDesde];
