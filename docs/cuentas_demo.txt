@@ -6,9 +6,31 @@ rol        usuario                  contraseña
 admin      admin1@demo.local        Admin1#Demo2026!
 monitor    monitor1@demo.local      Monitor1#Demo2026!
 monitor    monitor2@demo.local      Monitor2#Demo2026!
+monitor    monitor3@demo.local      Monitor3#Demo2026!
+monitor    monitor4@demo.local      Monitor4#Demo2026!
+monitor    monitor5@demo.local      Monitor5#Demo2026!
+monitor    monitor6@demo.local      Monitor6#Demo2026!
 cliente    cliente1@demo.local      Cliente1#Demo2026!
 cliente    cliente2@demo.local      Cliente2#Demo2026!
 cliente    cliente3@demo.local      Cliente3#Demo2026!
+cliente    cliente4@demo.local      Cliente4#Demo2026!
+cliente    cliente5@demo.local      Cliente5#Demo2026!
+cliente    cliente6@demo.local      Cliente6#Demo2026!
+cliente    cliente7@demo.local      Cliente7#Demo2026!
+cliente    cliente8@demo.local      Cliente8#Demo2026!
+cliente    cliente9@demo.local      Cliente9#Demo2026!
+cliente    cliente10@demo.local     Cliente10#Demo2026!
+cliente    cliente11@demo.local     Cliente11#Demo2026!
+cliente    cliente12@demo.local     Cliente12#Demo2026!
+cliente    cliente13@demo.local     Cliente13#Demo2026!
+cliente    cliente14@demo.local     Cliente14#Demo2026!
+cliente    cliente15@demo.local     Cliente15#Demo2026!
+cliente    cliente16@demo.local     Cliente16#Demo2026!
+cliente    cliente17@demo.local     Cliente17#Demo2026!
+cliente    cliente18@demo.local     Cliente18#Demo2026!
 fisio      fisio1@demo.local        Fisio1#Demo2026!
+fisio      fisio2@demo.local        Fisio2#Demo2026!
+fisio      fisio3@demo.local        Fisio3#Demo2026!
 
+La clase actividad1 (lunes) queda completa con cliente1 a cliente15.
 Recargar la demo (borra los datos anteriores): php scripts/import_demo_database.php --force
