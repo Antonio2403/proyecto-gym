@@ -84,17 +84,6 @@ $gpNavCurrent = static fn(string $path): bool => $gpCurrentPath === url($path);
                     </li>
                 <?php endif; ?>
 
-                <li class="nav-item">
-                    <a class="nav-link<?= $gpNavCurrent('/quienes-somos') ? ' active' : '' ?>"
-                       <?= $gpNavCurrent('/quienes-somos') ? 'aria-current="page"' : '' ?>
-                       href="<?= htmlspecialchars(url('/quienes-somos')) ?>">Quiénes somos</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link<?= $gpNavCurrent('/contacto') ? ' active' : '' ?>"
-                       <?= $gpNavCurrent('/contacto') ? 'aria-current="page"' : '' ?>
-                       href="<?= htmlspecialchars(url('/contacto')) ?>">Contacto</a>
-                </li>
-
                 <?php if (isset($_SESSION['usuario_id']) && ($_SESSION['rol'] ?? '') === 'fisio'): ?>
                     <li class="nav-item">
                         <a class="nav-link" href="<?= htmlspecialchars(url('/fisio')) ?>">Inicio</a>
@@ -116,11 +105,6 @@ $gpNavCurrent = static fn(string $path): bool => $gpCurrentPath === url($path);
                         <a class="nav-link" href="<?= htmlspecialchars(url('/inicioUsuario')) ?>">Tu panel</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link<?= $gpNavCurrent('/usuario/actividad') ? ' active' : '' ?>"
-                           <?= $gpNavCurrent('/usuario/actividad') ? 'aria-current="page"' : '' ?>
-                           href="<?= htmlspecialchars(url('/usuario/actividad')) ?>">Mi actividad</a>
-                    </li>
-                    <li class="nav-item">
                         <a class="nav-link" href="<?= htmlspecialchars(url('/usuario/actividades')) ?>">Ver tu horario</a>
                     </li>
                     <li class="nav-item">
@@ -132,7 +116,23 @@ $gpNavCurrent = static fn(string $path): bool => $gpCurrentPath === url($path);
                     <li class="nav-item">
                         <a class="nav-link" href="<?= htmlspecialchars(url('/usuario/fisio')) ?>">Ver tus citas</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link<?= $gpNavCurrent('/usuario/actividad') ? ' active' : '' ?>"
+                           <?= $gpNavCurrent('/usuario/actividad') ? 'aria-current="page"' : '' ?>
+                           href="<?= htmlspecialchars(url('/usuario/actividad')) ?>">Mi actividad</a>
+                    </li>
                 <?php endif; ?>
+
+                <li class="nav-item">
+                    <a class="nav-link<?= $gpNavCurrent('/quienes-somos') ? ' active' : '' ?>"
+                       <?= $gpNavCurrent('/quienes-somos') ? 'aria-current="page"' : '' ?>
+                       href="<?= htmlspecialchars(url('/quienes-somos')) ?>">Quiénes somos</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link<?= $gpNavCurrent('/contacto') ? ' active' : '' ?>"
+                       <?= $gpNavCurrent('/contacto') ? 'aria-current="page"' : '' ?>
+                       href="<?= htmlspecialchars(url('/contacto')) ?>">Contacto</a>
+                </li>
             </ul>
 
             <ul class="navbar-nav ms-auto lg:items-center gap-2">

@@ -15,21 +15,41 @@ $gpAdminInicio = $esAdmin ? url('/admin') : url('/inicioMonitor');
         </a>
 
         <div class="collapse navbar-collapse" id="adminTopNav">
-            <ul class="navbar-nav mx-auto lg:gap-2 lg:items-center">
+            <ul class="navbar-nav mx-auto lg:gap-1 lg:items-center">
                 <?php if ($esAdmin): ?>
-                    <li class="nav-item lg:hidden">
+                    <li class="nav-item">
                         <a class="nav-link" href="<?= htmlspecialchars(url('/admin/verClientes')) ?>">Clientes</a>
                     </li>
-                    <li class="nav-item lg:hidden">
-                        <a class="nav-link" href="<?= htmlspecialchars(url('/admin/fisioterapeutas')) ?>">Fisios</a>
+                    <li class="nav-item">
+                        <a class="nav-link" href="<?= htmlspecialchars(url('/admin/gestionarActividades')) ?>">Actividades</a>
                     </li>
-                <?php endif; ?>
-                <li class="nav-item lg:hidden">
-                    <a class="nav-link" href="<?= htmlspecialchars(url('/monitor/verSalas')) ?>">Salas</a>
-                </li>
-                <?php if ($esAdmin): ?>
-                    <li class="nav-item lg:hidden">
+                    <li class="nav-item">
+                        <a class="nav-link" href="<?= htmlspecialchars(url('/admin/gestionSubscripciones')) ?>">Suscripciones</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="<?= htmlspecialchars(url('/monitor/verSalas')) ?>">Salas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="<?= htmlspecialchars(url('/admin/fisioterapeutas')) ?>">Fisioterapeutas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="<?= htmlspecialchars(url('/admin/verSolicitudes')) ?>">Reportes</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="<?= htmlspecialchars(url('/admin/feedback')) ?>">Feedback</a>
+                    </li>
+                <?php else: ?>
+                    <li class="nav-item">
+                        <a class="nav-link" href="<?= htmlspecialchars(url('/monitor/mis-clases')) ?>">Mis clases</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="<?= htmlspecialchars(url('/monitor/verSalas')) ?>">Salas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="<?= htmlspecialchars(url('/monitor/formSolicitud')) ?>">Reportes</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="<?= htmlspecialchars(url('/monitor/verMisSolicitudes')) ?>">Tus reportes</a>
                     </li>
                 <?php endif; ?>
                 <li class="nav-item lg:hidden">
@@ -43,26 +63,9 @@ $gpAdminInicio = $esAdmin ? url('/admin') : url('/inicioMonitor');
                 </li>
             </ul>
             <ul class="navbar-nav ms-auto lg:items-center flex-wrap gap-1">
-                <?php if ($esAdmin): ?>
-                    <li class="nav-item hidden xl:block">
-                        <a class="nav-link" href="<?= htmlspecialchars(url('/admin/verClientes')) ?>">Clientes</a>
-                    </li>
-                    <li class="nav-item hidden xl:block">
-                        <a class="nav-link" href="<?= htmlspecialchars(url('/admin/fisioterapeutas')) ?>">Fisioterapeutas</a>
-                    </li>
-                    <li class="nav-item hidden lg:block">
-                        <a class="nav-link" href="<?= htmlspecialchars(url('/admin/gestionarActividades')) ?>">Actividades</a>
-                    </li>
-                    <li class="nav-item hidden lg:block">
-                        <a class="nav-link" href="<?= htmlspecialchars(url('/admin/gestionSubscripciones')) ?>">Suscripciones</a>
-                    </li>
-                    <li class="nav-item hidden lg:block">
-                        <a class="nav-link" href="<?= htmlspecialchars(url('/admin/feedback')) ?>">Feedback</a>
-                    </li>
-                <?php endif; ?>
                 <li class="nav-item">
                     <a class="btn btn-outline-light btn-sm font-semibold px-4 lg:ms-2"
-                       href="<?= htmlspecialchars(url('/logout')) ?>">Salir</a>
+                       href="<?= htmlspecialchars(url('/logout')) ?>">Cerrar sesión</a>
                 </li>
             </ul>
         </div>

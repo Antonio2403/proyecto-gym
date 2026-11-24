@@ -40,6 +40,7 @@
 .gp-admin-topnav .btn-outline-light {
     border-color: rgba(255, 255, 255, 0.45);
     color: #fff;
+    white-space: nowrap;
 }
 
 .gp-admin-topnav .btn-outline-light:hover {
@@ -125,12 +126,20 @@
     }
 
     .gp-admin-topnav .navbar-nav.mx-auto {
-        position: absolute;
-        left: 50%;
-        transform: translateX(-50%);
+        position: static;
+        left: auto;
+        transform: none;
         justify-content: center;
-        width: max-content;
-        max-width: calc(100vw - 28rem);
+        width: auto;
+        max-width: none;
+        flex: 1 1 auto;
+        min-width: 0;
+    }
+
+    .gp-admin-topnav .navbar-nav.mx-auto .nav-link {
+        white-space: nowrap;
+        padding: 0.35rem 0.45rem;
+        font-size: 0.92rem;
     }
 }
 
