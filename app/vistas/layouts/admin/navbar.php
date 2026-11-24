@@ -62,7 +62,7 @@ $gpAdminInicio = $esAdmin ? url('/admin') : url('/inicioMonitor');
                 <?php endif; ?>
                 <li class="nav-item">
                     <a class="btn btn-outline-light btn-sm font-semibold px-4 lg:ms-2"
-                       href="<?= htmlspecialchars(url('/logout')) ?>">Salir</a>
+                       href="<?= htmlspecialchars(url('/logout')) ?>">Cerrar sesión</a>
                 </li>
             </ul>
         </div>
