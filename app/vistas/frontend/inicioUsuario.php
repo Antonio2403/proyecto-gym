@@ -1,3 +1,7 @@
+<?php
+$gpDentro = !empty($dentro_centro);
+$gpFaltasTotal = (int) ($faltas_total ?? 0);
+?>
 <div class="mx-auto w-full max-w-[1320px] lg:max-w-[1024px] xl:max-w-7xl px-3 py-12">
     <?php if (!empty($_GET['success'])): ?>
         <div class="alert alert-success"><?= htmlspecialchars((string) $_GET['success']) ?></div>
@@ -10,117 +14,58 @@
         <h1 class="text-[2rem] mb-0">Hola, <?= htmlspecialchars($_SESSION['nombre'] ?? 'usuario') ?></h1>
     </div>
 
-    <div class="flex flex-wrap -mx-3 -mt-6">
-        <div class="w-full md:w-1/2 max-w-full shrink-0 px-3 mt-6">
-            <div class="gp-stat-card h-full">
-                <div class="gp-photo-frame mb-4" style="height: 9rem;">
-                    <?= gp_responsive_picture('img/pexels/clase-colectiva.jpg', [
-                        'class' => 'gp-photo',
-                        'width' => 1600,
-                        'height' => 1068,
-                        'alt' => 'Entrenador dirigiendo una clase colectiva',
-                        'sizes' => '(max-width: 767px) 100vw, 50vw',
-                    ]) ?>
-                </div>
-                <div class="gp-icon" aria-hidden="true"><i class="fa-solid fa-calendar-days"></i></div>
-                <h3 class="text-xl mb-2">Horario</h3>
-                <p class="text-slate-500 text-sm mb-4">Consulta actividades y apunta tu plaza.</p>
-                <a href="<?= htmlspecialchars(url('/usuario/actividades')) ?>" class="btn btn-primary btn-sm">Ver tu horario</a>
-            </div>
-        </div>
-        <div class="w-full md:w-1/2 max-w-full shrink-0 px-3 mt-6">
-            <div class="gp-stat-card h-full">
-                <div class="gp-photo-frame mb-4" style="height: 9rem;">
-                    <?= gp_responsive_picture('img/unsplash/zona-pesas.jpg', [
-                        'class' => 'gp-photo gp-photo--pesas',
-                        'width' => 1600,
-                        'height' => 1067,
-                        'alt' => 'Zona de entrenamiento con mancuernas',
-                        'sizes' => '(max-width: 767px) 100vw, 50vw',
-                    ]) ?>
-                </div>
-                <div class="gp-icon" aria-hidden="true"><i class="fa-solid fa-credit-card"></i></div>
-                <h3 class="text-xl mb-2">Suscripción</h3>
-                <p class="text-slate-500 text-sm mb-4">Renueva o cambia tu plan cuando quieras.</p>
-                <a href="<?= htmlspecialchars(url('/pago')) ?>" class="btn btn-primary btn-sm">Ver tu plan</a>
-            </div>
-        </div>
-        <div class="w-full md:w-1/2 max-w-full shrink-0 px-3 mt-6">
-            <div class="gp-stat-card h-full">
-                <div class="gp-photo-frame mb-4" style="height: 9rem;">
-                    <?= gp_responsive_picture('img/pexels/entrenador-fuerza.jpg', [
-                        'class' => 'gp-photo',
-                        'width' => 1600,
-                        'height' => 1067,
-                        'alt' => 'Entrenadora supervisando un ejercicio de fuerza',
-                        'sizes' => '(max-width: 767px) 100vw, 50vw',
-                    ]) ?>
-                </div>
-                <div class="gp-icon" aria-hidden="true"><i class="fa-solid fa-pen-to-square"></i></div>
-                <h3 class="text-xl mb-2">Tus datos</h3>
-                <p class="text-slate-500 text-sm mb-4">Nombre, correo, teléfono y contraseña.</p>
-                <a href="<?= htmlspecialchars(url('/clientes/editar')) ?>" class="btn btn-primary btn-sm">Cambiar tus datos</a>
-            </div>
-        </div>
-        <div class="w-full md:w-1/2 max-w-full shrink-0 px-3 mt-6">
-            <div class="gp-stat-card h-full">
-                <div class="gp-photo-frame mb-4" style="height: 9rem;">
-                    <?= gp_responsive_picture('img/pixabay/fisioterapia-deportiva.jpg', [
-                        'class' => 'gp-photo',
-                        'width' => 1280,
-                        'height' => 853,
-                        'alt' => 'Profesional realizando una valoración de fisioterapia deportiva',
-                        'sizes' => '(max-width: 767px) 100vw, 50vw',
-                    ]) ?>
-                </div>
-                <div class="gp-icon" aria-hidden="true"><i class="fa-solid fa-stethoscope"></i></div>
-                <h3 class="text-xl mb-2">Fisioterapia</h3>
-                <p class="text-slate-500 text-sm mb-4">Citas incluidas en planes con fisioterapia.</p>
-                <a href="<?= htmlspecialchars(url('/usuario/fisio')) ?>" class="btn btn-primary btn-sm">Ver tus citas</a>
-            </div>
-        </div>
-        <div class="w-full md:w-1/2 max-w-full shrink-0 px-3 mt-6">
-            <div class="gp-stat-card h-full">
-                <div class="gp-photo-frame mb-4" style="height: 9rem;">
-                    <?= gp_responsive_picture('img/pexels/gimnasio-moderno.jpg', [
-                        'class' => 'gp-photo',
-                        'width' => 1600,
-                        'height' => 1067,
-                        'alt' => 'Interior del gimnasio',
-                        'sizes' => '(max-width: 767px) 100vw, 50vw',
-                    ]) ?>
-                </div>
-                <div class="gp-icon" aria-hidden="true"><i class="fa-solid fa-qrcode"></i></div>
-                <h3 class="text-xl mb-2">Entrada y salida</h3>
-                <p class="text-slate-500 text-sm mb-4">
-                    <?php if (!empty($dentro_centro)): ?>
-                        Estás dentro. El siguiente código, en el mismo sitio, será de salida.
-                    <?php else: ?>
-                        Genera el código de entrada. El siguiente, en el mismo sitio, será de salida.
-                    <?php endif; ?>
-                </p>
-                <a href="<?= htmlspecialchars(url('/usuario/acceso')) ?>" class="btn btn-primary btn-sm">Generar código</a>
-            </div>
-        </div>
-        <div class="w-full md:w-1/2 max-w-full shrink-0 px-3 mt-6">
-            <div class="gp-stat-card h-full">
-                <div class="gp-photo-frame mb-4" style="height: 9rem;">
-                    <?= gp_responsive_picture('img/pexels/entrenamiento-personal.jpg', [
-                        'class' => 'gp-photo',
-                        'width' => 1600,
-                        'height' => 1067,
-                        'alt' => 'Entrenador con un socio en una sesión',
-                        'sizes' => '(max-width: 767px) 100vw, 50vw',
-                    ]) ?>
-                </div>
-                <div class="gp-icon" aria-hidden="true"><i class="fa-solid fa-user-xmark"></i></div>
-                <h3 class="text-xl mb-2">Faltas de asistencia</h3>
-                <p class="text-slate-500 text-sm mb-4">
-                    <?php $gpFaltasTotal = (int) ($faltas_total ?? 0); ?>
-                    <?= $gpFaltasTotal === 0 ? 'No tienes faltas. El monitor de tu clase las anota aquí.' : ($gpFaltasTotal === 1 ? 'Tienes 1 falta de asistencia.' : 'Tienes ' . $gpFaltasTotal . ' faltas de asistencia.') ?>
-                </p>
-                <a href="<?= htmlspecialchars(url('/usuario/faltas')) ?>" class="btn btn-primary btn-sm">Ver tu registro</a>
-            </div>
-        </div>
+    <div class="gp-user-home">
+        <a class="gp-user-qr" href="<?= htmlspecialchars(url('/usuario/acceso')) ?>">
+            <img class="gp-user-qr__img" src="<?= htmlspecialchars(asset('img/qr-entrada.png')) ?>" width="220" height="220" alt="Código QR de entrada al centro">
+            <span class="gp-user-qr__copy">
+                <span class="gp-badge mb-2"><?= $gpDentro ? 'Dentro del centro' : 'Entrada' ?></span>
+                <span class="gp-user-qr__title"><?= $gpDentro ? 'Generar salida' : 'Generar entrada' ?></span>
+                <span class="gp-user-qr__text">
+                    <?= $gpDentro
+                        ? 'Ya estás dentro. El siguiente código, en el mismo sitio, será de salida.'
+                        : 'Genera el QR de entrada. El siguiente, en el mismo sitio, será de salida.' ?>
+                </span>
+                <span class="btn btn-primary"><?= $gpDentro ? 'Generar salida' : 'Generar entrada' ?></span>
+            </span>
+        </a>
+
+        <nav class="gp-user-side" aria-label="Accesos de tu cuenta">
+            <a href="<?= htmlspecialchars(url('/usuario/actividades')) ?>">
+                <span class="gp-icon" aria-hidden="true"><i class="fa-solid fa-calendar-days"></i></span>
+                <span>
+                    <strong>Horario</strong>
+                    <span>Consulta las clases y apunta tu plaza.</span>
+                </span>
+            </a>
+            <a href="<?= htmlspecialchars(url('/usuario/fisio')) ?>">
+                <span class="gp-icon" aria-hidden="true"><i class="fa-solid fa-stethoscope"></i></span>
+                <span>
+                    <strong>Fisioterapia</strong>
+                    <span>Pide cita y mira las que ya tienes.</span>
+                </span>
+            </a>
+            <a href="<?= htmlspecialchars(url('/usuario/inscripciones/mis-inscripciones')) ?>">
+                <span class="gp-icon" aria-hidden="true"><i class="fa-solid fa-clipboard-check"></i></span>
+                <span>
+                    <strong>Mis inscripciones</strong>
+                    <span>Las clases en las que ya tienes plaza.</span>
+                </span>
+            </a>
+        </nav>
+    </div>
+
+    <div class="gp-user-more">
+        <a href="<?= htmlspecialchars(url('/pago')) ?>">
+            <i class="fa-solid fa-credit-card" aria-hidden="true"></i>
+            Ver tu plan
+        </a>
+        <a href="<?= htmlspecialchars(url('/clientes/editar')) ?>">
+            <i class="fa-solid fa-pen-to-square" aria-hidden="true"></i>
+            Cambiar tus datos
+        </a>
+        <a href="<?= htmlspecialchars(url('/usuario/faltas')) ?>">
+            <i class="fa-solid fa-user-xmark" aria-hidden="true"></i>
+            <?= $gpFaltasTotal === 0 ? 'Tus faltas' : ($gpFaltasTotal === 1 ? '1 falta' : $gpFaltasTotal . ' faltas') ?>
+        </a>
     </div>
 </div>
