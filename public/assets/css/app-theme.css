@@ -4868,20 +4868,29 @@ textarea.form-control:not(.form-control-sm) {
 
 .gp-user-qr {
     display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    gap: 1.15rem;
+    min-height: 0;
+}
+
+.gp-user-qr__card {
+    display: flex;
     align-items: center;
-    gap: 1.75rem;
-    min-height: 22rem;
-    padding: 1.75rem;
+    justify-content: center;
+    padding: 1.25rem;
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 1rem;
+    box-shadow: 0 10px 28px rgba(44, 53, 68, 0.08);
 }
 
 .gp-user-qr__img {
-    width: 18rem;
-    height: 18rem;
-    flex: 0 0 auto;
+    width: min(100%, 28rem);
+    height: auto;
+    aspect-ratio: 1;
     background: #fff;
-    border: 1px solid #e2e8f0;
-    border-radius: 0.85rem;
-    padding: 0.55rem;
 }
 
 .gp-user-qr__copy {
@@ -4910,18 +4919,13 @@ textarea.form-control:not(.form-control-sm) {
     font-size: 1.02rem;
 }
 
-.gp-user-side,
-.gp-user-more {
+.gp-user-side {
     display: grid;
+    grid-template-rows: repeat(3, minmax(0, 1fr));
     gap: 0.75rem;
 }
 
-.gp-user-side {
-    grid-template-rows: repeat(3, minmax(0, 1fr));
-}
-
-.gp-user-side .gp-stat-card,
-.gp-user-more .gp-stat-card {
+.gp-user-side .gp-stat-card {
     display: flex;
     flex-direction: column;
 }
@@ -4944,31 +4948,9 @@ textarea.form-control:not(.form-control-sm) {
     margin-bottom: 0.7rem;
 }
 
-.gp-user-side .btn,
-.gp-user-more .btn {
+.gp-user-side .btn {
     align-self: flex-start;
     margin-top: auto;
-}
-
-.gp-user-more {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    margin-top: 0.9rem;
-}
-
-.gp-user-more .gp-photo-frame {
-    height: 9rem;
-    margin-bottom: 1rem;
-}
-
-.gp-user-more h3 {
-    margin-bottom: 0.35rem;
-    font-size: 1.25rem;
-}
-
-.gp-user-more p {
-    margin-bottom: 1rem;
-    color: #64748b;
-    font-size: 0.92rem;
 }
 
 @media (max-width: 900px) {
@@ -4976,29 +4958,11 @@ textarea.form-control:not(.form-control-sm) {
         grid-template-columns: 1fr;
     }
 
-    .gp-user-qr {
+    .gp-user-qr__card {
         min-height: 0;
     }
-}
 
-@media (max-width: 640px) {
-    .gp-user-qr {
-        flex-direction: column;
-        align-items: flex-start;
-        text-align: left;
-    }
-
-    .gp-user-qr__img {
-        width: 11rem;
-        height: 11rem;
-    }
-
-    .gp-user-more {
-        grid-template-columns: 1fr;
-    }
-
-    .gp-user-side .gp-photo-frame,
-    .gp-user-more .gp-photo-frame {
+    .gp-user-side .gp-photo-frame {
         height: 8rem;
     }
 }

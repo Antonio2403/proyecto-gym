@@ -1,10 +1,4 @@
-<?php
-$gpDentro = !empty($dentro_centro);
-$gpFaltasTotal = (int) ($faltas_total ?? 0);
-$gpFaltasTexto = $gpFaltasTotal === 0
-    ? 'No tienes faltas. El monitor de tu clase las anota aquí.'
-    : ($gpFaltasTotal === 1 ? 'Tienes 1 falta de asistencia.' : 'Tienes ' . $gpFaltasTotal . ' faltas de asistencia.');
-?>
+<?php $gpDentro = !empty($dentro_centro); ?>
 <div class="mx-auto w-full max-w-[1320px] lg:max-w-[1024px] xl:max-w-7xl px-3 py-12">
     <?php if (!empty($_GET['success'])): ?>
         <div class="alert alert-success"><?= htmlspecialchars((string) $_GET['success']) ?></div>
@@ -18,8 +12,10 @@ $gpFaltasTexto = $gpFaltasTotal === 0
     </div>
 
     <div class="gp-user-home">
-        <div class="gp-stat-card gp-user-qr">
-            <img class="gp-user-qr__img" src="<?= htmlspecialchars(asset('img/qr-entrada.png')) ?>" width="220" height="220" alt="Código QR de entrada al centro">
+        <div class="gp-user-qr">
+            <div class="gp-user-qr__card">
+                <img class="gp-user-qr__img" src="<?= htmlspecialchars(asset('img/qr-entrada.png')) ?>" width="420" height="420" alt="Código QR de entrada al centro">
+            </div>
             <div class="gp-user-qr__copy">
                 <span class="gp-badge mb-2"><?= $gpDentro ? 'Dentro del centro' : 'Entrada' ?></span>
                 <h2 class="gp-user-qr__title"><?= $gpDentro ? 'Generar salida' : 'Generar entrada' ?></h2>
@@ -80,54 +76,6 @@ $gpFaltasTexto = $gpFaltasTotal === 0
                 <p>Las clases en las que ya tienes plaza.</p>
                 <a href="<?= htmlspecialchars(url('/usuario/inscripciones/mis-inscripciones')) ?>" class="btn btn-primary btn-sm">Ver tus reservas</a>
             </div>
-        </div>
-    </div>
-
-    <div class="gp-user-more">
-        <div class="gp-stat-card">
-            <div class="gp-photo-frame">
-                <?= gp_responsive_picture('img/unsplash/zona-pesas.jpg', [
-                    'class' => 'gp-photo gp-photo--pesas',
-                    'width' => 1600,
-                    'height' => 1067,
-                    'alt' => 'Zona de entrenamiento con mancuernas',
-                    'sizes' => '(max-width: 767px) 100vw, 33vw',
-                ]) ?>
-            </div>
-            <div class="gp-icon" aria-hidden="true"><i class="fa-solid fa-credit-card"></i></div>
-            <h3>Suscripción</h3>
-            <p>Renueva o cambia tu plan cuando quieras.</p>
-            <a href="<?= htmlspecialchars(url('/pago')) ?>" class="btn btn-primary btn-sm">Ver tu plan</a>
-        </div>
-        <div class="gp-stat-card">
-            <div class="gp-photo-frame">
-                <?= gp_responsive_picture('img/pexels/gimnasio-moderno.jpg', [
-                    'class' => 'gp-photo',
-                    'width' => 1600,
-                    'height' => 1067,
-                    'alt' => 'Interior del gimnasio',
-                    'sizes' => '(max-width: 767px) 100vw, 33vw',
-                ]) ?>
-            </div>
-            <div class="gp-icon" aria-hidden="true"><i class="fa-solid fa-pen-to-square"></i></div>
-            <h3>Tus datos</h3>
-            <p>Nombre, correo, teléfono y contraseña.</p>
-            <a href="<?= htmlspecialchars(url('/clientes/editar')) ?>" class="btn btn-primary btn-sm">Cambiar tus datos</a>
-        </div>
-        <div class="gp-stat-card">
-            <div class="gp-photo-frame">
-                <?= gp_responsive_picture('img/pexels/entrenamiento-personal.jpg', [
-                    'class' => 'gp-photo',
-                    'width' => 1600,
-                    'height' => 1067,
-                    'alt' => 'Entrenador con un socio en una sesión',
-                    'sizes' => '(max-width: 767px) 100vw, 33vw',
-                ]) ?>
-            </div>
-            <div class="gp-icon" aria-hidden="true"><i class="fa-solid fa-user-xmark"></i></div>
-            <h3>Faltas de asistencia</h3>
-            <p><?= htmlspecialchars($gpFaltasTexto) ?></p>
-            <a href="<?= htmlspecialchars(url('/usuario/faltas')) ?>" class="btn btn-primary btn-sm">Ver tu registro</a>
         </div>
     </div>
 </div>
