@@ -35,12 +35,12 @@
             <div class="gp-stat-card h-full">
                 <div class="gp-icon" aria-hidden="true"><i class="fa-solid fa-gear"></i></div>
                 <h3 class="text-xl mb-2">Sesión</h3>
-                <p class="text-slate-500 text-sm mb-4">Salir del panel cuando termines.</p>
+                <p class="text-slate-500 text-sm mb-4">Cierra la sesión cuando termines.</p>
                 <a href="<?= htmlspecialchars(url('/logout')) ?>" class="btn btn-outline-light btn-sm"
                    data-gp-confirm
                    data-gp-confirm-title="Cerrar sesión"
-                   data-gp-confirm-body="¿Salir del panel de fisioterapeuta?"
-                   data-gp-confirm-ok="Sí, salir">Cerrar sesión</a>
+                   data-gp-confirm-body="¿Cerrar sesión del panel de fisioterapeuta?"
+                   data-gp-confirm-ok="Sí, cerrar sesión">Cerrar sesión</a>
             </div>
         </div>
     </div>
