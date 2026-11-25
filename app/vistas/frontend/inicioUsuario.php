@@ -120,8 +120,8 @@
             box.innerHTML = '';
             new QRCode(box, {
                 text: data.url,
-                width: 280,
-                height: 280,
+                width: 640,
+                height: 640,
                 correctLevel: QRCode.CorrectLevel.M
             });
             title.textContent = data.tipo === 'salida' ? 'Salida' : 'Entrada';

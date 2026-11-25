@@ -4976,10 +4976,10 @@ textarea.form-control:not(.form-control-sm) {
 }
 
 .gp-qr-pop__card {
-    width: min(100%, 24rem);
-    padding: 1.4rem 1.35rem 1.2rem;
+    width: min(94vw, 52rem);
+    padding: 1.6rem 1.6rem 1.35rem;
     background: #fff;
-    border-radius: 1.15rem;
+    border-radius: 1.25rem;
     text-align: center;
     animation: gp-qr-brillo 1.5s ease-in-out infinite;
 }
@@ -4987,22 +4987,22 @@ textarea.form-control:not(.form-control-sm) {
 .gp-qr-pop__code {
     display: flex;
     justify-content: center;
-    margin: 0.35rem auto 0.85rem;
-    padding: 0.7rem;
+    margin: 0.4rem auto 1rem;
+    padding: 0.85rem;
     background: #fff;
-    border-radius: 0.8rem;
+    border-radius: 0.9rem;
 }
 
 .gp-qr-pop__code img,
 .gp-qr-pop__code canvas {
-    width: 17.5rem;
-    height: 17.5rem;
+    width: min(72vw, 36rem);
+    height: min(72vw, 36rem);
 }
 
 .gp-qr-pop__hint {
     margin: 0 0 1rem;
     color: #64748b;
-    font-size: 0.92rem;
+    font-size: 1.05rem;
 }
 
 body.gp-qr-pop-open {
