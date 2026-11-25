@@ -22,9 +22,11 @@
                         ? 'Ya estás dentro. El siguiente código, en el mismo sitio, será de salida.'
                         : 'Genera el QR de entrada. El siguiente, en el mismo sitio, será de salida.' ?>
                 </p>
-                <a href="<?= htmlspecialchars(url('/usuario/acceso')) ?>" class="btn btn-primary">
-                    <?= $gpDentro ? 'Generar salida' : 'Generar entrada' ?>
-                </a>
+                <form method="post" action="<?= htmlspecialchars(url('/usuario/acceso')) ?>" data-gp-generar-acceso>
+                    <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(csrf_token(), ENT_QUOTES, 'UTF-8') ?>">
+                    <input type="hidden" name="formato" value="json">
+                    <button type="submit" class="btn btn-primary"><?= $gpDentro ? 'Generar salida' : 'Generar entrada' ?></button>
+                </form>
             </div>
         </div>
 
@@ -77,3 +79,63 @@
         </div>
     </div>
 </div>
+
+<div class="gp-qr-pop" id="gpQrPop" hidden>
+    <div class="gp-qr-pop__card" role="dialog" aria-modal="true" aria-labelledby="gpQrPopTitle">
+        <p class="gp-badge mb-2" id="gpQrPopTitle">Entrada</p>
+        <div class="gp-qr-pop__code" id="gpQrPopCode"></div>
+        <p class="gp-qr-pop__hint">Acerca el lector a la pantalla. El brillo ayuda a escanear el código.</p>
+        <button type="button" class="btn btn-primary" data-gp-qr-cerrar>Cerrar</button>
+    </div>
+</div>
+<script src="<?= htmlspecialchars(asset('js/vendor/qrcode.min.js')) ?>"></script>
+<script>
+(function () {
+    var form = document.querySelector('[data-gp-generar-acceso]');
+    var pop = document.getElementById('gpQrPop');
+    if (!form || !pop) return;
+    var box = document.getElementById('gpQrPopCode');
+    var title = document.getElementById('gpQrPopTitle');
+    var busy = false;
+
+    function cerrar() {
+        window.location.reload();
+    }
+
+    form.addEventListener('submit', function (event) {
+        event.preventDefault();
+        if (busy) return;
+        busy = true;
+        fetch(form.getAttribute('action'), {
+            method: 'POST',
+            body: new FormData(form),
+            headers: { 'Accept': 'application/json' },
+            credentials: 'same-origin'
+        }).then(function (response) {
+            return response.json();
+        }).then(function (data) {
+            if (!data || !data.ok || !data.url || typeof QRCode === 'undefined') {
+                throw new Error((data && data.error) || 'fail');
+            }
+            box.innerHTML = '';
+            new QRCode(box, {
+                text: data.url,
+                width: 280,
+                height: 280,
+                correctLevel: QRCode.CorrectLevel.M
+            });
+            title.textContent = data.tipo === 'salida' ? 'Salida' : 'Entrada';
+            pop.hidden = false;
+            document.body.classList.add('gp-qr-pop-open');
+        }).catch(function () {
+            busy = false;
+            window.alert('No se pudo generar el código.');
+        });
+    });
+
+    pop.querySelector('[data-gp-qr-cerrar]').addEventListener('click', cerrar);
+    pop.addEventListener('click', function (event) {
+        if (event.target === pop) cerrar();
+    });
+})();
+</script>
