@@ -4861,33 +4861,25 @@ textarea.form-control:not(.form-control-sm) {
 
 .gp-user-home {
     display: grid;
-    grid-template-columns: minmax(0, 1.45fr) minmax(16rem, 0.7fr);
-    gap: 1.15rem;
+    grid-template-columns: minmax(0, 1.05fr) minmax(18rem, 0.95fr);
+    gap: 1rem;
     align-items: stretch;
 }
 
 .gp-user-qr {
     display: flex;
     flex-direction: column;
-    align-items: stretch;
-    justify-content: flex-start;
-    gap: 1.15rem;
-    min-height: 0;
-}
-
-.gp-user-qr__card {
-    display: flex;
     align-items: center;
     justify-content: center;
-    padding: 1.25rem;
-    background: #fff;
-    border: 1px solid #e2e8f0;
-    border-radius: 1rem;
-    box-shadow: 0 10px 28px rgba(44, 53, 68, 0.08);
+    gap: 1.15rem;
+    height: 100%;
+    margin: 0;
+    padding: 1.75rem 1.5rem;
+    text-align: center;
 }
 
 .gp-user-qr__img {
-    width: min(100%, 28rem);
+    width: min(78%, 19.5rem);
     height: auto;
     aspect-ratio: 1;
     background: #fff;
@@ -4896,15 +4888,16 @@ textarea.form-control:not(.form-control-sm) {
 .gp-user-qr__copy {
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
+    width: 100%;
     min-width: 0;
 }
 
 .gp-user-qr__title {
     display: block;
-    margin: 0.35rem 0 0.55rem;
+    margin: 0.4rem 0 0.45rem;
     font-family: var(--gp-display, "Outfit", sans-serif);
-    font-size: clamp(2rem, 3vw, 2.7rem);
+    font-size: clamp(1.7rem, 2.4vw, 2.15rem);
     font-weight: 800;
     letter-spacing: -0.03em;
     line-height: 1.05;
@@ -4913,16 +4906,16 @@ textarea.form-control:not(.form-control-sm) {
 
 .gp-user-qr__text {
     display: block;
-    margin-bottom: 1.15rem;
-    max-width: 28rem;
+    margin: 0 0 1rem;
+    max-width: 24rem;
     color: #64748b;
-    font-size: 1.02rem;
+    font-size: 1rem;
 }
 
 .gp-user-side {
     display: grid;
     grid-template-rows: repeat(3, minmax(0, 1fr));
-    gap: 0.75rem;
+    gap: 1rem;
 }
 
 .gp-user-side .gp-stat-card {
@@ -4958,8 +4951,8 @@ textarea.form-control:not(.form-control-sm) {
         grid-template-columns: 1fr;
     }
 
-    .gp-user-qr__card {
-        min-height: 0;
+    .gp-user-qr__img {
+        width: min(70%, 16rem);
     }
 
     .gp-user-side .gp-photo-frame {

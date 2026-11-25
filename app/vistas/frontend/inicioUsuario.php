@@ -12,10 +12,8 @@
     </div>
 
     <div class="gp-user-home">
-        <div class="gp-user-qr">
-            <div class="gp-user-qr__card">
-                <img class="gp-user-qr__img" src="<?= htmlspecialchars(asset('img/qr-entrada.png')) ?>" width="420" height="420" alt="Código QR de entrada al centro">
-            </div>
+        <div class="gp-stat-card gp-user-qr">
+            <img class="gp-user-qr__img" src="<?= htmlspecialchars(asset('img/qr-entrada.png')) ?>" width="420" height="420" alt="Código QR de entrada al centro">
             <div class="gp-user-qr__copy">
                 <span class="gp-badge mb-2"><?= $gpDentro ? 'Dentro del centro' : 'Entrada' ?></span>
                 <h2 class="gp-user-qr__title"><?= $gpDentro ? 'Generar salida' : 'Generar entrada' ?></h2>
