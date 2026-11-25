@@ -11,7 +11,7 @@ $gpAdminInicio = $esAdmin ? url('/admin') : url('/inicioMonitor');
         </button>
 
         <a class="navbar-brand text-white" href="<?= htmlspecialchars(url('/inicio')) ?>">
-            <img src="<?= htmlspecialchars(asset('img/logo-spartum.png')) ?>?v=20261112a" alt="Spartum Gym" width="220" height="80">
+            <img src="<?= htmlspecialchars(asset('img/logo-spartum.png')) ?>?v=20261125a" alt="Spartum Gym" width="220" height="80">
         </a>
 
         <div class="collapse navbar-collapse" id="adminTopNav">

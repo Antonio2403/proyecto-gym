@@ -113,7 +113,7 @@ function gp_mail_configure_phpmailer(PHPMailer $mail): void
  */
 function gp_mail_html_con_logo(string $html): string
 {
-    $bloque = '<p style="margin:0 0 18px;"><img src="cid:spartum-logo" alt="Spartum Gym" width="260" style="display:block;width:260px;max-width:100%;height:auto;border:0;"></p>';
+    $bloque = '<p style="margin:0 0 18px;"><img src="cid:spartum-logo" alt="Spartum Gym" width="260" style="display:block;width:260px;max-width:100%;height:auto;border:0;border-radius:8px;"></p>';
     if (preg_match('/<body\b[^>]*>/i', $html, $coincidencia, PREG_OFFSET_CAPTURE) === 1) {
         $fin = $coincidencia[0][1] + strlen($coincidencia[0][0]);
 
@@ -175,7 +175,7 @@ function gp_mail_send(string $to, string $subject, string $htmlBody, string $tex
         $mail->isHTML(true);
         $mail->CharSet = 'UTF-8';
         $mail->Subject = $subject;
-        $logo = dirname(__DIR__, 2) . '/public/assets/img/logo-spartum.png';
+        $logo = dirname(__DIR__, 2) . '/public/assets/img/logo-spartum-correo.png';
         if (is_file($logo)) {
             $mail->addEmbeddedImage($logo, 'spartum-logo', 'spartum.png');
             $htmlBody = gp_mail_html_con_logo($htmlBody);
