@@ -33,7 +33,7 @@ $queryBase = static function (array $extra = []) use ($filtros, $perPage): array
         <header class="gp-dash-hero mb-6">
             <span class="gp-badge inline-block mb-2">Monitor</span>
             <h1 class="text-[1.75rem] mb-0">Mis clases</h1>
-            <p class="mb-0 mt-2 text-slate-500">La falta solo se puede poner cuando la clase ya ha terminado.</p>
+            <p class="mb-0 mt-2 text-slate-500">Marca las faltas con el seleccionable y pulsa Aplicar al final de la clase. Solo cuando la clase ya ha terminado.</p>
         </header>
 
         <div class="card border-0 shadow-sm mb-6">
@@ -148,7 +148,7 @@ $queryBase = static function (array $extra = []) use ($filtros, $perPage): array
             <div class="gp-empty">No hay sesiones con inscritos que coincidan con los filtros.</div>
         <?php else: ?>
             <div class="flex flex-col gap-6">
-                <?php foreach ($sesiones as $bloque): ?>
+                <?php foreach ($sesiones as $sessionIdx => $bloque): ?>
                     <?php
                     $lista = $bloque['inscritos'] ?? [];
                     $rec = (int) ($bloque['recurrente'] ?? 1) === 1;
@@ -157,6 +157,15 @@ $queryBase = static function (array $extra = []) use ($filtros, $perPage): array
                         'fecha_inicio' => (string) ($bloque['fecha_inicio'] ?? ''),
                         'duracion' => (int) ($bloque['duracion'] ?? 0),
                     ], $fec);
+                    $formBatchId = 'faltas-batch-' . (int) $sessionIdx;
+                    $puedeMarcar = false;
+                    $quitarForms = [];
+                    foreach ($lista as $insPrev) {
+                        $prevId = (int) ($insPrev['id'] ?? 0);
+                        if ($prevId > 0 && !isset($faltasMarcadas[$prevId]) && $claseRealizada) {
+                            $puedeMarcar = true;
+                        }
+                    }
                     ?>
                     <section class="card border-0 shadow-sm">
                         <div class="card-body">
@@ -176,46 +185,69 @@ $queryBase = static function (array $extra = []) use ($filtros, $perPage): array
                                     <?= (int) ($bloque['total_inscritos'] ?? count($lista)) ?> inscrito(s)
                                 </span>
                             </div>
-                            <div class="table-responsive">
-                                <table class="table table-sm align-middle mb-0">
-                                    <thead>
-                                        <tr>
-                                            <th>Nombre</th>
-                                            <th>Email</th>
-                                            <th>Teléfono</th>
-                                            <th>Falta</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <?php foreach ($lista as $ins): ?>
-                                            <?php
-                                            $insId = (int) ($ins['id'] ?? 0);
-                                            $tieneFalta = isset($faltasMarcadas[$insId]);
-                                            ?>
+                            <form id="<?= htmlspecialchars($formBatchId) ?>" method="post" action="<?= htmlspecialchars(url('/monitor/falta')) ?>">
+                                <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(csrf_token(), ENT_QUOTES, 'UTF-8') ?>">
+                                <input type="hidden" name="accion" value="poner">
+                                <input type="hidden" name="volver" value="<?= htmlspecialchars(http_build_query($queryBase(['page' => $page]))) ?>">
+                                <div class="table-responsive">
+                                    <table class="table table-sm align-middle mb-0">
+                                        <thead>
                                             <tr>
-                                                <td><?= htmlspecialchars(trim((string) ($ins['nombre'] ?? '') . ' ' . (string) ($ins['apellido1'] ?? ''))) ?></td>
-                                                <td><?= htmlspecialchars((string) ($ins['email'] ?? '')) ?></td>
-                                                <td><?= htmlspecialchars((string) ($ins['telefono'] ?? '—')) ?></td>
-                                                <td>
-                                                    <?php if (!$claseRealizada && !$tieneFalta): ?>
-                                                        <button type="button" class="btn btn-sm btn-outline-secondary" disabled>Aún no realizada</button>
-                                                    <?php else: ?>
-                                                    <form method="post" action="<?= htmlspecialchars(url('/monitor/falta')) ?>" class="mb-0">
-                                                        <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(csrf_token(), ENT_QUOTES, 'UTF-8') ?>">
-                                                        <input type="hidden" name="inscripcion_id" value="<?= $insId ?>">
-                                                        <input type="hidden" name="accion" value="<?= $tieneFalta ? 'quitar' : 'poner' ?>">
-                                                        <input type="hidden" name="volver" value="<?= htmlspecialchars(http_build_query($queryBase(['page' => $page]))) ?>">
-                                                        <button type="submit" class="btn btn-sm <?= $tieneFalta ? 'btn-outline-secondary' : 'btn-primary' ?>">
-                                                            <?= $tieneFalta ? 'Quitar falta' : 'Poner falta' ?>
-                                                        </button>
-                                                    </form>
-                                                    <?php endif; ?>
-                                                </td>
+                                                <th>Nombre</th>
+                                                <th>Email</th>
+                                                <th>Teléfono</th>
+                                                <th>Falta</th>
                                             </tr>
-                                        <?php endforeach; ?>
-                                    </tbody>
-                                </table>
-                            </div>
+                                        </thead>
+                                        <tbody>
+                                            <?php foreach ($lista as $ins): ?>
+                                                <?php
+                                                $insId = (int) ($ins['id'] ?? 0);
+                                                $tieneFalta = isset($faltasMarcadas[$insId]);
+                                                $quitarFormId = 'falta-quitar-' . $insId;
+                                                if ($tieneFalta) {
+                                                    $quitarForms[] = ['id' => $insId, 'form_id' => $quitarFormId];
+                                                }
+                                                ?>
+                                                <tr>
+                                                    <td><?= htmlspecialchars(trim((string) ($ins['nombre'] ?? '') . ' ' . (string) ($ins['apellido1'] ?? ''))) ?></td>
+                                                    <td><?= htmlspecialchars((string) ($ins['email'] ?? '')) ?></td>
+                                                    <td><?= htmlspecialchars((string) ($ins['telefono'] ?? '—')) ?></td>
+                                                    <td>
+                                                        <?php if ($tieneFalta): ?>
+                                                            <button type="submit" form="<?= htmlspecialchars($quitarFormId) ?>" class="btn btn-sm btn-outline-secondary">
+                                                                Quitar falta
+                                                            </button>
+                                                        <?php elseif (!$claseRealizada): ?>
+                                                            <button type="button" class="btn btn-sm btn-outline-secondary" disabled>Aún no realizada</button>
+                                                        <?php else: ?>
+                                                            <label class="inline-flex items-center gap-2 mb-0 cursor-pointer">
+                                                                <input type="checkbox" class="form-check-input m-0" name="inscripcion_ids[]" value="<?= $insId ?>">
+                                                                <span class="text-sm">Marcar falta</span>
+                                                            </label>
+                                                        <?php endif; ?>
+                                                    </td>
+                                                </tr>
+                                            <?php endforeach; ?>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <?php if ($puedeMarcar): ?>
+                                    <div class="mt-4 flex flex-wrap justify-end">
+                                        <button type="submit" class="btn btn-primary btn-sm">
+                                            <i class="fas fa-check me-1" aria-hidden="true"></i> Aplicar faltas
+                                        </button>
+                                    </div>
+                                <?php endif; ?>
+                            </form>
+                            <?php foreach ($quitarForms as $qf): ?>
+                                <form id="<?= htmlspecialchars($qf['form_id']) ?>" method="post" action="<?= htmlspecialchars(url('/monitor/falta')) ?>" class="hidden">
+                                    <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(csrf_token(), ENT_QUOTES, 'UTF-8') ?>">
+                                    <input type="hidden" name="inscripcion_id" value="<?= (int) $qf['id'] ?>">
+                                    <input type="hidden" name="accion" value="quitar">
+                                    <input type="hidden" name="volver" value="<?= htmlspecialchars(http_build_query($queryBase(['page' => $page]))) ?>">
+                                </form>
+                            <?php endforeach; ?>
                         </div>
                     </section>
                 <?php endforeach; ?>

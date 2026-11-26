@@ -143,16 +143,56 @@ class MonitorControlador extends Controller
             header('Location: ' . url('/monitor/mis-clases') . $volver . 'error=' . rawurlencode('No se encontró el perfil de monitor.'));
             exit;
         }
-        $inscripcionId = (int) ($_POST['inscripcion_id'] ?? 0);
         $accion = (string) ($_POST['accion'] ?? '');
-        $resultado = $accion === 'quitar'
-            ? FaltaAsistencia::quitar($inscripcionId, $monitorTablaId)
-            : FaltaAsistencia::poner($inscripcionId, $monitorTablaId);
-        if (!$resultado['ok']) {
-            header('Location: ' . url('/monitor/mis-clases') . $volver . 'error=' . rawurlencode((string) ($resultado['error'] ?? 'No se pudo guardar la falta.')));
+        if ($accion === 'quitar') {
+            $inscripcionId = (int) ($_POST['inscripcion_id'] ?? 0);
+            $resultado = FaltaAsistencia::quitar($inscripcionId, $monitorTablaId);
+            if (!$resultado['ok']) {
+                header('Location: ' . url('/monitor/mis-clases') . $volver . 'error=' . rawurlencode((string) ($resultado['error'] ?? 'No se pudo guardar la falta.')));
+                exit;
+            }
+            header('Location: ' . url('/monitor/mis-clases') . $volver . 'success=' . rawurlencode('Falta quitada.'));
             exit;
         }
-        $texto = $accion === 'quitar' ? 'Falta quitada.' : 'Falta registrada.';
+
+        $ids = [];
+        $rawIds = $_POST['inscripcion_ids'] ?? null;
+        if (is_array($rawIds)) {
+            foreach ($rawIds as $rawId) {
+                $id = (int) $rawId;
+                if ($id > 0) {
+                    $ids[$id] = $id;
+                }
+            }
+        }
+        $unico = (int) ($_POST['inscripcion_id'] ?? 0);
+        if ($ids === [] && $unico > 0) {
+            $ids[$unico] = $unico;
+        }
+        if ($ids === []) {
+            header('Location: ' . url('/monitor/mis-clases') . $volver . 'error=' . rawurlencode('Selecciona al menos una persona para poner falta.'));
+            exit;
+        }
+
+        $ok = 0;
+        $errores = [];
+        foreach ($ids as $inscripcionId) {
+            $resultado = FaltaAsistencia::poner($inscripcionId, $monitorTablaId);
+            if (!empty($resultado['ok'])) {
+                ++$ok;
+                continue;
+            }
+            $errores[] = (string) ($resultado['error'] ?? 'No se pudo guardar la falta.');
+        }
+        if ($ok === 0) {
+            $msg = $errores[0] ?? 'No se pudo guardar la falta.';
+            header('Location: ' . url('/monitor/mis-clases') . $volver . 'error=' . rawurlencode($msg));
+            exit;
+        }
+        $texto = $ok === 1 ? 'Falta registrada.' : ('Se registraron ' . $ok . ' faltas.');
+        if ($errores !== []) {
+            $texto .= ' Algunas no se pudieron guardar.';
+        }
         header('Location: ' . url('/monitor/mis-clases') . $volver . 'success=' . rawurlencode($texto));
         exit;
     }
