@@ -25,7 +25,7 @@ $badgeEstado = static function (string $est): string {
                     </p>
                 </div>
                 <div class="gp-view-toolbar">
-                    <a href="<?= htmlspecialchars(url('/monitor/formSolicitud')) ?>" class="btn btn-primary btn-sm">
+                    <a href="<?= htmlspecialchars(url('/monitor/formSolicitud')) ?>" class="btn btn-primary btn-sm" data-gp-entity-open>
                         <i class="fas fa-plus-circle me-1" aria-hidden="true"></i> Nuevo reporte
                     </a>
                     <a href="<?= htmlspecialchars(url('/inicioMonitor')) ?>" class="btn btn-outline-secondary btn-sm">
@@ -72,7 +72,7 @@ $badgeEstado = static function (string $est): string {
             <div class="gp-admin-card-panel text-center py-12 border-0 shadow-sm">
                 <i class="fas fa-inbox text-2xl text-slate-500 mb-4 block opacity-50" aria-hidden="true"></i>
                 <p class="text-slate-500 mb-4">Todavía no has enviado ningún reporte.</p>
-                <a href="<?= htmlspecialchars(url('/monitor/formSolicitud')) ?>" class="btn btn-primary btn-sm">Crear la primera</a>
+                <a href="<?= htmlspecialchars(url('/monitor/formSolicitud')) ?>" class="btn btn-primary btn-sm" data-gp-entity-open>Crear la primera</a>
             </div>
         <?php endif; ?>
     </div>

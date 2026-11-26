@@ -269,7 +269,7 @@
         if (ev.button !== 0 || ev.metaKey || ev.ctrlKey || ev.shiftKey || ev.altKey) {
             return;
         }
-        var link = ev.target.closest('a.gp-btn-action--edit, a.gp-btn-action--reply');
+        var link = ev.target.closest('a.gp-btn-action--edit, a.gp-btn-action--reply, a[data-gp-entity-open]');
         if (!link || !link.href || link.target === '_blank') {
             return;
         }

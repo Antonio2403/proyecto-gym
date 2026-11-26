@@ -37,7 +37,7 @@ $labelEstado = static function (string $est): string {
                     </p>
                 </div>
                 <div class="gp-view-toolbar">
-                    <a href="<?= htmlspecialchars(url('/monitor/formSolicitud')) ?>" class="btn btn-primary btn-sm">
+                    <a href="<?= htmlspecialchars(url('/monitor/formSolicitud')) ?>" class="btn btn-primary btn-sm" data-gp-entity-open>
                         <i class="fas fa-plus-circle me-1" aria-hidden="true"></i> Nueva solicitud
                     </a>
                     <a href="<?= htmlspecialchars(url('/monitor/verMisSolicitudes')) ?>" class="btn btn-outline-secondary btn-sm">
