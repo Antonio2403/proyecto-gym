@@ -5,7 +5,7 @@
             <h1 class="text-[1.75rem] mb-0">Panel de monitor</h1>
             <p class="mb-0 mt-2">
                 Hola, <?= htmlspecialchars($_SESSION['nombre'] ?? 'Monitor') ?>.
-                Accesos rápidos a tus reportes y a las salas del centro.
+                Accesos rápidos a tus clases, las salas y tus reportes.
             </p>
         </header>
 
@@ -20,15 +20,10 @@
                 <span class="gp-bento-tile__label">Salas</span>
                 <span class="gp-bento-tile__desc">Espacios y materiales</span>
             </a>
-            <a href="<?= htmlspecialchars(url('/monitor/formSolicitud')) ?>" class="gp-bento-tile gp-motion-item">
-                <span class="gp-bento-tile__icon" aria-hidden="true"><i class="fas fa-plus-circle"></i></span>
-                <span class="gp-bento-tile__label">Reportes</span>
-                <span class="gp-bento-tile__desc">Crear un reporte nuevo</span>
-            </a>
             <a href="<?= htmlspecialchars(url('/monitor/verMisSolicitudes')) ?>" class="gp-bento-tile gp-motion-item">
                 <span class="gp-bento-tile__icon" aria-hidden="true"><i class="fas fa-list"></i></span>
-                <span class="gp-bento-tile__label">Tus reportes</span>
-                <span class="gp-bento-tile__desc">Solo los que has enviado tú</span>
+                <span class="gp-bento-tile__label">Reportes</span>
+                <span class="gp-bento-tile__desc">Los que has enviado tú</span>
             </a>
         </nav>
     </div>

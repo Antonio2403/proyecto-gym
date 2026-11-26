@@ -19,7 +19,7 @@ $badgeEstado = static function (string $est): string {
         <div class="gp-admin-card-panel mb-6 border-0 shadow-sm">
             <div class="flex flex-col lg:flex-row justify-between items-start gap-4">
                 <div>
-                    <h1 class="text-[1.75rem] mb-2">Tus reportes</h1>
+                    <h1 class="text-[1.75rem] mb-2">Reportes</h1>
                     <p class="text-slate-500 mb-0">
                         Solo los reportes que has enviado tú. El resto del equipo no aparece aquí.
                     </p>

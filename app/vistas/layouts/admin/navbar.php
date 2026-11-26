@@ -46,10 +46,7 @@ $gpAdminInicio = $esAdmin ? url('/admin') : url('/inicioMonitor');
                         <a class="nav-link" href="<?= htmlspecialchars(url('/monitor/verSalas')) ?>">Salas</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="<?= htmlspecialchars(url('/monitor/formSolicitud')) ?>">Reportes</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="<?= htmlspecialchars(url('/monitor/verMisSolicitudes')) ?>">Tus reportes</a>
+                        <a class="nav-link" href="<?= htmlspecialchars(url('/monitor/verMisSolicitudes')) ?>">Reportes</a>
                     </li>
                 <?php endif; ?>
                 <li class="nav-item lg:hidden">
