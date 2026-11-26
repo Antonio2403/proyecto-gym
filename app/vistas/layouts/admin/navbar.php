@@ -55,9 +55,6 @@ $gpAdminInicio = $esAdmin ? url('/admin') : url('/inicioMonitor');
                 <li class="nav-item lg:hidden">
                     <a class="nav-link" href="<?= htmlspecialchars(url('/cuenta/perfil')) ?>">Mi perfil</a>
                 </li>
-                <li class="nav-item lg:hidden">
-                    <a class="nav-link" href="<?= htmlspecialchars(url('/cuenta/cambiar-clave')) ?>">Cambiar contraseña</a>
-                </li>
             </ul>
             <ul class="navbar-nav ms-auto lg:items-center flex-wrap gap-1">
                 <li class="nav-item">

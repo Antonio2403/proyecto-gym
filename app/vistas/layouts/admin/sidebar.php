@@ -1,6 +1,7 @@
 <?php
 $rol = $_SESSION['rol'] ?? '';
-$dashboardHref = $rol === 'admin' ? url('/admin') : url('/inicioMonitor');
+$esAdmin = ($rol === 'admin');
+$dashboardHref = $esAdmin ? url('/admin') : url('/inicioMonitor');
 $currentPath = strtok($_SERVER['REQUEST_URI'] ?? '', '?');
 /** @psalm-suppress PossiblyFalseArgument */
 $baseRouter = rtrim(router_server_base_path(), '/');
@@ -43,10 +44,49 @@ function gp_admin_nav_active(string $prefix, string $currentPath): string
                         </a>
 
                         <div class="gp-admin-nav-heading">Operaciones</div>
-                        <a href="<?= htmlspecialchars(url('/cuenta/cambiar-clave')) ?>"
-                           class="nav-link gp-admin-nav-link<?= gp_admin_nav_active('/cuenta/cambiar-clave', $currentPath) ?>">
-                            <i class="fas fa-key me-2 opacity-75"></i> Cambiar contraseña
-                        </a>
+                        <?php if ($esAdmin): ?>
+                            <a href="<?= htmlspecialchars(url('/admin/verClientes')) ?>"
+                               class="nav-link gp-admin-nav-link<?= gp_admin_nav_active('/admin/verClientes', $currentPath) ?>">
+                                <i class="fas fa-users me-2 opacity-75"></i> Clientes
+                            </a>
+                            <a href="<?= htmlspecialchars(url('/admin/gestionarActividades')) ?>"
+                               class="nav-link gp-admin-nav-link<?= gp_admin_nav_active('/admin/gestionarActividades', $currentPath) ?>">
+                                <i class="fas fa-dumbbell me-2 opacity-75"></i> Actividades
+                            </a>
+                            <a href="<?= htmlspecialchars(url('/admin/gestionSubscripciones')) ?>"
+                               class="nav-link gp-admin-nav-link<?= gp_admin_nav_active('/admin/gestionSubscripciones', $currentPath) ?>">
+                                <i class="fas fa-id-card me-2 opacity-75"></i> Suscripciones
+                            </a>
+                            <a href="<?= htmlspecialchars(url('/monitor/verSalas')) ?>"
+                               class="nav-link gp-admin-nav-link<?= gp_admin_nav_active('/monitor/verSalas', $currentPath) ?>">
+                                <i class="fas fa-door-open me-2 opacity-75"></i> Salas
+                            </a>
+                            <a href="<?= htmlspecialchars(url('/admin/fisioterapeutas')) ?>"
+                               class="nav-link gp-admin-nav-link<?= gp_admin_nav_active('/admin/fisioterapeutas', $currentPath) ?>">
+                                <i class="fas fa-user-md me-2 opacity-75"></i> Fisioterapeutas
+                            </a>
+                            <a href="<?= htmlspecialchars(url('/admin/verSolicitudes')) ?>"
+                               class="nav-link gp-admin-nav-link<?= gp_admin_nav_active('/admin/verSolicitudes', $currentPath) ?>">
+                                <i class="fas fa-clipboard-list me-2 opacity-75"></i> Reportes
+                            </a>
+                            <a href="<?= htmlspecialchars(url('/admin/feedback')) ?>"
+                               class="nav-link gp-admin-nav-link<?= gp_admin_nav_active('/admin/feedback', $currentPath) ?>">
+                                <i class="fas fa-comments me-2 opacity-75"></i> Feedback
+                            </a>
+                        <?php else: ?>
+                            <a href="<?= htmlspecialchars(url('/monitor/mis-clases')) ?>"
+                               class="nav-link gp-admin-nav-link<?= gp_admin_nav_active('/monitor/mis-clases', $currentPath) ?>">
+                                <i class="fas fa-calendar-check me-2 opacity-75"></i> Mis clases
+                            </a>
+                            <a href="<?= htmlspecialchars(url('/monitor/verSalas')) ?>"
+                               class="nav-link gp-admin-nav-link<?= gp_admin_nav_active('/monitor/verSalas', $currentPath) ?>">
+                                <i class="fas fa-door-open me-2 opacity-75"></i> Salas
+                            </a>
+                            <a href="<?= htmlspecialchars(url('/monitor/verMisSolicitudes')) ?>"
+                               class="nav-link gp-admin-nav-link<?= gp_admin_nav_active('/monitor/verMisSolicitudes', $currentPath) ?>">
+                                <i class="fas fa-clipboard-list me-2 opacity-75"></i> Reportes
+                            </a>
+                        <?php endif; ?>
 
                         <a href="<?= htmlspecialchars(url('/logout')) ?>"
                            class="nav-link gp-admin-nav-link text-red-600 font-semibold mt-4 border border-red-600/25 rounded-lg">
