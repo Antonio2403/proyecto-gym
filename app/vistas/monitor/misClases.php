@@ -33,7 +33,7 @@ $queryBase = static function (array $extra = []) use ($filtros, $perPage): array
         <header class="gp-dash-hero mb-6">
             <span class="gp-badge inline-block mb-2">Monitor</span>
             <h1 class="text-[1.75rem] mb-0">Mis clases</h1>
-            <p class="mb-0 mt-2 text-slate-500">Sesiones de la última semana y las próximas. En cada persona puedes poner o quitar la falta.</p>
+            <p class="mb-0 mt-2 text-slate-500">La falta solo se puede poner cuando la clase ya ha terminado.</p>
         </header>
 
         <div class="card border-0 shadow-sm mb-6">
@@ -153,6 +153,10 @@ $queryBase = static function (array $extra = []) use ($filtros, $perPage): array
                     $lista = $bloque['inscritos'] ?? [];
                     $rec = (int) ($bloque['recurrente'] ?? 1) === 1;
                     $fec = (string) ($bloque['fecha_ocurrencia'] ?? '');
+                    $claseRealizada = $fec !== '' && Actividad::sesionHaFinalizado([
+                        'fecha_inicio' => (string) ($bloque['fecha_inicio'] ?? ''),
+                        'duracion' => (int) ($bloque['duracion'] ?? 0),
+                    ], $fec);
                     ?>
                     <section class="card border-0 shadow-sm">
                         <div class="card-body">
@@ -193,6 +197,9 @@ $queryBase = static function (array $extra = []) use ($filtros, $perPage): array
                                                 <td><?= htmlspecialchars((string) ($ins['email'] ?? '')) ?></td>
                                                 <td><?= htmlspecialchars((string) ($ins['telefono'] ?? '—')) ?></td>
                                                 <td>
+                                                    <?php if (!$claseRealizada && !$tieneFalta): ?>
+                                                        <button type="button" class="btn btn-sm btn-outline-secondary" disabled>Aún no realizada</button>
+                                                    <?php else: ?>
                                                     <form method="post" action="<?= htmlspecialchars(url('/monitor/falta')) ?>" class="mb-0">
                                                         <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(csrf_token(), ENT_QUOTES, 'UTF-8') ?>">
                                                         <input type="hidden" name="inscripcion_id" value="<?= $insId ?>">
@@ -202,6 +209,7 @@ $queryBase = static function (array $extra = []) use ($filtros, $perPage): array
                                                             <?= $tieneFalta ? 'Quitar falta' : 'Poner falta' ?>
                                                         </button>
                                                     </form>
+                                                    <?php endif; ?>
                                                 </td>
                                             </tr>
                                         <?php endforeach; ?>

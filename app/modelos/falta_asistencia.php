@@ -18,6 +18,9 @@ class FaltaAsistencia
         if ($sesion === null) {
             return ['ok' => false, 'error' => 'Esa inscripción no es de una clase tuya.'];
         }
+        if (!self::sesionYaRealizada($sesion)) {
+            return ['ok' => false, 'error' => 'No puedes poner falta en una clase que aún no se ha realizado.'];
+        }
         $db = BasedeDatos::Conectar();
         $ya = $db->prepare(
             'SELECT id FROM falta_asistencia
@@ -159,7 +162,7 @@ class FaltaAsistencia
     }
 
     /**
-     * @return array{cliente_id: int, actividad_id: int, fecha: string}|null
+     * @return array{cliente_id: int, actividad_id: int, fecha: string, fecha_inicio: string, duracion: int}|null
      */
     private static function sesionDelMonitor(int $inscripcionId, int $monitorId): ?array
     {
@@ -168,7 +171,7 @@ class FaltaAsistencia
         }
         $db = BasedeDatos::Conectar();
         $st = $db->prepare(
-            'SELECT i.cliente_id, i.actividad_id, i.fecha_ocurrencia
+            'SELECT i.cliente_id, i.actividad_id, i.fecha_ocurrencia, a.fecha_inicio, a.duracion
              FROM inscripciones i
              INNER JOIN actividades a ON a.id = i.actividad_id
              WHERE i.id = ? AND a.monitor_id = ?
@@ -184,6 +187,24 @@ class FaltaAsistencia
             'cliente_id' => (int) $row['cliente_id'],
             'actividad_id' => (int) $row['actividad_id'],
             'fecha' => (string) $row['fecha_ocurrencia'],
+            'fecha_inicio' => (string) ($row['fecha_inicio'] ?? ''),
+            'duracion' => (int) ($row['duracion'] ?? 0),
         ];
+    }
+
+    /**
+     * @param array{fecha: string, fecha_inicio: string, duracion: int} $sesion
+     */
+    private static function sesionYaRealizada(array $sesion): bool
+    {
+        require_once __DIR__ . '/actividades.php';
+
+        return Actividad::sesionHaFinalizado(
+            [
+                'fecha_inicio' => $sesion['fecha_inicio'],
+                'duracion' => $sesion['duracion'],
+            ],
+            $sesion['fecha']
+        );
     }
 }

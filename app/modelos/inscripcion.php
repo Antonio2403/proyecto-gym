@@ -438,6 +438,8 @@ class Inscripcion
                 'fecha_ocurrencia' => $fec,
                 'actividad_nombre' => (string) ($s['actividad_nombre'] ?? ''),
                 'hora' => !empty($s['fecha_inicio']) ? date('H:i', strtotime((string) $s['fecha_inicio'])) : '',
+                'fecha_inicio' => (string) ($s['fecha_inicio'] ?? ''),
+                'duracion' => (int) ($s['duracion'] ?? 0),
                 'recurrente' => (int) ($s['recurrente'] ?? 1),
                 'sala_nombre' => (string) ($s['sala_nombre'] ?? ''),
                 'inscritos' => $inscritosMap[$key] ?? [],
