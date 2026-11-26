@@ -9,6 +9,7 @@ $tipos = [
     'clases' => ['label' => 'Clases', 'icon' => 'fa-calendar-check'],
     'planes' => ['label' => 'Planes', 'icon' => 'fa-credit-card'],
     'fisio' => ['label' => 'Fisioterapia', 'icon' => 'fa-heart-pulse'],
+    'faltas' => ['label' => 'Faltas', 'icon' => 'fa-user-xmark'],
 ];
 $subtipos = [
     'reserva' => ['Reserva realizada', 'fa-calendar-plus'],
@@ -16,6 +17,7 @@ $subtipos = [
     'plan_alta' => ['Plan contratado', 'fa-circle-check'],
     'plan_baja' => ['Plan finalizado', 'fa-circle-minus'],
     'cita' => ['Cita de fisioterapia', 'fa-stethoscope'],
+    'falta' => ['Falta de asistencia', 'fa-user-xmark'],
 ];
 $estadoCita = ['S' => 'Solicitada', 'C' => 'Confirmada', 'A' => 'Atendida', 'CA' => 'Cancelada'];
 
@@ -36,7 +38,7 @@ $queryPagina = static function (int $destino) use ($filtros): string {
         <div>
             <span class="gp-badge">Tu recorrido</span>
             <h1 class="text-[2rem] mt-4 mb-2">Mi actividad</h1>
-            <p class="text-slate-500 mb-0">Reservas, planes, opiniones y fisioterapia reunidos en una sola cronología.</p>
+            <p class="text-slate-500 mb-0">Clases, planes, opiniones, fisioterapia y faltas de asistencia en una sola cronología.</p>
         </div>
         <a href="<?= htmlspecialchars(url('/usuario/actividades')) ?>" class="btn btn-primary">Ver horario</a>
     </header>
@@ -112,6 +114,8 @@ $queryPagina = static function (int $destino) use ($filtros): string {
                             <span class="gp-activity-state gp-activity-state--<?= strtolower(htmlspecialchars($estado)) ?>">
                                 <?= htmlspecialchars($estadoCita[$estado]) ?>
                             </span>
+                        <?php elseif ($subtipo === 'falta'): ?>
+                            <span class="gp-activity-state gp-activity-state--f">Falta registrada</span>
                         <?php endif; ?>
                     </article>
                 </li>

@@ -29,7 +29,7 @@ $gpDireccion = gp_horario_centro_direccion();
                 <div class="footer-col-heading">Tu cuenta</div>
                 <ul class="list-none ps-0 text-sm mb-0">
                     <li><a href="<?= htmlspecialchars(url('/usuario/actividades')) ?>">Actividades</a></li>
-                    <li><a href="<?= htmlspecialchars(url('/usuario/inscripciones/mis-inscripciones')) ?>">Mis reservas</a></li>
+                    <li><a href="<?= htmlspecialchars(url('/usuario/inscripciones/mis-inscripciones')) ?>">Mis actividades</a></li>
                     <li><a href="<?= htmlspecialchars(url('/pago')) ?>">Planes</a></li>
                 </ul>
             </div>

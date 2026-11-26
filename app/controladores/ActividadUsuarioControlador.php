@@ -21,7 +21,7 @@ final class ActividadUsuarioControlador extends Controller
         }
 
         $tipo = trim((string) ($_GET['tipo'] ?? ''));
-        if (!in_array($tipo, ['', 'clases', 'planes', 'fisio'], true)) {
+        if (!in_array($tipo, ['', 'clases', 'planes', 'fisio', 'faltas'], true)) {
             $tipo = '';
         }
         $filtros = [

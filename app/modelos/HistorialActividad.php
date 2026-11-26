@@ -26,7 +26,7 @@ final class HistorialActividad
         $condiciones = [];
 
         $tipo = (string) ($filtros['tipo'] ?? '');
-        if (in_array($tipo, ['clases', 'planes', 'fisio'], true)) {
+        if (in_array($tipo, ['clases', 'planes', 'fisio', 'faltas'], true)) {
             $condiciones[] = 't.tipo = :tipo';
             $bind[':tipo'] = $tipo;
         }
@@ -121,6 +121,29 @@ final class HistorialActividad
             INNER JOIN clientes cli_f ON cli_f.id = ci.cliente_id
             LEFT JOIN fisioterapeutas f ON f.id = ci.fisio_id
             WHERE cli_f.usuario_id = :uid_fisio
+
+            UNION ALL
+
+            SELECT 'faltas', 'falta',
+                   IFNULL(fa.creada_en, CONCAT(fa.fecha, ' 00:00:00')),
+                   fa.id, a_fa.nombre,
+                   CONCAT(
+                       'Falta de asistencia · ',
+                       DATE_FORMAT(fa.fecha, '%d/%m/%Y'),
+                       IF(a_fa.fecha_inicio IS NULL, '', CONCAT(' · ', DATE_FORMAT(a_fa.fecha_inicio, '%H:%i'))),
+                       IF(
+                           TRIM(CONCAT(IFNULL(u_fa.nombre, ''), ' ', IFNULL(u_fa.apellido1, ''))) = '',
+                           '',
+                           CONCAT(' · Monitor: ', TRIM(CONCAT(IFNULL(u_fa.nombre, ''), ' ', IFNULL(u_fa.apellido1, ''))))
+                       )
+                   ),
+                   'F'
+            FROM falta_asistencia fa
+            INNER JOIN clientes cli_fa ON cli_fa.id = fa.cliente_id
+            INNER JOIN actividades a_fa ON a_fa.id = fa.actividad_id
+            LEFT JOIN monitores m_fa ON m_fa.id = fa.monitor_id
+            LEFT JOIN usuarios u_fa ON u_fa.id = m_fa.usuario_id
+            WHERE cli_fa.usuario_id = :uid_falta
         ";
     }
 
@@ -130,7 +153,7 @@ final class HistorialActividad
         $stmt = $conexion->prepare('SELECT tipo, COUNT(*) AS n FROM (' . $union . ') t GROUP BY tipo');
         self::bind($stmt, self::usuarioBind($usuarioId));
         $stmt->execute();
-        $resumen = ['clases' => 0, 'planes' => 0, 'fisio' => 0];
+        $resumen = ['clases' => 0, 'planes' => 0, 'fisio' => 0, 'faltas' => 0];
         foreach ($stmt->fetchAll(\PDO::FETCH_ASSOC) as $row) {
             $tipo = (string) ($row['tipo'] ?? '');
             if (array_key_exists($tipo, $resumen)) {
@@ -150,6 +173,7 @@ final class HistorialActividad
             ':uid_plan_alta' => $usuarioId,
             ':uid_plan_baja' => $usuarioId,
             ':uid_fisio' => $usuarioId,
+            ':uid_falta' => $usuarioId,
         ];
     }
 

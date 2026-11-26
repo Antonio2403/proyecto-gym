@@ -3,7 +3,7 @@ $tienePlanActivo = !empty($tiene_plan_activo);
 ?>
 <div class="mx-auto w-full max-w-[1320px] lg:max-w-[1024px] xl:max-w-7xl px-3 py-6 lg:py-12">
     <header class="gp-page-header">
-        <span class="gp-badge mb-2">Reservas</span>
+        <span class="gp-badge mb-2">Actividades</span>
         <h1 class="text-[2rem] mb-2">Mis actividades</h1>
         <?php if ($tienePlanActivo): ?>
             <p class="text-slate-500 mb-0">Sesiones en las que estás inscrito. Puedes cancelar con un clic.</p>

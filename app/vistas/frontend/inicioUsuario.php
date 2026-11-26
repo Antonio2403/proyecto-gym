@@ -72,9 +72,9 @@
                     ]) ?>
                 </div>
                 <div class="gp-icon" aria-hidden="true"><i class="fa-solid fa-clipboard-check"></i></div>
-                <h3>Mis inscripciones</h3>
+                <h3>Mis actividades</h3>
                 <p>Las clases en las que ya tienes plaza.</p>
-                <a href="<?= htmlspecialchars(url('/usuario/inscripciones/mis-inscripciones')) ?>" class="btn btn-primary btn-sm">Ver tus reservas</a>
+                <a href="<?= htmlspecialchars(url('/usuario/inscripciones/mis-inscripciones')) ?>" class="btn btn-primary btn-sm">Ver tus actividades</a>
             </div>
         </div>
     </div>
